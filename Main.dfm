@@ -38,7 +38,7 @@ object frmMain: TfrmMain
     TabOrder = 0
     object AdvSplitter2: TAdvSplitter
       Left = 0
-      Top = 193
+      Top = 297
       Width = 265
       Height = 16
       Cursor = crVSplit
@@ -50,10 +50,11 @@ object frmMain: TfrmMain
       Appearance.ColorHot = clWhite
       Appearance.ColorHotTo = clGray
       GripStyle = sgDots
+      ExplicitTop = 193
     end
     object AdvSplitter3: TAdvSplitter
       Left = 0
-      Top = 577
+      Top = 681
       Width = 265
       Height = 16
       Cursor = crVSplit
@@ -69,33 +70,60 @@ object frmMain: TfrmMain
     end
     object Panel3: TPanel
       Left = 0
-      Top = 209
+      Top = 313
       Width = 265
       Height = 368
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitTop = 209
+      object Memo1: TMemo
+        Left = 0
+        Top = 0
+        Width = 265
+        Height = 368
+        Align = alClient
+        Lines.Strings = (
+          'Memo1')
+        TabOrder = 0
+        ExplicitLeft = 160
+        ExplicitTop = 48
+        ExplicitWidth = 185
+        ExplicitHeight = 89
+      end
     end
     object Panel4: TPanel
       Left = 0
       Top = 0
       Width = 265
-      Height = 193
+      Height = 297
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
+      object lstPayloadIDs: TListBox
+        Left = 0
+        Top = 0
+        Width = 265
+        Height = 297
+        Align = alClient
+        ItemHeight = 13
+        TabOrder = 0
+        ExplicitLeft = 160
+        ExplicitTop = 152
+        ExplicitWidth = 121
+        ExplicitHeight = 97
+      end
     end
     object pnlSources: TPanel
       Left = 0
-      Top = 593
+      Top = 697
       Width = 265
-      Height = 198
+      Height = 94
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitLeft = -6
-      ExplicitTop = 441
-      ExplicitHeight = 225
+      ExplicitTop = 593
+      ExplicitHeight = 198
     end
   end
   object Panel2: TPanel
@@ -106,8 +134,6 @@ object frmMain: TfrmMain
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitLeft = 8
-    ExplicitWidth = 265
     object AdvSplitter4: TAdvSplitter
       Left = 0
       Top = 281
@@ -150,8 +176,24 @@ object frmMain: TfrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitTop = 209
-      ExplicitWidth = 265
+      object WebBrowser1: TWebBrowser
+        Left = 0
+        Top = 0
+        Width = 757
+        Height = 225
+        Align = alClient
+        TabOrder = 0
+        ExplicitLeft = 344
+        ExplicitTop = 43
+        ExplicitWidth = 300
+        ExplicitHeight = 150
+        ControlData = {
+          4C0000007D4600000B1D00000000000000000000000000000000000000000000
+          000000004C000000000000000000000001000000E0D057007335CF11AE690800
+          2B2E126208000000000000004C0000000114020000000000C000000000000046
+          8000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000100000000000000000000000000000000000000}
+      end
     end
     object Panel7: TPanel
       Left = 0
@@ -161,6 +203,19 @@ object frmMain: TfrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
+      object lstPositions: TListBox
+        Left = 0
+        Top = 0
+        Width = 757
+        Height = 281
+        Align = alClient
+        ItemHeight = 13
+        TabOrder = 0
+        ExplicitLeft = 160
+        ExplicitTop = 152
+        ExplicitWidth = 121
+        ExplicitHeight = 97
+      end
     end
     object Panel8: TPanel
       Left = 0
@@ -170,9 +225,11 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitTop = 450
-      ExplicitWidth = 265
-      ExplicitHeight = 341
     end
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 354
+    Top = 344
   end
 end
