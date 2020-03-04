@@ -1,4 +1,4 @@
-object Form1: TForm1
+object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'HAB Base Station Manager'
@@ -11,6 +11,7 @@ object Form1: TForm1
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnActivate = FormActivate
   PixelsPerInch = 96
   TextHeight = 13
   object AdvSplitter1: TAdvSplitter
@@ -52,7 +53,7 @@ object Form1: TForm1
     end
     object AdvSplitter3: TAdvSplitter
       Left = 0
-      Top = 609
+      Top = 577
       Width = 265
       Height = 16
       Cursor = crVSplit
@@ -70,7 +71,7 @@ object Form1: TForm1
       Left = 0
       Top = 209
       Width = 265
-      Height = 400
+      Height = 368
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
@@ -84,11 +85,11 @@ object Form1: TForm1
       BevelOuter = bvNone
       TabOrder = 1
     end
-    object Panel5: TPanel
+    object pnlSources: TPanel
       Left = 0
-      Top = 625
+      Top = 593
       Width = 265
-      Height = 166
+      Height = 198
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
