@@ -5,7 +5,11 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, AdvSplitter, Math,
-  AdvCustomControl, AdvWebBrowser, Vcl.OleCtrls, SHDocVw, Vcl.StdCtrls, ActiveX, MSHTML;
+  AdvCustomControl, AdvWebBrowser, Vcl.OleCtrls, SHDocVw, Vcl.StdCtrls, ActiveX, MSHTML,
+  Data.FMTBcd, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
 
 type
     THABPosition = record
@@ -25,19 +29,19 @@ type
     AdvSplitter2: TAdvSplitter;
     Panel3: TPanel;
     AdvSplitter3: TAdvSplitter;
-    Panel4: TPanel;
+    pnlTopLeft: TPanel;
     pnlSources: TPanel;
     Panel2: TPanel;
     AdvSplitter4: TAdvSplitter;
     AdvSplitter5: TAdvSplitter;
     Panel6: TPanel;
-    Panel7: TPanel;
+    pnlPayloads: TPanel;
     Panel8: TPanel;
-    lstPayloadIDs: TListBox;
-    lstPositions: TListBox;
     Memo1: TMemo;
-    WebBrowser1: TWebBrowser;
     Timer1: TTimer;
+    WebBrowser1: TWebBrowser;
+    lstPositions: TListBox;
+    lstPayloadIDs: TListBox;
     procedure FormActivate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
   private
@@ -45,6 +49,7 @@ type
     procedure LoadForms;
     procedure ProcessHabitat(Strings: TStringList);
     function ProcessHabitatLine(Line: String; var Position: THABPosition): Boolean;
+    procedure AddPayload(Position: THABPosition);
   public
     { Public declarations }
     procedure StorePayload(Position: THABPosition);
@@ -55,7 +60,7 @@ var
 
 implementation
 
-uses Sources;
+uses Data, Sources, Payloads;
 
 {$R *.dfm}
 
@@ -73,6 +78,7 @@ end;
 procedure TfrmMain.LoadForms;
 begin
     frmSources.pnlMain.Parent := pnlSources;
+    frmPayloads.pnlMain.Parent := pnlPayloads;
 end;
 
 procedure TfrmMain.StorePayload(Position: THABPosition);
@@ -80,30 +86,35 @@ var
     Index: Integer;
     PositionString: String;
 begin
-    if Position.PayloadDocID = '' then begin
-        PositionString := Position.PayloadID + ' ** NO PAYLOAD DOC **';
-    end else begin
-        PositionString := Position.PayloadID + ' ' + Position.PayloadDocID + ':' +
-                          FormatDateTime('hh:nn:ss', Position.TimeStamp) + ', ' +
-                          FormatFloat('0.00000', Position.Latitude) + ', ' +
-                          FormatFloat('0.00000', Position.Longitude) + ', ' +
-                          FormatFloat('0', Position.Altitude) + ', ' +
-                          FormatFloat('0', Position.Distance) + 'km';
-    end;
+    if Position.PayloadID <> '' then begin
+        if Position.PayloadDocID = '' then begin
+            PositionString := Position.PayloadID + ' ** NO PAYLOAD DOC **';
+        end else begin
+            PositionString := Position.PayloadID + ' ' + Position.PayloadDocID + ':' +
+                              FormatDateTime('hh:nn:ss', Position.TimeStamp) + ', ' +
+                              FormatFloat('0.00000', Position.Latitude) + ', ' +
+                              FormatFloat('0.00000', Position.Longitude) + ', ' +
+                              FormatFloat('0', Position.Altitude) + ', ' +
+                              FormatFloat('0', Position.Distance) + 'km';
+        end;
 
-    Index := lstPayloadIDs.Items.IndexOf(Position.PayloadID);
+        Index := lstPayloadIDs.Items.IndexOf(Position.PayloadID);
 
-    if Index < 0 then begin
-        // Not in list so add it
-        lstPayloadIDs.Items.Add(Position.PayloadID);
-        lstPositions.Items.Add(PositionString);
+        if Index < 0 then begin
+            // Not in list so add it
+            lstPayloadIDs.Items.Add(Position.PayloadID);
+            lstPositions.Items.Add(PositionString);
 
-        Memo1.Lines.Add('Added ' + Position.PayloadID);
-    end else begin
-        if lstPositions.Items[Index] <> PositionString then begin
-            lstPositions.Items[Index] := PositionString;
+            AddPayload(Position);
 
-            // Memo1.Lines.Add('Changed ' + Position.PayloadID);
+            Memo1.Lines.Add('Added ' + Position.PayloadID);
+        end else begin
+            if lstPositions.Items[Index] <> PositionString then begin
+                lstPositions.Items[Index] := PositionString;
+
+                AddPayload(Position);
+                // Memo1.Lines.Add('Changed ' + Position.PayloadID);
+            end;
         end;
     end;
 end;
@@ -322,6 +333,47 @@ begin
             end;
         end;
     end;
+end;
+
+procedure TfrmMain.AddPayload(Position: THABPosition);
+var
+    Query: TFDQuery;
+begin
+    Query := TFDQuery.Create(nil);
+    with Query do begin
+        Connection := DataModule1.FDConnection;
+        // SQL.Add('Select * From PAYLOADS Where PAYLOADID=''' + Position.PayloadID + '''');
+        SQL.Add('Select * From PAYLOADS Where PAYLOADID=:PayloadID');
+        ParamByName('PayloadID').AsString := Position.PayloadID;
+        Open;
+
+        if EOF then begin
+            SQL.Clear;
+//            SQL.Add('Insert Into PAYLOADS (PAYLOADID) Values (' +
+//                     '''' + Position.PayloadID + '''' + ')');
+            SQL.Add('Insert Into PAYLOADS (PAYLOADID) Values (:PayloadID)');
+            ParamByName('PayloadID').AsString := Position.PayloadID;
+            ExecSQL;
+        end;
+
+        SQL.Clear;
+//        SQL.Add('Update PAYLOADS Set' +
+//                 ' DOCID=''' + Position.PayloadDocID + '''' +
+//                 ' Where PAYLOADID=''' + Position.PayloadID + '''');
+        SQL.Add('Update PAYLOADS Set DOCID=:DocID, TIMESTAMP=:TimeStamp, LATITUDE=:Latitude, LONGITUDE=:Longitude, ALTITUDE=:Altitude, DISTANCE=:Distance Where PAYLOADID=:PayloadID');
+        ParamByName('PayloadID').AsString := Position.PayloadID;
+        ParamByName('DocID').AsString := Position.PayloadDocID;
+        ParamByName('TimeStamp').AsString := FormatDateTime('hh:nn:ss dd/mm/yyyy', Now);
+        ParamByName('Latitude').AsFloat := Position.Latitude;
+        ParamByName('Longitude').AsFloat := Position.Longitude;
+        ParamByName('Altitude').AsFloat := Position.Altitude;
+        ParamByName('Distance').AsFloat := Position.Distance;
+        ExecSQL;
+
+        Free;
+    end;
+
+    frmPayloads.UpdateTables;
 end;
 
 end.

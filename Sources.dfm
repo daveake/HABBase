@@ -3,7 +3,7 @@ inherited frmSources: TfrmSources
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
-    inherited DBAdvGrid1: TDBAdvGrid
+    inherited grdMain: TDBAdvGrid
       Columns = <
         item
           Borders = []
@@ -59,19 +59,7 @@ inherited frmSources: TfrmSources
         end>
     end
   end
-  inherited qryMain: TSQLQuery
-    Active = True
-    MaxBlobSize = 1
-    SQL.Strings = (
-      'select * from sources'
-      'order by code')
-  end
   inherited srcMain: TDataSource
     Top = 244
-  end
-  inherited cdsMain: TClientDataSet
-    ProviderName = 'dspMain'
-    Left = 84
-    Top = 204
   end
 end

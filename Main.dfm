@@ -76,7 +76,6 @@ object frmMain: TfrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitTop = 209
       object Memo1: TMemo
         Left = 0
         Top = 0
@@ -86,13 +85,9 @@ object frmMain: TfrmMain
         Lines.Strings = (
           'Memo1')
         TabOrder = 0
-        ExplicitLeft = 160
-        ExplicitTop = 48
-        ExplicitWidth = 185
-        ExplicitHeight = 89
       end
     end
-    object Panel4: TPanel
+    object pnlTopLeft: TPanel
       Left = 0
       Top = 0
       Width = 265
@@ -100,19 +95,6 @@ object frmMain: TfrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
-      object lstPayloadIDs: TListBox
-        Left = 0
-        Top = 0
-        Width = 265
-        Height = 297
-        Align = alClient
-        ItemHeight = 13
-        TabOrder = 0
-        ExplicitLeft = 160
-        ExplicitTop = 152
-        ExplicitWidth = 121
-        ExplicitHeight = 97
-      end
     end
     object pnlSources: TPanel
       Left = 0
@@ -122,8 +104,6 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitTop = 593
-      ExplicitHeight = 198
     end
   end
   object Panel2: TPanel
@@ -176,26 +156,8 @@ object frmMain: TfrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
-      object WebBrowser1: TWebBrowser
-        Left = 0
-        Top = 0
-        Width = 757
-        Height = 225
-        Align = alClient
-        TabOrder = 0
-        ExplicitLeft = 344
-        ExplicitTop = 43
-        ExplicitWidth = 300
-        ExplicitHeight = 150
-        ControlData = {
-          4C0000007D4600000B1D00000000000000000000000000000000000000000000
-          000000004C000000000000000000000001000000E0D057007335CF11AE690800
-          2B2E126208000000000000004C0000000114020000000000C000000000000046
-          8000000000000000000000000000000000000000000000000000000000000000
-          00000000000000000100000000000000000000000000000000000000}
-      end
     end
-    object Panel7: TPanel
+    object pnlPayloads: TPanel
       Left = 0
       Top = 0
       Width = 757
@@ -203,19 +165,6 @@ object frmMain: TfrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
-      object lstPositions: TListBox
-        Left = 0
-        Top = 0
-        Width = 757
-        Height = 281
-        Align = alClient
-        ItemHeight = 13
-        TabOrder = 0
-        ExplicitLeft = 160
-        ExplicitTop = 152
-        ExplicitWidth = 121
-        ExplicitHeight = 97
-      end
     end
     object Panel8: TPanel
       Left = 0
@@ -225,6 +174,44 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
+      object WebBrowser1: TWebBrowser
+        Left = 201
+        Top = 0
+        Width = 375
+        Height = 253
+        Align = alClient
+        TabOrder = 0
+        ExplicitLeft = 0
+        ExplicitWidth = 682
+        ExplicitHeight = 281
+        ControlData = {
+          4C0000003D4E0000411700000000000000000000000000000000000000000000
+          000000004C000000000000000000000001000000E0D057007335CF11AE690800
+          2B2E126208000000000000004C0000000114020000000000C000000000000046
+          8000000000000000000000000000000000000000000000000000000000000000
+          00000000000000000100000000000000000000000000000000000000}
+      end
+      object lstPositions: TListBox
+        Left = 576
+        Top = 0
+        Width = 181
+        Height = 253
+        Align = alRight
+        ItemHeight = 13
+        Sorted = True
+        TabOrder = 1
+      end
+      object lstPayloadIDs: TListBox
+        Left = 0
+        Top = 0
+        Width = 201
+        Height = 253
+        Align = alLeft
+        ItemHeight = 13
+        Sorted = True
+        TabOrder = 2
+        ExplicitLeft = 8
+      end
     end
   end
   object Timer1: TTimer

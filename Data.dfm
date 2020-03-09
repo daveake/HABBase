@@ -1,32 +1,24 @@
 object DataModule1: TDataModule1
   OldCreateOrder = False
+  OnCreate = DataModuleCreate
   Height = 297
   Width = 450
-  object SQLConnection1: TSQLConnection
-    ConnectionName = 'HABBase'
-    DriverName = 'Sqlite'
-    LoginPrompt = False
+  object FDConnection: TFDConnection
     Params.Strings = (
-      'DriverName=Sqlite'
-      'DriverUnit=Data.DbxSqlite'
-      
-        'DriverPackageLoader=TDBXSqliteDriverLoader,DBXSqliteDriver260.bp' +
-        'l'
-      
-        'MetaDataPackageLoader=TDBXSqliteMetaDataCommandFactory,DbxSqlite' +
-        'Driver260.bpl'
-      'FailIfMissing=True'
-      'Database=D:\Dropbox\dev\HAB\HABBase\HABBase.db')
-    Left = 56
-    Top = 42
-  end
-  object qrySettings: TSQLQuery
-    MaxBlobSize = -1
-    Params = <>
-    SQL.Strings = (
-      'select * from settings')
-    SQLConnection = SQLConnection1
-    Left = 56
-    Top = 122
+      'Database=D:\Dropbox\dev\HAB\HABBase\HABBase.db'
+      'LockingMode=Normal'
+      'StringFormat=ANSI'
+      'DriverID=SQLite')
+    FormatOptions.AssignedValues = [fvMapRules]
+    FormatOptions.OwnMapRules = True
+    FormatOptions.MapRules = <
+      item
+        SourceDataType = dtMemo
+        TargetDataType = dtWideString
+      end>
+    Connected = True
+    LoginPrompt = False
+    Left = 48
+    Top = 57
   end
 end

@@ -3,7 +3,7 @@ inherited frmDataGrid: TfrmDataGrid
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
-    object DBAdvGrid1: TDBAdvGrid
+    object grdMain: TDBAdvGrid
       Left = 1
       Top = 1
       Width = 831
@@ -11,10 +11,12 @@ inherited frmDataGrid: TfrmDataGrid
       Cursor = crDefault
       Align = alClient
       ColCount = 2
+      DoubleBuffered = True
       DrawingStyle = gdsClassic
       FixedCols = 0
       RowCount = 2
       FixedRows = 1
+      ParentDoubleBuffered = False
       ScrollBars = ssBoth
       TabOrder = 0
       HoverRowCells = [hcNormal, hcSelected]
@@ -23,6 +25,10 @@ inherited frmDataGrid: TfrmDataGrid
       ActiveCellFont.Height = -11
       ActiveCellFont.Name = 'Tahoma'
       ActiveCellFont.Style = [fsBold]
+      ActiveCellColor = 9758459
+      ActiveCellColorTo = 1414638
+      ControlLook.FixedGradientFrom = 16572875
+      ControlLook.FixedGradientTo = 14722429
       ControlLook.FixedGradientHoverFrom = clGray
       ControlLook.FixedGradientHoverTo = clWhite
       ControlLook.FixedGradientDownFrom = clGray
@@ -63,7 +69,7 @@ inherited frmDataGrid: TfrmDataGrid
       FixedColWidth = 60
       FixedRowHeight = 22
       FixedFont.Charset = DEFAULT_CHARSET
-      FixedFont.Color = clWindowText
+      FixedFont.Color = clBlack
       FixedFont.Height = -11
       FixedFont.Name = 'Tahoma'
       FixedFont.Style = [fsBold]
@@ -94,6 +100,8 @@ inherited frmDataGrid: TfrmDataGrid
       PrintSettings.FooterFont.Name = 'Tahoma'
       PrintSettings.FooterFont.Style = []
       PrintSettings.PageNumSep = '/'
+      SearchFooter.Color = 16572875
+      SearchFooter.ColorTo = clNone
       SearchFooter.FindNextCaption = 'Find &next'
       SearchFooter.FindPrevCaption = 'Find &previous'
       SearchFooter.Font.Charset = DEFAULT_CHARSET
@@ -108,8 +116,11 @@ inherited frmDataGrid: TfrmDataGrid
       SearchFooter.HintHighlight = 'Highlight occurrences'
       SearchFooter.MatchCaseCaption = 'Match case'
       SearchFooter.ResultFormat = '(%d of %d)'
+      SelectionColor = 9758459
+      SelectionColorTo = 1414638
       SortSettings.DefaultFormat = ssAutomatic
-      Version = '2.5.0.0'
+      Version = '2.5.0.5'
+      UIStyle = tsOffice2003Blue
       AutoCreateColumns = True
       AutoRemoveColumns = True
       Columns = <
@@ -301,10 +312,6 @@ inherited frmDataGrid: TfrmDataGrid
         80000001C0000003C0000003E0000007F000000FF800001FFC00003FFF0000FF
         FFC003FF}
       ShowUnicode = False
-      ExplicitLeft = 128
-      ExplicitTop = 56
-      ExplicitWidth = 400
-      ExplicitHeight = 250
       ColWidths = (
         60
         64)
