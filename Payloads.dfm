@@ -5,7 +5,7 @@ inherited frmPayloads: TfrmPayloads
   inherited pnlMain: TPanel
     inherited grdMain: TDBAdvGrid
       ColCount = 7
-      RowCount = 7
+      RowCount = 8
       FixedColWidth = 117
       Columns = <
         item
@@ -208,6 +208,7 @@ inherited frmPayloads: TfrmPayloads
       FieldName = 'ID'
       Origin = 'ID'
       ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
     end
     object qryMainPayloadID: TWideStringField
       FieldName = 'PayloadID'
@@ -274,5 +275,9 @@ inherited frmPayloads: TfrmPayloads
       FieldName = 'Distance'
       Origin = 'Distance'
     end
+  end
+  inherited srcMain: TDataSource
+    Left = 56
+    Top = 224
   end
 end

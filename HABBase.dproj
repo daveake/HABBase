@@ -134,6 +134,20 @@
             <Form>frmPayloads</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="..\HABRx\HABTypes.pas"/>
+        <DCCReference Include="..\HABRx\Miscellaneous.pas"/>
+        <DCCReference Include="..\HABRx\SerialSource.pas"/>
+        <DCCReference Include="..\HABRx\SocketSource.pas"/>
+        <DCCReference Include="..\HABRx\Source.pas"/>
+        <DCCReference Include="BaseTypes.pas"/>
+        <DCCReference Include="SourceForm.pas">
+            <Form>frmSource</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Logtail.pas">
+            <Form>frmLogtail</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

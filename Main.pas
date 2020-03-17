@@ -5,54 +5,77 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, AdvSplitter, Math,
-  AdvCustomControl, AdvWebBrowser, Vcl.OleCtrls, SHDocVw, Vcl.StdCtrls, ActiveX, MSHTML,
+  AdvCustomControl, Vcl.StdCtrls, ActiveX, MSHTML,
   Data.FMTBcd, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client;
+  FireDAC.Comp.Client, DateUtils, AdvSmoothStatusIndicator, AdvGDIP, AdvPanel, BaseTypes,
+  SourceForm,
+  Source, AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid;
 
 type
-    THABPosition = record
-        PayloadID:      String;
-        PayloadDocID:   String;
-        TimeStamp:      TDateTime;
-        Latitude:       Double;
-        Longitude:      Double;
-        Altitude:       Double;
-        Distance:       Double;
+//    THABPosition = record
+//        PayloadID:      String;
+//        PayloadDocID:   String;
+//        TimeStamp:      TDateTime;
+//        Latitude:       Double;
+//        Longitude:      Double;
+//        Altitude:       Double;
+//        Distance:       Double;
+//    end;
+
+//    TFlightMode = (fmIdle, fmLaunched, fmDescending, fmHoming, fmDirect, fmDownwind, fmUpwind, fmLanding, fmLanded);
+
+    THABSource = class
+        public
+            ID:                 Integer;
+            Enabled:            Boolean;
+            Connected:          Boolean;
+            Description:        String;
+            Code:               String;
+            // SectionName:     String;
+            // Index:           Integer;
+            SourceType:         TSourceType;
+            Form:               TfrmSource;
+            Indicator:          TAdvSmoothStatusIndicator;
+            LatestPosition:     THABPosition;
     end;
 
 type
   TfrmMain = class(TForm)
     AdvSplitter1: TAdvSplitter;
-    Panel1: TPanel;
+    pnlLeft: TPanel;
     AdvSplitter2: TAdvSplitter;
-    Panel3: TPanel;
+    plMiddleLeft: TPanel;
     AdvSplitter3: TAdvSplitter;
     pnlTopLeft: TPanel;
     pnlSources: TPanel;
-    Panel2: TPanel;
+    pnlMain: TPanel;
     AdvSplitter4: TAdvSplitter;
     AdvSplitter5: TAdvSplitter;
     Panel6: TPanel;
     pnlPayloads: TPanel;
     Panel8: TPanel;
-    Memo1: TMemo;
-    Timer1: TTimer;
-    WebBrowser1: TWebBrowser;
+    Panel4: TPanel;
+    pnlStatus: TAdvPanel;
+    pnlHidden: TPanel;
     lstPositions: TListBox;
     lstPayloadIDs: TListBox;
+    lslLog: TListBox;
+    DBAdvGrid1: TDBAdvGrid;
     procedure FormActivate(Sender: TObject);
-    procedure Timer1Timer(Sender: TObject);
   private
     { Private declarations }
+    HABSources: Array[1..32] of THABSource;
+    procedure LoadData;
     procedure LoadForms;
-    procedure ProcessHabitat(Strings: TStringList);
-    function ProcessHabitatLine(Line: String; var Position: THABPosition): Boolean;
+    procedure LoadSources;
     procedure AddPayload(Position: THABPosition);
+    procedure LoadSource(SourceIndex, pID: Integer; pCode: String; pSourceType: TSourceType);
   public
     { Public declarations }
-    procedure StorePayload(Position: THABPosition);
+    procedure ShowConnected(SourceIndex: Integer; IsConnected: Boolean);
+    procedure NewPosition(SourceIndex: Integer; Position: THABPosition);
   end;
 
 var
@@ -60,7 +83,7 @@ var
 
 implementation
 
-uses Data, Sources, Payloads;
+uses Data, Sources, Payloads, Logtail;
 
 {$R *.dfm}
 
@@ -70,310 +93,205 @@ const
 begin
     if FirstTime then begin
         FirstTime := False;
+        LoadData;
         LoadForms;
-        WebBrowser1.Navigate('http://habitat.habhub.org/logtail/');
+        LoadSources;
     end;
+end;
+
+procedure TfrmMain.LoadData;
+begin
+    DataModule1 := TDataModule1.Create(nil);
 end;
 
 procedure TfrmMain.LoadForms;
 begin
-    frmSources.pnlMain.Parent := pnlSources;
-    frmPayloads.pnlMain.Parent := pnlPayloads;
+//    frmSources.pnlMain.Parent := pnlSources;
+//    frmPayloads.pnlMain.Parent := pnlPayloads;
 end;
 
-procedure TfrmMain.StorePayload(Position: THABPosition);
+procedure TfrmMain.LoadSources;
 var
     Index: Integer;
-    PositionString: String;
 begin
-    if Position.PayloadID <> '' then begin
-        if Position.PayloadDocID = '' then begin
-            PositionString := Position.PayloadID + ' ** NO PAYLOAD DOC **';
-        end else begin
-            PositionString := Position.PayloadID + ' ' + Position.PayloadDocID + ':' +
-                              FormatDateTime('hh:nn:ss', Position.TimeStamp) + ', ' +
-                              FormatFloat('0.00000', Position.Latitude) + ', ' +
-                              FormatFloat('0.00000', Position.Longitude) + ', ' +
-                              FormatFloat('0', Position.Altitude) + ', ' +
-                              FormatFloat('0', Position.Distance) + 'km';
-        end;
-
-        Index := lstPayloadIDs.Items.IndexOf(Position.PayloadID);
-
-        if Index < 0 then begin
-            // Not in list so add it
-            lstPayloadIDs.Items.Add(Position.PayloadID);
-            lstPositions.Items.Add(PositionString);
-
-            AddPayload(Position);
-
-            Memo1.Lines.Add('Added ' + Position.PayloadID);
-        end else begin
-            if lstPositions.Items[Index] <> PositionString then begin
-                lstPositions.Items[Index] := PositionString;
-
-                AddPayload(Position);
-                // Memo1.Lines.Add('Changed ' + Position.PayloadID);
-            end;
-        end;
-    end;
-end;
-
-procedure TfrmMain.Timer1Timer(Sender: TObject);
-var
-    Strings: TStringList;
-    Document: IHTMLDocument2;
-begin
-    Timer1.Enabled := False;
-    Strings := TStringList.Create;
-    try
-        Document := webBrowser1.Document as IHTMLDocument2;
-        if Document <> nil then begin
-            if Document.Body <> nil then begin
-                Strings.Text := Document.Body.innerHTML;
-
-                ProcessHabitat(Strings);
-            end;
-        end;
-    finally
-        Strings.Free;
-        Timer1.Enabled := True;
-    end;
-end;
-
-function CalculateDistance(HABLatitude, HABLongitude, CarLatitude, CarLongitude: Double): Double;
-begin
-    // Return distance in km
-
-    HABLatitude := HABLatitude * Pi / 180;
-    HABLongitude := HABLongitude * Pi / 180;
-    CarLatitude := CarLatitude * Pi / 180;
-    CarLongitude := CarLongitude * Pi / 180;
-
-    try
-        Result := 6371 * arccos(sin(CarLatitude) * sin(HABLatitude) +
-                                cos(CarLatitude) * cos(HABLatitude) * cos(HABLongitude-CarLongitude));
-    except
-        Result := 0.0;
-    end;
-end;
-
-function GetString(var Line: String; Delimiter: String = ','): String;
-var
-    Posn: Integer;
-begin
-    Posn := Pos(Delimiter, Line);
-
-    if Posn > 0 then begin
-        Result := Copy(Line, 1, Posn-1);
-        Line := Copy(Line, Posn+Length(Delimiter), 999);
-    end else begin
-        Result := Line;
-        Line := '';
-    end;
-end;
-
-function GetFloat(var Line: String; Delimiter: String = ','): Double;
-var
-    Temp: String;
-begin
-    Temp := GetString(Line, Delimiter);
-
-    try
-        Result := StrToFloat(Temp);
-    except
-        Result := 0.0;
-    end;
-end;
-
-function GetTime(var Line: String; Delimiter: String = ','): TDateTime;
-var
-    Temp: String;
-begin
-    Temp := GetString(Line, Delimiter);
-
-    try
-        if Pos(':', Temp) > 0 then begin
-            Result := EncodeTime(StrToIntDef(Copy(Temp, 1, 2), 0),
-                      StrToIntDef(Copy(Temp, 4, 2), 0),
-                      StrToIntDef(Copy(Temp, 7, 2), 0),
-                      0);
-        end else begin
-            Result := EncodeTime(StrToIntDef(Copy(Temp, 1, 2), 0),
-                      StrToIntDef(Copy(Temp, 3, 2), 0),
-                      StrToIntDef(Copy(Temp, 5, 2), 0),
-                      0);
-        end;
-    except
-        Result := 0;
-    end;
-end;
-
-procedure TfrmMain.ProcessHabitat(Strings: TStringList);
-const
-    PreviousLastLine: String = '';
-var
-    i: Integer;
-    Position: THABPosition;
-begin
-    Position := Default(THABPosition);
-
-    if Strings.Count > 0 then begin
-        if PreviousLastLine <> Strings[Strings.Count-1] then begin
-            for i := Strings.Count-1 downto 0 do begin
-                if ProcessHabitatLine(Strings[i], Position) then begin
-                    // Calculate distance
-                    Position.Distance := CalculateDistance(Position.Latitude, Position.Longitude, 52, -2);
-
-                    // Add to list
-                    frmMain.StorePayload(Position);
-
-                    // Clear for next payload
-                    Position := Default(THABPosition);
-                end;
-            end;
-            PreviousLastLine := Strings[0];
-        end;
-    end;
-end;
-
-function TfrmMain.ProcessHabitatLine(Line: String; var Position: THABPosition): Boolean;
-var
-    TimeStamp: TDateTime;
-    i, j, Posn: Integer;
-    Latitude, Longitude: Double;
-    FullLine, Command: String;
-begin
-    Result := False;
-
-    FullLine := Line;
-
-    if Copy(Line,1,1) = '[' then begin
-        // One of the lines we're interested in
-
-// [2020-03-03 09:36:41,239] DEBUG habitat.parser MainThread: Selected payload_configuration 8c36ab528b16cb3adf00b7e07a228854 for 'RS_DFM-616153'
-// [2020-03-03 09:36:43,650] DEBUG habitat.parser MainThread: No configuration doc for 'UNCHANGES' found
-
-(*
-        Posn := Pos('''$$', Line);
-        if Posn > 0 then begin
-            // Telemetry line
-            // [2020-03-03 08:42:32,841] INFO habitat.parser MainThread: Parsing [ascii] '$$RS_DFM-17050539,188,08:42:28,53.05664,10.03080,8408,26.7,-51.0,-1.0,DFM09 DFM-17050539 403.471 MHz*57B1\n' (0d9acf53d3ed09c28debd57e232c8af877fff789f73cf6dcff8810b4aeaf916f) from OZ1SKY_AUTO_RX
-
-            Line := Copy(Line, Posn, 999);
-            // $$RS_DFM-17050539,188,08:42:28,53.05664,10.03080,8408,26.7,-51.0,-1.0,DFM09 DFM-17050539 403.471 MHz*57B1\n' (0d9acf53d3ed09c28debd57e232c8af877fff789f73cf6dcff8810b4aeaf916f) from OZ1SKY_AUTO_RX
-
-            Posn := LastDelimiter('$', Copy(Line, 1, 9));
-
-            if Posn > 0 then begin
-                Line := Copy(Line, Posn+1, 999);
-
-                // RS_DFM-17050539,188,08:42:28,53.05664,10.03080,8408,26.7,-51.0,-1.0,DFM09 DFM-17050539 403.471 MHz*57B1\n' (0d9acf53d3ed09c28debd57e232c8af877fff789f73cf6dcff8810b4aeaf916f) from OZ1SKY_AUTO_RX
-                Position.PayloadID := GetString(Line);
-
-                if Pos('</PRE>', Position.PayloadID) > 0 then begin
-                    Position.PayloadID := '';
-                end;
-
-
-                // 188,08:42:28,53.05664,10.03080,8408,26.7,-51.0,-1.0,DFM09 DFM-17050539 403.471 MHz*57B1\n' (0d9acf53d3ed09c28debd57e232c8af877fff789f73cf6dcff8810b4aeaf916f) from OZ1SKY_AUTO_RX
-
-                // Counter present ?
-                if Pos(',', Line) < Pos(':', Line) then begin
-                    // Have sentence counter
-                    GetString(Line);
-                end;
-
-                Position.TimeStamp := GetTime(Line);
-
-                Position.Latitude := GetFloat(Line);
-                Position.Longitude := GetFloat(Line);
-                Position.Altitude := GetFloat(Line);
-            end;
-        end;
-*)
-        if Pos('No configuration doc', Line) > 0 then begin
-            Result := True;
-        end else begin
-            Posn := Pos('Selected payload_configuration', Line);
-            if Posn > 0 then begin
-                // [2020-03-03 09:36:41,239] DEBUG habitat.parser MainThread: Selected payload_configuration 8c36ab528b16cb3adf00b7e07a228854 for 'RS_DFM-616153'
-                Line := Copy(Line, Posn+31, Length(Line));
-                // 8c36ab528b16cb3adf00b7e07a228854 for 'RS_DFM-616153'
-
-                Posn := Pos(' ', Line);
-                Position.PayloadDocID := Copy(Line, 1, Posn-1);
-                Line := Copy(Line, Posn, Length(Line));
-
-                Posn := Pos(' for ''', Line);
-                Line := Copy(Line, Posn+6, 99);
-
-                Position.PayloadID := GetString(Line, '''');
-
-                if Pos('</PRE>', Position.PayloadID) > 0 then begin
-                    Position.PayloadID := '';
-                end;
-            end;
-        end;
-    end else if Copy(Line,1,3) = '  "' then begin
-        GetString(Line, '"');
-        Command := GetString(Line, '":');
-
-        if Command = 'latitude' then begin
-            //  "latitude": 50.72363,
-            Position.Latitude := GetFloat(Line, ',');
-        end else if Command = 'longitude' then begin
-            Position.Longitude := GetFloat(Line, ',');
-        end else if Command = 'altitude' then begin
-            Position.Altitude := GetFloat(Line, ',');
-        end else if Command = 'payload' then begin
-            GetString(Line, '"');
-            if GetString(Line, '"') = Position.PayloadID then begin
-                Result := True;
-            end;
+    with DataModule1.tblSources do begin
+        First;
+        Index := 0;
+        while not EOF do begin
+            Inc(Index);
+            LoadSource(Index, FieldByName('ID').AsInteger, FieldByName('Code').AsString, TSourceType(FieldByName('Type').AsInteger));
+            Next;
         end;
     end;
 end;
 
 procedure TfrmMain.AddPayload(Position: THABPosition);
 var
-    Query: TFDQuery;
+    Bookmark: TBookmark;
 begin
-    Query := TFDQuery.Create(nil);
-    with Query do begin
-        Connection := DataModule1.FDConnection;
-        // SQL.Add('Select * From PAYLOADS Where PAYLOADID=''' + Position.PayloadID + '''');
-        SQL.Add('Select * From PAYLOADS Where PAYLOADID=:PayloadID');
-        ParamByName('PayloadID').AsString := Position.PayloadID;
-        Open;
 
-        if EOF then begin
-            SQL.Clear;
-//            SQL.Add('Insert Into PAYLOADS (PAYLOADID) Values (' +
-//                     '''' + Position.PayloadID + '''' + ')');
-            SQL.Add('Insert Into PAYLOADS (PAYLOADID) Values (:PayloadID)');
-            ParamByName('PayloadID').AsString := Position.PayloadID;
-            ExecSQL;
+
+(*
+    with DataModule1.tblPayloads do begin
+        Bookmark := GetBookmark;
+        DisableControls;
+        if FindKey([Position.PayloadID]) then begin
+            Edit;
+        end else begin
+            Append;
+            FieldByName('PayloadID').AsString := Position.PayloadID;
         end;
 
-        SQL.Clear;
-//        SQL.Add('Update PAYLOADS Set' +
-//                 ' DOCID=''' + Position.PayloadDocID + '''' +
-//                 ' Where PAYLOADID=''' + Position.PayloadID + '''');
-        SQL.Add('Update PAYLOADS Set DOCID=:DocID, TIMESTAMP=:TimeStamp, LATITUDE=:Latitude, LONGITUDE=:Longitude, ALTITUDE=:Altitude, DISTANCE=:Distance Where PAYLOADID=:PayloadID');
-        ParamByName('PayloadID').AsString := Position.PayloadID;
-        ParamByName('DocID').AsString := Position.PayloadDocID;
-        ParamByName('TimeStamp').AsString := FormatDateTime('hh:nn:ss dd/mm/yyyy', Now);
-        ParamByName('Latitude').AsFloat := Position.Latitude;
-        ParamByName('Longitude').AsFloat := Position.Longitude;
-        ParamByName('Altitude').AsFloat := Position.Altitude;
-        ParamByName('Distance').AsFloat := Position.Distance;
-        ExecSQL;
+        FieldByName('PayloadID').AsString := Position.PayloadID;
+        FieldByName('DocID').AsString := Position.PayloadDocID;
+        FieldByName('TimeStamp').AsString := FormatDateTime('hh:nn:ss', Position.TimeStamp);
+        FieldByName('Latitude').AsFloat := Position.Latitude;
+        FieldByName('Longitude').AsFloat := Position.Longitude;
+        FieldByName('Altitude').AsFloat := Position.Altitude;
+        FieldByName('Distance').AsFloat := Position.Distance;
 
-        Free;
+        Post;
+
+        GotoBookmark(Bookmark);
+
+        EnableControls;
     end;
+*)
 
-    frmPayloads.UpdateTables;
+//    frmPayloads.UpdateTables;
+end;
+
+procedure TfrmMain.LoadSource(SourceIndex, pID: Integer; pCode: String; pSourceType: TSourceType);
+begin
+    HABSources[SourceIndex] := THABSource.Create;
+
+    with HABSources[SourceIndex] do begin
+        ID := pID;
+        Code := pCode;
+        SourceType := pSourceType;
+
+        // Index := SourceIndex;
+        // SectionName := Section;
+
+        // Enabled := INI.ReadBool(Section, 'Enabled', True);
+//        Description := INI.ReadString(Section, 'Description', 'Source ' + IntToStr(SourceIndex));
+//        Code := INI.ReadString(Section, 'Code', IntToStr(SourceIndex));
+
+//        SourceTypeText := INI.ReadString(Section, 'Type', '');
+
+    // TSourceType = (stLogtail, stGateway, stTCP, stUDP, stSerial);       // stDLFLDigi, stSerial, stHabitat, stUDP);
+        if SourceType = stLogtail then begin
+            Form := TfrmLogtail.Create(nil);
+            Form.pnlMain.Parent := pnlHidden;
+//        end else if SourceTypeText = 'DLFLDigi' then begin
+//            SourceType := stDLFLDigi;
+//            Form := TfrmDLFLDigiSource.Create(nil, HABDB, HabitatThread, SourceIndex);
+//        end else if SourceTypeText = 'Serial' then begin
+//            SourceType := stSerial;
+//            Form := TfrmLoRaSerialSource.Create(nil, HABDB, HabitatThread, SourceIndex);
+//        end else if SourceTypeText = 'Habitat' then begin
+//            SourceType := stHabitat;
+//            Form := TfrmHabitatSource.Create(nil, HABDB, HabitatThread, SourceIndex);
+//        end else if SourceTypeText = 'UDP' then begin
+//            SourceType := stUDP;
+//            Form := TfrmUDPSource.Create(nil, HABDB, HabitatThread, SourceIndex);
+        end else begin
+            Form := nil;
+        end;
+
+        if Form <> nil then begin
+            Form.SourceIndex := SourceIndex;
+//            Form.HideYourself;
+
+//            Form.Caption := Form.Caption + ' - ' + Description;
+
+//            Form.LoadSettings;
+
+            // Status bar button
+        end;
+
+        Indicator := TAdvSmoothStatusIndicator.Create(Self);
+        with Indicator do begin
+            Parent := pnlStatus;
+            Align := alRight;
+            AlignWithMargins := True;
+            BorderWidth := 1;
+            Appearance.Fill.Color := clGray;
+            Appearance.Fill.ColorMirror := clNone;
+            Appearance.Fill.ColorMirrorTo := clNone;
+            Appearance.Fill.GradientType := TAdvGradientType.gtSolid;
+            Appearance.Fill.BorderColor := 3355443;
+            Appearance.Fill.Rounding := 18;
+            Appearance.Fill.ShadowOffset := 0;
+            Appearance.Font.Height := -24;
+            Appearance.Font.Color := clWhite;
+            AutoSize := True;
+            Caption := Code;
+            Tag := SourceIndex;
+            // PopupMenu := menuSource;
+            // OnClick := DataSourceClick;
+        end;
+    end;
+end;
+
+procedure TfrmMain.NewPosition(SourceIndex: Integer; Position: THABPosition);
+var
+    Index: Integer;
+    PositionString: String;
+begin
+    with HABSources[SourceIndex] do begin
+        LatestPosition := Position;
+        if Position.PayloadID <> '' then begin
+            if Position.PayloadDocID = '' then begin
+                PositionString := Position.PayloadID + ' ** NO PAYLOAD DOC **';
+            end else begin
+                PositionString := Position.PayloadID + ' ' + Position.PayloadDocID + ':' +
+                                  FormatDateTime('hh:nn:ss', Position.TimeStamp) + ', ' +
+                                  FormatFloat('0.00000', Position.Latitude) + ', ' +
+                                  FormatFloat('0.00000', Position.Longitude) + ', ' +
+                                  FormatFloat('0', Position.Altitude) + ', ' +
+                                  FormatFloat('0', Position.Distance) + 'km';
+            end;
+
+            Index := lstPayloadIDs.Items.IndexOf(Position.PayloadID);
+
+            if Index < 0 then begin
+                // Not in list so add it
+                lstPayloadIDs.Items.Add(Position.PayloadID);
+                lstPositions.Items.Add(PositionString);
+
+                AddPayload(Position);
+
+                lslLog.ItemIndex := lslLog.Items.Add('Added ' + Position.PayloadID);
+            end else begin
+                if lstPositions.Items[Index] <> PositionString then begin
+                    lstPositions.Items[Index] := PositionString;
+
+                    AddPayload(Position);
+                    // Memo1.Lines.Add('Changed ' + Position.PayloadID);
+                end;
+            end;
+
+            DataModule1.UpdateSource(ID, Position.PayloadID);
+        end;
+
+        // Update indicator
+        Indicator.Appearance.Fill.Color := clGreen;
+
+    end;
+end;
+
+
+procedure TfrmMain.ShowConnected(SourceIndex: Integer; IsConnected: Boolean);
+begin
+    with HABSources[SourceIndex] do begin
+        Connected := IsConnected;
+        if IsConnected then begin
+            Indicator.Appearance.Fill.Color := clOlive;
+        end else begin
+            Indicator.Appearance.Fill.Color := clRed;
+        end;
+    end;
 end;
 
 end.
