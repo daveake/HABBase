@@ -79,7 +79,7 @@ begin
             for i := Strings.Count-1 downto 0 do begin
                 if ProcessLogtailLine(Strings[i], Position) then begin
                     // Calculate distance
-                    Position.Distance := CalculateDistance(Position.Latitude, Position.Longitude, 52, -2);
+                    Position.Distance := CalculateDistance(Position.Latitude, Position.Longitude, 52, -2) / 1000.0;
 
                     // Add to list
                     frmMain.NewPosition(SourceIndex, Position);

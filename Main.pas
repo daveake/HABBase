@@ -41,6 +41,11 @@ type
             LatestPosition:     THABPosition;
     end;
 
+    TPayloadMasks = record
+        Masks:      Array[1..32] of TPayloadMask;
+        Count:      Integer;
+    end;
+
 type
   TfrmMain = class(TForm)
     AdvSplitter1: TAdvSplitter;
@@ -48,7 +53,7 @@ type
     AdvSplitter2: TAdvSplitter;
     plMiddleLeft: TPanel;
     AdvSplitter3: TAdvSplitter;
-    pnlTopLeft: TPanel;
+    pnlWhiteList: TPanel;
     pnlSources: TPanel;
     pnlMain: TPanel;
     AdvSplitter4: TAdvSplitter;
@@ -56,22 +61,27 @@ type
     Panel6: TPanel;
     pnlPayloads: TPanel;
     Panel8: TPanel;
-    Panel4: TPanel;
     pnlStatus: TAdvPanel;
     pnlHidden: TPanel;
     lstPositions: TListBox;
     lstPayloadIDs: TListBox;
     lslLog: TListBox;
     DBAdvGrid1: TDBAdvGrid;
+    pnlLivePayloads: TPanel;
+    AdvSplitter6: TAdvSplitter;
+    DBAdvGrid2: TDBAdvGrid;
     procedure FormActivate(Sender: TObject);
   private
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
+    PayloadMasks: TPayloadMasks;
     procedure LoadData;
     procedure LoadForms;
     procedure LoadSources;
     procedure AddPayload(Position: THABPosition);
     procedure LoadSource(SourceIndex, pID: Integer; pCode: String; pSourceType: TSourceType);
+    procedure LoadPayloadMasks;
+    function PayloadInWhiteList(Position: THABPosition): Boolean;
   public
     { Public declarations }
     procedure ShowConnected(SourceIndex: Integer; IsConnected: Boolean);
@@ -94,6 +104,7 @@ begin
     if FirstTime then begin
         FirstTime := False;
         LoadData;
+        LoadPayloadMasks;
         LoadForms;
         LoadSources;
     end;
@@ -239,45 +250,47 @@ var
     Index: Integer;
     PositionString: String;
 begin
-    with HABSources[SourceIndex] do begin
-        LatestPosition := Position;
-        if Position.PayloadID <> '' then begin
-            if Position.PayloadDocID = '' then begin
-                PositionString := Position.PayloadID + ' ** NO PAYLOAD DOC **';
-            end else begin
-                PositionString := Position.PayloadID + ' ' + Position.PayloadDocID + ':' +
-                                  FormatDateTime('hh:nn:ss', Position.TimeStamp) + ', ' +
-                                  FormatFloat('0.00000', Position.Latitude) + ', ' +
-                                  FormatFloat('0.00000', Position.Longitude) + ', ' +
-                                  FormatFloat('0', Position.Altitude) + ', ' +
-                                  FormatFloat('0', Position.Distance) + 'km';
-            end;
+    if PayloadInWhiteList(Position) then begin
+        with HABSources[SourceIndex] do begin
+            LatestPosition := Position;
+            if Position.PayloadID <> '' then begin
+                if Position.PayloadDocID = '' then begin
+                    PositionString := Position.PayloadID + ' ** NO PAYLOAD DOC **';
+                end else begin
+                    PositionString := Position.PayloadID + ' ' + Position.PayloadDocID + ':' +
+                                      FormatDateTime('hh:nn:ss', Position.TimeStamp) + ', ' +
+                                      FormatFloat('0.00000', Position.Latitude) + ', ' +
+                                      FormatFloat('0.00000', Position.Longitude) + ', ' +
+                                      FormatFloat('0', Position.Altitude) + ', ' +
+                                      FormatFloat('0', Position.Distance) + 'km';
+                end;
 
-            Index := lstPayloadIDs.Items.IndexOf(Position.PayloadID);
+                Index := lstPayloadIDs.Items.IndexOf(Position.PayloadID);
 
-            if Index < 0 then begin
-                // Not in list so add it
-                lstPayloadIDs.Items.Add(Position.PayloadID);
-                lstPositions.Items.Add(PositionString);
-
-                AddPayload(Position);
-
-                lslLog.ItemIndex := lslLog.Items.Add('Added ' + Position.PayloadID);
-            end else begin
-                if lstPositions.Items[Index] <> PositionString then begin
-                    lstPositions.Items[Index] := PositionString;
+                if Index < 0 then begin
+                    // Not in list so add it
+                    lstPayloadIDs.Items.Add(Position.PayloadID);
+                    lstPositions.Items.Add(PositionString);
 
                     AddPayload(Position);
-                    // Memo1.Lines.Add('Changed ' + Position.PayloadID);
+
+                    lslLog.ItemIndex := lslLog.Items.Add('Added ' + Position.PayloadID);
+                end else begin
+                    if lstPositions.Items[Index] <> PositionString then begin
+                        lstPositions.Items[Index] := PositionString;
+
+                        AddPayload(Position);
+                        // Memo1.Lines.Add('Changed ' + Position.PayloadID);
+                    end;
                 end;
+
+                DataModule1.UpdateSource(ID, Position.PayloadID);
             end;
 
-            DataModule1.UpdateSource(ID, Position.PayloadID);
+            // Update indicator
+            Indicator.Appearance.Fill.Color := clGreen;
+
         end;
-
-        // Update indicator
-        Indicator.Appearance.Fill.Color := clGreen;
-
     end;
 end;
 
@@ -293,5 +306,133 @@ begin
         end;
     end;
 end;
+
+procedure TfrmMain.LoadPayloadMasks;
+begin
+    with PayloadMasks, DataModule1.tblWhiteList do begin
+        Count := 0;
+        First;
+        while not EOF do begin
+            if FieldByName('Enabled').AsBoolean then begin
+                Inc(Count);
+                Masks[Count].HAB := FieldByName('HAB').AsBoolean;
+                Masks[Count].Sonde := FieldByName('Sonde').AsBoolean;
+                Masks[Count].Local := FieldByName('Local').AsBoolean;
+                Masks[Count].Mask := FieldByName('Mask').AsString;
+                Masks[Count].Distance := FieldByName('Distance').AsFloat;
+            end;
+            Next;
+        end;
+    end;
+end;
+
+function WildComp(const mask: String; const target: String): Boolean;
+
+    // '*' matches greedy & ungreedy
+    // simple recursive descent parser - not fast but easy to understand
+    function WComp(const maskI: Integer; const targetI: Integer): Boolean;
+    begin
+
+        if maskI > Length(mask) then begin
+            Result := targetI = Length(target) + 1;
+            Exit;
+        end;
+        if targetI > Length(target) then begin
+            // unread chars in filter or would have read '#0'
+            Result := False;
+            Exit;
+        end;
+
+        case mask[maskI] of
+            '*':
+                // '*' doesnt match '.'
+                if target[targetI] <> '.' then
+                    // try with and without ending match - but always matches at least one char
+                    Result := WComp(succ(maskI), Succ(targetI)) or WComp(maskI, Succ(targetI))
+                else
+                    Result := False;
+            '?':
+                // ? doesnt match '.'
+                if target[targetI] <> '.' then
+                    Result := WComp(succ(maskI), Succ(targetI))
+                else
+                    Result := False;
+
+            else     // includes '.' which only matches itself
+                if mask[maskI] = target[targetI] then
+                    Result := WComp(succ(maskI), Succ(targetI))
+                else
+                    Result := False;
+        end;// case
+
+    end;
+
+begin
+    WildComp := WComp(1, 1);
+end;
+
+function PassFilter(PayloadID, Mask: String): Boolean;
+begin
+    if Mask = '' then begin
+        Result := True;
+    end else if Copy(Mask, 1, 1) = '!' then begin
+        Result := not WildComp(Copy(Mask, 2, Length(Mask)), PayloadID);
+    end else begin
+        Result := WildComp(Mask, PayloadID);
+    end;
+end;
+
+function TfrmMain.PayloadInWhiteList(Position: THABPosition): Boolean;
+var
+    i: Integer;
+    OK: Boolean;
+begin
+    with PayloadMasks do begin
+        for i := 1 to Count do begin
+            with Masks[i] do begin
+                // Locally received
+                OK := True;
+
+                if Local then begin
+                    OK := Position.ReceivedLocally;
+                end;
+
+                // Distance
+                if OK then begin
+                    if Distance > 1 then begin
+                        OK := Position.Distance < Distance;
+                    end;
+
+                    // Balloon type
+                    if OK then begin
+                        if HAB and Sonde then begin
+                            OK := True;
+                        end else if HAB and not Sonde then begin
+                            OK := PassFilter(Position.PayloadID, '!RS_*');
+                        end else if Sonde and not HAB then begin
+                            OK := PassFilter(Position.PayloadID, 'RS_*');
+                        end else begin
+                            OK := False;
+                        end;
+
+                        // Mask
+                        if OK then begin
+                            OK := PassFilter(Position.PayloadID, Mask);
+                        end;
+
+                        if OK then begin
+                            Result := True;
+                            Exit;
+                        end;
+                    end;
+                end;
+            end;
+            Next;
+        end;
+    end;
+
+    Result := False;
+end;
+
 
 end.

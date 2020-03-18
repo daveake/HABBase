@@ -9,7 +9,7 @@ uses
   FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, FireDAC.VCLUI.Wait,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Data.DB,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Stan.StorageJSON,
-  VCL.Forms;
+  VCL.Forms, FireDAC.Stan.StorageBin;
 
 type
   TDataModule1 = class(TDataModule)
@@ -18,6 +18,8 @@ type
     tblSettings: TFDMemTable;
     tblSources: TFDMemTable;
     srcSources: TDataSource;
+    srcWhiteList: TDataSource;
+    tblWhiteList: TFDMemTable;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
