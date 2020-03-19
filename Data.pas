@@ -20,6 +20,18 @@ type
     srcSources: TDataSource;
     srcWhiteList: TDataSource;
     tblWhiteList: TFDMemTable;
+    tblAllPayloads: TFDMemTable;
+    srcAllPayloads: TDataSource;
+    srcLivePayloads: TDataSource;
+    tblLivePayloads: TFDMemTable;
+    tblLivePayloadsPayloadID: TStringField;
+    tblLivePayloadsCounter: TIntegerField;
+    tblLivePayloadsTimestamp: TDateTimeField;
+    tblLivePayloadsLatitude: TFloatField;
+    tblLivePayloadsLongitude: TFloatField;
+    tblLivePayloadsAltitude: TFloatField;
+    tblLivePayloadsDistance: TFloatField;
+    tblLivePayloadsReceivedLocally: TBooleanField;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

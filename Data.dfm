@@ -32,8 +32,8 @@ object DataModule1: TDataModule1
     UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
-    Left = 56
-    Top = 168
+    Left = 312
+    Top = 64
   end
   object tblSources: TFDMemTable
     Active = True
@@ -98,17 +98,17 @@ object DataModule1: TDataModule1
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 144
+    Left = 88
     Top = 168
   end
   object srcSources: TDataSource
     DataSet = tblSources
-    Left = 144
+    Left = 88
     Top = 224
   end
   object srcWhiteList: TDataSource
     DataSet = tblWhiteList
-    Left = 224
+    Left = 168
     Top = 224
   end
   object tblWhiteList: TFDMemTable
@@ -149,10 +149,10 @@ object DataModule1: TDataModule1
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 224
+    Left = 168
     Top = 168
     Content = {
-      414442530F00030F8F020000FF00010001FF02FF03040018000000740062006C
+      414442530F00F53B8F020000FF00010001FF02FF03040018000000740062006C
       00570068006900740065004C0069007300740005000A0000005400610062006C
       006500060000000000070000080032000000090000FF0AFF0B04000E00000045
       006E00610062006C006500640005000E00000045006E00610062006C00650064
@@ -171,8 +171,8 @@ object DataModule1: TDataModule1
       050010000000440069007300740061006E00630065000C00070000000E001900
       0F00011000011100011200011300011400011500100000004400690073007400
       61006E0063006500FEFEFF1AFEFF1BFEFF1CFF1D1E000000000020001F00FF21
-      0000010001000100020001000300000005000000000000407F40FEFEFEFEFEFF
-      22FEFF23240005000000FF25FEFEFE0E004D0061006E0061006700650072001E
+      0000010001000100020001000300000005000000000000000000FEFEFEFEFEFF
+      22FEFF23240006000000FF25FEFEFE0E004D0061006E0061006700650072001E
       0055007000640061007400650073005200650067006900730074007200790012
       005400610062006C0065004C006900730074000A005400610062006C00650008
       004E0061006D006500140053006F0075007200630065004E0061006D0065000A
@@ -197,5 +197,138 @@ object DataModule1: TDataModule1
       006100740069006F006E004C006900730074001C005500700064006100740065
       0073004A006F00750072006E0061006C001200530061007600650050006F0069
       006E0074000E004300680061006E00670065007300}
+  end
+  object tblAllPayloads: TFDMemTable
+    Active = True
+    FieldDefs = <
+      item
+        Name = 'PayloadID'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'Counter'
+        DataType = ftInteger
+      end
+      item
+        Name = 'Timestamp'
+        DataType = ftDateTime
+      end
+      item
+        Name = 'Latitude'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Longitude'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Altitude'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Distance'
+        DataType = ftFloat
+      end
+      item
+        Name = 'ReceivedLocally'
+        DataType = ftBoolean
+      end>
+    IndexDefs = <>
+    IndexFieldNames = 'PayloadID'
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    StoreDefs = True
+    Left = 232
+    Top = 168
+  end
+  object srcAllPayloads: TDataSource
+    DataSet = tblAllPayloads
+    Left = 232
+    Top = 224
+  end
+  object srcLivePayloads: TDataSource
+    DataSet = tblLivePayloads
+    Left = 312
+    Top = 224
+  end
+  object tblLivePayloads: TFDMemTable
+    Active = True
+    FieldDefs = <
+      item
+        Name = 'PayloadID'
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'Counter'
+        DataType = ftInteger
+      end
+      item
+        Name = 'Timestamp'
+        DataType = ftDateTime
+      end
+      item
+        Name = 'Latitude'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Longitude'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Altitude'
+        DataType = ftFloat
+      end
+      item
+        Name = 'Distance'
+        DataType = ftFloat
+      end
+      item
+        Name = 'ReceivedLocally'
+        DataType = ftBoolean
+      end>
+    IndexDefs = <>
+    IndexFieldNames = 'PayloadID'
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    StoreDefs = True
+    Left = 312
+    Top = 168
+    object tblLivePayloadsPayloadID: TStringField
+      FieldName = 'PayloadID'
+    end
+    object tblLivePayloadsCounter: TIntegerField
+      FieldName = 'Counter'
+    end
+    object tblLivePayloadsTimestamp: TDateTimeField
+      FieldName = 'Timestamp'
+      DisplayFormat = 'hh:nn:ss'
+    end
+    object tblLivePayloadsLatitude: TFloatField
+      FieldName = 'Latitude'
+    end
+    object tblLivePayloadsLongitude: TFloatField
+      FieldName = 'Longitude'
+    end
+    object tblLivePayloadsAltitude: TFloatField
+      FieldName = 'Altitude'
+    end
+    object tblLivePayloadsDistance: TFloatField
+      FieldName = 'Distance'
+    end
+    object tblLivePayloadsReceivedLocally: TBooleanField
+      FieldName = 'ReceivedLocally'
+    end
   end
 end

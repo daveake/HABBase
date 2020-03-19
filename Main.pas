@@ -58,18 +58,17 @@ type
     pnlMain: TPanel;
     AdvSplitter4: TAdvSplitter;
     AdvSplitter5: TAdvSplitter;
-    Panel6: TPanel;
-    pnlPayloads: TPanel;
-    Panel8: TPanel;
+    pnlMiddle: TPanel;
+    pnlTop: TPanel;
+    pnlBottom: TPanel;
     pnlStatus: TAdvPanel;
     pnlHidden: TPanel;
-    lstPositions: TListBox;
-    lstPayloadIDs: TListBox;
-    lslLog: TListBox;
+    lstLog: TListBox;
     DBAdvGrid1: TDBAdvGrid;
-    pnlLivePayloads: TPanel;
+    pnlPayloads: TPanel;
     AdvSplitter6: TAdvSplitter;
     DBAdvGrid2: TDBAdvGrid;
+    DBAdvGrid3: TDBAdvGrid;
     procedure FormActivate(Sender: TObject);
   private
     { Private declarations }
@@ -78,7 +77,9 @@ type
     procedure LoadData;
     procedure LoadForms;
     procedure LoadSources;
-    procedure AddPayload(Position: THABPosition);
+    function AddPayloadToFullTable(Position: THABPosition): Boolean;
+    function AddPayloadToLiveTable(Position: THABPosition): Boolean;
+    function AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
     procedure LoadSource(SourceIndex, pID: Integer; pCode: String; pSourceType: TSourceType);
     procedure LoadPayloadMasks;
     function PayloadInWhiteList(Position: THABPosition): Boolean;
@@ -136,14 +137,23 @@ begin
     end;
 end;
 
-procedure TfrmMain.AddPayload(Position: THABPosition);
+function TfrmMain.AddPayloadToFullTable(Position: THABPosition): Boolean;
+begin
+    Result := AddPayloadToTable(Position, DataModule1.tblAllPayloads);
+end;
+
+function TfrmMain.AddPayloadToLiveTable(Position: THABPosition): Boolean;
+begin
+    Result := AddPayloadToTable(Position, DataModule1.tblLivePayloads);
+end;
+
+function TfrmMain.AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
 var
     Bookmark: TBookmark;
 begin
+    Result := False;
 
-
-(*
-    with DataModule1.tblPayloads do begin
+    with Table do begin
         Bookmark := GetBookmark;
         DisableControls;
         if FindKey([Position.PayloadID]) then begin
@@ -151,15 +161,18 @@ begin
         end else begin
             Append;
             FieldByName('PayloadID').AsString := Position.PayloadID;
+            Result := True;
         end;
 
         FieldByName('PayloadID').AsString := Position.PayloadID;
-        FieldByName('DocID').AsString := Position.PayloadDocID;
-        FieldByName('TimeStamp').AsString := FormatDateTime('hh:nn:ss', Position.TimeStamp);
+        // FieldByName('DocID').AsString := Position.PayloadDocID;
+        FieldByName('Counter').AsInteger := Position.Counter;
+        FieldByName('TimeStamp').AsDateTime := Position.TimeStamp;
         FieldByName('Latitude').AsFloat := Position.Latitude;
         FieldByName('Longitude').AsFloat := Position.Longitude;
         FieldByName('Altitude').AsFloat := Position.Altitude;
         FieldByName('Distance').AsFloat := Position.Distance;
+        FieldByName('ReceivedLocally').AsBoolean := False;
 
         Post;
 
@@ -167,10 +180,8 @@ begin
 
         EnableControls;
     end;
-*)
-
-//    frmPayloads.UpdateTables;
 end;
+
 
 procedure TfrmMain.LoadSource(SourceIndex, pID: Integer; pCode: String; pSourceType: TSourceType);
 begin
@@ -250,47 +261,30 @@ var
     Index: Integer;
     PositionString: String;
 begin
-    if PayloadInWhiteList(Position) then begin
-        with HABSources[SourceIndex] do begin
-            LatestPosition := Position;
-            if Position.PayloadID <> '' then begin
-                if Position.PayloadDocID = '' then begin
-                    PositionString := Position.PayloadID + ' ** NO PAYLOAD DOC **';
-                end else begin
-                    PositionString := Position.PayloadID + ' ' + Position.PayloadDocID + ':' +
-                                      FormatDateTime('hh:nn:ss', Position.TimeStamp) + ', ' +
-                                      FormatFloat('0.00000', Position.Latitude) + ', ' +
-                                      FormatFloat('0.00000', Position.Longitude) + ', ' +
-                                      FormatFloat('0', Position.Altitude) + ', ' +
-                                      FormatFloat('0', Position.Distance) + 'km';
-                end;
+    HABSources[SourceIndex].LatestPosition := Position;
 
-                Index := lstPayloadIDs.Items.IndexOf(Position.PayloadID);
+    if Position.PayloadID <> '' then begin
+//            if Position.PayloadDocID = '' then begin
+//                PositionString := Position.PayloadID + ' ** NO PAYLOAD DOC **';
+//            end else begin
+//                PositionString := Position.PayloadID + ' ' + Position.PayloadDocID + ':' +
+//                                  FormatDateTime('hh:nn:ss', Position.TimeStamp) + ', ' +
+//                                  FormatFloat('0.00000', Position.Latitude) + ', ' +
+//                                  FormatFloat('0.00000', Position.Longitude) + ', ' +
+//                                  FormatFloat('0', Position.Altitude) + ', ' +
+//                                  FormatFloat('0', Position.Distance) + 'km';
+//            end;
 
-                if Index < 0 then begin
-                    // Not in list so add it
-                    lstPayloadIDs.Items.Add(Position.PayloadID);
-                    lstPositions.Items.Add(PositionString);
+        AddPayloadToFullTable(Position);
 
-                    AddPayload(Position);
-
-                    lslLog.ItemIndex := lslLog.Items.Add('Added ' + Position.PayloadID);
-                end else begin
-                    if lstPositions.Items[Index] <> PositionString then begin
-                        lstPositions.Items[Index] := PositionString;
-
-                        AddPayload(Position);
-                        // Memo1.Lines.Add('Changed ' + Position.PayloadID);
-                    end;
-                end;
-
-                DataModule1.UpdateSource(ID, Position.PayloadID);
+        if PayloadInWhiteList(Position) then begin
+            if AddPayloadToLiveTable(Position) then begin
+                lstLog.ItemIndex := lstLog.Items.Add('Added ' + Position.PayloadID);
             end;
-
-            // Update indicator
-            Indicator.Appearance.Fill.Color := clGreen;
-
         end;
+
+       // Update indicator
+        HABSources[SourceIndex].Indicator.Appearance.Fill.Color := clGreen;
     end;
 end;
 
