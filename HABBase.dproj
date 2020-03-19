@@ -114,26 +114,6 @@
             <Form>frmBase</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="DataBase.pas">
-            <Form>frmDataBase</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="Masks.pas">
-            <Form>frmMasks</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="DataGrid.pas">
-            <Form>frmDataGrid</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="Sources.pas">
-            <Form>frmSources</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="Payloads.pas">
-            <Form>frmPayloads</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="..\HABRx\HABTypes.pas"/>
         <DCCReference Include="..\HABRx\Miscellaneous.pas"/>
         <DCCReference Include="..\HABRx\SerialSource.pas"/>
@@ -146,6 +126,22 @@
         </DCCReference>
         <DCCReference Include="Logtail.pas">
             <Form>frmLogtail</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Modal.pas">
+            <Form>frmModal</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Normal.pas">
+            <Form>frmNormal</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Tool.pas">
+            <Form>frmTool</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ToolLivePayload.pas">
+            <Form>frmLivePayloads</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

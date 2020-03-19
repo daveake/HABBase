@@ -19,10 +19,7 @@ object frmBase: TfrmBase
     Width = 833
     Height = 470
     Align = alClient
+    BevelOuter = bvNone
     TabOrder = 0
-    ExplicitLeft = 72
-    ExplicitTop = 160
-    ExplicitWidth = 185
-    ExplicitHeight = 41
   end
 end

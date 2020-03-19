@@ -1,38 +1,57 @@
-inherited frmDataGrid: TfrmDataGrid
-  Caption = 'DataGrid'
+inherited frmLivePayloads: TfrmLivePayloads
+  Caption = 'Live Payloads Tool Form'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
-    object grdMain: TDBAdvGrid
-      Left = 1
-      Top = 1
-      Width = 831
-      Height = 468
+    inherited Panel1: TPanel
+      inherited lblTitle: TLabel
+        Caption = 'Live Payloads'
+        ExplicitWidth = 76
+      end
+      inherited Button1: TButton
+        ExplicitHeight = 26
+      end
+    end
+    object DBAdvGrid3: TDBAdvGrid
+      Left = 0
+      Top = 24
+      Width = 351
+      Height = 262
       Cursor = crDefault
       Align = alClient
-      ColCount = 2
-      DoubleBuffered = True
+      ColCount = 6
       DrawingStyle = gdsClassic
+      FixedColor = clWhite
       FixedCols = 0
       RowCount = 2
       FixedRows = 1
-      ParentDoubleBuffered = False
       ScrollBars = ssBoth
-      TabOrder = 0
+      TabOrder = 1
+      GridLineColor = 13948116
+      GridFixedLineColor = 11250603
       HoverRowCells = [hcNormal, hcSelected]
       ActiveCellFont.Charset = DEFAULT_CHARSET
-      ActiveCellFont.Color = clWindowText
+      ActiveCellFont.Color = 4474440
       ActiveCellFont.Height = -11
       ActiveCellFont.Name = 'Tahoma'
       ActiveCellFont.Style = [fsBold]
-      ActiveCellColor = 9758459
-      ActiveCellColorTo = 1414638
-      ControlLook.FixedGradientFrom = 16572875
-      ControlLook.FixedGradientTo = 14722429
+      ActiveCellColor = 11565130
+      ActiveCellColorTo = 11565130
+      BorderColor = 11250603
+      ControlLook.FixedGradientFrom = clWhite
+      ControlLook.FixedGradientTo = clWhite
+      ControlLook.FixedGradientMirrorFrom = clWhite
+      ControlLook.FixedGradientMirrorTo = clWhite
       ControlLook.FixedGradientHoverFrom = clGray
       ControlLook.FixedGradientHoverTo = clWhite
-      ControlLook.FixedGradientDownFrom = clGray
-      ControlLook.FixedGradientDownTo = clSilver
+      ControlLook.FixedGradientHoverMirrorFrom = clWhite
+      ControlLook.FixedGradientHoverMirrorTo = clWhite
+      ControlLook.FixedGradientHoverBorder = 11645361
+      ControlLook.FixedGradientDownFrom = clWhite
+      ControlLook.FixedGradientDownTo = clWhite
+      ControlLook.FixedGradientDownMirrorFrom = clWhite
+      ControlLook.FixedGradientDownMirrorTo = clWhite
+      ControlLook.FixedGradientDownBorder = 11250603
       ControlLook.DropDownHeader.Font.Charset = DEFAULT_CHARSET
       ControlLook.DropDownHeader.Font.Color = clWindowText
       ControlLook.DropDownHeader.Font.Height = -11
@@ -66,10 +85,10 @@ inherited frmDataGrid: TfrmDataGrid
         'Larger than'
         'Smaller than'
         'Clear')
-      FixedColWidth = 60
+      FixedColWidth = 61
       FixedRowHeight = 22
       FixedFont.Charset = DEFAULT_CHARSET
-      FixedFont.Color = clBlack
+      FixedFont.Color = 3881787
       FixedFont.Height = -11
       FixedFont.Name = 'Tahoma'
       FixedFont.Style = [fsBold]
@@ -78,6 +97,7 @@ inherited frmDataGrid: TfrmDataGrid
       HoverButtons.Position = hbLeftFromColumnLeft
       HTMLSettings.ImageFolder = 'images'
       HTMLSettings.ImageBaseName = 'img'
+      Look = glCustom
       PrintSettings.DateFormat = 'dd/mm/yyyy'
       PrintSettings.Font.Charset = DEFAULT_CHARSET
       PrintSettings.Font.Color = clWindowText
@@ -100,8 +120,7 @@ inherited frmDataGrid: TfrmDataGrid
       PrintSettings.FooterFont.Name = 'Tahoma'
       PrintSettings.FooterFont.Style = []
       PrintSettings.PageNumSep = '/'
-      SearchFooter.Color = 16572875
-      SearchFooter.ColorTo = clNone
+      SearchFooter.ColorTo = clWhite
       SearchFooter.FindNextCaption = 'Find &next'
       SearchFooter.FindPrevCaption = 'Find &previous'
       SearchFooter.Font.Charset = DEFAULT_CHARSET
@@ -116,11 +135,14 @@ inherited frmDataGrid: TfrmDataGrid
       SearchFooter.HintHighlight = 'Highlight occurrences'
       SearchFooter.MatchCaseCaption = 'Match case'
       SearchFooter.ResultFormat = '(%d of %d)'
-      SelectionColor = 9758459
-      SelectionColorTo = 1414638
+      SelectionColor = 13744549
       SortSettings.DefaultFormat = ssAutomatic
-      Version = '2.5.0.5'
-      UIStyle = tsOffice2003Blue
+      SortSettings.HeaderColor = clWhite
+      SortSettings.HeaderColorTo = clWhite
+      SortSettings.HeaderMirrorColor = clWhite
+      SortSettings.HeaderMirrorColorTo = clWhite
+      UIStyle = tsCustom
+      Version = '2.5.0.6'
       AutoCreateColumns = True
       AutoRemoveColumns = True
       Columns = <
@@ -131,13 +153,15 @@ inherited frmDataGrid: TfrmDataGrid
           CheckFalse = 'N'
           CheckTrue = 'Y'
           Color = clWindow
+          EditLength = 20
+          FieldName = 'PayloadID'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
           HeaderFont.Charset = DEFAULT_CHARSET
-          HeaderFont.Color = clWindowText
+          HeaderFont.Color = 3881787
           HeaderFont.Height = -11
           HeaderFont.Name = 'Tahoma'
           HeaderFont.Style = []
@@ -147,7 +171,7 @@ inherited frmDataGrid: TfrmDataGrid
           PrintFont.Height = -11
           PrintFont.Name = 'Tahoma'
           PrintFont.Style = []
-          Width = 60
+          Width = 61
         end
         item
           Borders = []
@@ -156,13 +180,122 @@ inherited frmDataGrid: TfrmDataGrid
           CheckFalse = 'N'
           CheckTrue = 'Y'
           Color = clWindow
+          FieldName = 'Timestamp'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
           HeaderFont.Charset = DEFAULT_CHARSET
-          HeaderFont.Color = clWindowText
+          HeaderFont.Color = 3881787
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'Tahoma'
+          HeaderFont.Style = []
+          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
+          PrintFont.Charset = DEFAULT_CHARSET
+          PrintFont.Color = clWindowText
+          PrintFont.Height = -11
+          PrintFont.Name = 'Tahoma'
+          PrintFont.Style = []
+          Width = 57
+        end
+        item
+          Alignment = taRightJustify
+          Borders = []
+          BorderPen.Color = clSilver
+          ButtonHeight = 18
+          CheckFalse = 'N'
+          CheckTrue = 'Y'
+          Color = clWindow
+          FieldName = 'Latitude'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = 3881787
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'Tahoma'
+          HeaderFont.Style = []
+          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
+          PrintFont.Charset = DEFAULT_CHARSET
+          PrintFont.Color = clWindowText
+          PrintFont.Height = -11
+          PrintFont.Name = 'Tahoma'
+          PrintFont.Style = []
+          Width = 49
+        end
+        item
+          Alignment = taRightJustify
+          Borders = []
+          BorderPen.Color = clSilver
+          ButtonHeight = 18
+          CheckFalse = 'N'
+          CheckTrue = 'Y'
+          Color = clWindow
+          FieldName = 'Longitude'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = 3881787
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'Tahoma'
+          HeaderFont.Style = []
+          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
+          PrintFont.Charset = DEFAULT_CHARSET
+          PrintFont.Color = clWindowText
+          PrintFont.Height = -11
+          PrintFont.Name = 'Tahoma'
+          PrintFont.Style = []
+          Width = 52
+        end
+        item
+          Alignment = taRightJustify
+          Borders = []
+          BorderPen.Color = clSilver
+          ButtonHeight = 18
+          CheckFalse = 'N'
+          CheckTrue = 'Y'
+          Color = clWindow
+          FieldName = 'Altitude'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = 3881787
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'Tahoma'
+          HeaderFont.Style = []
+          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
+          PrintFont.Charset = DEFAULT_CHARSET
+          PrintFont.Color = clWindowText
+          PrintFont.Height = -11
+          PrintFont.Name = 'Tahoma'
+          PrintFont.Style = []
+          Width = 64
+        end
+        item
+          Alignment = taRightJustify
+          Borders = []
+          BorderPen.Color = clSilver
+          ButtonHeight = 18
+          CheckFalse = 'N'
+          CheckTrue = 'Y'
+          Color = clWindow
+          FieldName = 'Distance'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = 3881787
           HeaderFont.Height = -11
           HeaderFont.Name = 'Tahoma'
           HeaderFont.Style = []
@@ -174,7 +307,7 @@ inherited frmDataGrid: TfrmDataGrid
           PrintFont.Style = []
           Width = 64
         end>
-      DataSource = srcMain
+      DataSource = DataModule1.srcLivePayloads
       InvalidPicture.Data = {
         055449636F6E0000010001002020200000000000A81000001600000028000000
         2000000040000000010020000000000000100000000000000000000000000000
@@ -312,8 +445,15 @@ inherited frmDataGrid: TfrmDataGrid
         80000001C0000003C0000003E0000007F000000FF800001FFC00003FFF0000FF
         FFC003FF}
       ShowUnicode = False
+      ExplicitTop = 28
+      ExplicitWidth = 833
+      ExplicitHeight = 442
       ColWidths = (
-        60
+        61
+        57
+        49
+        52
+        64
         64)
     end
   end

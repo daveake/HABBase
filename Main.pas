@@ -68,13 +68,13 @@ type
     pnlPayloads: TPanel;
     AdvSplitter6: TAdvSplitter;
     DBAdvGrid2: TDBAdvGrid;
-    DBAdvGrid3: TDBAdvGrid;
     procedure FormActivate(Sender: TObject);
   private
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
     PayloadMasks: TPayloadMasks;
     procedure LoadData;
+    procedure LoadTools;
     procedure LoadForms;
     procedure LoadSources;
     function AddPayloadToFullTable(Position: THABPosition): Boolean;
@@ -94,7 +94,12 @@ var
 
 implementation
 
-uses Data, Sources, Payloads, Logtail;
+uses Data,
+     // Tools
+     ToolLivePayload,
+     // Main Forms
+     // Sources
+     Logtail;
 
 {$R *.dfm}
 
@@ -106,6 +111,7 @@ begin
         FirstTime := False;
         LoadData;
         LoadPayloadMasks;
+        LoadTools;
         LoadForms;
         LoadSources;
     end;
@@ -116,10 +122,14 @@ begin
     DataModule1 := TDataModule1.Create(nil);
 end;
 
+procedure TfrmMain.LoadTools;
+begin
+    frmLivePayloads := TfrmLivePayloads.Create(nil);
+    frmLivePayloads.pnlMain.Parent := pnlPayloads;
+end;
+
 procedure TfrmMain.LoadForms;
 begin
-//    frmSources.pnlMain.Parent := pnlSources;
-//    frmPayloads.pnlMain.Parent := pnlPayloads;
 end;
 
 procedure TfrmMain.LoadSources;
