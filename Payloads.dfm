@@ -1,24 +1,20 @@
-inherited frmToolLivePayloads: TfrmToolLivePayloads
-  Caption = 'Live Payloads Tool Form'
+inherited frmPayloads: TfrmPayloads
+  Caption = 'Payloads'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
     inherited Panel1: TPanel
       inherited lblTitle: TLabel
-        Width = 303
-        Caption = 'Live Payloads'
-        ExplicitWidth = 76
-      end
-      inherited Button1: TButton
-        ExplicitLeft = 322
-        ExplicitHeight = 19
+        Width = 816
+        Caption = 'Payloads'
+        ExplicitWidth = 50
       end
     end
     object DBAdvGrid3: TDBAdvGrid
       Left = 0
       Top = 24
-      Width = 351
-      Height = 262
+      Width = 833
+      Height = 446
       Cursor = crDefault
       Align = alClient
       ColCount = 6

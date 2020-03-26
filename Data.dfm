@@ -152,7 +152,7 @@ object DataModule1: TDataModule1
     Left = 168
     Top = 168
     Content = {
-      414442530F00F53B8F020000FF00010001FF02FF03040018000000740062006C
+      414442530F0014308F020000FF00010001FF02FF03040018000000740062006C
       00570068006900740065004C0069007300740005000A0000005400610062006C
       006500060000000000070000080032000000090000FF0AFF0B04000E00000045
       006E00610062006C006500640005000E00000045006E00610062006C00650064
@@ -317,15 +317,19 @@ object DataModule1: TDataModule1
     end
     object tblLivePayloadsLatitude: TFloatField
       FieldName = 'Latitude'
+      DisplayFormat = '0.00000'
     end
     object tblLivePayloadsLongitude: TFloatField
       FieldName = 'Longitude'
+      DisplayFormat = '0.00000'
     end
     object tblLivePayloadsAltitude: TFloatField
       FieldName = 'Altitude'
+      DisplayFormat = '0 m'
     end
     object tblLivePayloadsDistance: TFloatField
       FieldName = 'Distance'
+      DisplayFormat = '0 km'
     end
     object tblLivePayloadsReceivedLocally: TBooleanField
       FieldName = 'ReceivedLocally'

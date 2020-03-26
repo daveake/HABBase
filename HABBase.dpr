@@ -16,7 +16,13 @@ uses
   Modal in 'Modal.pas' {frmModal},
   Normal in 'Normal.pas' {frmNormal},
   Tool in 'Tool.pas' {frmTool},
-  ToolLivePayload in 'ToolLivePayload.pas' {frmLivePayloads};
+  ToolLivePayload in 'ToolLivePayload.pas' {frmToolLivePayloads},
+  ToolWhiteList in 'ToolWhiteList.pas' {frmToolWhiteList},
+  ToolLog in 'ToolLog.pas' {frmToolLog},
+  ToolSources in 'ToolSources.pas' {frmToolSources},
+  WhiteList in 'WhiteList.pas' {frmWhiteList},
+  Map in 'Map.pas' {frmMap},
+  Payloads in 'Payloads.pas' {frmPayloads};
 
 {$R *.res}
 
@@ -24,6 +30,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmLivePayloads, frmLivePayloads);
   Application.Run;
 end.

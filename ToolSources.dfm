@@ -1,27 +1,27 @@
-inherited frmToolLivePayloads: TfrmToolLivePayloads
-  Caption = 'Live Payloads Tool Form'
+inherited frmToolSources: TfrmToolSources
+  Caption = 'Sources'
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
     inherited Panel1: TPanel
       inherited lblTitle: TLabel
         Width = 303
-        Caption = 'Live Payloads'
-        ExplicitWidth = 76
+        Caption = 'Sources'
+        ExplicitWidth = 46
       end
       inherited Button1: TButton
         ExplicitLeft = 322
         ExplicitHeight = 19
       end
     end
-    object DBAdvGrid3: TDBAdvGrid
+    object DBAdvGrid1: TDBAdvGrid
       Left = 0
       Top = 24
       Width = 351
       Height = 262
       Cursor = crDefault
       Align = alClient
-      ColCount = 6
+      ColCount = 5
       DrawingStyle = gdsClassic
       FixedColor = clWhite
       FixedCols = 0
@@ -87,7 +87,7 @@ inherited frmToolLivePayloads: TfrmToolLivePayloads
         'Larger than'
         'Smaller than'
         'Clear')
-      FixedColWidth = 61
+      FixedColWidth = 20
       FixedRowHeight = 22
       FixedFont.Charset = DEFAULT_CHARSET
       FixedFont.Color = 3881787
@@ -149,59 +149,6 @@ inherited frmToolLivePayloads: TfrmToolLivePayloads
       AutoRemoveColumns = True
       Columns = <
         item
-          Borders = []
-          BorderPen.Color = clSilver
-          ButtonHeight = 18
-          CheckFalse = 'N'
-          CheckTrue = 'Y'
-          Color = clWindow
-          EditLength = 20
-          FieldName = 'PayloadID'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          HeaderFont.Charset = DEFAULT_CHARSET
-          HeaderFont.Color = 3881787
-          HeaderFont.Height = -11
-          HeaderFont.Name = 'Tahoma'
-          HeaderFont.Style = []
-          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
-          PrintFont.Charset = DEFAULT_CHARSET
-          PrintFont.Color = clWindowText
-          PrintFont.Height = -11
-          PrintFont.Name = 'Tahoma'
-          PrintFont.Style = []
-          Width = 61
-        end
-        item
-          Borders = []
-          BorderPen.Color = clSilver
-          ButtonHeight = 18
-          CheckFalse = 'N'
-          CheckTrue = 'Y'
-          Color = clWindow
-          FieldName = 'Timestamp'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          HeaderFont.Charset = DEFAULT_CHARSET
-          HeaderFont.Color = 3881787
-          HeaderFont.Height = -11
-          HeaderFont.Name = 'Tahoma'
-          HeaderFont.Style = []
-          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
-          PrintFont.Charset = DEFAULT_CHARSET
-          PrintFont.Color = clWindowText
-          PrintFont.Height = -11
-          PrintFont.Name = 'Tahoma'
-          PrintFont.Style = []
-          Width = 57
-        end
-        item
           Alignment = taRightJustify
           Borders = []
           BorderPen.Color = clSilver
@@ -209,7 +156,7 @@ inherited frmToolLivePayloads: TfrmToolLivePayloads
           CheckFalse = 'N'
           CheckTrue = 'Y'
           Color = clWindow
-          FieldName = 'Latitude'
+          FieldName = 'ID'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -226,44 +173,17 @@ inherited frmToolLivePayloads: TfrmToolLivePayloads
           PrintFont.Height = -11
           PrintFont.Name = 'Tahoma'
           PrintFont.Style = []
-          Width = 49
+          Width = 20
         end
         item
-          Alignment = taRightJustify
           Borders = []
           BorderPen.Color = clSilver
           ButtonHeight = 18
           CheckFalse = 'N'
           CheckTrue = 'Y'
           Color = clWindow
-          FieldName = 'Longitude'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          HeaderFont.Charset = DEFAULT_CHARSET
-          HeaderFont.Color = 3881787
-          HeaderFont.Height = -11
-          HeaderFont.Name = 'Tahoma'
-          HeaderFont.Style = []
-          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
-          PrintFont.Charset = DEFAULT_CHARSET
-          PrintFont.Color = clWindowText
-          PrintFont.Height = -11
-          PrintFont.Name = 'Tahoma'
-          PrintFont.Style = []
-          Width = 52
-        end
-        item
-          Alignment = taRightJustify
-          Borders = []
-          BorderPen.Color = clSilver
-          ButtonHeight = 18
-          CheckFalse = 'N'
-          CheckTrue = 'Y'
-          Color = clWindow
-          FieldName = 'Altitude'
+          EditLength = 3
+          FieldName = 'Code'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -283,14 +203,67 @@ inherited frmToolLivePayloads: TfrmToolLivePayloads
           Width = 64
         end
         item
-          Alignment = taRightJustify
           Borders = []
           BorderPen.Color = clSilver
           ButtonHeight = 18
           CheckFalse = 'N'
           CheckTrue = 'Y'
           Color = clWindow
-          FieldName = 'Distance'
+          EditLength = 20
+          FieldName = 'Name'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = 3881787
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'Tahoma'
+          HeaderFont.Style = []
+          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
+          PrintFont.Charset = DEFAULT_CHARSET
+          PrintFont.Color = clWindowText
+          PrintFont.Height = -11
+          PrintFont.Name = 'Tahoma'
+          PrintFont.Style = []
+          Width = 64
+        end
+        item
+          Borders = []
+          BorderPen.Color = clSilver
+          ButtonHeight = 18
+          CheckFalse = 'N'
+          CheckTrue = 'Y'
+          Color = clWindow
+          FieldName = 'LastPacket'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = 3881787
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'Tahoma'
+          HeaderFont.Style = []
+          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
+          PrintFont.Charset = DEFAULT_CHARSET
+          PrintFont.Color = clWindowText
+          PrintFont.Height = -11
+          PrintFont.Name = 'Tahoma'
+          PrintFont.Style = []
+          Width = 64
+        end
+        item
+          Borders = []
+          BorderPen.Color = clSilver
+          ButtonHeight = 18
+          CheckFalse = 'N'
+          CheckTrue = 'Y'
+          Color = clWindow
+          EditLength = 20
+          FieldName = 'Payload'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -309,7 +282,7 @@ inherited frmToolLivePayloads: TfrmToolLivePayloads
           PrintFont.Style = []
           Width = 64
         end>
-      DataSource = DataModule1.srcLivePayloads
+      DataSource = DataModule1.srcSources
       InvalidPicture.Data = {
         055449636F6E0000010001002020200000000000A81000001600000028000000
         2000000040000000010020000000000000100000000000000000000000000000
@@ -448,10 +421,9 @@ inherited frmToolLivePayloads: TfrmToolLivePayloads
         FFC003FF}
       ShowUnicode = False
       ColWidths = (
-        61
-        57
-        49
-        52
+        20
+        64
+        64
         64
         64)
     end

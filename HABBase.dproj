@@ -86,6 +86,7 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_WriteableConstants>true</DCC_WriteableConstants>
+        <Debugger_RunParams>d:\dropbox\dev\hab\apps\HABBase</Debugger_RunParams>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -141,7 +142,31 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="ToolLivePayload.pas">
-            <Form>frmLivePayloads</Form>
+            <Form>frmToolLivePayloads</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ToolWhiteList.pas">
+            <Form>frmToolWhiteList</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ToolLog.pas">
+            <Form>frmToolLog</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ToolSources.pas">
+            <Form>frmToolSources</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="WhiteList.pas">
+            <Form>frmWhiteList</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Map.pas">
+            <Form>frmMap</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Payloads.pas">
+            <Form>frmPayloads</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

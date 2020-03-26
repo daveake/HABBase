@@ -1,14 +1,14 @@
-unit ToolLivePayload;
+unit Payloads;
 
 interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Tool, Vcl.ExtCtrls, Vcl.StdCtrls,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Normal, Vcl.StdCtrls, Vcl.ExtCtrls,
   AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid;
 
 type
-  TfrmToolLivePayloads = class(TfrmTool)
+  TfrmPayloads = class(TfrmNormal)
     DBAdvGrid3: TDBAdvGrid;
   private
     { Private declarations }
@@ -17,7 +17,7 @@ type
   end;
 
 var
-  frmToolLivePayloads: TfrmToolLivePayloads;
+  frmPayloads: TfrmPayloads;
 
 implementation
 

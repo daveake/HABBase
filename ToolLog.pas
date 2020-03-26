@@ -1,20 +1,22 @@
-unit Normal;
+unit ToolLog;
 
 interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Base, Vcl.ExtCtrls, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Tool, Vcl.StdCtrls, Vcl.ExtCtrls;
 
 type
-  TfrmNormal = class(TfrmBase)
-    Panel1: TPanel;
-    lblTitle: TLabel;
+  TfrmToolLog = class(TfrmTool)
+    lstLog: TListBox;
   private
     { Private declarations }
   public
     { Public declarations }
   end;
+
+var
+  frmToolLog: TfrmToolLog;
 
 implementation
 
