@@ -131,7 +131,6 @@ object frmMain: TfrmMain
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 694
     object AdvSplitter4: TAdvSplitter
       Left = 0
       Top = 201
@@ -175,7 +174,6 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitWidth = 694
     end
     object pnlTop: TPanel
       Left = 0
@@ -185,7 +183,6 @@ object frmMain: TfrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitWidth = 694
     end
     object pnlBottom: TPanel
       Left = 0
@@ -195,7 +192,6 @@ object frmMain: TfrmMain
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitWidth = 694
     end
   end
   object pnlStatus: TAdvPanel
@@ -246,7 +242,6 @@ object frmMain: TfrmMain
     StatusBar.ColorTo = 14602191
     StatusBar.GradientDirection = gdVertical
     Text = ''
-    ExplicitWidth = 1039
     FullHeight = 42
     object pnlHidden: TPanel
       Left = 1398
@@ -256,7 +251,6 @@ object frmMain: TfrmMain
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 1039
     end
   end
   object pnlButtons: TAdvPanel
@@ -307,7 +301,6 @@ object frmMain: TfrmMain
     StatusBar.ColorTo = 14602191
     StatusBar.GradientDirection = gdVertical
     Text = ''
-    ExplicitWidth = 1039
     FullHeight = 42
   end
 end

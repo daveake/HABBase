@@ -10,45 +10,13 @@ uses
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, DateUtils, AdvSmoothStatusIndicator, AdvGDIP, AdvPanel, BaseTypes,
-  SourceForm,
   Source, AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid,
   AdvSmoothButton;
 
 type
-    THABSource = record
-        InUse:              Boolean;
-        ID:                 Integer;
-        Enabled:            Boolean;
-        Connected:          Boolean;
-        Description:        String;
-        Code:               String;
-        // SectionName:     String;
-        // Index:           Integer;
-        SourceType:         TSourceType;
-        Form:               TfrmSource;
-        Indicator:          TAdvSmoothStatusIndicator;
-        LatestPosition:     THABPosition;
-    end;
-
     TPayloadMasks = record
         Masks:      Array[1..32] of TPayloadMask;
         Count:      Integer;
-    end;
-
-    TPayload = record
-        InUse:              Boolean;
-        Position:           THABPosition;
-        Button:             TAdvSmoothButton;
-//        PayloadID:      String;
-//        Form:           TfrmPayload;
-//        // Indicator:      TAdvSmoothStatusIndicator;
-//        Position:       THABPosition;
-//        GotGPS:         Boolean;
-//        Count:          Integer;
-//        AscentRate:     Double;
-        BalloonColour:  String;
-//        FlightMode:     TFlightMode;
-//        LastUpdate:     TDateTime;
     end;
 
 type
@@ -74,25 +42,15 @@ type
     procedure FormActivate(Sender: TObject);
   private
     { Private declarations }
-    HABSources: Array[1..32] of THABSource;
-    HABPayloads: Array[1..32] of TPayload;
     PayloadMasks: TPayloadMasks;
     procedure LoadData;
     procedure LoadTools;
     procedure LoadForms;
     procedure LoadSources;
-    function AddPayloadToFullTable(Position: THABPosition): Boolean;
-    function AddPayloadToLiveTable(Position: THABPosition): Boolean;
-    function AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
-    procedure LoadSource(SourceIndex, pID: Integer; pCode: String; pSourceType: TSourceType);
     procedure LoadPayloadMasks;
-    function PayloadInWhiteList(Position: THABPosition): Boolean;
-    function FindOrAddPayload(PayloadID: String): Integer;
-    function AddPayloadToOurList(Position: THABPosition): Integer;
   public
     { Public declarations }
-    procedure ShowConnected(SourceIndex: Integer; IsConnected: Boolean);
-    procedure NewPosition(SourceIndex: Integer; Position: THABPosition);
+    function PayloadInWhiteList(Position: THABPosition): Boolean;
     procedure UpdatedWhiteList;
   end;
 
@@ -107,7 +65,7 @@ uses Data,
      // Main Forms
      Map, Payloads,
      // Sources
-     Logtail;
+     SourcesForm;
 
 {$R *.dfm}
 
@@ -161,190 +119,13 @@ begin
 end;
 
 procedure TfrmMain.LoadSources;
-var
-    Index: Integer;
 begin
-    with DataModule1.tblSources do begin
-        First;
-        Index := 0;
-        while not EOF do begin
-            Inc(Index);
-            LoadSource(Index, FieldByName('ID').AsInteger, FieldByName('Code').AsString, TSourceType(FieldByName('Type').AsInteger));
-            Next;
-        end;
-    end;
-end;
-
-function TfrmMain.AddPayloadToFullTable(Position: THABPosition): Boolean;
-begin
-    Result := AddPayloadToTable(Position, DataModule1.tblAllPayloads);
-end;
-
-function TfrmMain.AddPayloadToLiveTable(Position: THABPosition): Boolean;
-begin
-    Result := AddPayloadToTable(Position, DataModule1.tblLivePayloads);
-end;
-
-function TfrmMain.AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
-var
-    Bookmark: TBookmark;
-begin
-    Result := False;
-
-    with Table do begin
-        Bookmark := GetBookmark;
-        DisableControls;
-        if FindKey([Position.PayloadID]) then begin
-            Edit;
-        end else begin
-            Append;
-            FieldByName('PayloadID').AsString := Position.PayloadID;
-            Result := True;
-        end;
-
-        FieldByName('PayloadID').AsString := Position.PayloadID;
-        // FieldByName('DocID').AsString := Position.PayloadDocID;
-        FieldByName('Counter').AsInteger := Position.Counter;
-        FieldByName('TimeStamp').AsDateTime := Position.TimeStamp;
-        FieldByName('Latitude').AsFloat := Position.Latitude;
-        FieldByName('Longitude').AsFloat := Position.Longitude;
-        FieldByName('Altitude').AsFloat := Position.Altitude;
-        FieldByName('Distance').AsFloat := Position.Distance;
-        FieldByName('ReceivedLocally').AsBoolean := False;
-
-        Post;
-
-        GotoBookmark(Bookmark);
-
-        EnableControls;
-    end;
+    frmSources := TfrmSources.Create(nil);
+    frmSources.pnlMain.Parent := pnlBottom;
+    frmSources.LoadSources;
 end;
 
 
-procedure TfrmMain.LoadSource(SourceIndex, pID: Integer; pCode: String; pSourceType: TSourceType);
-begin
-    // HABSources[SourceIndex] := THABSource.Create;
-
-    with HABSources[SourceIndex] do begin
-        InUse := True;
-        ID := pID;
-        Code := pCode;
-        SourceType := pSourceType;
-
-        // Index := SourceIndex;
-        // SectionName := Section;
-
-        // Enabled := INI.ReadBool(Section, 'Enabled', True);
-//        Description := INI.ReadString(Section, 'Description', 'Source ' + IntToStr(SourceIndex));
-//        Code := INI.ReadString(Section, 'Code', IntToStr(SourceIndex));
-
-//        SourceTypeText := INI.ReadString(Section, 'Type', '');
-
-    // TSourceType = (stLogtail, stGateway, stTCP, stUDP, stSerial);       // stDLFLDigi, stSerial, stHabitat, stUDP);
-        if SourceType = stLogtail then begin
-            Form := TfrmLogtail.Create(nil);
-            Form.pnlMain.Parent := pnlHidden;
-//        end else if SourceTypeText = 'DLFLDigi' then begin
-//            SourceType := stDLFLDigi;
-//            Form := TfrmDLFLDigiSource.Create(nil, HABDB, HabitatThread, SourceIndex);
-//        end else if SourceTypeText = 'Serial' then begin
-//            SourceType := stSerial;
-//            Form := TfrmLoRaSerialSource.Create(nil, HABDB, HabitatThread, SourceIndex);
-//        end else if SourceTypeText = 'Habitat' then begin
-//            SourceType := stHabitat;
-//            Form := TfrmHabitatSource.Create(nil, HABDB, HabitatThread, SourceIndex);
-//        end else if SourceTypeText = 'UDP' then begin
-//            SourceType := stUDP;
-//            Form := TfrmUDPSource.Create(nil, HABDB, HabitatThread, SourceIndex);
-        end else begin
-            Form := nil;
-        end;
-
-        if Form <> nil then begin
-            Form.SourceIndex := SourceIndex;
-//            Form.HideYourself;
-
-//            Form.Caption := Form.Caption + ' - ' + Description;
-
-//            Form.LoadSettings;
-
-            // Status bar button
-        end;
-
-        Indicator := TAdvSmoothStatusIndicator.Create(Self);
-        with Indicator do begin
-            Parent := pnlStatus;
-            Align := alRight;
-            AlignWithMargins := True;
-            BorderWidth := 1;
-            Appearance.Fill.Color := clGray;
-            Appearance.Fill.ColorMirror := clNone;
-            Appearance.Fill.ColorMirrorTo := clNone;
-            Appearance.Fill.GradientType := TAdvGradientType.gtSolid;
-            Appearance.Fill.BorderColor := 3355443;
-            Appearance.Fill.Rounding := 18;
-            Appearance.Fill.ShadowOffset := 0;
-            Appearance.Font.Height := -24;
-            Appearance.Font.Color := clWhite;
-            AutoSize := True;
-            Caption := Code;
-            Tag := SourceIndex;
-            // PopupMenu := menuSource;
-            // OnClick := DataSourceClick;
-        end;
-    end;
-end;
-
-procedure TfrmMain.NewPosition(SourceIndex: Integer; Position: THABPosition);
-var
-    Index: Integer;
-    PositionString: String;
-begin
-    HABSources[SourceIndex].LatestPosition := Position;
-
-    if Position.PayloadID <> '' then begin
-//            if Position.PayloadDocID = '' then begin
-//                PositionString := Position.PayloadID + ' ** NO PAYLOAD DOC **';
-//            end else begin
-//                PositionString := Position.PayloadID + ' ' + Position.PayloadDocID + ':' +
-//                                  FormatDateTime('hh:nn:ss', Position.TimeStamp) + ', ' +
-//                                  FormatFloat('0.00000', Position.Latitude) + ', ' +
-//                                  FormatFloat('0.00000', Position.Longitude) + ', ' +
-//                                  FormatFloat('0', Position.Altitude) + ', ' +
-//                                  FormatFloat('0', Position.Distance) + 'km';
-//            end;
-
-        AddPayloadToFullTable(Position);
-
-        if PayloadInWhiteList(Position) then begin
-            if AddPayloadToLiveTable(Position) then begin
-                frmToolLog.lstLog.ItemIndex := frmToolLog.lstLog.Items.Add('Added ' + Position.PayloadID);
-                Index := AddPayloadToOurList(Position);
-
-                if Index > 0 then begin
-                    // Update Map
-                    frmMap.ProcessNewPosition(Position, HABPayloads[Index].BalloonColour);
-                end;
-            end;
-        end;
-
-       // Update indicator
-        HABSources[SourceIndex].Indicator.Appearance.Fill.Color := clGreen;
-    end;
-end;
-
-
-procedure TfrmMain.ShowConnected(SourceIndex: Integer; IsConnected: Boolean);
-begin
-    with HABSources[SourceIndex] do begin
-        Connected := IsConnected;
-        if IsConnected then begin
-            Indicator.Appearance.Fill.Color := clOlive;
-        end else begin
-            Indicator.Appearance.Fill.Color := clRed;
-        end;
-    end;
-end;
 
 procedure TfrmMain.LoadPayloadMasks;
 begin
@@ -477,77 +258,5 @@ procedure TfrmMain.UpdatedWhiteList;
 begin
 
 end;
-
-function TfrmMain.FindOrAddPayload(PayloadID: String): Integer;
-var
-    i: Integer;
-begin
-    for i := Low(HABPayloads) to High(HABPayloads) do begin
-        if HABPayloads[i].InUse then begin
-            if HABPayloads[i].Position.PayloadID = PayloadID then begin
-                Result := i;
-                Exit;
-            end;
-        end;
-    end;
-
-    // Add new one
-    for i := Low(HABPayloads) to High(HABPayloads) do begin
-        if not HABPayloads[i].InUse then begin
-            Result := i;
-            Exit;
-        end;
-    end;
-
-    Result := 0;
-end;
-
-function TfrmMain.AddPayloadToOurList(Position: THABPosition): Integer;
-const
-    ColourTexts: Array[0..3] of String = ('blue', 'red', 'green', 'yellow');
-    BGColours: Array[0..3] of TColor = (clBlue, clRed, clGreen, clYellow);
-    FGColours: Array[0..3] of TColor = (clWhite, clBlack, clWhite, clBlack);
-var
-    Index: Integer;
-begin
-    Index := FindOrAddPayload(Position.PayloadID);
-
-    if Index > 0 then begin
-        // Not full up yet
-        if not HABPayloads[Index].InUse then begin
-            HABPayloads[Index].InUse := True;
-            HABPayloads[Index].BalloonColour := ColourTexts[Index mod (High(BGColours)+1)];
-
-            // Add button
-            HABPayloads[Index].Button := TAdvSmoothButton.Create(nil);
-            with HABPayloads[Index].Button do begin
-                Parent := pnlButtons;   // pnlStatus;
-                Align := alLeft;
-                AlignWithMargins := True;
-                Margins.Left := 2;
-                Margins.Top := 0;
-                Margins.Right := 2;
-                Margins.Bottom := 0;
-                Shadow := True;
-                Appearance.Font.Size := 12;
-                Appearance.Rounding := 8;
-                Appearance.WordWrapping := False;
-                Status.Visible := True;
-                Status.Caption := '0s';
-                Status.Appearance.Fill.Color := clGreen;
-                Status.Appearance.Font.Color := clWhite;
-                Caption := Position.PayloadID;
-                Width := Length(Position.PayloadID) * 8 + 32;
-                Color := BGColours[Index mod (High(BGColours)+1)];
-                Appearance.Font.Color := FGColours[Index mod (High(FGColours)+1)];
-                Tag := Index;
-                // OnClick := PayloadClick;
-            end;
-        end;
-    end;
-
-    Result := Index;
-end;
-
 
 end.

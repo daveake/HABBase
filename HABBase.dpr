@@ -11,7 +11,6 @@ uses
   SocketSource in '..\HABRx\SocketSource.pas',
   Source in '..\HABRx\Source.pas',
   BaseTypes in 'BaseTypes.pas',
-  SourceForm in 'SourceForm.pas' {frmSource},
   Logtail in 'Logtail.pas' {frmLogtail},
   Modal in 'Modal.pas' {frmModal},
   Normal in 'Normal.pas' {frmNormal},
@@ -22,7 +21,10 @@ uses
   ToolSources in 'ToolSources.pas' {frmToolSources},
   WhiteList in 'WhiteList.pas' {frmWhiteList},
   Map in 'Map.pas' {frmMap},
-  Payloads in 'Payloads.pas' {frmPayloads};
+  Payloads in 'Payloads.pas' {frmPayloads},
+  SourcesForm in 'SourcesForm.pas' {frmSources},
+  SourceForm in 'SourceForm.pas' {frmSource},
+  GatewaySource in '..\HABRx\GatewaySource.pas';
 
 {$R *.res}
 
@@ -30,5 +32,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TfrmSource, frmSource);
   Application.Run;
 end.

@@ -11,8 +11,8 @@ type
   private
     { Private declarations }
   public
-    { Public declarations }
     SourceIndex: Integer;
+    { Public declarations }
   end;
 
 var

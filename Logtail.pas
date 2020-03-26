@@ -28,7 +28,7 @@ implementation
 
 {$R *.dfm}
 
-uses Main, Miscellaneous;
+uses Main, SourcesForm, Miscellaneous;
 
 procedure TfrmLogtail.Timer1Timer(Sender: TObject);
 const
@@ -43,7 +43,7 @@ begin
         if FirstTime then begin
             FirstTime := False;
             WebBrowser1.Navigate('http://habitat.habhub.org/logtail/');
-            frmMain.ShowConnected(SourceIndex, True);
+            frmSources.ShowConnected(SourceIndex, True);
         end else begin
             Strings := TStringList.Create;
             try
@@ -82,7 +82,7 @@ begin
                     Position.Distance := CalculateDistance(Position.Latitude, Position.Longitude, 52, -2) / 1000.0;
 
                     // Add to list
-                    frmMain.NewPosition(SourceIndex, Position);
+                    frmSources.NewPosition(SourceIndex, Position);
 
                     // Clear for next payload
                     Position := Default(THABPosition);

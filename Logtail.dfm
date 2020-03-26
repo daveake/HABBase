@@ -4,16 +4,16 @@ inherited frmLogtail: TfrmLogtail
   TextHeight = 13
   inherited pnlMain: TPanel
     object WebBrowser1: TWebBrowser
-      Left = 1
-      Top = 1
-      Width = 831
-      Height = 468
+      Left = 0
+      Top = 0
+      Width = 833
+      Height = 470
       Align = alClient
       TabOrder = 0
-      ExplicitWidth = 375
-      ExplicitHeight = 791
+      ExplicitWidth = 831
+      ExplicitHeight = 468
       ControlData = {
-        4C000000E35500005F3000000000000000000000000000000000000000000000
+        4C00000018560000933000000000000000000000000000000000000000000000
         000000004C000000000000000000000001000000E0D057007335CF11AE690800
         2B2E126208000000000000004C0000000114020000000000C000000000000046
         8000000000000000000000000000000000000000000000000000000000000000
