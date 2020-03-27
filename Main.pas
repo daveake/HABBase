@@ -23,7 +23,6 @@ type
   TfrmMain = class(TForm)
     AdvSplitter1: TAdvSplitter;
     pnlLeft: TPanel;
-    AdvSplitter2: TAdvSplitter;
     pnlLog: TPanel;
     AdvSplitter3: TAdvSplitter;
     pnlWhiteList: TPanel;

@@ -66,8 +66,6 @@ object frmSettings: TfrmSettings
     StatusBar.ColorTo = 14602191
     StatusBar.GradientDirection = gdVertical
     Text = ''
-    ExplicitWidth = 531
-    ExplicitHeight = 129
     DesignSize = (
       637
       388)
@@ -95,6 +93,7 @@ object frmSettings: TfrmSettings
       Height = 21
       MaxLength = 2
       TabOrder = 0
+      OnClick = edtCodeClick
     end
     object edtName: TEdit
       Left = 172
@@ -102,6 +101,7 @@ object frmSettings: TfrmSettings
       Width = 176
       Height = 21
       TabOrder = 1
+      OnClick = edtCodeClick
     end
     object chKEnabled: TAdvOfficeCheckBox
       Left = 372
@@ -150,6 +150,7 @@ object frmSettings: TfrmSettings
       TabOrder = 3
       Enabled = False
       Version = '2.2.1.2'
+      OnClick = btnSaveClick
       TMSStyle = 8
     end
     object btnCancel: TAdvSmoothButton

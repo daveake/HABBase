@@ -17,11 +17,12 @@ uses
 type
     THABSource = record
         InUse:              Boolean;
-        ID:                 Integer;
-        Enabled:            Boolean;
+        SourceID:           Integer;
+        Group:              String;
+        // Enabled:            Boolean;
         Connected:          Boolean;
-        Description:        String;
-        Code:               String;
+//        Code:               String;
+//        Description:        String;
         SourceType:         TSourceType;
         SourceForm:         TfrmSource;
         Indicator:          TAdvSmoothStatusIndicator;
@@ -64,7 +65,7 @@ type
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
     HABPayloads: Array[1..32] of TPayload;
-    procedure LoadSource(SourceIndex, pID: Integer; pCode: String; pSourceType: TSourceType);
+    procedure LoadSource(SourceIndex, ID: Integer; Enabled: Boolean; Code, Description, Host: String; Port: Integer; Settings: String; pSourceType: TSourceType);
     function AddPayloadToFullTable(Position: THABPosition): Boolean;
     function AddPayloadToLiveTable(Position: THABPosition): Boolean;
     function AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
@@ -99,37 +100,59 @@ begin
         Index := 0;
         while not EOF do begin
             Inc(Index);
-            LoadSource(Index, FieldByName('ID').AsInteger, FieldByName('Code').AsString, TSourceType(FieldByName('Type').AsInteger));
+            LoadSource(Index,
+                       FieldByName('ID').AsInteger,
+                       FieldByName('Enabled').AsBoolean,
+                       FieldByName('Code').AsString,
+                       FieldByName('Name').AsString,
+                       FieldByName('Host').AsString,
+                       StrToIntDef(FieldByName('Port').AsString, 0),
+                       FieldByName('Settings').AsString,
+                       TSourceType(FieldByName('Type').AsInteger));
             Next;
         end;
     end;
 end;
 
-procedure TfrmSources.LoadSource(SourceIndex, pID: Integer; pCode: String; pSourceType: TSourceType);
+function GetSettingName(var Settings: String): String;
 begin
-    // HABSources[SourceIndex] := THABSource.Create;
+    Result := GetString(Settings, '=');
+end;
 
+function GetSettingValue(var Settings: String): String;
+begin
+    Result := GetString(Settings, ';');
+end;
+
+procedure TfrmSources.LoadSource(SourceIndex, ID: Integer; Enabled: Boolean; Code, Description, Host: String; Port: Integer; Settings: String; pSourceType: TSourceType);
+var
+    Setting, Value: String;
+begin
     with HABSources[SourceIndex] do begin
         InUse := True;
-        ID := pID;
-        Code := pCode;
+        SourceID := ID;
+        Group := ID.ToString;
+
+        // Add to settings
+        SetSettingString(Group, 'Host', Host);
+        SetSettingInteger(Group, 'Port', Port);
+        SetSettingBoolean(Group, 'Enabled', Enabled);
+
+        while Settings <> '' do begin
+            Setting := GetSettingName(Settings);
+            Value := GetSettingValue(Settings);
+            if (Setting <> '') and (Value <> '') then begin
+                SetSettingString(Group, Setting, Value);
+            end;
+        end;
+
         SourceType := pSourceType;
 
-        // Index := SourceIndex;
-        // SectionName := Section;
-
-        // Enabled := INI.ReadBool(Section, 'Enabled', True);
-//        Description := INI.ReadString(Section, 'Description', 'Source ' + IntToStr(SourceIndex));
-//        Code := INI.ReadString(Section, 'Code', IntToStr(SourceIndex));
-
-//        SourceTypeText := INI.ReadString(Section, 'Type', '');
-
-    // TSourceType = (stLogtail, stGateway, stTCP, stUDP, stSerial);       // stDLFLDigi, stSerial, stHabitat, stUDP);
         if SourceType = stLogtail then begin
             SourceForm := TfrmLogtail.Create(nil);
             SourceForm.pnlMain.Parent := frmMain.pnlHidden;
         end else if SourceType = stGateway then begin
-            Source := TGatewaySource.Create(SourceIndex, '', HABCallback);
+            Source := TGatewaySource.Create(SourceIndex, Group, HABCallback);
 
 
 //        end else if SourceTypeText = 'DLFLDigi' then begin
@@ -150,13 +173,6 @@ begin
 
         if SourceForm <> nil then begin
             SourceForm.SourceIndex := SourceIndex;
-//            Form.HideYourself;
-
-//            Form.Caption := Form.Caption + ' - ' + Description;
-
-//            Form.LoadSettings;
-
-            // Status bar button
         end;
 
         Indicator := TAdvSmoothStatusIndicator.Create(Self);
@@ -426,7 +442,7 @@ begin
     end;
 
     if SettingsForm <> nil then begin
-        SettingsForm.ShowModal;
+        SettingsForm.LoadForm(HABSources[SourceIndex].SourceID);
         SettingsForm.Free;
     end;
 end;

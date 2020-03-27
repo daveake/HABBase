@@ -4,8 +4,10 @@ inherited frmSources: TfrmSources
   TextHeight = 13
   inherited pnlMain: TPanel
     Height = 422
+    ExplicitHeight = 422
     inherited Panel1: TPanel
       inherited lblTitle: TLabel
+        Width = 816
         Caption = 'Sources'
         ExplicitWidth = 46
       end
@@ -17,7 +19,7 @@ inherited frmSources: TfrmSources
       Height = 398
       Cursor = crDefault
       Align = alClient
-      ColCount = 5
+      ColCount = 8
       DrawingStyle = gdsClassic
       FixedColor = clWhite
       FixedCols = 0
@@ -277,6 +279,84 @@ inherited frmSources: TfrmSources
           PrintFont.Name = 'Tahoma'
           PrintFont.Style = []
           Width = 64
+        end
+        item
+          Borders = []
+          BorderPen.Color = clSilver
+          ButtonHeight = 18
+          CheckFalse = 'N'
+          CheckTrue = 'Y'
+          Color = clWindow
+          FieldName = 'Host'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = clWindowText
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'Tahoma'
+          HeaderFont.Style = []
+          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
+          PrintFont.Charset = DEFAULT_CHARSET
+          PrintFont.Color = clWindowText
+          PrintFont.Height = -11
+          PrintFont.Name = 'Tahoma'
+          PrintFont.Style = []
+          Width = 64
+        end
+        item
+          Borders = []
+          BorderPen.Color = clSilver
+          ButtonHeight = 18
+          CheckFalse = 'N'
+          CheckTrue = 'Y'
+          Color = clWindow
+          FieldName = 'Port'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = clWindowText
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'Tahoma'
+          HeaderFont.Style = []
+          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
+          PrintFont.Charset = DEFAULT_CHARSET
+          PrintFont.Color = clWindowText
+          PrintFont.Height = -11
+          PrintFont.Name = 'Tahoma'
+          PrintFont.Style = []
+          Width = 64
+        end
+        item
+          Borders = []
+          BorderPen.Color = clSilver
+          ButtonHeight = 18
+          CheckFalse = 'N'
+          CheckTrue = 'Y'
+          Color = clWindow
+          FieldName = 'Settings'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = clWindowText
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'Tahoma'
+          HeaderFont.Style = []
+          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
+          PrintFont.Charset = DEFAULT_CHARSET
+          PrintFont.Color = clWindowText
+          PrintFont.Height = -11
+          PrintFont.Name = 'Tahoma'
+          PrintFont.Style = []
+          Width = 415
         end>
       DataSource = DataModule1.srcSources
       InvalidPicture.Data = {
@@ -416,13 +496,18 @@ inherited frmSources: TfrmSources
         80000001C0000003C0000003E0000007F000000FF800001FFC00003FFF0000FF
         FFC003FF}
       ShowUnicode = False
-      ExplicitHeight = 446
       ColWidths = (
         20
         64
         64
         64
-        64)
+        64
+        64
+        64
+        415)
+      RowHeights = (
+        22
+        22)
     end
   end
   object pnlStatus: TAdvPanel
@@ -473,7 +558,6 @@ inherited frmSources: TfrmSources
     StatusBar.ColorTo = 14602191
     StatusBar.GradientDirection = gdVertical
     Text = ''
-    ExplicitTop = 421
     FullHeight = 48
   end
 end
