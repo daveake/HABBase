@@ -34,11 +34,11 @@ type
     pnlMiddle: TPanel;
     pnlTop: TPanel;
     pnlBottom: TPanel;
-    pnlStatus: TAdvPanel;
-    pnlHidden: TPanel;
     pnlPayloads: TPanel;
     AdvSplitter6: TAdvSplitter;
     pnlButtons: TAdvPanel;
+    pnlStatus: TPanel;
+    pnlHidden: TPanel;
     procedure FormActivate(Sender: TObject);
   private
     { Private declarations }
@@ -122,6 +122,7 @@ procedure TfrmMain.LoadSources;
 begin
     frmSources := TfrmSources.Create(nil);
     frmSources.pnlMain.Parent := pnlBottom;
+    frmSources.pnlStatus.Parent := pnlStatus;
     frmSources.LoadSources;
 end;
 

@@ -15,8 +15,6 @@ type
     { Public declarations }
   end;
 
-var
-  frmSource: TfrmSource;
 
 implementation
 

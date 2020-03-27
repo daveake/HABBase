@@ -16,9 +16,9 @@ object frmMain: TfrmMain
   TextHeight = 13
   object AdvSplitter1: TAdvSplitter
     Left = 329
-    Top = 41
+    Top = 57
     Width = 16
-    Height = 757
+    Height = 742
     Appearance.BorderColor = clNone
     Appearance.BorderColorHot = clNone
     Appearance.Color = clWhite
@@ -26,35 +26,39 @@ object frmMain: TfrmMain
     Appearance.ColorHot = clWhite
     Appearance.ColorHotTo = clGray
     GripStyle = sgDots
+    ExplicitTop = 41
+    ExplicitHeight = 757
+  end
+  object AdvSplitter2: TAdvSplitter
+    Left = 0
+    Top = 41
+    Width = 1398
+    Height = 16
+    Cursor = crVSplit
+    Align = alTop
+    Appearance.BorderColor = clNone
+    Appearance.BorderColorHot = clNone
+    Appearance.Color = clWhite
+    Appearance.ColorTo = clSilver
+    Appearance.ColorHot = clWhite
+    Appearance.ColorHotTo = clGray
+    GripStyle = sgDots
+    ExplicitTop = 193
+    ExplicitWidth = 265
   end
   object pnlLeft: TPanel
     Left = 0
-    Top = 41
+    Top = 57
     Width = 329
-    Height = 757
+    Height = 742
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 0
-    object AdvSplitter2: TAdvSplitter
-      Left = 0
-      Top = 361
-      Width = 329
-      Height = 16
-      Cursor = crVSplit
-      Align = alTop
-      Appearance.BorderColor = clNone
-      Appearance.BorderColorHot = clNone
-      Appearance.Color = clWhite
-      Appearance.ColorTo = clSilver
-      Appearance.ColorHot = clWhite
-      Appearance.ColorHotTo = clGray
-      GripStyle = sgDots
-      ExplicitTop = 193
-      ExplicitWidth = 265
-    end
+    ExplicitTop = 41
+    ExplicitHeight = 757
     object AdvSplitter3: TAdvSplitter
       Left = 0
-      Top = 561
+      Top = 546
       Width = 329
       Height = 16
       Cursor = crVSplit
@@ -88,12 +92,14 @@ object frmMain: TfrmMain
     end
     object pnlLog: TPanel
       Left = 0
-      Top = 377
+      Top = 361
       Width = 329
-      Height = 184
+      Height = 185
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitTop = 377
+      ExplicitHeight = 184
     end
     object pnlWhiteList: TPanel
       Left = 0
@@ -106,12 +112,13 @@ object frmMain: TfrmMain
     end
     object pnlSources: TPanel
       Left = 0
-      Top = 577
+      Top = 562
       Width = 329
       Height = 180
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
+      ExplicitTop = 577
     end
     object pnlPayloads: TPanel
       Left = 0
@@ -125,12 +132,14 @@ object frmMain: TfrmMain
   end
   object pnlMain: TPanel
     Left = 345
-    Top = 41
+    Top = 57
     Width = 1053
-    Height = 757
+    Height = 742
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 41
+    ExplicitHeight = 757
     object AdvSplitter4: TAdvSplitter
       Left = 0
       Top = 201
@@ -150,7 +159,7 @@ object frmMain: TfrmMain
     end
     object AdvSplitter5: TAdvSplitter
       Left = 0
-      Top = 536
+      Top = 521
       Width = 1053
       Height = 16
       Cursor = crVSplit
@@ -170,10 +179,11 @@ object frmMain: TfrmMain
       Left = 0
       Top = 217
       Width = 1053
-      Height = 319
+      Height = 304
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitHeight = 319
     end
     object pnlTop: TPanel
       Left = 0
@@ -186,20 +196,21 @@ object frmMain: TfrmMain
     end
     object pnlBottom: TPanel
       Left = 0
-      Top = 552
+      Top = 537
       Width = 1053
       Height = 205
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
+      ExplicitTop = 552
     end
   end
-  object pnlStatus: TAdvPanel
+  object pnlButtons: TAdvPanel
     Left = 0
-    Top = 798
+    Top = 0
     Width = 1398
-    Height = 49
-    Align = alBottom
+    Height = 41
+    Align = alTop
     BevelOuter = bvNone
     Color = 15395562
     Font.Charset = DEFAULT_CHARSET
@@ -243,64 +254,24 @@ object frmMain: TfrmMain
     StatusBar.GradientDirection = gdVertical
     Text = ''
     FullHeight = 42
+  end
+  object pnlStatus: TPanel
+    Left = 0
+    Top = 799
+    Width = 1398
+    Height = 48
+    Align = alBottom
+    BevelOuter = bvNone
+    TabOrder = 3
     object pnlHidden: TPanel
       Left = 1398
       Top = 0
       Width = 0
-      Height = 49
+      Height = 48
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitHeight = 49
     end
-  end
-  object pnlButtons: TAdvPanel
-    Left = 0
-    Top = 0
-    Width = 1398
-    Height = 41
-    Align = alTop
-    BevelOuter = bvNone
-    Color = 15395562
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 3
-    UseDockManager = True
-    Version = '2.5.10.2'
-    BorderColor = clGray
-    Caption.Color = 15722471
-    Caption.ColorTo = 11176072
-    Caption.Font.Charset = DEFAULT_CHARSET
-    Caption.Font.Color = clBlack
-    Caption.Font.Height = -11
-    Caption.Font.Name = 'Tahoma'
-    Caption.Font.Style = []
-    Caption.GradientDirection = gdVertical
-    Caption.Height = 24
-    Caption.Indent = 2
-    Caption.ShadeLight = 255
-    CollapsColor = clHighlight
-    CollapsDelay = 0
-    ColorTo = 13948116
-    ColorMirror = 13948116
-    ColorMirrorTo = clSilver
-    DoubleBuffered = True
-    ShadowColor = clBlack
-    ShadowOffset = 0
-    StatusBar.BorderColor = clNone
-    StatusBar.BorderStyle = bsSingle
-    StatusBar.Font.Charset = DEFAULT_CHARSET
-    StatusBar.Font.Color = clBlack
-    StatusBar.Font.Height = -11
-    StatusBar.Font.Name = 'Tahoma'
-    StatusBar.Font.Style = []
-    StatusBar.Color = 12560553
-    StatusBar.ColorTo = 14602191
-    StatusBar.GradientDirection = gdVertical
-    Text = ''
-    FullHeight = 42
   end
 end

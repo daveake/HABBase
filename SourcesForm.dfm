@@ -3,9 +3,9 @@ inherited frmSources: TfrmSources
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
+    Height = 422
     inherited Panel1: TPanel
       inherited lblTitle: TLabel
-        Width = 816
         Caption = 'Sources'
         ExplicitWidth = 46
       end
@@ -14,7 +14,7 @@ inherited frmSources: TfrmSources
       Left = 0
       Top = 24
       Width = 833
-      Height = 446
+      Height = 398
       Cursor = crDefault
       Align = alClient
       ColCount = 5
@@ -416,6 +416,7 @@ inherited frmSources: TfrmSources
         80000001C0000003C0000003E0000007F000000FF800001FFC00003FFF0000FF
         FFC003FF}
       ShowUnicode = False
+      ExplicitHeight = 446
       ColWidths = (
         20
         64
@@ -423,5 +424,56 @@ inherited frmSources: TfrmSources
         64
         64)
     end
+  end
+  object pnlStatus: TAdvPanel
+    Left = 0
+    Top = 422
+    Width = 833
+    Height = 48
+    Align = alBottom
+    BevelOuter = bvNone
+    Color = 15395562
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    UseDockManager = True
+    Version = '2.5.10.2'
+    BorderColor = clGray
+    Caption.Color = 15722471
+    Caption.ColorTo = 11176072
+    Caption.Font.Charset = DEFAULT_CHARSET
+    Caption.Font.Color = clBlack
+    Caption.Font.Height = -11
+    Caption.Font.Name = 'Tahoma'
+    Caption.Font.Style = []
+    Caption.GradientDirection = gdVertical
+    Caption.Height = 24
+    Caption.Indent = 2
+    Caption.ShadeLight = 255
+    CollapsColor = clHighlight
+    CollapsDelay = 0
+    ColorTo = 13948116
+    ColorMirror = 13948116
+    ColorMirrorTo = clSilver
+    DoubleBuffered = True
+    ShadowColor = clBlack
+    ShadowOffset = 0
+    StatusBar.BorderColor = clNone
+    StatusBar.BorderStyle = bsSingle
+    StatusBar.Font.Charset = DEFAULT_CHARSET
+    StatusBar.Font.Color = clBlack
+    StatusBar.Font.Height = -11
+    StatusBar.Font.Name = 'Tahoma'
+    StatusBar.Font.Style = []
+    StatusBar.Color = 12560553
+    StatusBar.ColorTo = 14602191
+    StatusBar.GradientDirection = gdVertical
+    Text = ''
+    ExplicitTop = 421
+    FullHeight = 48
   end
 end

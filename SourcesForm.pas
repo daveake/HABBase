@@ -11,7 +11,7 @@ uses
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, AdvSmoothButton,
   Source, SourceForm,
-  GatewaySource; // HabitatSource, UDPSource, SerialSource, BluetoothSource,
+  GatewaySource, AdvPanel; // HabitatSource, UDPSource, SerialSource, BluetoothSource,
 
 
 type
@@ -23,7 +23,7 @@ type
         Description:        String;
         Code:               String;
         SourceType:         TSourceType;
-        Form:               TfrmSource;
+        SourceForm:         TfrmSource;
         Indicator:          TAdvSmoothStatusIndicator;
         Source:             TSource;
 //        ValueLabel:   TLabel;
@@ -59,6 +59,7 @@ type
 type
   TfrmSources = class(TfrmNormal)
     DBAdvGrid1: TDBAdvGrid;
+    pnlStatus: TAdvPanel;
   private
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
@@ -70,6 +71,7 @@ type
     function AddPayloadToOurList(Position: THABPosition): Integer;
     function FindOrAddPayload(PayloadID: String): Integer;
     procedure HABCallback(ID: Integer; Connected: Boolean; Line: String; Position: THABPosition);
+    procedure DataSourceClick(Sender: TObject);
   public
     { Public declarations }
     procedure LoadSources;
@@ -84,7 +86,7 @@ implementation
 
 {$R *.dfm}
 
-uses Data, Logtail, Main, ToolLog, Map, Miscellaneous;
+uses Data, Logtail, Main, ToolLog, Map, Miscellaneous, SettingsForm, GatewaySettings;
 
 procedure TfrmSources.LoadSources;
 var
@@ -124,8 +126,8 @@ begin
 
     // TSourceType = (stLogtail, stGateway, stTCP, stUDP, stSerial);       // stDLFLDigi, stSerial, stHabitat, stUDP);
         if SourceType = stLogtail then begin
-            Form := TfrmLogtail.Create(nil);
-            Form.pnlMain.Parent := frmMain.pnlHidden;
+            SourceForm := TfrmLogtail.Create(nil);
+            SourceForm.pnlMain.Parent := frmMain.pnlHidden;
         end else if SourceType = stGateway then begin
             Source := TGatewaySource.Create(SourceIndex, '', HABCallback);
 
@@ -143,11 +145,11 @@ begin
 //            SourceType := stUDP;
 //            Form := TfrmUDPSource.Create(nil, HABDB, HabitatThread, SourceIndex);
         end else begin
-            Form := nil;
+            SourceForm := nil;
         end;
 
-        if Form <> nil then begin
-            Form.SourceIndex := SourceIndex;
+        if SourceForm <> nil then begin
+            SourceForm.SourceIndex := SourceIndex;
 //            Form.HideYourself;
 
 //            Form.Caption := Form.Caption + ' - ' + Description;
@@ -159,7 +161,7 @@ begin
 
         Indicator := TAdvSmoothStatusIndicator.Create(Self);
         with Indicator do begin
-            Parent := frmMain.pnlStatus;
+            Parent := pnlStatus;
             Align := alRight;
             AlignWithMargins := True;
             BorderWidth := 1;
@@ -176,10 +178,11 @@ begin
             Caption := Code;
             Tag := SourceIndex;
             // PopupMenu := menuSource;
-            // OnClick := DataSourceClick;
+            OnClick := DataSourceClick;
         end;
     end;
 end;
+
 
 procedure TfrmSources.NewPosition(SourceIndex: Integer; Position: THABPosition);
 var
@@ -402,6 +405,30 @@ begin
 //    if Sources[ID].RSSILabel <> nil then begin
 //        Sources[ID].RSSILabel.Text := Sources[ID].CurrentRSSI + Sources[ID].PacketRSSI + Sources[ID].FreqError;
 //    end;
+end;
+
+procedure TfrmSources.DataSourceClick(Sender: TObject);
+var
+    SourceIndex: Integer;
+    SettingsForm: TfrmSettings;
+begin
+    // Which source?
+    SourceIndex := TComponent(Sender).Tag;
+    SettingsForm := nil;
+
+    case HABSources[SourceIndex].SourceType of
+        stLogtail:  SettingsForm := nil;
+        stGateway:  SettingsForm := TfrmGatewaySettings.Create(nil);
+        stTCP:      SettingsForm := nil;
+        stUDP:      SettingsForm := nil;
+        stSerial:   SettingsForm := nil;
+        // stDLFLDigi, stSerial, stHabitat, stUDP);
+    end;
+
+    if SettingsForm <> nil then begin
+        SettingsForm.ShowModal;
+        SettingsForm.Free;
+    end;
 end;
 
 end.

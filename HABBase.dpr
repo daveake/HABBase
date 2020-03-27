@@ -24,7 +24,9 @@ uses
   Payloads in 'Payloads.pas' {frmPayloads},
   SourcesForm in 'SourcesForm.pas' {frmSources},
   SourceForm in 'SourceForm.pas' {frmSource},
-  GatewaySource in '..\HABRx\GatewaySource.pas';
+  GatewaySource in '..\HABRx\GatewaySource.pas',
+  SettingsForm in 'SettingsForm.pas' {frmSettings},
+  GatewaySettings in 'GatewaySettings.pas' {frmGatewaySettings};
 
 {$R *.res}
 
@@ -32,6 +34,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmSource, frmSource);
+  Application.CreateForm(TfrmGatewaySettings, frmGatewaySettings);
   Application.Run;
 end.
