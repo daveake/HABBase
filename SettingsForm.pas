@@ -84,6 +84,7 @@ end;
 
 procedure TfrmSettings.ApplyChanges;
 begin
+    SetSettingBoolean(Group, 'Enabled', chkEnabled.Checked);
     SetGroupChangedFlag(Group, True);
 end;
 

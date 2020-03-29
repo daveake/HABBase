@@ -134,6 +134,7 @@ begin
         Group := ID.ToString;
 
         // Add to settings
+        SetSettingBoolean(Group, 'Enabled', Enabled);
         SetSettingString(Group, 'Host', Host);
         SetSettingInteger(Group, 'Port', Port);
         SetSettingBoolean(Group, 'Enabled', Enabled);
