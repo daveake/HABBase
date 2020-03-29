@@ -36,8 +36,6 @@ object frmMain: TfrmMain
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 57
-    ExplicitHeight = 742
     object AdvSplitter3: TAdvSplitter
       Left = 0
       Top = 562
@@ -80,7 +78,6 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitHeight = 185
     end
     object pnlWhiteList: TPanel
       Left = 0
@@ -99,7 +96,6 @@ object frmMain: TfrmMain
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitTop = 562
     end
     object pnlPayloads: TPanel
       Left = 0
@@ -119,8 +115,6 @@ object frmMain: TfrmMain
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 57
-    ExplicitHeight = 742
     object AdvSplitter4: TAdvSplitter
       Left = 0
       Top = 201
@@ -164,7 +158,6 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitHeight = 304
     end
     object pnlTop: TPanel
       Left = 0
@@ -183,7 +176,6 @@ object frmMain: TfrmMain
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitTop = 537
     end
   end
   object pnlButtons: TAdvPanel

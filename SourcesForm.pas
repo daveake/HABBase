@@ -9,9 +9,9 @@ uses
   Data.FMTBcd, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, AdvSmoothButton,
+  FireDAC.Comp.Client, AdvSmoothButton, AdvPanel,
   Source, SourceForm,
-  GatewaySource, AdvPanel; // HabitatSource, UDPSource, SerialSource, BluetoothSource,
+  GatewaySource, SerialSource; // HabitatSource, UDPSource, SerialSource, BluetoothSource,
 
 
 type
@@ -65,7 +65,7 @@ type
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
     HABPayloads: Array[1..32] of TPayload;
-    procedure LoadSource(SourceIndex, ID: Integer; Enabled: Boolean; Code, Description, Host: String; Port: Integer; Settings: String; pSourceType: TSourceType);
+    procedure LoadSource(SourceIndex, ID: Integer; Enabled: Boolean; Code, Description, Host, Port, Settings: String; pSourceType: TSourceType);
     function AddPayloadToFullTable(Position: THABPosition): Boolean;
     function AddPayloadToLiveTable(Position: THABPosition): Boolean;
     function AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
@@ -106,7 +106,7 @@ begin
                        FieldByName('Code').AsString,
                        FieldByName('Name').AsString,
                        FieldByName('Host').AsString,
-                       StrToIntDef(FieldByName('Port').AsString, 0),
+                       FieldByName('Port').AsString,
                        FieldByName('Settings').AsString,
                        TSourceType(FieldByName('Type').AsInteger));
             Next;
@@ -124,7 +124,7 @@ begin
     Result := GetString(Settings, ';');
 end;
 
-procedure TfrmSources.LoadSource(SourceIndex, ID: Integer; Enabled: Boolean; Code, Description, Host: String; Port: Integer; Settings: String; pSourceType: TSourceType);
+procedure TfrmSources.LoadSource(SourceIndex, ID: Integer; Enabled: Boolean; Code, Description, Host, Port, Settings: String; pSourceType: TSourceType);
 var
     Setting, Value: String;
 begin
@@ -136,7 +136,7 @@ begin
         // Add to settings
         SetSettingBoolean(Group, 'Enabled', Enabled);
         SetSettingString(Group, 'Host', Host);
-        SetSettingInteger(Group, 'Port', Port);
+        SetSettingString(Group, 'Port', Port);
         SetSettingBoolean(Group, 'Enabled', Enabled);
 
         while Settings <> '' do begin
@@ -152,8 +152,11 @@ begin
         if SourceType = stLogtail then begin
             SourceForm := TfrmLogtail.Create(nil);
             SourceForm.pnlMain.Parent := frmMain.pnlHidden;
+            SourceForm.Enabled := Enabled;
         end else if SourceType = stGateway then begin
             Source := TGatewaySource.Create(SourceIndex, Group, HABCallback);
+        end else if SourceType = stSerial then begin
+            Source := TSerialSource.Create(SourceIndex, Group, HABCallback);
 
 
 //        end else if SourceTypeText = 'DLFLDigi' then begin
@@ -299,7 +302,7 @@ begin
         // Not full up yet
         if not HABPayloads[Index].InUse then begin
             HABPayloads[Index].InUse := True;
-            HABPayloads[Index].BalloonColour := ColourTexts[Index mod (High(BGColours)+1)];
+            HABPayloads[Index].BalloonColour := ColourTexts[(Index-1) mod (High(BGColours)+1)];
 
             // Add button
             HABPayloads[Index].Button := TAdvSmoothButton.Create(nil);
@@ -308,10 +311,10 @@ begin
                 Align := alLeft;
                 AlignWithMargins := True;
                 Margins.Left := 2;
-                Margins.Top := 0;
+                Margins.Top := 3;
                 Margins.Right := 2;
                 Margins.Bottom := 0;
-                Shadow := True;
+                Shadow := False;    // True;
                 Appearance.Font.Size := 12;
                 Appearance.Rounding := 8;
                 Appearance.WordWrapping := False;
@@ -321,8 +324,8 @@ begin
                 Status.Appearance.Font.Color := clWhite;
                 Caption := Position.PayloadID;
                 Width := Length(Position.PayloadID) * 8 + 32;
-                Color := BGColours[Index mod (High(BGColours)+1)];
-                Appearance.Font.Color := FGColours[Index mod (High(FGColours)+1)];
+                Color := BGColours[(Index-1) mod (High(BGColours)+1)];
+                Appearance.Font.Color := FGColours[(Index-1) mod (High(FGColours)+1)];
                 Tag := Index;
                 // OnClick := PayloadClick;
             end;

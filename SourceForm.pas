@@ -13,6 +13,7 @@ type
   public
     SourceIndex: Integer;
     { Public declarations }
+    Enabled: Boolean;
   end;
 
 

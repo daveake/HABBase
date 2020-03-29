@@ -37,31 +37,33 @@ var
     Strings: TStringList;
     Document: IHTMLDocument2;
 begin
-    Timer1.Enabled := False;
+    if Enabled then begin
+        Timer1.Enabled := False;
 
-     try
-        if FirstTime then begin
-            FirstTime := False;
-            WebBrowser1.Navigate('http://habitat.habhub.org/logtail/');
-            frmSources.ShowConnected(SourceIndex, True);
-        end else begin
-            Strings := TStringList.Create;
-            try
-                Document := webBrowser1.Document as IHTMLDocument2;
-                if Document <> nil then begin
-                    if Document.Body <> nil then begin
-                        Strings.Text := Document.Body.innerHTML;
+        try
+            if FirstTime then begin
+                FirstTime := False;
+                WebBrowser1.Navigate('http://habitat.habhub.org/logtail/');
+                frmSources.ShowConnected(SourceIndex, True);
+            end else begin
+                Strings := TStringList.Create;
+                try
+                    Document := webBrowser1.Document as IHTMLDocument2;
+                    if Document <> nil then begin
+                        if Document.Body <> nil then begin
+                            Strings.Text := Document.Body.innerHTML;
 
-                        ProcessLogtail(Strings);
+                            ProcessLogtail(Strings);
+                        end;
                     end;
+                finally
+                    Strings.Free;
+                    Timer1.Interval := 5000;
                 end;
-            finally
-                Strings.Free;
-                Timer1.Interval := 5000;
             end;
+        finally
+            Timer1.Enabled := True;
         end;
-    finally
-        Timer1.Enabled := True;
     end;
 end;
 
@@ -80,6 +82,8 @@ begin
                 if ProcessLogtailLine(Strings[i], Position) then begin
                     // Calculate distance
                     Position.Distance := CalculateDistance(Position.Latitude, Position.Longitude, 52, -2) / 1000.0;
+
+                    Position.ReceivedRemotely := True;
 
                     // Add to list
                     frmSources.NewPosition(SourceIndex, Position);

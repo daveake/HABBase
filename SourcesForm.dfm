@@ -23,7 +23,7 @@ inherited frmSources: TfrmSources
       DrawingStyle = gdsClassic
       FixedColor = clWhite
       FixedCols = 0
-      RowCount = 2
+      RowCount = 3
       FixedRows = 1
       ScrollBars = ssBoth
       TabOrder = 1
@@ -506,6 +506,7 @@ inherited frmSources: TfrmSources
         64
         415)
       RowHeights = (
+        22
         22
         22)
     end

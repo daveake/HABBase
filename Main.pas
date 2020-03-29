@@ -210,11 +210,11 @@ begin
     with PayloadMasks do begin
         for i := 1 to Count do begin
             with Masks[i] do begin
-                // Locally received
+                // Locally received ?
                 OK := True;
 
                 if Local then begin
-                    OK := Position.ReceivedLocally;
+                    OK := not Position.ReceivedRemotely;
                 end;
 
                 // Distance
