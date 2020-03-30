@@ -19,11 +19,11 @@ inherited frmSources: TfrmSources
       Height = 398
       Cursor = crDefault
       Align = alClient
-      ColCount = 8
+      ColCount = 9
       DrawingStyle = gdsClassic
       FixedColor = clWhite
       FixedCols = 0
-      RowCount = 3
+      RowCount = 2
       FixedRows = 1
       ScrollBars = ssBoth
       TabOrder = 1
@@ -356,7 +356,33 @@ inherited frmSources: TfrmSources
           PrintFont.Height = -11
           PrintFont.Name = 'Tahoma'
           PrintFont.Style = []
-          Width = 415
+          Width = 244
+        end
+        item
+          Borders = []
+          BorderPen.Color = clSilver
+          ButtonHeight = 18
+          CheckFalse = 'N'
+          CheckTrue = 'Y'
+          Color = clWindow
+          FieldName = 'Status'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = clWindowText
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'Tahoma'
+          HeaderFont.Style = []
+          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
+          PrintFont.Charset = DEFAULT_CHARSET
+          PrintFont.Color = clWindowText
+          PrintFont.Height = -11
+          PrintFont.Name = 'Tahoma'
+          PrintFont.Style = []
+          Width = 178
         end>
       DataSource = DataModule1.srcSources
       InvalidPicture.Data = {
@@ -504,9 +530,9 @@ inherited frmSources: TfrmSources
         64
         64
         64
-        415)
+        244
+        178)
       RowHeights = (
-        22
         22
         22)
     end

@@ -28,6 +28,7 @@ type
         Indicator:          TAdvSmoothStatusIndicator;
         Source:             TSource;
         Upload:             Boolean;
+        Status:             String;
 //        ValueLabel:   TLabel;
 //        RSSILabel:    TLabel;
 //        CurrentRSSI:  String;
@@ -326,6 +327,8 @@ begin
         frmNewSource := TfrmNewSource.Create(nil);
 
         if frmNewSource.ShowModal = mrOK then begin
+            // Type of source
+            HABSources[SourceIndex].SourceType := TSourceType(frmNewSource.ComboBox1.ItemIndex);
 
             // Add to table
             with DataModule1.tblSources do begin
@@ -333,7 +336,9 @@ begin
                 FieldByName('Enabled').AsBoolean := True;
                 FieldByName('Type').AsInteger := frmNewSource.ComboBox1.ItemIndex;
                 Post;
-                Last;
+                // Last;
+
+                HABSources[SourceIndex].SourceID := FieldByName('ID').AsInteger;
 
                 // Fill in settings
                 if ShowSettingsForm(SourceIndex) then begin
@@ -483,32 +488,33 @@ end;
 
 procedure TfrmSources.HABCallback(SourceIndex: Integer; Connected: Boolean; Line: String; Position: THABPosition);
 var
-    Callsign: String;
+    Status: String;
+    MyBookmark: TBookmark;
 begin
     // New Position
     if Position.InUse then begin
         NewPosition(SourceIndex, Position);
-
-//        if ID = SERIAL_SOURCE then begin
-//            if GetSettingBoolean('LoRaSerial', 'Habitat', False) then begin
-//                Callsign := GetSettingString('General', 'Callsign', '');
-//                if Callsign <> '' then begin
-//                    HabitatUploader.SaveTelemetryToHabitat(ID, Position.Line, Callsign);
-//                end;
-//            end;
-//        end else if ID = BLUETOOTH_SOURCE then begin
-//            if GetSettingBoolean('LoRaBluetooth', 'Habitat', False) then begin
-//                Callsign := GetSettingString('General', 'Callsign', '');
-//                if Callsign <> '' then begin
-//                    HabitatUploader.SaveTelemetryToHabitat(ID, Position.Line, Callsign);
-//                end;
-//            end;
-//        end;
-
-//        Sources[ID].ValueLabel.Text := Copy(Position.Line, 1, 100);
+        Status := Position.Line;
     end else if Line <> '' then begin
-//        Sources[ID].ValueLabel.Text := Line;
+        Status := Line;
     end;
+
+    // Update status
+    if Status <> HABSources[SourceIndex].Status then begin
+        HABSources[SourceIndex].Status := Status;
+        with DataModule1.tblSources do begin
+            MyBookmark := GetBookmark;
+            if FindKey([HABSources[SourceIndex].SourceID]) then begin
+                if Status <> FieldByName('Status').AsString then begin
+                    Edit;
+                    FieldByName('Status').AsString := Status;
+                    Post;
+                end;
+                GotoBookmark(MyBookmark);
+            end;
+        end;
+    end;
+
 
     // SSDV Packet
 //    if Position.IsSSDV then begin
