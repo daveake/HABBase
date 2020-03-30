@@ -39,6 +39,7 @@ type
     pnlStatus: TPanel;
     pnlHidden: TPanel;
     procedure FormActivate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     PayloadMasks: TPayloadMasks;
@@ -47,6 +48,8 @@ type
     procedure LoadForms;
     procedure LoadSources;
     procedure LoadPayloadMasks;
+    procedure LoadFormPositions;
+    procedure SaveFormPositions;
   public
     { Public declarations }
     function PayloadInWhiteList(Position: THABPosition): Boolean;
@@ -74,12 +77,19 @@ const
 begin
     if FirstTime then begin
         FirstTime := False;
+
         LoadData;
+        LoadFormPositions;
         LoadPayloadMasks;
         LoadTools;
         LoadForms;
         LoadSources;
     end;
+end;
+
+procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+    SaveFormPositions;
 end;
 
 procedure TfrmMain.LoadData;
@@ -258,5 +268,44 @@ procedure TfrmMain.UpdatedWhiteList;
 begin
 
 end;
+
+procedure TfrmMain.LoadFormPositions;
+begin
+    with DataModule1.tblSettings do begin
+        // Form
+        Left := FieldByName('FormLeft').AsInteger;
+        Top := FieldByName('FormTop').AsInteger;
+        Height := FieldByName('FormHeight').AsInteger;
+        Width := FieldByName('FormWidth').AsInteger;
+
+        // Panels
+        pnlPayloads.Height := FieldByName('TopLeftHeight').AsInteger;
+        pnlSources.Height := FieldByName('BottomLeftHeight').AsInteger;
+        pnlTop.Height := FieldByName('TopHeight').AsInteger;
+        pnlBottom.Height := FieldByName('BottomHeight').AsInteger;
+    end;
+end;
+
+procedure TfrmMain.SaveFormPositions;
+begin
+    with DataModule1.tblSettings do begin
+        Edit;
+        // Form
+        FieldByName('FormLeft').AsInteger := Left;
+        FieldByName('FormTop').AsInteger := Top;
+        FieldByName('FormHeight').AsInteger := Height;
+        FieldByName('FormWidth').AsInteger := Width;
+
+        // Panels
+        FieldByName('TopLeftHeight').AsInteger := pnlPayloads.Height;
+        FieldByName('BottomLeftHeight').AsInteger := pnlSources.Height;
+        FieldByName('TopHeight').AsInteger := pnlTop.Height;
+        FieldByName('BottomHeight').AsInteger := pnlBottom.Height;
+
+        Post;
+        SaveToFile(ExtractFilePath(Application.ExeName) + 'settings.json');
+    end;
+end;
+
 
 end.
