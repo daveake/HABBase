@@ -39,7 +39,7 @@ implementation
 
 {$R *.dfm}
 
-uses Data;
+uses Data, Misc;
 
 procedure TfrmGatewaySettings.ApplyChanges;
 begin

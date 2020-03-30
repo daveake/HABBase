@@ -28,7 +28,9 @@ uses
   SettingsForm in 'SettingsForm.pas' {frmSettings},
   GatewaySettings in 'GatewaySettings.pas' {frmGatewaySettings},
   NewSource in 'NewSource.pas' {frmNewSource},
-  LoRaSerialSettings in 'LoRaSerialSettings.pas' {frmLoRaSerialSettings};
+  LoRaSerialSettings in 'LoRaSerialSettings.pas' {frmLoRaSerialSettings},
+  Misc in 'Misc.pas',
+  Habitat in '..\HABRx\Habitat.pas';
 
 {$R *.res}
 

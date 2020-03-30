@@ -28,7 +28,6 @@ type
     procedure ApplyChanges; virtual;
     procedure SaveFields; virtual;
     procedure LoadFields; virtual;
-    function GetSetting(FieldName, Settings: String): String;
   public
     { Public declarations }
     function LoadForm(ID: Integer): Boolean;
@@ -59,7 +58,7 @@ begin
         end;
     end;
 
-    Close;
+    ModalResult := mrOK;
 end;
 
 procedure TfrmSettings.chKEnabledClick(Sender: TObject);
@@ -111,25 +110,5 @@ begin
         FieldByName('Enabled').AsBoolean := chkEnabled.Checked;
     end;
 end;
-
-function TfrmSettings.GetSetting(FieldName, Settings: String): String;
-var
-    Position: Integer;
-    Temp: String;
-begin
-    Position := Pos(';' + FieldName + '=', Settings);
-    if Position > 0 then begin
-        Temp := Copy(Settings, Position + Length(FieldName) + 2, 99);
-        Position := Pos(';', Temp);
-        if Position > 0 then begin
-            Result := Copy(Temp, 1, Position-1);
-        end else begin
-            Result := Temp;
-        end;
-    end else begin
-        Result := '';
-    end;
-end;
-
 
 end.

@@ -15,6 +15,7 @@ type
     edtFrequency1: TEdit;
     Label4: TLabel;
     edtMode1: TEdit;
+    chkUpload: TAdvOfficeCheckBox;
     procedure edtPortChange(Sender: TObject);
   private
     { Private declarations }
@@ -31,7 +32,7 @@ implementation
 
 {$R *.dfm}
 
-uses Data, Miscellaneous;
+uses Data, Miscellaneous, Misc;
 
 procedure TfrmLoRaSerialSettings.ApplyChanges;
 begin
@@ -64,6 +65,7 @@ begin
 
         edtFrequency1.Text := GetSetting('Frequency', Settings);
         edtMode1.Text      := GetSetting('Mode', Settings);
+        chkUpload.Checked  := GetBooleanSetting('Upload', Settings);
     end;
 end;
 
@@ -74,7 +76,8 @@ begin
     with DataModule1.tblSources do begin
         FieldByName('Port').AsString := edtPort.Text;
         FieldByName('Settings').AsString := 'Frequency=' + edtFrequency1.Text + ';' +
-                                            'Mode=' + edtMode1.Text;
+                                            'Mode=' + edtMode1.Text + ';' +
+                                            'Upload=' + BoolToStr(chkUpload.Checked, True);
     end;
 end;
 

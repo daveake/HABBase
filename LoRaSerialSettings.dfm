@@ -6,6 +6,7 @@ inherited frmLoRaSerialSettings: TfrmLoRaSerialSettings
   TextHeight = 13
   inherited pnlCommon: TAdvPanel
     Height = 155
+    ExplicitHeight = 155
     FullHeight = 337
     object Label2: TLabel [2]
       Left = 6
@@ -33,10 +34,12 @@ inherited frmLoRaSerialSettings: TfrmLoRaSerialSettings
     end
     inherited btnSave: TAdvSmoothButton
       Top = 102
+      ExplicitTop = 102
       TMSStyle = 8
     end
     inherited btnCancel: TAdvSmoothButton
       Top = 102
+      ExplicitTop = 102
       TMSStyle = 8
     end
     object edtPort: TEdit
@@ -65,6 +68,18 @@ inherited frmLoRaSerialSettings: TfrmLoRaSerialSettings
       MaxLength = 1
       TabOrder = 7
       OnChange = edtPortChange
+    end
+    object chkUpload: TAdvOfficeCheckBox
+      Left = 372
+      Top = 60
+      Width = 120
+      Height = 20
+      TabOrder = 8
+      OnClick = chKEnabledClick
+      Alignment = taLeftJustify
+      Caption = 'Upload To Habitat'
+      ReturnIsTab = False
+      Version = '1.7.0.2'
     end
   end
 end

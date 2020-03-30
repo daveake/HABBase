@@ -10,8 +10,8 @@ uses
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, AdvSmoothButton, AdvPanel,
-  Source, SourceForm,
-  GatewaySource, SerialSource, Vcl.Menus; // HabitatSource, UDPSource, SerialSource, BluetoothSource,
+  Source, SourceForm, Vcl.Menus, Habitat,
+  GatewaySource, SerialSource; // HabitatSource, UDPSource, SerialSource, BluetoothSource,
 
 
 type
@@ -27,6 +27,7 @@ type
         SourceForm:         TfrmSource;
         Indicator:          TAdvSmoothStatusIndicator;
         Source:             TSource;
+        Upload:             Boolean;
 //        ValueLabel:   TLabel;
 //        RSSILabel:    TLabel;
 //        CurrentRSSI:  String;
@@ -73,16 +74,20 @@ type
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
     HABPayloads: Array[1..32] of TPayload;
-    procedure LoadSource(SourceIndex, ID: Integer; Enabled: Boolean; pCode, pDescription, Host, Port, Settings: String; pSourceType: TSourceType);
+    HabitatUploader: THabitatThread;
+    procedure LoadSource(SourceIndex: Integer);
+    procedure ReloadSourceSettings(SourceIndex: Integer);
+    procedure LoadSourceSettings(SourceIndex: Integer);
     function AddPayloadToFullTable(Position: THABPosition): Boolean;
     function AddPayloadToLiveTable(Position: THABPosition): Boolean;
     function AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
     function AddPayloadToOurList(Position: THABPosition): Integer;
     function FindOrAddPayload(PayloadID: String): Integer;
-    procedure HABCallback(ID: Integer; Connected: Boolean; Line: String; Position: THABPosition);
+    procedure HABCallback(SourceIndex: Integer; Connected: Boolean; Line: String; Position: THABPosition);
     procedure DataSourceClick(Sender: TObject);
     function ShowSettingsForm(SourceIndex: Integer): Boolean;
     function FindFreeSource: Integer;
+    procedure HabitatStatusCallback(SourceID: Integer; Active, OK: Boolean);
   public
     { Public declarations }
     procedure LoadSources;
@@ -91,13 +96,13 @@ type
   end;
 
 var
-  frmSources: TfrmSources;
+    frmSources: TfrmSources;
 
 implementation
 
 {$R *.dfm}
 
-uses Data, Logtail, Main, ToolLog, Map, Miscellaneous, SettingsForm, NewSource,
+uses Data, Logtail, Main, ToolLog, Map, Miscellaneous, SettingsForm, NewSource, Misc,
      GatewaySettings, LoRaSerialSettings;
 
 procedure TfrmSources.LoadSources;
@@ -106,20 +111,16 @@ var
 begin
     InitialiseSettings;
 
+    // Habitat uploader
+    HabitatUploader := THabitatThread.Create(HabitatStatusCallback);
+
+
     with DataModule1.tblSources do begin
         First;
         SourceIndex := 0;
         while not EOF do begin
             Inc(SourceIndex);
-            LoadSource(SourceIndex,
-                       FieldByName('ID').AsInteger,
-                       FieldByName('Enabled').AsBoolean,
-                       FieldByName('Code').AsString,
-                       FieldByName('Name').AsString,
-                       FieldByName('Host').AsString,
-                       FieldByName('Port').AsString,
-                       FieldByName('Settings').AsString,
-                       TSourceType(FieldByName('Type').AsInteger));
+            LoadSource(SourceIndex);
             Next;
         end;
     end;
@@ -132,7 +133,9 @@ begin
     // Find source
     SourceIndex := menuSource.PopupComponent.Tag;
 
-    ShowSettingsForm(SourceIndex);
+    if ShowSettingsForm(SourceIndex) then begin
+        ReloadSourceSettings(SourceIndex);
+    end;
 end;
 
 function GetSettingName(var Settings: String): String;
@@ -145,43 +148,22 @@ begin
     Result := GetString(Settings, ';');
 end;
 
-procedure TfrmSources.LoadSource(SourceIndex, ID: Integer; Enabled: Boolean; pCode, pDescription, Host, Port, Settings: String; pSourceType: TSourceType);
-var
-    Setting, Value: String;
+procedure TfrmSources.LoadSource(SourceIndex: Integer);
 begin
-    with HABSources[SourceIndex] do begin
+    with HABSources[SourceIndex], DataModule1.tblSources do begin
         InUse := True;
-        SourceID := ID;
-        Group := ID.ToString;
-        Code := pCode;
-        Description := pDescription;
+        SourceID := FieldByName('ID').AsInteger;
+        Group := SourceID.ToString;
 
-        // Add to settings
-        SetSettingBoolean(Group, 'Enabled', Enabled);
-        SetSettingString(Group, 'Host', Host);
-        SetSettingString(Group, 'Port', Port);
-        SetSettingBoolean(Group, 'Enabled', Enabled);
-
-        while Settings <> '' do begin
-            Setting := GetSettingName(Settings);
-            Value := GetSettingValue(Settings);
-            if (Setting <> '') and (Value <> '') then begin
-                SetSettingString(Group, Setting, Value);
-            end;
-        end;
-
-        SourceType := pSourceType;
+        SourceType := TSourceType(FieldByName('Type').AsInteger);
 
         if SourceType = stLogtail then begin
             SourceForm := TfrmLogtail.Create(nil);
             SourceForm.pnlMain.Parent := frmMain.pnlHidden;
-            SourceForm.Enabled := Enabled;
         end else if SourceType = stGateway then begin
             Source := TGatewaySource.Create(SourceIndex, Group, HABCallback);
         end else if SourceType = stSerial then begin
             Source := TSerialSource.Create(SourceIndex, Group, HABCallback);
-
-
 //        end else if SourceTypeText = 'DLFLDigi' then begin
 //            SourceType := stDLFLDigi;
 //            Form := TfrmDLFLDigiSource.Create(nil, HABDB, HabitatThread, SourceIndex);
@@ -218,10 +200,55 @@ begin
             Appearance.Font.Height := -24;
             Appearance.Font.Color := clWhite;
             AutoSize := True;
-            Caption := Code;
             Tag := SourceIndex;
             PopupMenu := menuSource;
             OnClick := DataSourceClick;
+        end;
+
+        LoadSourceSettings(SourceIndex);
+    end;
+end;
+
+procedure TfrmSources.LoadSourceSettings(SourceIndex: Integer);
+var
+    Settings, Setting, Value: String;
+begin
+    with HABSources[SourceIndex], DataModule1.tblSources do begin
+        Code := FieldByName('Code').AsString;
+        Description := FieldByName('Name').AsString;
+
+        Settings := FieldByName('Settings').AsString;
+
+        Upload := GetBooleanSetting('Upload', Settings);
+
+        // Add to source settings
+        SetSettingBoolean(Group, 'Enabled', FieldByName('Enabled').AsBoolean);
+        SetSettingString(Group, 'Host', FieldByName('Host').AsString);
+        SetSettingString(Group, 'Port', FieldByName('Port').AsString);
+
+        while Settings <> '' do begin
+            Setting := GetSettingName(Settings);
+            Value := GetSettingValue(Settings);
+            if (Setting <> '') and (Value <> '') then begin
+                SetSettingString(Group, Setting, Value);
+            end;
+        end;
+
+        if SourceForm <> nil then begin
+            SourceForm.Enabled := FieldByName('Enabled').AsBoolean;
+        end;
+
+        Indicator.Caption := Code;
+    end;
+end;
+
+procedure TfrmSources.ReloadSourceSettings(SourceIndex: Integer);
+begin
+    with HABSources[SourceIndex] do begin
+        with DataModule1.tblSources do begin
+            if FindKey([SourceID]) then begin
+                LoadSourceSettings(SourceIndex);
+            end;
         end;
     end;
 end;
@@ -230,11 +257,18 @@ end;
 procedure TfrmSources.NewPosition(SourceIndex: Integer; Position: THABPosition);
 var
     Index: Integer;
-    PositionString: String;
+    Callsign: String;
 begin
     HABSources[SourceIndex].LatestPosition := Position;
 
     if Position.PayloadID <> '' then begin
+        if HABSources[SourceIndex].Upload then begin
+            Callsign := 'M0RPI';            // !!!!
+            if Callsign <> '' then begin
+                HabitatUploader.SaveTelemetryToHabitat(SourceIndex, Position.Line, Callsign);
+            end;
+        end;
+
 //            if Position.PayloadDocID = '' then begin
 //                PositionString := Position.PayloadID + ' ** NO PAYLOAD DOC **';
 //            end else begin
@@ -304,15 +338,7 @@ begin
                 // Fill in settings
                 if ShowSettingsForm(SourceIndex) then begin
                     // Load source
-                    LoadSource(SourceIndex,
-                               FieldByName('ID').AsInteger,
-                               FieldByName('Enabled').AsBoolean,
-                               FieldByName('Code').AsString,
-                               FieldByName('Name').AsString,
-                               FieldByName('Host').AsString,
-                               FieldByName('Port').AsString,
-                               FieldByName('Settings').AsString,
-                               TSourceType(FieldByName('Type').AsInteger));
+                    LoadSource(SourceIndex);
                 end else begin
                     // Delete from table
                     Delete;
@@ -338,12 +364,12 @@ end;
 
 function TfrmSources.AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
 var
-    Bookmark: TBookmark;
+    MyBookmark: TBookmark;
 begin
     Result := False;
 
     with Table do begin
-        Bookmark := GetBookmark;
+        MyBookmark := GetBookmark;
         DisableControls;
         if FindKey([Position.PayloadID]) then begin
             Edit;
@@ -365,7 +391,7 @@ begin
 
         Post;
 
-        GotoBookmark(Bookmark);
+        GotoBookmark(MyBookmark);
 
         EnableControls;
     end;
@@ -455,13 +481,13 @@ begin
     end;
 end;
 
-procedure TfrmSources.HABCallback(ID: Integer; Connected: Boolean; Line: String; Position: THABPosition);
+procedure TfrmSources.HABCallback(SourceIndex: Integer; Connected: Boolean; Line: String; Position: THABPosition);
 var
     Callsign: String;
 begin
     // New Position
     if Position.InUse then begin
-        NewPosition(ID, Position);
+        NewPosition(SourceIndex, Position);
 
 //        if ID = SERIAL_SOURCE then begin
 //            if GetSettingBoolean('LoRaSerial', 'Habitat', False) then begin
@@ -518,7 +544,9 @@ begin
     // Which source?
     SourceIndex := TComponent(Sender).Tag;
 
-    ShowSettingsForm(SourceIndex);
+    if ShowSettingsForm(SourceIndex) then begin
+        ReloadSourceSettings(SourceIndex);
+    end;
 end;
 
 procedure TfrmSources.DeleteSourceClick(Sender: TObject);
@@ -572,5 +600,11 @@ begin
         SettingsForm.Free;
     end;
 end;
+
+procedure TfrmSources.HabitatStatusCallback(SourceID: Integer; Active, OK: Boolean);
+begin
+    // frmMain.UploadStatus(SourceID, Active, OK);
+end;
+
 
 end.

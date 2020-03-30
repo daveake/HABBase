@@ -6,6 +6,7 @@ inherited frmGatewaySettings: TfrmGatewaySettings
   TextHeight = 13
   inherited pnlCommon: TAdvPanel
     Height = 177
+    ExplicitHeight = 177
     FullHeight = 337
     object Label1: TLabel [2]
       Left = 32
@@ -61,15 +62,14 @@ inherited frmGatewaySettings: TfrmGatewaySettings
     inherited edtName: TEdit
       OnChange = edtHostChange
     end
-    inherited chKEnabled: TAdvOfficeCheckBox
-      OnClick = chKEnabledClick
-    end
     inherited btnSave: TAdvSmoothButton
       Top = 124
+      ExplicitTop = 124
       TMSStyle = 8
     end
     inherited btnCancel: TAdvSmoothButton
       Top = 124
+      ExplicitTop = 124
       TMSStyle = 8
     end
     object edtHost: TEdit
