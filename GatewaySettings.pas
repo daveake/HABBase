@@ -22,7 +22,6 @@ type
     Label6: TLabel;
     edtMode2: TEdit;
     procedure edtHostChange(Sender: TObject);
-    procedure chKEnabledClick(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -57,11 +56,6 @@ begin
 
     // Tell source things have changed
     inherited;
-end;
-
-procedure TfrmGatewaySettings.chKEnabledClick(Sender: TObject);
-begin
-    btnSave.Enabled := True;
 end;
 
 procedure TfrmGatewaySettings.edtHostChange(Sender: TObject);

@@ -26,7 +26,9 @@ uses
   SourceForm in 'SourceForm.pas' {frmSource},
   GatewaySource in '..\HABRx\GatewaySource.pas',
   SettingsForm in 'SettingsForm.pas' {frmSettings},
-  GatewaySettings in 'GatewaySettings.pas' {frmGatewaySettings};
+  GatewaySettings in 'GatewaySettings.pas' {frmGatewaySettings},
+  NewSource in 'NewSource.pas' {frmNewSource},
+  LoRaSerialSettings in 'LoRaSerialSettings.pas' {frmLoRaSerialSettings};
 
 {$R *.res}
 
@@ -34,6 +36,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmGatewaySettings, frmGatewaySettings);
   Application.Run;
 end.

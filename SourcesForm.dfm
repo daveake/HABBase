@@ -561,4 +561,24 @@ inherited frmSources: TfrmSources
     Text = ''
     FullHeight = 48
   end
+  object menuSource: TPopupMenu
+    Left = 512
+    Top = 352
+    object View1: TMenuItem
+      Caption = 'View Source'
+      Visible = False
+    end
+    object ModifySource: TMenuItem
+      Caption = 'Modify Source'
+      OnClick = ModifySourceClick
+    end
+    object DeleteSource: TMenuItem
+      Caption = 'Delete Source'
+      OnClick = DeleteSourceClick
+    end
+    object AddNewSource: TMenuItem
+      Caption = 'Add New Source'
+      OnClick = AddNewSourceClick
+    end
+  end
 end

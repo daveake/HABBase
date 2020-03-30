@@ -1,8 +1,11 @@
 inherited frmGatewaySettings: TfrmGatewaySettings
   Caption = 'Gateway Settings'
+  ClientHeight = 177
+  ExplicitHeight = 216
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlCommon: TAdvPanel
+    Height = 177
     FullHeight = 337
     object Label1: TLabel [2]
       Left = 32
@@ -62,9 +65,11 @@ inherited frmGatewaySettings: TfrmGatewaySettings
       OnClick = chKEnabledClick
     end
     inherited btnSave: TAdvSmoothButton
+      Top = 124
       TMSStyle = 8
     end
     inherited btnCancel: TAdvSmoothButton
+      Top = 124
       TMSStyle = 8
     end
     object edtHost: TEdit

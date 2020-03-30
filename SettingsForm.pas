@@ -18,7 +18,8 @@ type
     btnSave: TAdvSmoothButton;
     btnCancel: TAdvSmoothButton;
     procedure btnSaveClick(Sender: TObject);
-    procedure edtCodeClick(Sender: TObject);
+    procedure chKEnabledClick(Sender: TObject);
+    procedure edtCodeChange(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -30,7 +31,7 @@ type
     function GetSetting(FieldName, Settings: String): String;
   public
     { Public declarations }
-    procedure LoadForm(ID: Integer);
+    function LoadForm(ID: Integer): Boolean;
   end;
 
 
@@ -61,12 +62,17 @@ begin
     Close;
 end;
 
-procedure TfrmSettings.edtCodeClick(Sender: TObject);
+procedure TfrmSettings.chKEnabledClick(Sender: TObject);
 begin
     btnSave.Enabled := True;
 end;
 
-procedure TfrmSettings.LoadForm(ID: Integer);
+procedure TfrmSettings.edtCodeChange(Sender: TObject);
+begin
+    btnSave.Enabled := True;
+end;
+
+function TfrmSettings.LoadForm(ID: Integer): Boolean;
 begin
     SettingsID := ID;
     Group := ID.ToString;
@@ -79,7 +85,7 @@ begin
 
     Caption := Caption + ' - ' + Group + ': ' + edtCode.Text + ' (' + edtName.Text + ')';
 
-    ShowModal;
+    Result := ShowModal = mrOK;
 end;
 
 procedure TfrmSettings.ApplyChanges;

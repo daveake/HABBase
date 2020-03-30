@@ -93,7 +93,7 @@ object frmSettings: TfrmSettings
       Height = 21
       MaxLength = 2
       TabOrder = 0
-      OnClick = edtCodeClick
+      OnChange = edtCodeChange
     end
     object edtName: TEdit
       Left = 172
@@ -101,7 +101,7 @@ object frmSettings: TfrmSettings
       Width = 176
       Height = 21
       TabOrder = 1
-      OnClick = edtCodeClick
+      OnChange = edtCodeChange
     end
     object chKEnabled: TAdvOfficeCheckBox
       Left = 372
@@ -109,6 +109,7 @@ object frmSettings: TfrmSettings
       Width = 120
       Height = 20
       TabOrder = 2
+      OnClick = chKEnabledClick
       Alignment = taLeftJustify
       Caption = 'Enabled'
       ReturnIsTab = False

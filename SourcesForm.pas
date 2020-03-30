@@ -11,7 +11,7 @@ uses
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, AdvSmoothButton, AdvPanel,
   Source, SourceForm,
-  GatewaySource, SerialSource; // HabitatSource, UDPSource, SerialSource, BluetoothSource,
+  GatewaySource, SerialSource, Vcl.Menus; // HabitatSource, UDPSource, SerialSource, BluetoothSource,
 
 
 type
@@ -21,8 +21,8 @@ type
         Group:              String;
         // Enabled:            Boolean;
         Connected:          Boolean;
-//        Code:               String;
-//        Description:        String;
+        Code:               String;
+        Description:        String;
         SourceType:         TSourceType;
         SourceForm:         TfrmSource;
         Indicator:          TAdvSmoothStatusIndicator;
@@ -61,11 +61,19 @@ type
   TfrmSources = class(TfrmNormal)
     DBAdvGrid1: TDBAdvGrid;
     pnlStatus: TAdvPanel;
+    menuSource: TPopupMenu;
+    View1: TMenuItem;
+    ModifySource: TMenuItem;
+    DeleteSource: TMenuItem;
+    AddNewSource: TMenuItem;
+    procedure ModifySourceClick(Sender: TObject);
+    procedure DeleteSourceClick(Sender: TObject);
+    procedure AddNewSourceClick(Sender: TObject);
   private
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
     HABPayloads: Array[1..32] of TPayload;
-    procedure LoadSource(SourceIndex, ID: Integer; Enabled: Boolean; Code, Description, Host, Port, Settings: String; pSourceType: TSourceType);
+    procedure LoadSource(SourceIndex, ID: Integer; Enabled: Boolean; pCode, pDescription, Host, Port, Settings: String; pSourceType: TSourceType);
     function AddPayloadToFullTable(Position: THABPosition): Boolean;
     function AddPayloadToLiveTable(Position: THABPosition): Boolean;
     function AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
@@ -73,6 +81,8 @@ type
     function FindOrAddPayload(PayloadID: String): Integer;
     procedure HABCallback(ID: Integer; Connected: Boolean; Line: String; Position: THABPosition);
     procedure DataSourceClick(Sender: TObject);
+    function ShowSettingsForm(SourceIndex: Integer): Boolean;
+    function FindFreeSource: Integer;
   public
     { Public declarations }
     procedure LoadSources;
@@ -87,20 +97,21 @@ implementation
 
 {$R *.dfm}
 
-uses Data, Logtail, Main, ToolLog, Map, Miscellaneous, SettingsForm, GatewaySettings;
+uses Data, Logtail, Main, ToolLog, Map, Miscellaneous, SettingsForm, NewSource,
+     GatewaySettings, LoRaSerialSettings;
 
 procedure TfrmSources.LoadSources;
 var
-    Index: Integer;
+    SourceIndex: Integer;
 begin
     InitialiseSettings;
 
     with DataModule1.tblSources do begin
         First;
-        Index := 0;
+        SourceIndex := 0;
         while not EOF do begin
-            Inc(Index);
-            LoadSource(Index,
+            Inc(SourceIndex);
+            LoadSource(SourceIndex,
                        FieldByName('ID').AsInteger,
                        FieldByName('Enabled').AsBoolean,
                        FieldByName('Code').AsString,
@@ -114,6 +125,16 @@ begin
     end;
 end;
 
+procedure TfrmSources.ModifySourceClick(Sender: TObject);
+var
+    SourceIndex: Integer;
+begin
+    // Find source
+    SourceIndex := menuSource.PopupComponent.Tag;
+
+    ShowSettingsForm(SourceIndex);
+end;
+
 function GetSettingName(var Settings: String): String;
 begin
     Result := GetString(Settings, '=');
@@ -124,7 +145,7 @@ begin
     Result := GetString(Settings, ';');
 end;
 
-procedure TfrmSources.LoadSource(SourceIndex, ID: Integer; Enabled: Boolean; Code, Description, Host, Port, Settings: String; pSourceType: TSourceType);
+procedure TfrmSources.LoadSource(SourceIndex, ID: Integer; Enabled: Boolean; pCode, pDescription, Host, Port, Settings: String; pSourceType: TSourceType);
 var
     Setting, Value: String;
 begin
@@ -132,6 +153,8 @@ begin
         InUse := True;
         SourceID := ID;
         Group := ID.ToString;
+        Code := pCode;
+        Description := pDescription;
 
         // Add to settings
         SetSettingBoolean(Group, 'Enabled', Enabled);
@@ -197,7 +220,7 @@ begin
             AutoSize := True;
             Caption := Code;
             Tag := SourceIndex;
-            // PopupMenu := menuSource;
+            PopupMenu := menuSource;
             OnClick := DataSourceClick;
         end;
     end;
@@ -239,6 +262,67 @@ begin
 
        // Update indicator
         HABSources[SourceIndex].Indicator.Appearance.Fill.Color := clGreen;
+    end;
+end;
+
+
+function TfrmSources.FindFreeSource: Integer;
+var
+    i: Integer;
+begin
+    for i := Low(HABSources) to High(HABSources) do begin
+        if not HABSources[i].InUse then begin
+            Result := i;
+            Exit;
+        end;
+    end;
+
+    Result := 0;
+end;
+
+
+procedure TfrmSources.AddNewSourceClick(Sender: TObject);
+var
+    SourceIndex: Integer;
+begin
+    SourceIndex := FindFreeSource;
+
+    if SourceIndex > 0 then begin
+        // We can add a new source
+        frmNewSource := TfrmNewSource.Create(nil);
+
+        if frmNewSource.ShowModal = mrOK then begin
+
+            // Add to table
+            with DataModule1.tblSources do begin
+                Append;
+                FieldByName('Enabled').AsBoolean := True;
+                FieldByName('Type').AsInteger := frmNewSource.ComboBox1.ItemIndex;
+                Post;
+                Last;
+
+                // Fill in settings
+                if ShowSettingsForm(SourceIndex) then begin
+                    // Load source
+                    LoadSource(SourceIndex,
+                               FieldByName('ID').AsInteger,
+                               FieldByName('Enabled').AsBoolean,
+                               FieldByName('Code').AsString,
+                               FieldByName('Name').AsString,
+                               FieldByName('Host').AsString,
+                               FieldByName('Port').AsString,
+                               FieldByName('Settings').AsString,
+                               TSourceType(FieldByName('Type').AsInteger));
+                end else begin
+                    // Delete from table
+                    Delete;
+                end;
+
+                SaveToFile(ExtractFilePath(Application.ExeName) + 'sources.json');
+            end;
+        end;
+
+        frmNewSource.Free;
     end;
 end;
 
@@ -430,23 +514,61 @@ end;
 procedure TfrmSources.DataSourceClick(Sender: TObject);
 var
     SourceIndex: Integer;
-    SettingsForm: TfrmSettings;
 begin
     // Which source?
     SourceIndex := TComponent(Sender).Tag;
-    SettingsForm := nil;
+
+    ShowSettingsForm(SourceIndex);
+end;
+
+procedure TfrmSources.DeleteSourceClick(Sender: TObject);
+var
+    SourceIndex: Integer;
+begin
+    SourceIndex := menuSource.PopupComponent.Tag;
+
+    with HABSources[SourceIndex] do begin
+        if MessageDlg('Are you sure you want to permanently remove ' + Code + ': ' + Description + ' ?',
+                  mtWarning, mbOKCancel, 0) = mrOK then begin
+
+            // Delete from table
+            with DataModule1.tblSources do begin
+                if FindKey([SourceID]) then begin
+                    Delete;
+                end;
+            end;
+
+            // Delete from list
+            if SourceForm <> nil then begin
+                SourceForm.Free;
+                SourceForm := nil;
+            end;
+
+            Indicator.Free;
+            InUse := False;
+            SourceID := 0;
+        end;
+    end;
+end;
+
+function TfrmSources.ShowSettingsForm(SourceIndex: Integer): Boolean;
+var
+    SettingsForm: TfrmSettings;
+begin
+    Result := False;
 
     case HABSources[SourceIndex].SourceType of
         stLogtail:  SettingsForm := nil;
         stGateway:  SettingsForm := TfrmGatewaySettings.Create(nil);
+        stSerial:   SettingsForm := TfrmLoRaSerialSettings.Create(nil);
         stTCP:      SettingsForm := nil;
         stUDP:      SettingsForm := nil;
-        stSerial:   SettingsForm := nil;
-        // stDLFLDigi, stSerial, stHabitat, stUDP);
+        stHabitat:  SettingsForm := nil;
+        else        SettingsForm := nil;
     end;
 
     if SettingsForm <> nil then begin
-        SettingsForm.LoadForm(HABSources[SourceIndex].SourceID);
+        Result := SettingsForm.LoadForm(HABSources[SourceIndex].SourceID);
         SettingsForm.Free;
     end;
 end;
