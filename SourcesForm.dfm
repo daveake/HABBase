@@ -7,9 +7,11 @@ inherited frmSources: TfrmSources
   inherited pnlMain: TPanel
     Width = 1065
     Height = 422
+    ExplicitWidth = 1065
     ExplicitHeight = 422
     inherited Panel1: TPanel
       Width = 1065
+      ExplicitWidth = 1065
       inherited lblTitle: TLabel
         Width = 1048
         Caption = 'Sources'
@@ -526,7 +528,6 @@ inherited frmSources: TfrmSources
         80000001C0000003C0000003E0000007F000000FF800001FFC00003FFF0000FF
         FFC003FF}
       ShowUnicode = False
-      ExplicitWidth = 833
       ColWidths = (
         20
         64
@@ -590,7 +591,6 @@ inherited frmSources: TfrmSources
     StatusBar.ColorTo = 14602191
     StatusBar.GradientDirection = gdVertical
     Text = ''
-    ExplicitWidth = 833
     FullHeight = 48
     object AdvSmoothButton1: TAdvSmoothButton
       AlignWithMargins = True
@@ -622,8 +622,6 @@ inherited frmSources: TfrmSources
       TabOrder = 0
       Version = '2.2.1.2'
       OnClick = AdvSmoothButton1Click
-      ExplicitLeft = 136
-      ExplicitHeight = 35
       TMSStyle = 8
     end
     object AdvSmoothButton2: TAdvSmoothButton
@@ -656,8 +654,6 @@ inherited frmSources: TfrmSources
       TabOrder = 1
       Version = '2.2.1.2'
       OnClick = AddNewSourceClick
-      ExplicitLeft = 230
-      ExplicitTop = 9
       TMSStyle = 8
     end
   end

@@ -31,7 +31,8 @@ uses
   LoRaSerialSettings in 'LoRaSerialSettings.pas' {frmLoRaSerialSettings},
   Misc in 'Misc.pas',
   Habitat in '..\HABRx\Habitat.pas',
-  SystemSettings in 'SystemSettings.pas' {frmSystemSettings};
+  SystemSettings in 'SystemSettings.pas' {frmSystemSettings},
+  LogtailSettings in 'LogtailSettings.pas' {frmLogtailSettings};
 
 {$R *.res}
 

@@ -107,7 +107,7 @@ implementation
 {$R *.dfm}
 
 uses Data, Logtail, Main, ToolLog, Map, Miscellaneous, SettingsForm, NewSource, Misc,
-     SystemSettings, GatewaySettings, LoRaSerialSettings;
+     SystemSettings, LogtailSettings, GatewaySettings, LoRaSerialSettings;
 
 procedure TfrmSources.LoadSources;
 var
@@ -618,7 +618,7 @@ begin
     Result := False;
 
     case HABSources[SourceIndex].SourceType of
-        stLogtail:  SettingsForm := nil;
+        stLogtail:  SettingsForm := TfrmLogtailSettings.Create(nil);
         stGateway:  SettingsForm := TfrmGatewaySettings.Create(nil);
         stSerial:   SettingsForm := TfrmLoRaSerialSettings.Create(nil);
         stTCP:      SettingsForm := nil;
@@ -629,6 +629,11 @@ begin
 
     if SettingsForm <> nil then begin
         Result := SettingsForm.LoadForm(HABSources[SourceIndex].SourceID);
+
+        if HABSources[SourceIndex].SourceForm <> nil then begin
+            HABSources[SourceIndex].SourceForm.Enabled := SettingsForm.chKEnabled.Checked;
+        end;
+
         SettingsForm.Free;
     end;
 end;
