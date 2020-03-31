@@ -32,6 +32,21 @@ type
     tblLivePayloadsAltitude: TFloatField;
     tblLivePayloadsDistance: TFloatField;
     tblLivePayloadsReceivedLocally: TBooleanField;
+    tblSettingsCallsign: TStringField;
+    tblSettingsFormLeft: TIntegerField;
+    tblSettingsFormTop: TIntegerField;
+    tblSettingsFormWidth: TIntegerField;
+    tblSettingsFormHeight: TIntegerField;
+    tblSettingsTopLeftHeight: TIntegerField;
+    tblSettingsTopHeight: TIntegerField;
+    tblSettingsBottomLeftHeight: TIntegerField;
+    tblSettingsBottomHeight: TIntegerField;
+    tblSettingsTopMiddleHeight: TIntegerField;
+    tblSettingsLatitude: TFloatField;
+    tblSettingsLongitude: TFloatField;
+    tblSettingsAltitude: TFloatField;
+    srcSettings: TDataSource;
+    tblSettingsLeftWidth: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

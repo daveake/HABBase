@@ -1,13 +1,17 @@
 inherited frmSources: TfrmSources
   Caption = 'Sources'
+  ClientWidth = 1065
+  ExplicitWidth = 1081
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
+    Width = 1065
     Height = 422
     ExplicitHeight = 422
     inherited Panel1: TPanel
+      Width = 1065
       inherited lblTitle: TLabel
-        Width = 816
+        Width = 1048
         Caption = 'Sources'
         ExplicitWidth = 46
       end
@@ -15,7 +19,7 @@ inherited frmSources: TfrmSources
     object DBAdvGrid1: TDBAdvGrid
       Left = 0
       Top = 24
-      Width = 833
+      Width = 1065
       Height = 398
       Cursor = crDefault
       Align = alClient
@@ -382,7 +386,7 @@ inherited frmSources: TfrmSources
           PrintFont.Height = -11
           PrintFont.Name = 'Tahoma'
           PrintFont.Style = []
-          Width = 178
+          Width = 411
         end>
       DataSource = DataModule1.srcSources
       InvalidPicture.Data = {
@@ -522,6 +526,7 @@ inherited frmSources: TfrmSources
         80000001C0000003C0000003E0000007F000000FF800001FFC00003FFF0000FF
         FFC003FF}
       ShowUnicode = False
+      ExplicitWidth = 833
       ColWidths = (
         20
         64
@@ -531,7 +536,7 @@ inherited frmSources: TfrmSources
         64
         64
         244
-        178)
+        411)
       RowHeights = (
         22
         22)
@@ -540,14 +545,14 @@ inherited frmSources: TfrmSources
   object pnlStatus: TAdvPanel
     Left = 0
     Top = 422
-    Width = 833
+    Width = 1065
     Height = 48
     Align = alBottom
     BevelOuter = bvNone
     Color = 15395562
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
@@ -585,7 +590,76 @@ inherited frmSources: TfrmSources
     StatusBar.ColorTo = 14602191
     StatusBar.GradientDirection = gdVertical
     Text = ''
+    ExplicitWidth = 833
     FullHeight = 48
+    object AdvSmoothButton1: TAdvSmoothButton
+      AlignWithMargins = True
+      Left = 6
+      Top = 6
+      Width = 120
+      Height = 36
+      Margins.Left = 6
+      Margins.Top = 6
+      Margins.Right = 6
+      Margins.Bottom = 6
+      Align = alLeft
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.GradientMirrorType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Fill.Glow = gmNone
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      Caption = 'Settings'
+      TabOrder = 0
+      Version = '2.2.1.2'
+      OnClick = AdvSmoothButton1Click
+      ExplicitLeft = 136
+      ExplicitHeight = 35
+      TMSStyle = 8
+    end
+    object AdvSmoothButton2: TAdvSmoothButton
+      AlignWithMargins = True
+      Left = 138
+      Top = 6
+      Width = 120
+      Height = 36
+      Margins.Left = 6
+      Margins.Top = 6
+      Margins.Right = 6
+      Margins.Bottom = 6
+      Align = alLeft
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.GradientMirrorType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Fill.Glow = gmNone
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      Caption = 'Add Source'
+      TabOrder = 1
+      Version = '2.2.1.2'
+      OnClick = AddNewSourceClick
+      ExplicitLeft = 230
+      ExplicitTop = 9
+      TMSStyle = 8
+    end
   end
   object menuSource: TPopupMenu
     Left = 512

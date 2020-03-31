@@ -30,7 +30,8 @@ uses
   NewSource in 'NewSource.pas' {frmNewSource},
   LoRaSerialSettings in 'LoRaSerialSettings.pas' {frmLoRaSerialSettings},
   Misc in 'Misc.pas',
-  Habitat in '..\HABRx\Habitat.pas';
+  Habitat in '..\HABRx\Habitat.pas',
+  SystemSettings in 'SystemSettings.pas' {frmSystemSettings};
 
 {$R *.res}
 

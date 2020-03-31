@@ -22,9 +22,6 @@ inherited frmToolLog: TfrmToolLog
       Align = alClient
       ItemHeight = 13
       TabOrder = 1
-      ExplicitTop = 0
-      ExplicitWidth = 329
-      ExplicitHeight = 225
     end
   end
 end

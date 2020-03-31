@@ -38,6 +38,7 @@ type
     pnlButtons: TAdvPanel;
     pnlStatus: TPanel;
     pnlHidden: TPanel;
+    AdvSplitter2: TAdvSplitter;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
@@ -280,9 +281,11 @@ begin
 
         // Panels
         pnlPayloads.Height := FieldByName('TopLeftHeight').AsInteger;
+        pnlWhiteList.Height := FieldByName('TopMiddleHeight').AsInteger;
         pnlSources.Height := FieldByName('BottomLeftHeight').AsInteger;
         pnlTop.Height := FieldByName('TopHeight').AsInteger;
         pnlBottom.Height := FieldByName('BottomHeight').AsInteger;
+        pnlLeft.Width := FieldByName('LeftWidth').AsInteger;
     end;
 end;
 
@@ -298,9 +301,11 @@ begin
 
         // Panels
         FieldByName('TopLeftHeight').AsInteger := pnlPayloads.Height;
+        FieldByName('TopMiddleHeight').AsInteger := pnlWhiteList.Height;
         FieldByName('BottomLeftHeight').AsInteger := pnlSources.Height;
         FieldByName('TopHeight').AsInteger := pnlTop.Height;
         FieldByName('BottomHeight').AsInteger := pnlBottom.Height;
+        FieldByName('LeftWidth').AsInteger := pnlLeft.Width;
 
         Post;
         SaveToFile(ExtractFilePath(Application.ExeName) + 'settings.json');

@@ -71,11 +71,26 @@ object frmMain: TfrmMain
       ExplicitLeft = 32
       ExplicitWidth = 265
     end
-    object pnlLog: TPanel
+    object AdvSplitter2: TAdvSplitter
       Left = 0
       Top = 361
       Width = 329
-      Height = 201
+      Height = 16
+      Cursor = crVSplit
+      Align = alTop
+      Appearance.BorderColor = clNone
+      Appearance.BorderColorHot = clNone
+      Appearance.Color = clWhite
+      Appearance.ColorTo = clSilver
+      Appearance.ColorHot = clWhite
+      Appearance.ColorHotTo = clGray
+      GripStyle = sgDots
+    end
+    object pnlLog: TPanel
+      Left = 0
+      Top = 377
+      Width = 329
+      Height = 185
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0

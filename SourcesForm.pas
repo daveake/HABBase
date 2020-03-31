@@ -68,9 +68,12 @@ type
     ModifySource: TMenuItem;
     DeleteSource: TMenuItem;
     AddNewSource: TMenuItem;
+    AdvSmoothButton1: TAdvSmoothButton;
+    AdvSmoothButton2: TAdvSmoothButton;
     procedure ModifySourceClick(Sender: TObject);
     procedure DeleteSourceClick(Sender: TObject);
     procedure AddNewSourceClick(Sender: TObject);
+    procedure AdvSmoothButton1Click(Sender: TObject);
   private
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
@@ -104,7 +107,7 @@ implementation
 {$R *.dfm}
 
 uses Data, Logtail, Main, ToolLog, Map, Miscellaneous, SettingsForm, NewSource, Misc,
-     GatewaySettings, LoRaSerialSettings;
+     SystemSettings, GatewaySettings, LoRaSerialSettings;
 
 procedure TfrmSources.LoadSources;
 var
@@ -156,6 +159,29 @@ begin
         SourceID := FieldByName('ID').AsInteger;
         Group := SourceID.ToString;
 
+        Indicator := TAdvSmoothStatusIndicator.Create(Self);
+        with Indicator do begin
+            Parent := pnlStatus;
+            Align := alRight;
+            AlignWithMargins := True;
+            BorderWidth := 1;
+            Appearance.Fill.Color := clGray;
+            Appearance.Fill.ColorMirror := clNone;
+            Appearance.Fill.ColorMirrorTo := clNone;
+            Appearance.Fill.GradientType := TAdvGradientType.gtSolid;
+            Appearance.Fill.BorderColor := 3355443;
+            Appearance.Fill.Rounding := 18;
+            Appearance.Fill.ShadowOffset := 0;
+            Appearance.Font.Height := -24;
+            Appearance.Font.Color := clWhite;
+            AutoSize := True;
+            Tag := SourceIndex;
+            PopupMenu := menuSource;
+            OnClick := DataSourceClick;
+        end;
+
+        LoadSourceSettings(SourceIndex);
+
         SourceType := TSourceType(FieldByName('Type').AsInteger);
 
         if SourceType = stLogtail then begin
@@ -184,29 +210,6 @@ begin
         if SourceForm <> nil then begin
             SourceForm.SourceIndex := SourceIndex;
         end;
-
-        Indicator := TAdvSmoothStatusIndicator.Create(Self);
-        with Indicator do begin
-            Parent := pnlStatus;
-            Align := alRight;
-            AlignWithMargins := True;
-            BorderWidth := 1;
-            Appearance.Fill.Color := clGray;
-            Appearance.Fill.ColorMirror := clNone;
-            Appearance.Fill.ColorMirrorTo := clNone;
-            Appearance.Fill.GradientType := TAdvGradientType.gtSolid;
-            Appearance.Fill.BorderColor := 3355443;
-            Appearance.Fill.Rounding := 18;
-            Appearance.Fill.ShadowOffset := 0;
-            Appearance.Font.Height := -24;
-            Appearance.Font.Color := clWhite;
-            AutoSize := True;
-            Tag := SourceIndex;
-            PopupMenu := menuSource;
-            OnClick := DataSourceClick;
-        end;
-
-        LoadSourceSettings(SourceIndex);
     end;
 end;
 
@@ -263,12 +266,21 @@ begin
     HABSources[SourceIndex].LatestPosition := Position;
 
     if Position.PayloadID <> '' then begin
+        // Upload
         if HABSources[SourceIndex].Upload then begin
-            Callsign := 'M0RPI';            // !!!!
+            Callsign := DataModule1.tblSettings.FieldByName('Callsign').AsString;
             if Callsign <> '' then begin
                 HabitatUploader.SaveTelemetryToHabitat(SourceIndex, Position.Line, Callsign);
             end;
         end;
+
+        // Calculate distance
+        if (not DataModule1.tblSettings.FieldByName('Latitude').IsNull) and (not DataModule1.tblSettings.FieldByName('Longitude').IsNull) then begin
+            Position.Distance := CalculateDistance(Position.Latitude, Position.Longitude,
+                                                   DataModule1.tblSettings.FieldByName('Latitude').Asfloat,
+                                                   DataModule1.tblSettings.FieldByName('Longitude').AsFloat) / 1000.0;
+        end;
+
 
 //            if Position.PayloadDocID = '' then begin
 //                PositionString := Position.PayloadID + ' ** NO PAYLOAD DOC **';
@@ -285,7 +297,8 @@ begin
 
         if frmMain.PayloadInWhiteList(Position) then begin
             if AddPayloadToLiveTable(Position) then begin
-                frmToolLog.lstLog.ItemIndex := frmToolLog.lstLog.Items.Add('Added ' + Position.PayloadID);
+                frmToolLog.AddToLog('Added Payload ' + Position.PayloadID + ', Rx by ' + HABSources[SourceIndex].Code + ' (' + HABSources[SourceIndex].Description + ')');
+
                 Index := AddPayloadToOurList(Position);
 
                 if Index > 0 then begin
@@ -403,6 +416,15 @@ begin
 end;
 
 
+procedure TfrmSources.AdvSmoothButton1Click(Sender: TObject);
+var
+    frmSystemSettings: TfrmSystemSettings;
+begin
+    frmSystemSettings := TfrmSystemSettings.Create(nil);
+    frmSystemSettings.ShowModal;
+    frmSystemSettings.Free;
+end;
+
 function TfrmSources.AddPayloadToOurList(Position: THABPosition): Integer;
 const
     ColourTexts: Array[0..3] of String = ('blue', 'red', 'green', 'yellow');
@@ -500,7 +522,7 @@ begin
     end;
 
     // Update status
-    if Status <> HABSources[SourceIndex].Status then begin
+    if (Status <> '') and (Status <> HABSources[SourceIndex].Status) then begin
         HABSources[SourceIndex].Status := Status;
         with DataModule1.tblSources do begin
             MyBookmark := GetBookmark;
@@ -512,6 +534,10 @@ begin
                 end;
                 GotoBookmark(MyBookmark);
             end;
+        end;
+
+        if not Position.InUse then begin
+            frmToolLog.AddToLog('Source ' + HABSources[SourceIndex].Code + ': ' + Status);
         end;
     end;
 
