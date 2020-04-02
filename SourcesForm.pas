@@ -40,13 +40,6 @@ type
     end;
 
 type
-    TPayloadMasks = record
-        Masks:      Array[1..32] of TPayloadMask;
-        Count:      Integer;
-    end;
-
-
-type
   TfrmSources = class(TfrmNormal)
     scrollMain: TScrollBox;
   private
@@ -232,6 +225,7 @@ end;
 procedure TfrmSources.NewPosition(SourceIndex: Integer; Position: THABPosition);
 var
     Callsign: String;
+    PositionIsNew: Boolean;
 begin
     HABSources[SourceIndex].LatestPosition := Position;
 
@@ -256,7 +250,7 @@ begin
     end;
 
     // Add to our payload list
-    frmPayloads.NewPosition(Position, HABSources[SourceIndex].Code, HABSources[SourceIndex].Description);
+    PositionIsNew := frmPayloads.NewPosition(Position, HABSources[SourceIndex].Code, HABSources[SourceIndex].Description);
 
     // Upload to habitat
     if HABSources[SourceIndex].Upload then begin
@@ -269,7 +263,9 @@ begin
     ShowSourceStatus(SourceIndex);
 
     // Add to source history
-    HABSources[SourceIndex].SourceForm.AddPosition(Position);
+    if PositionIsNew or not Position.ReceivedRemotely then begin
+        HABSources[SourceIndex].SourceForm.AddPosition(Position);
+    end;
 end;
 
 procedure TfrmSources.ShowSourceStatus(SourceIndex: Integer);
@@ -365,7 +361,9 @@ begin
 
     // New Position
     if Position.InUse then begin
-        NewPosition(SourceIndex, Position);
+        if Position.PayloadID <> '' then begin
+            NewPosition(SourceIndex, Position);
+        end;
         Status := Position.Line;
     end else if Line <> '' then begin
         Status := Line;
