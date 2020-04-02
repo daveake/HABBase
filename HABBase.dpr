@@ -32,7 +32,8 @@ uses
   Misc in 'Misc.pas',
   Habitat in '..\HABRx\Habitat.pas',
   SystemSettings in 'SystemSettings.pas' {frmSystemSettings},
-  LogtailSettings in 'LogtailSettings.pas' {frmLogtailSettings};
+  LogtailSettings in 'LogtailSettings.pas' {frmLogtailSettings},
+  Payload in 'Payload.pas' {frmPayload};
 
 {$R *.res}
 

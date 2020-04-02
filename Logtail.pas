@@ -6,7 +6,10 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, SourceForm, Vcl.ExtCtrls, Vcl.OleCtrls,
   SHDocVw, Vcl.StdCtrls, MSHTML, ActiveX, DateUtils,
-  Source;
+  Source, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Menus;
 
 type
   TfrmLogtail = class(TfrmSource)
@@ -36,6 +39,7 @@ const
 var
     Strings: TStringList;
     Document: IHTMLDocument2;
+    Position: THABPosition;
 begin
     if Enabled then begin
         Timer1.Enabled := False;
@@ -44,7 +48,9 @@ begin
             if FirstTime then begin
                 FirstTime := False;
                 WebBrowser1.Navigate('http://habitat.habhub.org/logtail/');
-                frmSources.ShowConnected(SourceIndex, True);
+                // frmSources.ShowConnected(SourceIndex, True);
+                Position := Default(THABPosition);
+                frmSources.HABCallback(SourceIndex, True, 'Connected to habhub', Position);
             end else begin
                 Strings := TStringList.Create;
                 try
@@ -81,9 +87,11 @@ begin
             for i := Strings.Count-1 downto 0 do begin
                 if ProcessLogtailLine(Strings[i], Position) then begin
                     Position.ReceivedRemotely := True;
+                    Position.InUse := True;
 
                     // Add to list
-                    frmSources.NewPosition(SourceIndex, Position);
+//                    frmSources.NewPosition(SourceIndex, Position);
+                      frmSources.HABCallback(SourceIndex, True, '', Position);
 
                     // Clear for next payload
                     Position := Default(THABPosition);
@@ -198,6 +206,8 @@ begin
             if GetString(Line, '"') = Position.PayloadID then begin
                 Result := True;
             end;
+        end else if Command = 'sentence_id' then begin
+            Position.Counter := Round(GetFloat(Line, ','));
         end;
     end;
 end;

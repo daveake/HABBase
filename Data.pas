@@ -9,7 +9,7 @@ uses
   FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, FireDAC.VCLUI.Wait,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Data.DB,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Stan.StorageJSON,
-  VCL.Forms, FireDAC.Stan.StorageBin;
+  VCL.Forms, FireDAC.Stan.StorageBin, Source;
 
 type
   TDataModule1 = class(TDataModule)
@@ -50,9 +50,12 @@ type
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
+    function AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
   public
     { Public declarations }
     procedure UpdateSource(ID: Integer; PayloadID: String);
+    function AddPayloadToLiveTable(Position: THABPosition): Boolean;
+    function AddPayloadToFullTable(Position: THABPosition): Boolean;
   end;
 
 var
@@ -91,6 +94,52 @@ begin
         end;
     end;
 end;
+
+function TDataModule1.AddPayloadToFullTable(Position: THABPosition): Boolean;
+begin
+    Result := AddPayloadToTable(Position, tblAllPayloads);
+end;
+
+function TDataModule1.AddPayloadToLiveTable(Position: THABPosition): Boolean;
+begin
+    Result := AddPayloadToTable(Position, tblLivePayloads);
+end;
+
+function TDataModule1.AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
+var
+    MyBookmark: TBookmark;
+begin
+    Result := False;
+
+    with Table do begin
+        MyBookmark := GetBookmark;
+        DisableControls;
+        if FindKey([Position.PayloadID]) then begin
+            Edit;
+        end else begin
+            Append;
+            FieldByName('PayloadID').AsString := Position.PayloadID;
+            Result := True;
+        end;
+
+        FieldByName('PayloadID').AsString := Position.PayloadID;
+        // FieldByName('DocID').AsString := Position.PayloadDocID;
+        FieldByName('Counter').AsInteger := Position.Counter;
+        FieldByName('TimeStamp').AsDateTime := Position.TimeStamp;
+        FieldByName('Latitude').AsFloat := Position.Latitude;
+        FieldByName('Longitude').AsFloat := Position.Longitude;
+        FieldByName('Altitude').AsFloat := Position.Altitude;
+        FieldByName('Distance').AsFloat := Position.Distance;
+        FieldByName('ReceivedLocally').AsBoolean := False;
+
+        Post;
+
+        GotoBookmark(MyBookmark);
+
+        EnableControls;
+    end;
+end;
+
 
 
 end.

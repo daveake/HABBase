@@ -17,9 +17,9 @@ object frmMain: TfrmMain
   TextHeight = 13
   object AdvSplitter1: TAdvSplitter
     Left = 329
-    Top = 41
+    Top = 0
     Width = 16
-    Height = 758
+    Height = 847
     Appearance.BorderColor = clNone
     Appearance.BorderColorHot = clNone
     Appearance.Color = clWhite
@@ -27,19 +27,22 @@ object frmMain: TfrmMain
     Appearance.ColorHot = clWhite
     Appearance.ColorHotTo = clGray
     GripStyle = sgDots
+    ExplicitTop = 41
     ExplicitHeight = 757
   end
   object pnlLeft: TPanel
     Left = 0
-    Top = 41
+    Top = 0
     Width = 329
-    Height = 758
+    Height = 847
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 41
+    ExplicitHeight = 758
     object AdvSplitter3: TAdvSplitter
       Left = 0
-      Top = 562
+      Top = 553
       Width = 329
       Height = 16
       Cursor = crVSplit
@@ -90,10 +93,11 @@ object frmMain: TfrmMain
       Left = 0
       Top = 377
       Width = 329
-      Height = 185
+      Height = 176
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitHeight = 185
     end
     object pnlWhiteList: TPanel
       Left = 0
@@ -103,15 +107,18 @@ object frmMain: TfrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
+      ExplicitTop = 179
     end
     object pnlSources: TPanel
       Left = 0
-      Top = 578
+      Top = 569
       Width = 329
       Height = 180
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
+      ExplicitLeft = -6
+      ExplicitTop = 512
     end
     object pnlPayloads: TPanel
       Left = 0
@@ -122,15 +129,94 @@ object frmMain: TfrmMain
       BevelOuter = bvNone
       TabOrder = 3
     end
+    object AdvSmoothButton2: TAdvSmoothButton
+      AlignWithMargins = True
+      Left = 6
+      Top = 755
+      Width = 317
+      Height = 40
+      Margins.Left = 6
+      Margins.Top = 6
+      Margins.Right = 6
+      Align = alBottom
+      Appearance.Font.Charset = DEFAULT_CHARSET
+      Appearance.Font.Color = 2303013
+      Appearance.Font.Height = -11
+      Appearance.Font.Name = 'Tahoma'
+      Appearance.Font.Style = []
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.GradientMirrorType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Fill.Glow = gmNone
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      Caption = 'Add Source'
+      ParentFont = False
+      TabOrder = 4
+      Version = '2.2.1.2'
+      OnClick = AdvSmoothButton2Click
+      ExplicitLeft = 3
+      TMSStyle = 8
+    end
+    object AdvSmoothButton1: TAdvSmoothButton
+      AlignWithMargins = True
+      Left = 6
+      Top = 801
+      Width = 317
+      Height = 40
+      Margins.Left = 6
+      Margins.Right = 6
+      Margins.Bottom = 6
+      Align = alBottom
+      Appearance.Font.Charset = DEFAULT_CHARSET
+      Appearance.Font.Color = 2303013
+      Appearance.Font.Height = -11
+      Appearance.Font.Name = 'Tahoma'
+      Appearance.Font.Style = []
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.GradientMirrorType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Fill.Glow = gmNone
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      Caption = 'Settings'
+      ParentFont = False
+      TabOrder = 5
+      Version = '2.2.1.2'
+      OnClick = AdvSmoothButton1Click
+      ExplicitLeft = 3
+      ExplicitTop = 840
+      TMSStyle = 8
+    end
   end
   object pnlMain: TPanel
     Left = 345
-    Top = 41
+    Top = 0
     Width = 1053
-    Height = 758
+    Height = 847
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 41
+    ExplicitHeight = 758
     object AdvSplitter4: TAdvSplitter
       Left = 0
       Top = 201
@@ -150,7 +236,7 @@ object frmMain: TfrmMain
     end
     object AdvSplitter5: TAdvSplitter
       Left = 0
-      Top = 537
+      Top = 626
       Width = 1053
       Height = 16
       Cursor = crVSplit
@@ -170,10 +256,12 @@ object frmMain: TfrmMain
       Left = 0
       Top = 217
       Width = 1053
-      Height = 320
+      Height = 409
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitLeft = 6
+      ExplicitTop = 223
     end
     object pnlTop: TPanel
       Left = 0
@@ -186,80 +274,13 @@ object frmMain: TfrmMain
     end
     object pnlBottom: TPanel
       Left = 0
-      Top = 553
+      Top = 642
       Width = 1053
       Height = 205
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
-    end
-  end
-  object pnlButtons: TAdvPanel
-    Left = 0
-    Top = 0
-    Width = 1398
-    Height = 41
-    Align = alTop
-    BevelOuter = bvNone
-    Color = 15395562
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 2
-    UseDockManager = True
-    Version = '2.5.10.2'
-    BorderColor = clGray
-    Caption.Color = 15722471
-    Caption.ColorTo = 11176072
-    Caption.Font.Charset = DEFAULT_CHARSET
-    Caption.Font.Color = clBlack
-    Caption.Font.Height = -11
-    Caption.Font.Name = 'Tahoma'
-    Caption.Font.Style = []
-    Caption.GradientDirection = gdVertical
-    Caption.Height = 24
-    Caption.Indent = 2
-    Caption.ShadeLight = 255
-    CollapsColor = clHighlight
-    CollapsDelay = 0
-    ColorTo = 13948116
-    ColorMirror = 13948116
-    ColorMirrorTo = clSilver
-    DoubleBuffered = True
-    ShadowColor = clBlack
-    ShadowOffset = 0
-    StatusBar.BorderColor = clNone
-    StatusBar.BorderStyle = bsSingle
-    StatusBar.Font.Charset = DEFAULT_CHARSET
-    StatusBar.Font.Color = clBlack
-    StatusBar.Font.Height = -11
-    StatusBar.Font.Name = 'Tahoma'
-    StatusBar.Font.Style = []
-    StatusBar.Color = 12560553
-    StatusBar.ColorTo = 14602191
-    StatusBar.GradientDirection = gdVertical
-    Text = ''
-    FullHeight = 42
-  end
-  object pnlStatus: TPanel
-    Left = 0
-    Top = 799
-    Width = 1398
-    Height = 48
-    Align = alBottom
-    BevelOuter = bvNone
-    TabOrder = 3
-    object pnlHidden: TPanel
-      Left = 1398
-      Top = 0
-      Width = 0
-      Height = 48
-      Align = alRight
-      BevelOuter = bvNone
-      TabOrder = 0
+      ExplicitTop = 553
     end
   end
 end

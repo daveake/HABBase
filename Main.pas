@@ -35,12 +35,13 @@ type
     pnlBottom: TPanel;
     pnlPayloads: TPanel;
     AdvSplitter6: TAdvSplitter;
-    pnlButtons: TAdvPanel;
-    pnlStatus: TPanel;
-    pnlHidden: TPanel;
     AdvSplitter2: TAdvSplitter;
+    AdvSmoothButton2: TAdvSmoothButton;
+    AdvSmoothButton1: TAdvSmoothButton;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure AdvSmoothButton2Click(Sender: TObject);
+    procedure AdvSmoothButton1Click(Sender: TObject);
   private
     { Private declarations }
     PayloadMasks: TPayloadMasks;
@@ -68,9 +69,24 @@ uses Data,
      // Main Forms
      Map, Payloads,
      // Sources
-     SourcesForm;
+     SourcesForm,
+     SystemSettings;
 
 {$R *.dfm}
+
+procedure TfrmMain.AdvSmoothButton1Click(Sender: TObject);
+var
+    frmSystemSettings: TfrmSystemSettings;
+begin
+    frmSystemSettings := TfrmSystemSettings.Create(nil);
+    frmSystemSettings.ShowModal;
+    frmSystemSettings.Free;
+end;
+
+procedure TfrmMain.AdvSmoothButton2Click(Sender: TObject);
+begin
+    frmSources.AddNewSource;
+end;
 
 procedure TfrmMain.FormActivate(Sender: TObject);
 const
@@ -132,7 +148,7 @@ procedure TfrmMain.LoadSources;
 begin
     frmSources := TfrmSources.Create(nil);
     frmSources.pnlMain.Parent := pnlBottom;
-    frmSources.pnlStatus.Parent := pnlStatus;
+    // frmSources.pnlStatus.Parent := pnlStatus;
     frmSources.LoadSources;
 end;
 

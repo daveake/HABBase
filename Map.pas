@@ -39,6 +39,8 @@ implementation
 
 {$R *.dfm}
 
+uses Data;
+
 // IF THE FOLLOWING LINE GIVES AN ERROR
 
 {$INCLUDE 'key.pas'}
@@ -64,6 +66,11 @@ begin
         ImageFolder := ParamStr(1) + '\Images\';
     end else begin
         ImageFolder := ExtractFilePath(Application.ExeName) + 'Images\';
+    end;
+
+    if (not DataModule1.tblSettings.FieldByName('Latitude').IsNull) and (not DataModule1.tblSettings.FieldByName('Longitude').IsNull) then begin
+        GMap.MapOptions.DefaultLatitude := DataModule1.tblSettings.FieldByName('Latitude').Asfloat;
+        GMap.MapOptions.DefaultLongitude := DataModule1.tblSettings.FieldByName('Longitude').AsFloat;
     end;
 
 end;

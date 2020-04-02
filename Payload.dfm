@@ -1,24 +1,22 @@
-inherited frmSource: TfrmSource
-  Caption = 'Source'
-  ClientWidth = 437
-  ExplicitWidth = 453
+inherited frmPayload: TfrmPayload
+  Caption = 'v'
+  ClientWidth = 503
+  ExplicitWidth = 519
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
     Width = 350
     Align = alLeft
-    BevelOuter = bvLowered
-    ParentBackground = False
     ExplicitWidth = 350
     object pnlTitle: TPanel
       AlignWithMargins = True
-      Left = 4
-      Top = 4
-      Width = 342
+      Left = 3
+      Top = 3
+      Width = 344
       Height = 38
       Align = alTop
       BevelOuter = bvLowered
-      Caption = 'Source Code'
+      Caption = 'Payload ID'
       Color = clGray
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -28,28 +26,12 @@ inherited frmSource: TfrmSource
       ParentBackground = False
       ParentFont = False
       TabOrder = 0
-      object btnSettings: TButton
-        AlignWithMargins = True
-        Left = 313
-        Top = 2
-        Width = 27
-        Height = 33
-        Margins.Top = 1
-        Margins.Right = 1
-        Margins.Bottom = 2
-        Align = alRight
-        Caption = '...'
-        TabOrder = 0
-        OnClick = btnSettingsClick
-        ExplicitLeft = 322
-        ExplicitHeight = 19
-      end
     end
     object DBAdvGrid3: TDBAdvGrid
-      Left = 1
-      Top = 45
-      Width = 348
-      Height = 424
+      Left = 0
+      Top = 44
+      Width = 350
+      Height = 426
       Cursor = crDefault
       Align = alClient
       ColCount = 7
@@ -118,7 +100,7 @@ inherited frmSource: TfrmSource
         'Larger than'
         'Smaller than'
         'Clear')
-      FixedColWidth = 61
+      FixedColWidth = 40
       FixedRowHeight = 22
       FixedFont.Charset = DEFAULT_CHARSET
       FixedFont.Color = 3881787
@@ -180,33 +162,6 @@ inherited frmSource: TfrmSource
       AutoRemoveColumns = True
       Columns = <
         item
-          Borders = []
-          BorderPen.Color = clSilver
-          ButtonHeight = 18
-          CheckFalse = 'N'
-          CheckTrue = 'Y'
-          Color = clWindow
-          EditLength = 20
-          FieldName = 'PayloadID'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          HeaderFont.Charset = DEFAULT_CHARSET
-          HeaderFont.Color = 3881787
-          HeaderFont.Height = -11
-          HeaderFont.Name = 'Tahoma'
-          HeaderFont.Style = []
-          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
-          PrintFont.Charset = DEFAULT_CHARSET
-          PrintFont.Color = clWindowText
-          PrintFont.Height = -11
-          PrintFont.Name = 'Tahoma'
-          PrintFont.Style = []
-          Width = 61
-        end
-        item
           Alignment = taRightJustify
           Borders = []
           BorderPen.Color = clSilver
@@ -220,6 +175,7 @@ inherited frmSource: TfrmSource
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          Header = 'Count'
           HeaderFont.Charset = DEFAULT_CHARSET
           HeaderFont.Color = 3881787
           HeaderFont.Height = -11
@@ -231,7 +187,7 @@ inherited frmSource: TfrmSource
           PrintFont.Height = -11
           PrintFont.Name = 'Tahoma'
           PrintFont.Style = []
-          Width = 57
+          Width = 40
         end
         item
           Borders = []
@@ -246,6 +202,7 @@ inherited frmSource: TfrmSource
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          Header = 'Time'
           HeaderFont.Charset = DEFAULT_CHARSET
           HeaderFont.Color = 3881787
           HeaderFont.Height = -11
@@ -257,7 +214,7 @@ inherited frmSource: TfrmSource
           PrintFont.Height = -11
           PrintFont.Name = 'Tahoma'
           PrintFont.Style = []
-          Width = 64
+          Width = 53
         end
         item
           Alignment = taRightJustify
@@ -273,6 +230,7 @@ inherited frmSource: TfrmSource
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          Header = 'Lat'
           HeaderFont.Charset = DEFAULT_CHARSET
           HeaderFont.Color = 3881787
           HeaderFont.Height = -11
@@ -284,7 +242,7 @@ inherited frmSource: TfrmSource
           PrintFont.Height = -11
           PrintFont.Name = 'Tahoma'
           PrintFont.Style = []
-          Width = 64
+          Width = 55
         end
         item
           Alignment = taRightJustify
@@ -300,6 +258,7 @@ inherited frmSource: TfrmSource
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          Header = 'Lon'
           HeaderFont.Charset = DEFAULT_CHARSET
           HeaderFont.Color = 3881787
           HeaderFont.Height = -11
@@ -311,7 +270,7 @@ inherited frmSource: TfrmSource
           PrintFont.Height = -11
           PrintFont.Name = 'Tahoma'
           PrintFont.Style = []
-          Width = 64
+          Width = 54
         end
         item
           Alignment = taRightJustify
@@ -327,6 +286,7 @@ inherited frmSource: TfrmSource
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          Header = 'Alt'
           HeaderFont.Charset = DEFAULT_CHARSET
           HeaderFont.Color = 3881787
           HeaderFont.Height = -11
@@ -338,7 +298,7 @@ inherited frmSource: TfrmSource
           PrintFont.Height = -11
           PrintFont.Name = 'Tahoma'
           PrintFont.Style = []
-          Width = 64
+          Width = 44
         end
         item
           Alignment = taRightJustify
@@ -354,6 +314,7 @@ inherited frmSource: TfrmSource
           Font.Height = -11
           Font.Name = 'Tahoma'
           Font.Style = []
+          Header = 'Dist'
           HeaderFont.Charset = DEFAULT_CHARSET
           HeaderFont.Color = 3881787
           HeaderFont.Height = -11
@@ -365,7 +326,33 @@ inherited frmSource: TfrmSource
           PrintFont.Height = -11
           PrintFont.Name = 'Tahoma'
           PrintFont.Style = []
-          Width = 64
+          Width = 46
+        end
+        item
+          Borders = []
+          BorderPen.Color = clSilver
+          ButtonHeight = 18
+          CheckFalse = 'N'
+          CheckTrue = 'Y'
+          Color = clWindow
+          FieldName = 'Sources'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = clWindowText
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'Tahoma'
+          HeaderFont.Style = []
+          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
+          PrintFont.Charset = DEFAULT_CHARSET
+          PrintFont.Color = clWindowText
+          PrintFont.Height = -11
+          PrintFont.Name = 'Tahoma'
+          PrintFont.Style = []
+          Width = 51
         end>
       DataSource = srcPositions
       InvalidPicture.Data = {
@@ -506,23 +493,18 @@ inherited frmSource: TfrmSource
         FFC003FF}
       ShowUnicode = False
       ColWidths = (
-        61
-        57
-        64
-        64
-        64
-        64
-        64)
+        40
+        53
+        55
+        54
+        44
+        46
+        51)
     end
   end
   object tblPositions: TFDMemTable
     Active = True
     FieldDefs = <
-      item
-        Name = 'PayloadID'
-        DataType = ftString
-        Size = 20
-      end
       item
         Name = 'Counter'
         DataType = ftInteger
@@ -546,6 +528,11 @@ inherited frmSource: TfrmSource
       item
         Name = 'Distance'
         DataType = ftFloat
+      end
+      item
+        Name = 'Sources'
+        DataType = ftString
+        Size = 100
       end>
     IndexDefs = <>
     FetchOptions.AssignedValues = [evMode]
@@ -558,9 +545,6 @@ inherited frmSource: TfrmSource
     StoreDefs = True
     Left = 312
     Top = 168
-    object tblPositionsPayloadID: TStringField
-      FieldName = 'PayloadID'
-    end
     object tblLivePayloadsCounter: TIntegerField
       FieldName = 'Counter'
     end
@@ -584,26 +568,14 @@ inherited frmSource: TfrmSource
       FieldName = 'Distance'
       DisplayFormat = '0 km'
     end
+    object tblPositionsSources: TStringField
+      FieldName = 'Sources'
+      Size = 100
+    end
   end
   object srcPositions: TDataSource
     DataSet = tblPositions
     Left = 312
     Top = 224
-  end
-  object menuSource: TPopupMenu
-    Left = 361
-    Top = 304
-    object ModifySource: TMenuItem
-      Caption = 'Modify Source'
-      OnClick = ModifySourceClick
-    end
-    object DeleteSource: TMenuItem
-      Caption = 'Delete Source'
-      OnClick = DeleteSourceClick
-    end
-    object mnuAddNewSource: TMenuItem
-      Caption = 'Add New Source'
-      OnClick = mnuAddNewSourceClick
-    end
   end
 end

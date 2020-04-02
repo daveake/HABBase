@@ -19,16 +19,18 @@ type
         InUse:              Boolean;
         SourceID:           Integer;
         Group:              String;
-        // Enabled:            Boolean;
+        SourceEnabled:      Boolean;
+        Started:            Boolean;
         Connected:          Boolean;
         Code:               String;
         Description:        String;
         SourceType:         TSourceType;
         SourceForm:         TfrmSource;
-        Indicator:          TAdvSmoothStatusIndicator;
+//        Indicator:          TAdvSmoothStatusIndicator;
         Source:             TSource;
         Upload:             Boolean;
         Status:             String;
+        LastPacketAt:       TDateTime;
 //        ValueLabel:   TLabel;
 //        RSSILabel:    TLabel;
 //        CurrentRSSI:  String;
@@ -43,60 +45,30 @@ type
         Count:      Integer;
     end;
 
-    TPayload = record
-        InUse:              Boolean;
-        Position:           THABPosition;
-        Button:             TAdvSmoothButton;
-//        PayloadID:      String;
-//        Form:           TfrmPayload;
-//        // Indicator:      TAdvSmoothStatusIndicator;
-//        Position:       THABPosition;
-//        GotGPS:         Boolean;
-//        Count:          Integer;
-//        AscentRate:     Double;
-        BalloonColour:  String;
-//        FlightMode:     TFlightMode;
-//        LastUpdate:     TDateTime;
-    end;
 
 type
   TfrmSources = class(TfrmNormal)
-    DBAdvGrid1: TDBAdvGrid;
-    pnlStatus: TAdvPanel;
-    menuSource: TPopupMenu;
-    View1: TMenuItem;
-    ModifySource: TMenuItem;
-    DeleteSource: TMenuItem;
-    AddNewSource: TMenuItem;
-    AdvSmoothButton1: TAdvSmoothButton;
-    AdvSmoothButton2: TAdvSmoothButton;
-    procedure ModifySourceClick(Sender: TObject);
-    procedure DeleteSourceClick(Sender: TObject);
-    procedure AddNewSourceClick(Sender: TObject);
-    procedure AdvSmoothButton1Click(Sender: TObject);
+    scrollMain: TScrollBox;
   private
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
-    HABPayloads: Array[1..32] of TPayload;
     HabitatUploader: THabitatThread;
+    procedure ShowSourceStatus(SourceIndex: Integer);
     procedure LoadSource(SourceIndex: Integer);
     procedure ReloadSourceSettings(SourceIndex: Integer);
     procedure LoadSourceSettings(SourceIndex: Integer);
-    function AddPayloadToFullTable(Position: THABPosition): Boolean;
-    function AddPayloadToLiveTable(Position: THABPosition): Boolean;
-    function AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
-    function AddPayloadToOurList(Position: THABPosition): Integer;
-    function FindOrAddPayload(PayloadID: String): Integer;
-    procedure HABCallback(SourceIndex: Integer; Connected: Boolean; Line: String; Position: THABPosition);
     procedure DataSourceClick(Sender: TObject);
     function ShowSettingsForm(SourceIndex: Integer): Boolean;
     function FindFreeSource: Integer;
     procedure HabitatStatusCallback(SourceID: Integer; Active, OK: Boolean);
+    procedure NewPosition(SourceIndex: Integer; Position: THABPosition);
   public
     { Public declarations }
     procedure LoadSources;
-    procedure NewPosition(SourceIndex: Integer; Position: THABPosition);
-    procedure ShowConnected(SourceIndex: Integer; IsConnected: Boolean);
+    procedure HABCallback(SourceIndex: Integer; Connected: Boolean; Line: String; Position: THABPosition);
+    procedure AddNewSource;
+    procedure ModifySource(SourceIndex: Integer);
+    procedure DeleteSource(SourceIndex: Integer);
   end;
 
 var
@@ -106,8 +78,8 @@ implementation
 
 {$R *.dfm}
 
-uses Data, Logtail, Main, ToolLog, Map, Miscellaneous, SettingsForm, NewSource, Misc,
-     SystemSettings, LogtailSettings, GatewaySettings, LoRaSerialSettings;
+uses Data, Logtail, Main, ToolLog, Map, Miscellaneous, SettingsForm, NewSource, Payloads, Misc,
+     LogtailSettings, GatewaySettings, LoRaSerialSettings;
 
 procedure TfrmSources.LoadSources;
 var
@@ -130,17 +102,6 @@ begin
     end;
 end;
 
-procedure TfrmSources.ModifySourceClick(Sender: TObject);
-var
-    SourceIndex: Integer;
-begin
-    // Find source
-    SourceIndex := menuSource.PopupComponent.Tag;
-
-    if ShowSettingsForm(SourceIndex) then begin
-        ReloadSourceSettings(SourceIndex);
-    end;
-end;
 
 function GetSettingName(var Settings: String): String;
 begin
@@ -159,37 +120,37 @@ begin
         SourceID := FieldByName('ID').AsInteger;
         Group := SourceID.ToString;
 
-        Indicator := TAdvSmoothStatusIndicator.Create(Self);
-        with Indicator do begin
-            Parent := pnlStatus;
-            Align := alRight;
-            AlignWithMargins := True;
-            BorderWidth := 1;
-            Appearance.Fill.Color := clGray;
-            Appearance.Fill.ColorMirror := clNone;
-            Appearance.Fill.ColorMirrorTo := clNone;
-            Appearance.Fill.GradientType := TAdvGradientType.gtSolid;
-            Appearance.Fill.BorderColor := 3355443;
-            Appearance.Fill.Rounding := 18;
-            Appearance.Fill.ShadowOffset := 0;
-            Appearance.Font.Height := -24;
-            Appearance.Font.Color := clWhite;
-            AutoSize := True;
-            Tag := SourceIndex;
-            PopupMenu := menuSource;
-            OnClick := DataSourceClick;
-        end;
-
-        LoadSourceSettings(SourceIndex);
+//        Indicator := TAdvSmoothStatusIndicator.Create(Self);
+//        with Indicator do begin
+//            Parent := pnlStatus;
+//            Align := alRight;
+//            AlignWithMargins := True;
+//            BorderWidth := 1;
+//            Appearance.Fill.Color := clGray;
+//            Appearance.Fill.ColorMirror := clNone;
+//            Appearance.Fill.ColorMirrorTo := clNone;
+//            Appearance.Fill.GradientType := TAdvGradientType.gtSolid;
+//            Appearance.Fill.BorderColor := 3355443;
+//            Appearance.Fill.Rounding := 18;
+//            Appearance.Fill.ShadowOffset := 0;
+//            Appearance.Font.Height := -24;
+//            Appearance.Font.Color := clWhite;
+//            AutoSize := True;
+//            Tag := SourceIndex;
+//            PopupMenu := menuSource;
+//            OnClick := DataSourceClick;
+//        end;
 
         SourceType := TSourceType(FieldByName('Type').AsInteger);
 
         if SourceType = stLogtail then begin
             SourceForm := TfrmLogtail.Create(nil);
-            SourceForm.pnlMain.Parent := frmMain.pnlHidden;
+            // SourceForm.pnlMain.Parent := frmMain.pnlHidden;
         end else if SourceType = stGateway then begin
+            SourceForm := TfrmSource.Create(nil);
             Source := TGatewaySource.Create(SourceIndex, Group, HABCallback);
         end else if SourceType = stSerial then begin
+            SourceForm := TfrmSource.Create(nil);
             Source := TSerialSource.Create(SourceIndex, Group, HABCallback);
 //        end else if SourceTypeText = 'DLFLDigi' then begin
 //            SourceType := stDLFLDigi;
@@ -210,6 +171,8 @@ begin
         if SourceForm <> nil then begin
             SourceForm.SourceIndex := SourceIndex;
         end;
+
+        LoadSourceSettings(SourceIndex);
     end;
 end;
 
@@ -224,6 +187,7 @@ begin
         Settings := FieldByName('Settings').AsString;
 
         Upload := GetBooleanSetting('Upload', Settings);
+        SourceEnabled := FieldByName('Enabled').AsBoolean;
 
         // Add to source settings
         SetSettingBoolean(Group, 'Enabled', FieldByName('Enabled').AsBoolean);
@@ -242,7 +206,14 @@ begin
             SourceForm.Enabled := FieldByName('Enabled').AsBoolean;
         end;
 
-        Indicator.Caption := Code;
+//        Indicator.Caption := Code;
+
+        if SourceForm <> nil then begin
+            SourceForm.pnlTitle.Caption := Code + ': ' + Description;
+            SourceForm.pnlMain.Parent := scrollMain;
+        end;
+
+        ShowSourceStatus(SourceIndex);
     end;
 end;
 
@@ -260,56 +231,66 @@ end;
 
 procedure TfrmSources.NewPosition(SourceIndex: Integer; Position: THABPosition);
 var
-    Index: Integer;
     Callsign: String;
 begin
     HABSources[SourceIndex].LatestPosition := Position;
 
-    if Position.PayloadID <> '' then begin
-        // Upload
-        if HABSources[SourceIndex].Upload then begin
-            Callsign := DataModule1.tblSettings.FieldByName('Callsign').AsString;
-            if Callsign <> '' then begin
-                HabitatUploader.SaveTelemetryToHabitat(SourceIndex, Position.Line, Callsign);
-            end;
+    // Got a packet
+    HABSources[SourceIndex].LastPacketAt := Now;
+
+    // Add date if necessary
+    if Trunc(Position.TimeStamp) < (Trunc(Now)-1) then begin
+        if (Frac(Now) < 60/86400) and (Frac(Position.TimeStamp) > (1-120/86400)) then begin
+            // It's now the start of the day, and payload seems to be from yesterday, so use yesterday's date
+            Position.TimeStamp := Position.TimeStamp + Trunc(Now) - 1;
+        end else begin
+            Position.TimeStamp := Position.TimeStamp + Trunc(Now);
         end;
+    end;
 
-        // Calculate distance
-        if (not DataModule1.tblSettings.FieldByName('Latitude').IsNull) and (not DataModule1.tblSettings.FieldByName('Longitude').IsNull) then begin
-            Position.Distance := CalculateDistance(Position.Latitude, Position.Longitude,
-                                                   DataModule1.tblSettings.FieldByName('Latitude').Asfloat,
-                                                   DataModule1.tblSettings.FieldByName('Longitude').AsFloat) / 1000.0;
+    // Calculate distance
+    if (not DataModule1.tblSettings.FieldByName('Latitude').IsNull) and (not DataModule1.tblSettings.FieldByName('Longitude').IsNull) then begin
+        Position.Distance := CalculateDistance(Position.Latitude, Position.Longitude,
+                                               DataModule1.tblSettings.FieldByName('Latitude').Asfloat,
+                                               DataModule1.tblSettings.FieldByName('Longitude').AsFloat) / 1000.0;
+    end;
+
+    // Add to our payload list
+    frmPayloads.NewPosition(Position, HABSources[SourceIndex].Code, HABSources[SourceIndex].Description);
+
+    // Upload to habitat
+    if HABSources[SourceIndex].Upload then begin
+        Callsign := DataModule1.tblSettings.FieldByName('Callsign').AsString;
+        if Callsign <> '' then begin
+            HabitatUploader.SaveTelemetryToHabitat(SourceIndex, Position.Line, Callsign);
         end;
+    end;
 
+    ShowSourceStatus(SourceIndex);
 
-//            if Position.PayloadDocID = '' then begin
-//                PositionString := Position.PayloadID + ' ** NO PAYLOAD DOC **';
-//            end else begin
-//                PositionString := Position.PayloadID + ' ' + Position.PayloadDocID + ':' +
-//                                  FormatDateTime('hh:nn:ss', Position.TimeStamp) + ', ' +
-//                                  FormatFloat('0.00000', Position.Latitude) + ', ' +
-//                                  FormatFloat('0.00000', Position.Longitude) + ', ' +
-//                                  FormatFloat('0', Position.Altitude) + ', ' +
-//                                  FormatFloat('0', Position.Distance) + 'km';
-//            end;
+    // Add to source history
+    HABSources[SourceIndex].SourceForm.AddPosition(Position);
+end;
 
-        AddPayloadToFullTable(Position);
-
-        if frmMain.PayloadInWhiteList(Position) then begin
-            if AddPayloadToLiveTable(Position) then begin
-                frmToolLog.AddToLog('Added Payload ' + Position.PayloadID + ', Rx by ' + HABSources[SourceIndex].Code + ' (' + HABSources[SourceIndex].Description + ')');
-
-                Index := AddPayloadToOurList(Position);
-
-                if Index > 0 then begin
-                    // Update Map
-                    frmMap.ProcessNewPosition(Position, HABPayloads[Index].BalloonColour);
+procedure TfrmSources.ShowSourceStatus(SourceIndex: Integer);
+begin
+    with HABSources[SourceIndex] do begin
+        // Colours
+        if SourceEnabled then begin
+            if Connected then begin
+                if (Now - LastPacketAt) < 60/86400 then begin
+                    SourceForm.pnlTitle.Color := clGreen;
+                end else begin
+                    SourceForm.pnlTitle.Color := clOlive;
                 end;
+            end else if Started then begin
+                SourceForm.pnlTitle.Color := clRed;
+            end else begin
+                SourceForm.pnlTitle.Color := clGray;
             end;
+        end else begin
+            SourceForm.pnlTitle.Color := clSilver;
         end;
-
-       // Update indicator
-        HABSources[SourceIndex].Indicator.Appearance.Fill.Color := clGreen;
     end;
 end;
 
@@ -328,8 +309,7 @@ begin
     Result := 0;
 end;
 
-
-procedure TfrmSources.AddNewSourceClick(Sender: TObject);
+procedure TfrmSources.AddNewSource;
 var
     SourceIndex: Integer;
 begin
@@ -370,149 +350,19 @@ begin
     end;
 end;
 
-function TfrmSources.AddPayloadToFullTable(Position: THABPosition): Boolean;
-begin
-    Result := AddPayloadToTable(Position, DataModule1.tblAllPayloads);
-end;
-
-function TfrmSources.AddPayloadToLiveTable(Position: THABPosition): Boolean;
-begin
-    Result := AddPayloadToTable(Position, DataModule1.tblLivePayloads);
-end;
-
-function TfrmSources.AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
-var
-    MyBookmark: TBookmark;
-begin
-    Result := False;
-
-    with Table do begin
-        MyBookmark := GetBookmark;
-        DisableControls;
-        if FindKey([Position.PayloadID]) then begin
-            Edit;
-        end else begin
-            Append;
-            FieldByName('PayloadID').AsString := Position.PayloadID;
-            Result := True;
-        end;
-
-        FieldByName('PayloadID').AsString := Position.PayloadID;
-        // FieldByName('DocID').AsString := Position.PayloadDocID;
-        FieldByName('Counter').AsInteger := Position.Counter;
-        FieldByName('TimeStamp').AsDateTime := Position.TimeStamp;
-        FieldByName('Latitude').AsFloat := Position.Latitude;
-        FieldByName('Longitude').AsFloat := Position.Longitude;
-        FieldByName('Altitude').AsFloat := Position.Altitude;
-        FieldByName('Distance').AsFloat := Position.Distance;
-        FieldByName('ReceivedLocally').AsBoolean := False;
-
-        Post;
-
-        GotoBookmark(MyBookmark);
-
-        EnableControls;
-    end;
-end;
-
-
-procedure TfrmSources.AdvSmoothButton1Click(Sender: TObject);
-var
-    frmSystemSettings: TfrmSystemSettings;
-begin
-    frmSystemSettings := TfrmSystemSettings.Create(nil);
-    frmSystemSettings.ShowModal;
-    frmSystemSettings.Free;
-end;
-
-function TfrmSources.AddPayloadToOurList(Position: THABPosition): Integer;
-const
-    ColourTexts: Array[0..3] of String = ('blue', 'red', 'green', 'yellow');
-    BGColours: Array[0..3] of TColor = (clBlue, clRed, clGreen, clYellow);
-    FGColours: Array[0..3] of TColor = (clWhite, clBlack, clWhite, clBlack);
-var
-    Index: Integer;
-begin
-    Index := FindOrAddPayload(Position.PayloadID);
-
-    if Index > 0 then begin
-        // Not full up yet
-        if not HABPayloads[Index].InUse then begin
-            HABPayloads[Index].InUse := True;
-            HABPayloads[Index].BalloonColour := ColourTexts[(Index-1) mod (High(BGColours)+1)];
-
-            // Add button
-            HABPayloads[Index].Button := TAdvSmoothButton.Create(nil);
-            with HABPayloads[Index].Button do begin
-                Parent := frmMain.pnlButtons;   // pnlStatus;
-                Align := alLeft;
-                AlignWithMargins := True;
-                Margins.Left := 2;
-                Margins.Top := 3;
-                Margins.Right := 2;
-                Margins.Bottom := 0;
-                Shadow := False;    // True;
-                Appearance.Font.Size := 12;
-                Appearance.Rounding := 8;
-                Appearance.WordWrapping := False;
-                Status.Visible := True;
-                Status.Caption := '0s';
-                Status.Appearance.Fill.Color := clGreen;
-                Status.Appearance.Font.Color := clWhite;
-                Caption := Position.PayloadID;
-                Width := Length(Position.PayloadID) * 8 + 32;
-                Color := BGColours[(Index-1) mod (High(BGColours)+1)];
-                Appearance.Font.Color := FGColours[(Index-1) mod (High(FGColours)+1)];
-                Tag := Index;
-                // OnClick := PayloadClick;
-            end;
-        end;
-    end;
-
-    Result := Index;
-end;
-
-function TfrmSources.FindOrAddPayload(PayloadID: String): Integer;
-var
-    i: Integer;
-begin
-    for i := Low(HABPayloads) to High(HABPayloads) do begin
-        if HABPayloads[i].InUse then begin
-            if HABPayloads[i].Position.PayloadID = PayloadID then begin
-                Result := i;
-                Exit;
-            end;
-        end;
-    end;
-
-    // Add new one
-    for i := Low(HABPayloads) to High(HABPayloads) do begin
-        if not HABPayloads[i].InUse then begin
-            Result := i;
-            Exit;
-        end;
-    end;
-
-    Result := 0;
-end;
-
-procedure TfrmSources.ShowConnected(SourceIndex: Integer; IsConnected: Boolean);
-begin
-    with HABSources[SourceIndex] do begin
-        Connected := IsConnected;
-        if IsConnected then begin
-            Indicator.Appearance.Fill.Color := clOlive;
-        end else begin
-            Indicator.Appearance.Fill.Color := clRed;
-        end;
-    end;
-end;
 
 procedure TfrmSources.HABCallback(SourceIndex: Integer; Connected: Boolean; Line: String; Position: THABPosition);
 var
     Status: String;
     MyBookmark: TBookmark;
 begin
+    HABSources[SourceIndex].Started := True;
+    // Mark connected
+    if Connected <> HABSources[SourceIndex].Connected then begin
+        HABSources[SourceIndex].Connected := Connected;
+        ShowSourceStatus(SourceIndex);
+    end;
+
     // New Position
     if Position.InUse then begin
         NewPosition(SourceIndex, Position);
@@ -581,12 +431,8 @@ begin
     end;
 end;
 
-procedure TfrmSources.DeleteSourceClick(Sender: TObject);
-var
-    SourceIndex: Integer;
+procedure TfrmSources.DeleteSource(SourceIndex: Integer);
 begin
-    SourceIndex := menuSource.PopupComponent.Tag;
-
     with HABSources[SourceIndex] do begin
         if MessageDlg('Are you sure you want to permanently remove ' + Code + ': ' + Description + ' ?',
                   mtWarning, mbOKCancel, 0) = mrOK then begin
@@ -604,7 +450,8 @@ begin
                 SourceForm := nil;
             end;
 
-            Indicator.Free;
+            // Indicator.Free;
+
             InUse := False;
             SourceID := 0;
         end;
@@ -643,5 +490,11 @@ begin
     // frmMain.UploadStatus(SourceID, Active, OK);
 end;
 
+procedure TfrmSources.ModifySource(SourceIndex: Integer);
+begin
+    if ShowSettingsForm(SourceIndex) then begin
+        ReloadSourceSettings(SourceIndex);
+    end;
+end;
 
 end.
