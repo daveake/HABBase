@@ -234,7 +234,7 @@ inherited frmToolWhiteList: TfrmToolWhiteList
           CheckFalse = 'N'
           CheckTrue = 'Y'
           Color = clWindow
-          FieldName = 'Local'
+          FieldName = 'Remote'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11

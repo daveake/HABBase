@@ -12,18 +12,19 @@ type
     TPayload = record
         InUse:              Boolean;
         Position:           THABPosition;
+        Form:               TfrmPayload;
+        ColourText:         String;
+        Colour:             TColor;
+        Sources:            String;
+        LastUpdate:         TDateTime;
 //        Button:             TAdvSmoothButton;
 //        PayloadID:      String;
-        Form:           TfrmPayload;
 //        // Indicator:      TAdvSmoothStatusIndicator;
 //        Position:       THABPosition;
 //        GotGPS:         Boolean;
 //        Count:          Integer;
 //        AscentRate:     Double;
-        BalloonColour:      String;
-        Sources:            String;
 //        FlightMode:     TFlightMode;
-        LastUpdate:     TDateTime;
     end;
 
   TfrmPayloads = class(TfrmNormal)
@@ -48,7 +49,7 @@ implementation
 
 {$R *.dfm}
 
-uses Main, Data, ToolLog, Map;
+uses Main, Data, ToolLog, Map, BaseTypes;
 
 function TfrmPayloads.NewPosition(Position: THABPosition; SourceCode, SourceDescription: String): Boolean;
 var
@@ -68,7 +69,7 @@ begin
 
         if PayloadIndex > 0 then begin
             // Update Map
-            frmMap.ProcessNewPosition(Position, HABPayloads[PayloadIndex].BalloonColour);
+            frmMap.ProcessNewPosition(PayloadIndex, Position, HABPayloads[PayloadIndex].Colour, HABPayloads[PayloadIndex].ColourText);
         end;
     end;
 
@@ -77,11 +78,11 @@ end;
 
 function TfrmPayloads.AddOrUpdatePayloadInOurList(Position: THABPosition; SourceCode: String; var PositionIsNew: Boolean): Integer;
 const
-    ColourTexts: Array[0..3] of String = ('blue', 'red', 'green', 'yellow');
     BGColours: Array[0..3] of TColor = (clBlue, clRed, clGreen, clYellow);
     FGColours: Array[0..3] of TColor = (clWhite, clBlack, clWhite, clBlack);
+    ColourTexts: Array[0..3] of String = ('blue', 'red', 'green', 'yellow');
 var
-    PayloadIndex: Integer;
+    PayloadIndex, ColourIndex: Integer;
 begin
     PositionIsNew := False;
     PayloadIndex := FindOrAddPayload(Position.PayloadID);
@@ -91,7 +92,9 @@ begin
         if not HABPayloads[PayloadIndex].InUse then begin
             // Appeneded, so fill in basic details
             HABPayloads[PayloadIndex].InUse := True;
-            HABPayloads[PayloadIndex].BalloonColour := ColourTexts[(PayloadIndex-1) mod (High(BGColours)+1)];
+            ColourIndex := (PayloadIndex-1) mod (High(BGColours)+1);
+            HABPayloads[PayloadIndex].Colour := BGColours[ColourIndex];
+            HABPayloads[PayloadIndex].ColourText := ColourTexts[ColourIndex];
 
             // Add form
             HABPayloads[PayloadIndex].Form := TfrmPayload.Create(nil);

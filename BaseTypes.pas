@@ -8,7 +8,7 @@ type
     TPayloadMask = record
         HAB:            Boolean;
         Sonde:          Boolean;
-        Local:          Boolean;
+        Remote:         Boolean;
         Mask:           String;
         Distance:       Double;
     end;

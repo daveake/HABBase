@@ -38,8 +38,6 @@ object frmMain: TfrmMain
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 41
-    ExplicitHeight = 758
     object AdvSplitter3: TAdvSplitter
       Left = 0
       Top = 553
@@ -97,7 +95,6 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitHeight = 185
     end
     object pnlWhiteList: TPanel
       Left = 0
@@ -107,7 +104,6 @@ object frmMain: TfrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitTop = 179
     end
     object pnlSources: TPanel
       Left = 0
@@ -117,8 +113,6 @@ object frmMain: TfrmMain
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitLeft = -6
-      ExplicitTop = 512
     end
     object pnlPayloads: TPanel
       Left = 0
@@ -164,7 +158,6 @@ object frmMain: TfrmMain
       TabOrder = 4
       Version = '2.2.1.2'
       OnClick = AdvSmoothButton2Click
-      ExplicitLeft = 3
       TMSStyle = 8
     end
     object AdvSmoothButton1: TAdvSmoothButton
@@ -202,8 +195,6 @@ object frmMain: TfrmMain
       TabOrder = 5
       Version = '2.2.1.2'
       OnClick = AdvSmoothButton1Click
-      ExplicitLeft = 3
-      ExplicitTop = 840
       TMSStyle = 8
     end
   end
@@ -215,8 +206,6 @@ object frmMain: TfrmMain
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitTop = 41
-    ExplicitHeight = 758
     object AdvSplitter4: TAdvSplitter
       Left = 0
       Top = 201
@@ -260,8 +249,6 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = 6
-      ExplicitTop = 223
     end
     object pnlTop: TPanel
       Left = 0
@@ -280,7 +267,6 @@ object frmMain: TfrmMain
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitTop = 553
     end
   end
 end

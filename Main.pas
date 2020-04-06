@@ -164,7 +164,7 @@ begin
                 Inc(Count);
                 Masks[Count].HAB := FieldByName('HAB').AsBoolean;
                 Masks[Count].Sonde := FieldByName('Sonde').AsBoolean;
-                Masks[Count].Local := FieldByName('Local').AsBoolean;
+                Masks[Count].Remote := FieldByName('Remote').AsBoolean;
                 Masks[Count].Mask := FieldByName('Mask').AsString;
                 Masks[Count].Distance := FieldByName('Distance').AsFloat;
             end;
@@ -240,7 +240,7 @@ begin
                 // Locally received ?
                 OK := True;
 
-                if Local then begin
+                if not Remote then begin
                     OK := not Position.ReceivedRemotely;
                 end;
 

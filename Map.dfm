@@ -16,6 +16,7 @@ inherited frmMap: TfrmMap
       Polylines = <>
       Polygons = <>
       Directions = <>
+      MapOptions.ZoomMap = 8
       MapOptions.DefaultLatitude = 48.859040000000000000
       MapOptions.DefaultLongitude = 2.294297000000000000
       Routing.PolylineOptions.Icons = <>

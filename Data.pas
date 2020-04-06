@@ -47,6 +47,12 @@ type
     tblSettingsAltitude: TFloatField;
     srcSettings: TDataSource;
     tblSettingsLeftWidth: TIntegerField;
+    tblWhiteListEnabled: TBooleanField;
+    tblWhiteListHAB: TBooleanField;
+    tblWhiteListSonde: TBooleanField;
+    tblWhiteListRemote: TBooleanField;
+    tblWhiteListMask: TStringField;
+    tblWhiteListDistance: TFloatField;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
@@ -81,6 +87,11 @@ begin
     FileName := Path + 'sources.json';
     if FileExists(FileName) then begin
         tblSources.LoadFromFile(FileName);
+    end;
+
+    FileName := Path + 'whitelist.json';
+    if FileExists(FileName) then begin
+        // tblWhiteList.LoadFromFile(FileName);
     end;
 end;
 

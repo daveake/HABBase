@@ -3,24 +3,201 @@ inherited frmWhiteList: TfrmWhiteList
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlStatus: TAdvPanel
-    ExplicitLeft = 0
-    ExplicitWidth = 635
     FullHeight = 42
+    inherited pnlHidden: TPanel
+      ExplicitLeft = 383
+    end
     inherited AdvSmoothButton1: TAdvSmoothButton
+      Caption = 'Close'
+      ExplicitLeft = 512
+      ExplicitTop = 3
+      ExplicitHeight = 43
       TMSStyle = 8
     end
     inherited AdvSmoothButton2: TAdvSmoothButton
+      Visible = False
+      ExplicitLeft = 386
+      ExplicitTop = 3
+      ExplicitHeight = 43
+      TMSStyle = 8
+    end
+    object btnAppend: TAdvSmoothButton
+      AlignWithMargins = True
+      Left = 3
+      Top = 3
+      Width = 54
+      Height = 43
+      Align = alLeft
+      Appearance.Font.Charset = DEFAULT_CHARSET
+      Appearance.Font.Color = 2303013
+      Appearance.Font.Height = -24
+      Appearance.Font.Name = 'Tahoma'
+      Appearance.Font.Style = []
+      Appearance.Rounding = 0
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.GradientMirrorType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Fill.Glow = gmNone
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      Caption = '+'
+      ParentFont = False
+      Shadow = True
+      TabOrder = 3
+      ShowFocus = False
+      Version = '2.2.1.2'
+      OnClick = btnAppendClick
+      TMSStyle = 8
+    end
+    object btnDelete: TAdvSmoothButton
+      AlignWithMargins = True
+      Left = 63
+      Top = 3
+      Width = 54
+      Height = 43
+      Align = alLeft
+      Appearance.Font.Charset = DEFAULT_CHARSET
+      Appearance.Font.Color = 2303013
+      Appearance.Font.Height = -32
+      Appearance.Font.Name = 'Tahoma'
+      Appearance.Font.Style = []
+      Appearance.Rounding = 0
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.GradientMirrorType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Fill.Glow = gmNone
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      Caption = '-'
+      ParentFont = False
+      Shadow = True
+      TabOrder = 4
+      ShowFocus = False
+      Version = '2.2.1.2'
+      OnClick = btnDeleteClick
+      TMSStyle = 8
+    end
+    object btnSave: TAdvSmoothButton
+      AlignWithMargins = True
+      Left = 123
+      Top = 3
+      Width = 54
+      Height = 43
+      Align = alLeft
+      Appearance.Font.Charset = DEFAULT_CHARSET
+      Appearance.Font.Color = 2303013
+      Appearance.Font.Height = -32
+      Appearance.Font.Name = 'Tahoma'
+      Appearance.Font.Style = []
+      Appearance.Rounding = 0
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.GradientMirrorType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Fill.Glow = gmNone
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      Caption = #10003
+      ParentFont = False
+      Shadow = True
+      TabOrder = 5
+      ShowFocus = False
+      Version = '2.2.1.2'
+      OnClick = btnSaveClick
+      TMSStyle = 8
+    end
+    object btnCancel: TAdvSmoothButton
+      AlignWithMargins = True
+      Left = 183
+      Top = 3
+      Width = 54
+      Height = 43
+      Align = alLeft
+      Appearance.Font.Charset = DEFAULT_CHARSET
+      Appearance.Font.Color = 2303013
+      Appearance.Font.Height = -32
+      Appearance.Font.Name = 'Tahoma'
+      Appearance.Font.Style = []
+      Appearance.Rounding = 0
+      Status.Caption = '0'
+      Status.Appearance.Fill.Color = clRed
+      Status.Appearance.Fill.ColorMirror = clNone
+      Status.Appearance.Fill.ColorMirrorTo = clNone
+      Status.Appearance.Fill.GradientType = gtSolid
+      Status.Appearance.Fill.GradientMirrorType = gtSolid
+      Status.Appearance.Fill.BorderColor = clGray
+      Status.Appearance.Fill.Rounding = 0
+      Status.Appearance.Fill.ShadowOffset = 0
+      Status.Appearance.Fill.Glow = gmNone
+      Status.Appearance.Font.Charset = DEFAULT_CHARSET
+      Status.Appearance.Font.Color = clWhite
+      Status.Appearance.Font.Height = -11
+      Status.Appearance.Font.Name = 'Tahoma'
+      Status.Appearance.Font.Style = []
+      Caption = #10008
+      ParentFont = False
+      Shadow = True
+      TabOrder = 6
+      ShowFocus = False
+      Version = '2.2.1.2'
+      OnClick = btnCancelClick
       TMSStyle = 8
     end
   end
   inherited pnlMain: TPanel
+    ExplicitLeft = 0
+    ExplicitTop = 0
+    ExplicitWidth = 635
+    ExplicitHeight = 250
+    object Label1: TLabel
+      Left = 367
+      Top = 171
+      Width = 69
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Payload Mask:'
+    end
+    object Label2: TLabel
+      Left = 368
+      Top = 211
+      Width = 68
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Max Distance:'
+    end
     object DBAdvGrid2: TDBAdvGrid
       Left = 0
       Top = 0
-      Width = 635
+      Width = 337
       Height = 250
       Cursor = crDefault
-      Align = alClient
+      Align = alLeft
       ColCount = 6
       DrawingStyle = gdsClassic
       FixedColor = clWhite
@@ -233,7 +410,7 @@ inherited frmWhiteList: TfrmWhiteList
           CheckFalse = 'N'
           CheckTrue = 'Y'
           Color = clWindow
-          FieldName = 'Local'
+          FieldName = 'Remote'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -451,6 +628,64 @@ inherited frmWhiteList: TfrmWhiteList
         45
         74
         67)
+    end
+    object DBCheckBox1: TDBCheckBox
+      Left = 368
+      Top = 24
+      Width = 97
+      Height = 25
+      Caption = ' Enabled'
+      DataField = 'Enabled'
+      DataSource = DataModule1.srcWhiteList
+      TabOrder = 1
+    end
+    object DBCheckBox2: TDBCheckBox
+      Left = 368
+      Top = 64
+      Width = 97
+      Height = 17
+      Caption = ' Include HABs'
+      DataField = 'HAB'
+      DataSource = DataModule1.srcWhiteList
+      TabOrder = 2
+    end
+    object DBCheckBox3: TDBCheckBox
+      Left = 368
+      Top = 96
+      Width = 97
+      Height = 17
+      Caption = ' Include Sondes'
+      DataField = 'Sonde'
+      DataSource = DataModule1.srcWhiteList
+      TabOrder = 3
+    end
+    object DBCheckBox4: TDBCheckBox
+      Left = 368
+      Top = 128
+      Width = 201
+      Height = 17
+      Caption = 'Include Remotely Received'
+      DataField = 'Remote'
+      DataSource = DataModule1.srcWhiteList
+      TabOrder = 4
+    end
+    object DBEdit1: TDBEdit
+      Left = 448
+      Top = 168
+      Width = 121
+      Height = 21
+      DataField = 'Mask'
+      DataSource = DataModule1.srcWhiteList
+      TabOrder = 5
+    end
+    object DBEdit2: TDBEdit
+      Left = 448
+      Top = 208
+      Width = 73
+      Height = 21
+      DataField = 'Distance'
+      DataSource = DataModule1.srcWhiteList
+      TabOrder = 6
     end
   end
 end
