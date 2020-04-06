@@ -67,8 +67,6 @@ object frmSystemSettings: TfrmSystemSettings
     StatusBar.ColorTo = 14602191
     StatusBar.GradientDirection = gdVertical
     Text = ''
-    ExplicitWidth = 641
-    ExplicitHeight = 392
     DesignSize = (
       447
       165)
@@ -142,8 +140,6 @@ object frmSystemSettings: TfrmSystemSettings
       Enabled = False
       Version = '2.2.1.2'
       OnClick = btnSaveClick
-      ExplicitLeft = 447
-      ExplicitTop = 339
       TMSStyle = 8
     end
     object btnCancel: TAdvSmoothButton
@@ -183,8 +179,6 @@ object frmSystemSettings: TfrmSystemSettings
       Version = '2.2.1.2'
       ModalResult = 2
       OnClick = btnCancelClick
-      ExplicitLeft = 541
-      ExplicitTop = 339
       TMSStyle = 8
     end
     object DBEdit1: TDBEdit

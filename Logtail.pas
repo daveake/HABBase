@@ -104,10 +104,9 @@ end;
 
 function TfrmLogtail.ProcessLogtailLine(Line: String; var Position: THABPosition): Boolean;
 var
-    TimeStamp: TDateTime;
     i, j, Posn: Integer;
     Latitude, Longitude: Double;
-    FullLine, Command: String;
+    FullLine, Command, Value: String;
 begin
     Result := False;
 
@@ -164,13 +163,13 @@ begin
             if Posn > 0 then begin
                 // [2020-03-03 09:36:41,239] DEBUG habitat.parser MainThread: Selected payload_configuration 8c36ab528b16cb3adf00b7e07a228854 for 'RS_DFM-616153'
 
-                Position.TimeStamp := EncodeDateTime(StrToIntDef(Copy(Line, 2, 4), 2020),
-                                                     StrToIntDef(Copy(Line, 7, 2), 1),
-                                                     StrToIntDef(Copy(Line, 10, 2), 1),
-                                                     StrToIntDef(Copy(Line, 13, 2), 1),
-                                                     StrToIntDef(Copy(Line, 16, 2), 1),
-                                                     StrToIntDef(Copy(Line, 19, 2), 1),
-                                                     0);
+//                Position.TimeStamp := EncodeDateTime(StrToIntDef(Copy(Line, 2, 4), 2020),
+//                                                     StrToIntDef(Copy(Line, 7, 2), 1),
+//                                                     StrToIntDef(Copy(Line, 10, 2), 1),
+//                                                     StrToIntDef(Copy(Line, 13, 2), 1),
+//                                                     StrToIntDef(Copy(Line, 16, 2), 1),
+//                                                     StrToIntDef(Copy(Line, 19, 2), 1),
+//                                                     0);
 
 
                 Line := Copy(Line, Posn+31, Length(Line));
@@ -208,6 +207,13 @@ begin
             end;
         end else if Command = 'sentence_id' then begin
             Position.Counter := Round(GetFloat(Line, ','));
+        end else if Command = 'time' then begin
+            GetString(Line, '"');
+            Value := GetString(Line, '"');
+            Position.TimeStamp := EncodeTime(StrToIntDef(Copy(Value, 1, 2), 0),
+                                             StrToIntDef(Copy(Value, 4, 2), 0),
+                                             StrToIntDef(Copy(Value, 7, 2), 0),
+                                             0);
         end;
     end;
 end;

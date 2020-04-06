@@ -95,8 +95,6 @@ object frmMain: TfrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitTop = 377
-      ExplicitHeight = 176
     end
     object pnlWhiteList: TPanel
       Left = 0
@@ -106,7 +104,6 @@ object frmMain: TfrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitTop = 185
     end
     object pnlSources: TPanel
       Left = 0
@@ -116,8 +113,6 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitLeft = 10
-      ExplicitTop = 530
     end
     object AdvSmoothButton2: TAdvSmoothButton
       AlignWithMargins = True
@@ -154,8 +149,6 @@ object frmMain: TfrmMain
       TabOrder = 3
       Version = '2.2.1.2'
       OnClick = AdvSmoothButton2Click
-      ExplicitLeft = 3
-      ExplicitTop = 758
       TMSStyle = 8
     end
     object AdvSmoothButton1: TAdvSmoothButton
@@ -204,7 +197,6 @@ object frmMain: TfrmMain
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    ExplicitWidth = 1053
     object pnlMiddle: TPanel
       Left = 0
       Top = 0
@@ -213,9 +205,6 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitTop = 217
-      ExplicitWidth = 1053
-      ExplicitHeight = 409
     end
   end
   object pnlRight: TPanel
@@ -226,6 +215,5 @@ object frmMain: TfrmMain
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitLeft = 8
   end
 end

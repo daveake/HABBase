@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Normal, Vcl.StdCtrls, Vcl.ExtCtrls,
   AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid, Payload,
-  Source;
+  Source, Math;
 
 type
     TPayload = record
@@ -23,8 +23,7 @@ type
 //        Position:       THABPosition;
 //        GotGPS:         Boolean;
 //        Count:          Integer;
-//        AscentRate:     Double;
-//        FlightMode:     TFlightMode;
+        AscentRate:     Double;
     end;
 
   TfrmPayloads = class(TfrmNormal)
@@ -69,7 +68,7 @@ begin
 
         if PayloadIndex > 0 then begin
             // Update Map
-            frmMap.ProcessNewPosition(PayloadIndex, Position, HABPayloads[PayloadIndex].Colour, HABPayloads[PayloadIndex].ColourText);
+            frmMap.ProcessNewPosition(PayloadIndex, HABPayloads[PayloadIndex].Position, HABPayloads[PayloadIndex].Colour, HABPayloads[PayloadIndex].ColourText);
         end;
     end;
 
@@ -110,6 +109,26 @@ begin
 
             HABPayloads[PayloadIndex].Sources := SourceCode;
             // Store latest position
+
+            // Flight mode calculation
+
+            if HABPayloads[PayloadIndex].Position.InUse and (Position.TimeStamp > HABPayloads[PayloadIndex].Position.TimeStamp) then begin
+                HABPayloads[PayloadIndex].AscentRate := (Position.Altitude - HABPayloads[PayloadIndex].Position.Altitude) /
+                                                       ((Position.TimeStamp - HABPayloads[PayloadIndex].Position.TimeStamp) * 86400);
+                if HABPayloads[PayloadIndex].AscentRate < -2 then begin
+                    Position.FlightMode := fmDescending;
+                end else if HABPayloads[PayloadIndex].AscentRate > 2 then begin
+                    Position.FlightMode := fmLaunched;
+                end else if abs(HABPayloads[PayloadIndex].AscentRate) < 1 then begin
+                    Position.FlightMode := fmLanded;
+                end else if HABPayloads[PayloadIndex].Position.FlightMode = fmIdle then begin
+                    Position.FlightMode := fmLaunched;
+                end else begin
+                    Position.FlightMode := HABPayloads[PayloadIndex].Position.FlightMode;
+                end;
+            end else begin
+                Position.FlightMode := fmLaunched;
+            end;
 
             HABPayloads[PayloadIndex].Position := Position;
 

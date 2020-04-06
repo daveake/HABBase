@@ -6,8 +6,10 @@ inherited frmPayloads: TfrmPayloads
   TextHeight = 13
   inherited pnlMain: TPanel
     Width = 296
+    ExplicitWidth = 296
     inherited Panel1: TPanel
       Width = 296
+      ExplicitWidth = 296
       inherited lblTitle: TLabel
         Width = 279
         Caption = 'Payloads'
@@ -21,7 +23,6 @@ inherited frmPayloads: TfrmPayloads
       Height = 446
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 833
     end
   end
   object tmrUpdates: TTimer

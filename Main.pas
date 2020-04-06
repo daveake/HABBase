@@ -73,7 +73,9 @@ var
     frmSystemSettings: TfrmSystemSettings;
 begin
     frmSystemSettings := TfrmSystemSettings.Create(nil);
-    frmSystemSettings.ShowModal;
+    if frmSystemSettings.ShowModal = mrOK then begin
+        frmMap.SetHomePosition;
+    end;
     frmSystemSettings.Free;
 end;
 

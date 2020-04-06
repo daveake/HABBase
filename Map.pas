@@ -19,6 +19,7 @@ type
       MarkerName:     String;
       Radial:         TPolylineItem;
       Track:          TPolylineItem;
+      Position:       THABPosition;
   end;
 
 type
@@ -38,9 +39,11 @@ type
     FollowMode: TFollowMode;
     function FindMapMarker(PayloadID: String): Integer;
     procedure AddOrUpdateMapMarker(PayloadIndex: Integer; Position: THABPosition; ImageName: String);
+    procedure DrawRadial(PayloadIndex: Integer; NewHome: Boolean);
   public
     { Public declarations }
     function ProcessNewPosition(PayloadIndex: Integer; Position: THABPosition; Colour: TColor; ColourText: String): Boolean;
+    procedure SetHomePosition;
   end;
 
 var
@@ -64,8 +67,6 @@ THIS FILE IS SPECIFICALLY EXCLUDED in .gitignore TO AVOID SHARING API KEYS
 *)
 
 procedure TfrmMap.FormCreate(Sender: TObject);
-var
-    FileName: String;
 begin
     GMap.LocationAPIKey := GoogleMapsAPIKey;
 
@@ -81,17 +82,7 @@ begin
         ImageFolder := ExtractFilePath(Application.ExeName) + 'Images\';
     end;
 
-    if (not DataModule1.tblSettings.FieldByName('Latitude').IsNull) and (not DataModule1.tblSettings.FieldByName('Longitude').IsNull) then begin
-        GMap.MapOptions.DefaultLatitude := DataModule1.tblSettings.FieldByName('Latitude').Asfloat;
-        GMap.MapOptions.DefaultLongitude := DataModule1.tblSettings.FieldByName('Longitude').AsFloat;
-
-        MastMarker := GMap.Markers.Add(GMap.MapOptions.DefaultLatitude, GMap.MapOptions.DefaultLongitude);
-        FileName := ImageFolder + 'mast.png';
-        if FileExists(FileName) then begin
-            MastMarker.Icon := StringReplace('File://' + FileName, '\', '/',[rfReplaceAll, rfIgnoreCase]);
-        end;
-    end;
-
+    SetHomePosition;
 end;
 
 procedure TfrmMap.GMapDownloadFinish(Sender: TObject);
@@ -137,12 +128,12 @@ begin
 //    if Target then begin
 //        Result := 'x-' + BalloonColour;
 //    end else begin
-//        case Position.FlightMode of
-//            fmIdle:         Result := 'payload-' + BalloonColour;
-//            fmLaunched:     Result := 'balloon-' + BalloonColour;
-//            fmDescending:   Result := 'parachute-' + BalloonColour;
-//            fmLanded:       Result := 'payload-' + BalloonColour;
-//        end;
+        case Position.FlightMode of
+            fmIdle:         Result := 'payload-' + ColourText;
+            fmLaunched:     Result := 'balloon-' + ColourText;
+            fmDescending:   Result := 'parachute-' + ColourText;
+            fmLanded:       Result := 'payload-' + ColourText;
+        end;
 //    end;
 end;
 
@@ -150,6 +141,8 @@ end;
 function TfrmMap.ProcessNewPosition(PayloadIndex: Integer; Position: THABPosition; Colour: TColor; ColourText: String): Boolean;
 begin
     Result := False;
+
+    Balloons[PayloadIndex].Position := Position;
 
     if OKToUpdateMap then begin
         // Find or create marker for this payload
@@ -161,21 +154,7 @@ begin
 //        end;
 
         // Line to Balloon
-        if Balloons[PayloadIndex].Radial = nil then begin
-            Balloons[PayloadIndex].Radial := GMap.Polylines.Add;
-            Balloons[PayloadIndex].Radial.Polyline.Color := clLime;
-            // Source at listener position
-            Balloons[PayloadIndex].Radial.Polyline.Path.Add(DataModule1.tblSettings.FieldByName('Latitude').AsFloat,
-                                                            DataModule1.tblSettings.FieldByName('Longitude').AsFloat);
-            // Target at balloon
-            Balloons[PayloadIndex].Radial.Polyline.Path.Add(Position.Latitude, Position.Longitude);
-            GMap.CreateMapPolyline(Balloons[PayloadIndex].Radial.Polyline);
-        end else begin
-            // Move target to new balloon position
-            Balloons[PayloadIndex].Radial.Polyline.Path.Items[1].Latitude := Position.Latitude;
-            Balloons[PayloadIndex].Radial.Polyline.Path.Items[1].Longitude := Position.Longitude;
-            GMap.UpdateMapPolyline(Balloons[PayloadIndex].Radial.Polyline);
-        end;
+        DrawRadial(PayloadIndex, False);
 
         // Balloon Path
         if Balloons[PayloadIndex].Track = nil then begin
@@ -223,6 +202,59 @@ begin
     end;
 end;
 
+procedure TfrmMap.SetHomePosition;
+var
+    FileName: String;
+    PayloadIndex: Integer;
+begin
+    if (not DataModule1.tblSettings.FieldByName('Latitude').IsNull) and (not DataModule1.tblSettings.FieldByName('Longitude').IsNull) then begin
+        GMap.MapOptions.DefaultLatitude := DataModule1.tblSettings.FieldByName('Latitude').Asfloat;
+        GMap.MapOptions.DefaultLongitude := DataModule1.tblSettings.FieldByName('Longitude').AsFloat;
 
+        if MastMarker = nil then begin
+            MastMarker := GMap.Markers.Add(GMap.MapOptions.DefaultLatitude, GMap.MapOptions.DefaultLongitude);
+            FileName := ImageFolder + 'mast.png';
+            if FileExists(FileName) then begin
+                MastMarker.Icon := StringReplace('File://' + FileName, '\', '/',[rfReplaceAll, rfIgnoreCase]);
+            end;
+        end else begin
+            MastMarker.Latitude := GMap.MapOptions.DefaultLatitude;
+            MastMarker.Longitude := GMap.MapOptions.DefaultLongitude;
+        end;
+
+        for PayloadIndex := Low(Balloons) to High(Balloons) do begin
+            if Balloons[PayloadIndex].InUse then begin
+                DrawRadial(PayloadIndex, True);
+            end;
+        end;
+    end;
+end;
+
+procedure TfrmMap.DrawRadial(PayloadIndex: Integer; NewHome: Boolean);
+begin
+    if (not DataModule1.tblSettings.FieldByName('Latitude').IsNull) and (not DataModule1.tblSettings.FieldByName('Longitude').IsNull) then begin
+        if Balloons[PayloadIndex].Radial = nil then begin
+            Balloons[PayloadIndex].Radial := GMap.Polylines.Add;
+            Balloons[PayloadIndex].Radial.Polyline.Color := clLime;
+            // Source at listener position
+            Balloons[PayloadIndex].Radial.Polyline.Path.Add(DataModule1.tblSettings.FieldByName('Latitude').AsFloat,
+                                                            DataModule1.tblSettings.FieldByName('Longitude').AsFloat);
+            // Target at balloon
+            Balloons[PayloadIndex].Radial.Polyline.Path.Add(Balloons[PayloadIndex].Position.Latitude, Balloons[PayloadIndex].Position.Longitude);
+            GMap.CreateMapPolyline(Balloons[PayloadIndex].Radial.Polyline);
+        end else begin
+            // Move target to new balloon position
+            if NewHome then begin
+                Balloons[PayloadIndex].Radial.Polyline.Path.Items[0].Latitude := DataModule1.tblSettings.FieldByName('Latitude').AsFloat;
+                Balloons[PayloadIndex].Radial.Polyline.Path.Items[0].Longitude := DataModule1.tblSettings.FieldByName('Longitude').AsFloat;
+            end;
+
+            Balloons[PayloadIndex].Radial.Polyline.Path.Items[1].Latitude := Balloons[PayloadIndex].Position.Latitude;
+            Balloons[PayloadIndex].Radial.Polyline.Path.Items[1].Longitude := Balloons[PayloadIndex].Position.Longitude;
+
+            GMap.UpdateMapPolyline(Balloons[PayloadIndex].Radial.Polyline);
+        end;
+    end;
+end;
 
 end.

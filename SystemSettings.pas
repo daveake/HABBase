@@ -40,14 +40,14 @@ implementation
 procedure TfrmSystemSettings.btnCancelClick(Sender: TObject);
 begin
     DataModule1.tblSettings.Cancel;
-    Close;
+    ModalResult := mrCancel;
 end;
 
 procedure TfrmSystemSettings.btnSaveClick(Sender: TObject);
 begin
     DataModule1.tblSettings.Post;
     DataModule1.tblSettings.SaveToFile(ExtractFilePath(Application.ExeName) + 'settings.json');
-    Close;
+    ModalResult := mrOK;
 end;
 
 procedure TfrmSystemSettings.DBEdit1Change(Sender: TObject);
