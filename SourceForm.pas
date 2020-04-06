@@ -12,7 +12,7 @@ uses
 
 type
   TfrmSource = class(TfrmBase)
-    pnlTitle: TPanel;
+    pnlTop: TPanel;
     tblPositions: TFDMemTable;
     tblLivePayloadsCounter: TIntegerField;
     tblLivePayloadsTimestamp: TDateTimeField;
@@ -28,13 +28,21 @@ type
     ModifySource: TMenuItem;
     DeleteSource: TMenuItem;
     mnuAddNewSource: TMenuItem;
+    btnUp: TButton;
+    btnDown: TButton;
+    pnlTitle: TPanel;
     procedure btnSettingsClick(Sender: TObject);
     procedure ModifySourceClick(Sender: TObject);
     procedure mnuAddNewSourceClick(Sender: TObject);
     procedure DeleteSourceClick(Sender: TObject);
     procedure AddPosition(Position: THABPosition);
+    procedure btnDownClick(Sender: TObject);
+    procedure btnUpClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
+    procedure Down;
+    procedure Up;
   public
     SourceIndex: Integer;
     { Public declarations }
@@ -48,6 +56,11 @@ implementation
 
 uses SourcesForm;
 
+procedure TfrmSource.btnDownClick(Sender: TObject);
+begin
+    Down;
+end;
+
 procedure TfrmSource.btnSettingsClick(Sender: TObject);
 var
     pnt: TPoint;
@@ -57,9 +70,19 @@ begin
     end;
 end;
 
+procedure TfrmSource.btnUpClick(Sender: TObject);
+begin
+    Up;
+end;
+
 procedure TfrmSource.DeleteSourceClick(Sender: TObject);
 begin
     frmSources.DeleteSource(SourceIndex);
+end;
+
+procedure TfrmSource.FormCreate(Sender: TObject);
+begin
+    Up;
 end;
 
 procedure TfrmSource.mnuAddNewSourceClick(Sender: TObject);
@@ -70,6 +93,20 @@ end;
 procedure TfrmSource.ModifySourceClick(Sender: TObject);
 begin
     frmSources.ModifySource(SourceIndex);
+end;
+
+procedure TfrmSource.Down;
+begin
+    pnlMain.Height := 350;
+    btnDown.Visible := False;
+    btnUp.Visible := True;
+end;
+
+procedure TfrmSource.Up;
+begin
+    pnlMain.Height := pnlTop.Top + pnlTop.Height + pnlTop.Margins.Top + 1;
+    btnUp.Visible := False;
+    btnDown.Visible := True;
 end;
 
 procedure TfrmSource.AddPosition(Position: THABPosition);

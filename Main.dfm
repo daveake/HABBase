@@ -30,6 +30,22 @@ object frmMain: TfrmMain
     ExplicitTop = 41
     ExplicitHeight = 757
   end
+  object AdvSplitter10: TAdvSplitter
+    Left = 1053
+    Top = 0
+    Width = 16
+    Height = 847
+    Align = alRight
+    Appearance.BorderColor = clNone
+    Appearance.BorderColorHot = clNone
+    Appearance.Color = clWhite
+    Appearance.ColorTo = clSilver
+    Appearance.ColorHot = clWhite
+    Appearance.ColorHotTo = clGray
+    GripStyle = sgDots
+    ExplicitLeft = 1075
+    ExplicitTop = 8
+  end
   object pnlLeft: TPanel
     Left = 0
     Top = 0
@@ -44,23 +60,6 @@ object frmMain: TfrmMain
       Width = 329
       Height = 16
       Cursor = crVSplit
-      Align = alBottom
-      Appearance.BorderColor = clNone
-      Appearance.BorderColorHot = clNone
-      Appearance.Color = clWhite
-      Appearance.ColorTo = clSilver
-      Appearance.ColorHot = clWhite
-      Appearance.ColorHotTo = clGray
-      GripStyle = sgDots
-      ExplicitTop = 434
-      ExplicitWidth = 265
-    end
-    object AdvSplitter6: TAdvSplitter
-      Left = 0
-      Top = 169
-      Width = 329
-      Height = 16
-      Cursor = crVSplit
       Align = alTop
       Appearance.BorderColor = clNone
       Appearance.BorderColorHot = clNone
@@ -69,12 +68,12 @@ object frmMain: TfrmMain
       Appearance.ColorHot = clWhite
       Appearance.ColorHotTo = clGray
       GripStyle = sgDots
-      ExplicitLeft = 32
-      ExplicitWidth = 265
+      ExplicitLeft = 10
+      ExplicitTop = 537
     end
     object AdvSplitter2: TAdvSplitter
       Left = 0
-      Top = 361
+      Top = 176
       Width = 329
       Height = 16
       Cursor = crVSplit
@@ -86,42 +85,39 @@ object frmMain: TfrmMain
       Appearance.ColorHot = clWhite
       Appearance.ColorHotTo = clGray
       GripStyle = sgDots
+      ExplicitTop = 361
     end
     object pnlLog: TPanel
       Left = 0
-      Top = 377
+      Top = 192
       Width = 329
-      Height = 176
-      Align = alClient
+      Height = 361
+      Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitTop = 377
+      ExplicitHeight = 176
     end
     object pnlWhiteList: TPanel
       Left = 0
-      Top = 185
+      Top = 0
       Width = 329
       Height = 176
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 1
+      ExplicitTop = 185
     end
     object pnlSources: TPanel
       Left = 0
       Top = 569
       Width = 329
       Height = 180
-      Align = alBottom
+      Align = alClient
       BevelOuter = bvNone
       TabOrder = 2
-    end
-    object pnlPayloads: TPanel
-      Left = 0
-      Top = 0
-      Width = 329
-      Height = 169
-      Align = alTop
-      BevelOuter = bvNone
-      TabOrder = 3
+      ExplicitLeft = 10
+      ExplicitTop = 530
     end
     object AdvSmoothButton2: TAdvSmoothButton
       AlignWithMargins = True
@@ -155,9 +151,11 @@ object frmMain: TfrmMain
       Status.Appearance.Font.Style = []
       Caption = 'Add Source'
       ParentFont = False
-      TabOrder = 4
+      TabOrder = 3
       Version = '2.2.1.2'
       OnClick = AdvSmoothButton2Click
+      ExplicitLeft = 3
+      ExplicitTop = 758
       TMSStyle = 8
     end
     object AdvSmoothButton1: TAdvSmoothButton
@@ -192,7 +190,7 @@ object frmMain: TfrmMain
       Status.Appearance.Font.Style = []
       Caption = 'Settings'
       ParentFont = False
-      TabOrder = 5
+      TabOrder = 4
       Version = '2.2.1.2'
       OnClick = AdvSmoothButton1Click
       TMSStyle = 8
@@ -201,72 +199,33 @@ object frmMain: TfrmMain
   object pnlMain: TPanel
     Left = 345
     Top = 0
-    Width = 1053
+    Width = 708
     Height = 847
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
-    object AdvSplitter4: TAdvSplitter
-      Left = 0
-      Top = 201
-      Width = 1053
-      Height = 16
-      Cursor = crVSplit
-      Align = alTop
-      Appearance.BorderColor = clNone
-      Appearance.BorderColorHot = clNone
-      Appearance.Color = clWhite
-      Appearance.ColorTo = clSilver
-      Appearance.ColorHot = clWhite
-      Appearance.ColorHotTo = clGray
-      GripStyle = sgDots
-      ExplicitTop = 193
-      ExplicitWidth = 265
-    end
-    object AdvSplitter5: TAdvSplitter
-      Left = 0
-      Top = 626
-      Width = 1053
-      Height = 16
-      Cursor = crVSplit
-      Align = alBottom
-      Appearance.BorderColor = clNone
-      Appearance.BorderColorHot = clNone
-      Appearance.Color = clWhite
-      Appearance.ColorTo = clSilver
-      Appearance.ColorHot = clWhite
-      Appearance.ColorHotTo = clGray
-      GripStyle = sgDots
-      ExplicitLeft = 6
-      ExplicitTop = 458
-      ExplicitWidth = 694
-    end
+    ExplicitWidth = 1053
     object pnlMiddle: TPanel
       Left = 0
-      Top = 217
-      Width = 1053
-      Height = 409
+      Top = 0
+      Width = 708
+      Height = 847
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitTop = 217
+      ExplicitWidth = 1053
+      ExplicitHeight = 409
     end
-    object pnlTop: TPanel
-      Left = 0
-      Top = 0
-      Width = 1053
-      Height = 201
-      Align = alTop
-      BevelOuter = bvNone
-      TabOrder = 1
-    end
-    object pnlBottom: TPanel
-      Left = 0
-      Top = 642
-      Width = 1053
-      Height = 205
-      Align = alBottom
-      BevelOuter = bvNone
-      TabOrder = 2
-    end
+  end
+  object pnlRight: TPanel
+    Left = 1069
+    Top = 0
+    Width = 329
+    Height = 847
+    Align = alRight
+    BevelOuter = bvNone
+    TabOrder = 2
+    ExplicitLeft = 8
   end
 end

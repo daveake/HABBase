@@ -28,16 +28,12 @@ type
     pnlWhiteList: TPanel;
     pnlSources: TPanel;
     pnlMain: TPanel;
-    AdvSplitter4: TAdvSplitter;
-    AdvSplitter5: TAdvSplitter;
     pnlMiddle: TPanel;
-    pnlTop: TPanel;
-    pnlBottom: TPanel;
-    pnlPayloads: TPanel;
-    AdvSplitter6: TAdvSplitter;
     AdvSplitter2: TAdvSplitter;
     AdvSmoothButton2: TAdvSmoothButton;
     AdvSmoothButton1: TAdvSmoothButton;
+    AdvSplitter10: TAdvSplitter;
+    pnlRight: TPanel;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure AdvSmoothButton2Click(Sender: TObject);
@@ -46,9 +42,7 @@ type
     { Private declarations }
     PayloadMasks: TPayloadMasks;
     procedure LoadData;
-    procedure LoadTools;
     procedure LoadForms;
-    procedure LoadSources;
     procedure LoadPayloadMasks;
     procedure LoadFormPositions;
     procedure SaveFormPositions;
@@ -65,7 +59,7 @@ implementation
 
 uses Data,
      // Tools
-     ToolLivePayload, ToolWhiteList, ToolLog, ToolSources,
+     ToolWhiteList, ToolLog,
      // Main Forms
      Map, Payloads,
      // Sources
@@ -98,9 +92,7 @@ begin
         LoadData;
         LoadFormPositions;
         LoadPayloadMasks;
-        LoadTools;
         LoadForms;
-        LoadSources;
     end;
 end;
 
@@ -114,11 +106,15 @@ begin
     DataModule1 := TDataModule1.Create(nil);
 end;
 
-procedure TfrmMain.LoadTools;
+procedure TfrmMain.LoadForms;
 begin
-    // Live payloads
-    frmToolLivePayloads := TfrmToolLivePayloads.Create(nil);
-    frmToolLivePayloads.pnlMain.Parent := pnlPayloads;
+    // Map
+    frmMap := TfrmMap.Create(nil);
+    frmMap.pnlMain.Parent := pnlMiddle;
+
+    // Live Payloads
+    frmPayloads := TfrmPayloads.Create(nil);
+    frmPayloads.pnlMain.Parent := pnlRight;
 
     // Log
     frmToolLog := TfrmToolLog.Create(nil);
@@ -129,29 +125,10 @@ begin
     frmToolWhiteList.pnlMain.Parent := pnlWhiteList;
 
     // Sources
-    frmToolSources := TfrmToolSources.Create(nil);
-    frmToolSources.pnlMain.Parent := pnlSources;
-end;
-
-procedure TfrmMain.LoadForms;
-begin
-    // Map
-    frmMap := TfrmMap.Create(nil);
-    frmMap.pnlMain.Parent := pnlMiddle;
-
-    // Live Payloads
-    frmPayloads := TfrmPayloads.Create(nil);
-    frmPayloads.pnlMain.Parent := pnlTop;
-end;
-
-procedure TfrmMain.LoadSources;
-begin
     frmSources := TfrmSources.Create(nil);
-    frmSources.pnlMain.Parent := pnlBottom;
-    // frmSources.pnlStatus.Parent := pnlStatus;
+    frmSources.pnlMain.Parent := pnlSources;
     frmSources.LoadSources;
 end;
-
 
 
 procedure TfrmMain.LoadPayloadMasks;
@@ -289,19 +266,27 @@ end;
 procedure TfrmMain.LoadFormPositions;
 begin
     with DataModule1.tblSettings do begin
-        // Form
-        Left := FieldByName('FormLeft').AsInteger;
-        Top := FieldByName('FormTop').AsInteger;
-        Height := FieldByName('FormHeight').AsInteger;
-        Width := FieldByName('FormWidth').AsInteger;
+        if RecordCount = 0 then begin
+            Append;
+            FieldByName('Callsign').AsString := 'M0RPI';
+            FieldByName('Latitude').AsFloat := 51.95023;
+            FieldByName('Longitude').AsFloat := -2.54445;
+            Post;
+        end else begin
+            // Form
+            Left := FieldByName('FormLeft').AsInteger;
+            Top := FieldByName('FormTop').AsInteger;
+            Height := FieldByName('FormHeight').AsInteger;
+            Width := FieldByName('FormWidth').AsInteger;
 
-        // Panels
-        pnlPayloads.Height := FieldByName('TopLeftHeight').AsInteger;
-        pnlWhiteList.Height := FieldByName('TopMiddleHeight').AsInteger;
-        pnlSources.Height := FieldByName('BottomLeftHeight').AsInteger;
-        pnlTop.Height := FieldByName('TopHeight').AsInteger;
-        pnlBottom.Height := FieldByName('BottomHeight').AsInteger;
-        pnlLeft.Width := FieldByName('LeftWidth').AsInteger;
+            // Side Panels
+            pnlLeft.Width := FieldByName('LeftWidth').AsInteger;
+            pnlRight.Width := FieldByName('RightWidth').AsInteger;
+
+            // Panels
+            pnlWhiteList.Height := FieldByName('TopMiddleHeight').AsInteger;
+            pnlSources.Height := FieldByName('BottomLeftHeight').AsInteger;
+        end;
     end;
 end;
 
@@ -315,13 +300,13 @@ begin
         FieldByName('FormHeight').AsInteger := Height;
         FieldByName('FormWidth').AsInteger := Width;
 
+        // Side Panels
+        FieldByName('LeftWidth').AsInteger := pnlLeft.Width;
+        FieldByName('RightWidth').AsInteger := pnlRight.Width;
+
         // Panels
-        FieldByName('TopLeftHeight').AsInteger := pnlPayloads.Height;
         FieldByName('TopMiddleHeight').AsInteger := pnlWhiteList.Height;
         FieldByName('BottomLeftHeight').AsInteger := pnlSources.Height;
-        FieldByName('TopHeight').AsInteger := pnlTop.Height;
-        FieldByName('BottomHeight').AsInteger := pnlBottom.Height;
-        FieldByName('LeftWidth').AsInteger := pnlLeft.Width;
 
         Post;
         SaveToFile(ExtractFilePath(Application.ExeName) + 'settings.json');

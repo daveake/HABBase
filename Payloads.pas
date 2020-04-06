@@ -98,7 +98,7 @@ begin
 
             // Add form
             HABPayloads[PayloadIndex].Form := TfrmPayload.Create(nil);
-            HABPayloads[PayloadIndex].Form.pnlMain.Parent := pnlMain;
+            HABPayloads[PayloadIndex].Form.pnlMain.Parent := scrollMain;    // pnlMain;
             HABPayloads[PayloadIndex].Form.pnlTitle.Caption := Position.PayloadID + ' (00:00)';
             HABPayloads[PayloadIndex].Form.pnlTitle.Color := BGColours[(PayloadIndex-1) mod (High(BGColours)+1)];
             HABPayloads[PayloadIndex].Form.pnlTitle.Font.Color := FGColours[(PayloadIndex-1) mod (High(FGColours)+1)];

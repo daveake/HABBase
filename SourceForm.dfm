@@ -1,25 +1,26 @@
 inherited frmSource: TfrmSource
   Caption = 'Source'
-  ClientWidth = 437
-  ExplicitWidth = 453
+  ClientWidth = 384
+  OnCreate = FormCreate
+  ExplicitWidth = 400
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
-    Width = 350
-    Align = alLeft
+    Width = 384
+    Height = 350
+    Align = alTop
     BevelOuter = bvLowered
     ParentBackground = False
-    ExplicitWidth = 350
-    object pnlTitle: TPanel
+    ExplicitWidth = 384
+    ExplicitHeight = 350
+    object pnlTop: TPanel
       AlignWithMargins = True
       Left = 4
       Top = 4
-      Width = 342
+      Width = 376
       Height = 38
       Align = alTop
-      BevelOuter = bvLowered
-      Caption = 'Source Code'
-      Color = clGray
+      BevelOuter = bvNone
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
@@ -28,12 +29,14 @@ inherited frmSource: TfrmSource
       ParentBackground = False
       ParentFont = False
       TabOrder = 0
+      ExplicitLeft = 1
+      ExplicitTop = 1
       object btnSettings: TButton
         AlignWithMargins = True
-        Left = 313
-        Top = 2
+        Left = 348
+        Top = 1
         Width = 27
-        Height = 33
+        Height = 35
         Margins.Top = 1
         Margins.Right = 1
         Margins.Bottom = 2
@@ -41,15 +44,85 @@ inherited frmSource: TfrmSource
         Caption = '...'
         TabOrder = 0
         OnClick = btnSettingsClick
-        ExplicitLeft = 322
-        ExplicitHeight = 19
+        ExplicitLeft = 313
+        ExplicitTop = 2
+        ExplicitHeight = 33
+      end
+      object btnUp: TButton
+        AlignWithMargins = True
+        Left = 317
+        Top = 1
+        Width = 27
+        Height = 35
+        Margins.Top = 1
+        Margins.Right = 1
+        Margins.Bottom = 2
+        Align = alRight
+        Caption = #9650
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
+        OnClick = btnUpClick
+        ExplicitLeft = 333
+        ExplicitTop = 3
+        ExplicitHeight = 33
+      end
+      object btnDown: TButton
+        AlignWithMargins = True
+        Left = 286
+        Top = 1
+        Width = 27
+        Height = 35
+        Margins.Top = 1
+        Margins.Right = 1
+        Margins.Bottom = 2
+        Align = alRight
+        Caption = #9660
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 2
+        OnClick = btnDownClick
+        ExplicitLeft = 313
+        ExplicitTop = 2
+        ExplicitHeight = 33
+      end
+      object pnlTitle: TPanel
+        AlignWithMargins = True
+        Left = 3
+        Top = 3
+        Width = 277
+        Height = 32
+        Align = alClient
+        BevelOuter = bvNone
+        Caption = 'Source Code'
+        Color = clGray
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentBackground = False
+        ParentFont = False
+        TabOrder = 3
+        ExplicitLeft = 4
+        ExplicitTop = 0
+        ExplicitWidth = 368
+        ExplicitHeight = 38
       end
     end
     object DBAdvGrid3: TDBAdvGrid
       Left = 1
       Top = 45
-      Width = 348
-      Height = 424
+      Width = 382
+      Height = 304
       Cursor = crDefault
       Align = alClient
       ColCount = 7
@@ -505,6 +578,8 @@ inherited frmSource: TfrmSource
         80000001C0000003C0000003E0000007F000000FF800001FFC00003FFF0000FF
         FFC003FF}
       ShowUnicode = False
+      ExplicitWidth = 348
+      ExplicitHeight = 424
       ColWidths = (
         61
         57

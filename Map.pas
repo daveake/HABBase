@@ -32,6 +32,7 @@ type
     Balloons: Array[1..32] of TBalloon;
     ImageFolder: String;
     OKToUpdateMap: Boolean;
+    MastMarker: TMarker;
     // MarkerNames: array[0..64] of String;
     // PolylineItems: array[0..64] of TPolylineItem;
     FollowMode: TFollowMode;
@@ -63,6 +64,8 @@ THIS FILE IS SPECIFICALLY EXCLUDED in .gitignore TO AVOID SHARING API KEYS
 *)
 
 procedure TfrmMap.FormCreate(Sender: TObject);
+var
+    FileName: String;
 begin
     GMap.LocationAPIKey := GoogleMapsAPIKey;
 
@@ -81,6 +84,12 @@ begin
     if (not DataModule1.tblSettings.FieldByName('Latitude').IsNull) and (not DataModule1.tblSettings.FieldByName('Longitude').IsNull) then begin
         GMap.MapOptions.DefaultLatitude := DataModule1.tblSettings.FieldByName('Latitude').Asfloat;
         GMap.MapOptions.DefaultLongitude := DataModule1.tblSettings.FieldByName('Longitude').AsFloat;
+
+        MastMarker := GMap.Markers.Add(GMap.MapOptions.DefaultLatitude, GMap.MapOptions.DefaultLongitude);
+        FileName := ImageFolder + 'mast.png';
+        if FileExists(FileName) then begin
+            MastMarker.Icon := StringReplace('File://' + FileName, '\', '/',[rfReplaceAll, rfIgnoreCase]);
+        end;
     end;
 
 end;

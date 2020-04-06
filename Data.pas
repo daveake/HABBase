@@ -53,6 +53,7 @@ type
     tblWhiteListRemote: TBooleanField;
     tblWhiteListMask: TStringField;
     tblWhiteListDistance: TFloatField;
+    tblSettingsRightWidth: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

@@ -1,37 +1,21 @@
 inherited frmPayload: TfrmPayload
   Caption = 'v'
-  ClientWidth = 503
-  ExplicitWidth = 519
+  ClientWidth = 353
+  OnCreate = FormCreate
+  ExplicitWidth = 369
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
-    Width = 350
-    Align = alLeft
-    ExplicitWidth = 350
-    object pnlTitle: TPanel
-      AlignWithMargins = True
-      Left = 3
-      Top = 3
-      Width = 344
-      Height = 38
-      Align = alTop
-      BevelOuter = bvLowered
-      Caption = 'Payload ID'
-      Color = clGray
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -16
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentBackground = False
-      ParentFont = False
-      TabOrder = 0
-    end
+    Width = 353
+    Height = 350
+    Align = alTop
+    ExplicitWidth = 351
+    ExplicitHeight = 350
     object DBAdvGrid3: TDBAdvGrid
       Left = 0
       Top = 44
-      Width = 350
-      Height = 426
+      Width = 353
+      Height = 306
       Cursor = crDefault
       Align = alClient
       ColCount = 7
@@ -41,7 +25,7 @@ inherited frmPayload: TfrmPayload
       RowCount = 2
       FixedRows = 1
       ScrollBars = ssBoth
-      TabOrder = 1
+      TabOrder = 0
       GridLineColor = 13948116
       GridFixedLineColor = 11250603
       HoverRowCells = [hcNormal, hcSelected]
@@ -492,6 +476,8 @@ inherited frmPayload: TfrmPayload
         80000001C0000003C0000003E0000007F000000FF800001FFC00003FFF0000FF
         FFC003FF}
       ShowUnicode = False
+      ExplicitWidth = 350
+      ExplicitHeight = 426
       ColWidths = (
         40
         53
@@ -500,6 +486,98 @@ inherited frmPayload: TfrmPayload
         44
         46
         51)
+    end
+    object pnlTop: TPanel
+      AlignWithMargins = True
+      Left = 3
+      Top = 3
+      Width = 347
+      Height = 38
+      Align = alTop
+      BevelOuter = bvNone
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentBackground = False
+      ParentFont = False
+      TabOrder = 1
+      ExplicitLeft = 1
+      ExplicitTop = 1
+      ExplicitWidth = 376
+      object btnSettings: TButton
+        AlignWithMargins = True
+        Left = 319
+        Top = 1
+        Width = 27
+        Height = 35
+        Margins.Top = 1
+        Margins.Right = 1
+        Margins.Bottom = 2
+        Align = alRight
+        Caption = '...'
+        TabOrder = 0
+      end
+      object btnUp: TButton
+        AlignWithMargins = True
+        Left = 288
+        Top = 1
+        Width = 27
+        Height = 35
+        Margins.Top = 1
+        Margins.Right = 1
+        Margins.Bottom = 2
+        Align = alRight
+        Caption = #9650
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
+        OnClick = btnUpClick
+      end
+      object btnDown: TButton
+        AlignWithMargins = True
+        Left = 257
+        Top = 1
+        Width = 27
+        Height = 35
+        Margins.Top = 1
+        Margins.Right = 1
+        Margins.Bottom = 2
+        Align = alRight
+        Caption = #9660
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 2
+        OnClick = btnDownClick
+      end
+      object pnlTitle: TPanel
+        AlignWithMargins = True
+        Left = 3
+        Top = 3
+        Width = 248
+        Height = 32
+        Align = alClient
+        BevelOuter = bvNone
+        Caption = 'Payload ID'
+        Color = clGray
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentBackground = False
+        ParentFont = False
+        TabOrder = 3
+      end
     end
   end
   object tblPositions: TFDMemTable

@@ -137,20 +137,12 @@
             <Form>frmTool</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="ToolLivePayload.pas">
-            <Form>frmToolLivePayloads</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="ToolWhiteList.pas">
             <Form>frmToolWhiteList</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="ToolLog.pas">
             <Form>frmToolLog</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="ToolSources.pas">
-            <Form>frmToolSources</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="WhiteList.pas">

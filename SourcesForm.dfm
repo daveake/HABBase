@@ -1,17 +1,17 @@
 inherited frmSources: TfrmSources
   Caption = 'Sources'
-  ClientWidth = 1065
-  ExplicitWidth = 1081
+  ClientWidth = 302
+  ExplicitWidth = 318
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
-    Width = 1065
+    Width = 302
     ExplicitWidth = 1065
     inherited Panel1: TPanel
-      Width = 1065
+      Width = 302
       ExplicitWidth = 1065
       inherited lblTitle: TLabel
-        Width = 1048
+        Width = 285
         Caption = 'Sources'
         ExplicitWidth = 46
       end
@@ -19,10 +19,11 @@ inherited frmSources: TfrmSources
     object scrollMain: TScrollBox
       Left = 0
       Top = 24
-      Width = 1065
+      Width = 302
       Height = 446
       Align = alClient
       TabOrder = 1
+      ExplicitWidth = 1065
     end
   end
 end

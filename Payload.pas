@@ -8,11 +8,10 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, AdvObj,
-  BaseGrid, AdvGrid, DBAdvGrid, Source;
+  BaseGrid, AdvGrid, DBAdvGrid, Source, Vcl.StdCtrls;
 
 type
   TfrmPayload = class(TfrmBase)
-    pnlTitle: TPanel;
     DBAdvGrid3: TDBAdvGrid;
     tblPositions: TFDMemTable;
     tblLivePayloadsCounter: TIntegerField;
@@ -23,8 +22,18 @@ type
     tblLivePayloadsDistance: TFloatField;
     srcPositions: TDataSource;
     tblPositionsSources: TStringField;
+    pnlTop: TPanel;
+    btnSettings: TButton;
+    btnUp: TButton;
+    btnDown: TButton;
+    pnlTitle: TPanel;
+    procedure btnDownClick(Sender: TObject);
+    procedure btnUpClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
+    procedure Down;
+    procedure Up;
   public
     { Public declarations }
     procedure AddPosition(Position: THABPosition; Sources: String);
@@ -65,6 +74,21 @@ begin
     end;
 end;
 
+procedure TfrmPayload.btnDownClick(Sender: TObject);
+begin
+    Down;
+end;
+
+procedure TfrmPayload.btnUpClick(Sender: TObject);
+begin
+    Up;
+end;
+
+procedure TfrmPayload.FormCreate(Sender: TObject);
+begin
+    Up;
+end;
+
 procedure TfrmPayload.UpdatePosition(Position: THABPosition; Sources: String);
 var
     MyBookmark: TBookmark;
@@ -77,6 +101,20 @@ begin
         Post;
         GotoBookmark(MyBookmark);
     end;
+end;
+
+procedure TfrmPayload.Down;
+begin
+    pnlMain.Height := 350;
+    btnDown.Visible := False;
+    btnUp.Visible := True;
+end;
+
+procedure TfrmPayload.Up;
+begin
+    pnlMain.Height := pnlTop.Top + pnlTop.Height + pnlTop.Margins.Top + 1;
+    btnUp.Visible := False;
+    btnDown.Visible := True;
 end;
 
 
