@@ -1,5 +1,6 @@
 inherited frmWhiteList: TfrmWhiteList
   Caption = 'White List'
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlStatus: TAdvPanel
@@ -638,6 +639,7 @@ inherited frmWhiteList: TfrmWhiteList
       DataField = 'Enabled'
       DataSource = DataModule1.srcWhiteList
       TabOrder = 1
+      OnClick = DBCheckBox1Click
     end
     object DBCheckBox2: TDBCheckBox
       Left = 368
@@ -668,6 +670,7 @@ inherited frmWhiteList: TfrmWhiteList
       DataField = 'Remote'
       DataSource = DataModule1.srcWhiteList
       TabOrder = 4
+      OnClick = DBCheckBox1Click
     end
     object DBEdit1: TDBEdit
       Left = 448
@@ -677,6 +680,7 @@ inherited frmWhiteList: TfrmWhiteList
       DataField = 'Mask'
       DataSource = DataModule1.srcWhiteList
       TabOrder = 5
+      OnChange = DBEdit1Change
     end
     object DBEdit2: TDBEdit
       Left = 448
@@ -686,6 +690,7 @@ inherited frmWhiteList: TfrmWhiteList
       DataField = 'Distance'
       DataSource = DataModule1.srcWhiteList
       TabOrder = 6
+      OnChange = DBEdit1Change
     end
   end
 end

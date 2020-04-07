@@ -43,11 +43,11 @@ type
     PayloadMasks: TPayloadMasks;
     procedure LoadData;
     procedure LoadForms;
-    procedure LoadPayloadMasks;
     procedure LoadFormPositions;
     procedure SaveFormPositions;
   public
     { Public declarations }
+    procedure LoadPayloadMasks;
     function PayloadInWhiteList(Position: THABPosition): Boolean;
     procedure UpdatedWhiteList;
   end;
@@ -75,6 +75,7 @@ begin
     frmSystemSettings := TfrmSystemSettings.Create(nil);
     if frmSystemSettings.ShowModal = mrOK then begin
         frmMap.SetHomePosition;
+        frmPayloads.UpdateActivePayloads;
     end;
     frmSystemSettings.Free;
 end;

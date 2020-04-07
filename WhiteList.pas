@@ -27,6 +27,9 @@ type
     procedure btnDeleteClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure DBCheckBox1Click(Sender: TObject);
+    procedure DBEdit1Change(Sender: TObject);
   private
     { Private declarations }
     procedure ShowEditing(Editing: Boolean);
@@ -34,12 +37,9 @@ type
     { Public declarations }
   end;
 
-var
-  frmWhiteList: TfrmWhiteList;
-
 implementation
 
-uses Main;
+uses Main, Payloads;
 
 {$R *.dfm}
 
@@ -65,8 +65,24 @@ end;
 procedure TfrmWhiteList.btnSaveClick(Sender: TObject);
 begin
     DataModule1.tblWhiteList.Post;
-    DataModule1.tblSettings.SaveToFile(ExtractFilePath(Application.ExeName) + 'whitelist.json');
+    DataModule1.tblWhiteList.SaveToFile(ExtractFilePath(Application.ExeName) + 'whitelist.json');
+    frmPayloads.UpdateActivePayloads;
     ShowEditing(False);
+end;
+
+procedure TfrmWhiteList.DBCheckBox1Click(Sender: TObject);
+begin
+    ShowEditing(True);
+end;
+
+procedure TfrmWhiteList.DBEdit1Change(Sender: TObject);
+begin
+    ShowEditing(True);
+end;
+
+procedure TfrmWhiteList.FormCreate(Sender: TObject);
+begin
+    ShowEditing(True);
 end;
 
 procedure TfrmWhiteList.ShowEditing(Editing: Boolean);

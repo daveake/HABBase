@@ -44,6 +44,7 @@ type
     { Public declarations }
     function ProcessNewPosition(PayloadIndex: Integer; Position: THABPosition; Colour: TColor; ColourText: String): Boolean;
     procedure SetHomePosition;
+    procedure RemovePayload(PayloadIndex: Integer);
   end;
 
 var
@@ -253,6 +254,29 @@ begin
             Balloons[PayloadIndex].Radial.Polyline.Path.Items[1].Longitude := Balloons[PayloadIndex].Position.Longitude;
 
             GMap.UpdateMapPolyline(Balloons[PayloadIndex].Radial.Polyline);
+        end;
+    end;
+end;
+
+procedure TfrmMap.RemovePayload(PayloadIndex: Integer);
+begin
+    with Balloons[PayloadIndex] do begin
+        InUse := False;
+        if Marker <> nil then begin
+            Marker.Free;
+            Marker := nil;
+        end;
+        if Radial <> nil then begin
+            GMap.DeleteMapPolyline(Radial.Index);
+            GMap.PolyLines.Delete(Radial.Index);
+            // Radial.Free;
+            Radial := nil;
+        end;
+        if Track <> nil then begin
+            GMap.DeleteMapPolyline(Track.Index);
+            GMap.PolyLines.Delete(Track.Index);
+            // Track.Free;
+            Track := nil;
         end;
     end;
 end;

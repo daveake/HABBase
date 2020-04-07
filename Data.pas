@@ -92,7 +92,7 @@ begin
 
     FileName := Path + 'whitelist.json';
     if FileExists(FileName) then begin
-        // tblWhiteList.LoadFromFile(FileName);
+        tblWhiteList.LoadFromFile(FileName);
     end;
 end;
 
@@ -135,14 +135,13 @@ begin
         end;
 
         FieldByName('PayloadID').AsString := Position.PayloadID;
-        // FieldByName('DocID').AsString := Position.PayloadDocID;
         FieldByName('Counter').AsInteger := Position.Counter;
         FieldByName('TimeStamp').AsDateTime := Position.TimeStamp;
         FieldByName('Latitude').AsFloat := Position.Latitude;
         FieldByName('Longitude').AsFloat := Position.Longitude;
         FieldByName('Altitude').AsFloat := Position.Altitude;
         FieldByName('Distance').AsFloat := Position.Distance;
-        FieldByName('ReceivedLocally').AsBoolean := False;
+        FieldByName('ReceivedLocally').AsBoolean := not Position.ReceivedRemotely;
 
         Post;
 

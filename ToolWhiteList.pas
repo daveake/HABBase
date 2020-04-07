@@ -27,6 +27,8 @@ uses WhiteList;
 {$R *.dfm}
 
 procedure TfrmToolWhiteList.Button1Click(Sender: TObject);
+var
+    frmWhiteList: TfrmWhiteList;
 begin
     frmWhiteList := TfrmWhiteList.Create(nil);
     frmWhiteList.ShowModal;

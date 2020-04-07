@@ -26,6 +26,7 @@ type
     procedure DBEdit1Change(Sender: TObject);
   private
     { Private declarations }
+    Latitude, Longitude: Double;
   public
     { Public declarations }
   end;
@@ -47,7 +48,12 @@ procedure TfrmSystemSettings.btnSaveClick(Sender: TObject);
 begin
     DataModule1.tblSettings.Post;
     DataModule1.tblSettings.SaveToFile(ExtractFilePath(Application.ExeName) + 'settings.json');
-    ModalResult := mrOK;
+    if (Latitude <> DataModule1.tblSettings.FieldByName('Latitude').AsFloat) or
+       (Longitude <> DataModule1.tblSettings.FieldByName('Longitude').AsFloat) then begin
+        ModalResult := mrOK;
+    end else begin
+        ModalResult := mrYes;
+    end;
 end;
 
 procedure TfrmSystemSettings.DBEdit1Change(Sender: TObject);
@@ -57,6 +63,8 @@ end;
 
 procedure TfrmSystemSettings.FormCreate(Sender: TObject);
 begin
+    Latitude := DataModule1.tblSettings.FieldByName('Latitude').AsFloat;
+    Longitude := DataModule1.tblSettings.FieldByName('Longitude').AsFloat;
     DataModule1.tblSettings.Edit;
 end;
 
