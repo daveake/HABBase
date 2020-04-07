@@ -33,7 +33,7 @@ type
         LastPacketAt:       TDateTime;
 //        ValueLabel:   TLabel;
 //        RSSILabel:    TLabel;
-//        CurrentRSSI:  String;
+        CurrentRSSI:  String;
 //        PacketRSSI:   String;
 //        FreqError:    String;
         LatestPosition:     THABPosition;
@@ -72,7 +72,8 @@ implementation
 {$R *.dfm}
 
 uses Data, Logtail, Main, ToolLog, Map, Miscellaneous, SettingsForm, NewSource, Payloads, Misc,
-     LogtailSettings, GatewaySettings, LoRaSerialSettings;
+     LogtailSettings, GatewaySettings, LoRaSerialSettings,
+     LoRaSerialSource;
 
 procedure TfrmSources.LoadSources;
 var
@@ -143,7 +144,7 @@ begin
             SourceForm := TfrmSource.Create(nil);
             Source := TGatewaySource.Create(SourceIndex, Group, HABCallback);
         end else if SourceType = stSerial then begin
-            SourceForm := TfrmSource.Create(nil);
+            SourceForm := TfrmLoRaSerialSource.Create(nil);
             Source := TSerialSource.Create(SourceIndex, Group, HABCallback);
 //        end else if SourceTypeText = 'DLFLDigi' then begin
 //            SourceType := stDLFLDigi;
@@ -227,7 +228,7 @@ var
     Callsign: String;
     PositionIsNew: Boolean;
 begin
-    HABSources[SourceIndex].LatestPosition := Position;
+    // HABSources[SourceIndex].LatestPosition := Position;
 
     // Got a packet
     HABSources[SourceIndex].LastPacketAt := Now;
@@ -365,6 +366,7 @@ begin
             NewPosition(SourceIndex, Position);
         end;
         Status := Position.Line;
+        HABSources[SourceIndex].LatestPosition := Position;
     end else if Line <> '' then begin
         Status := Line;
     end;
@@ -400,13 +402,23 @@ begin
 //        end;
 //    end;
 
-//    if Position.HasCurrentRSSI then begin
-//        Sources[ID].CurrentRSSI := 'Current RSSI ' + IntToStr(Position.CurrentRSSI)
-//    end;
+    if Position.HasCurrentRSSI then begin
+        HABSources[SourceIndex].SourceForm.ShowCurrentRSSI(0, Position.CurrentRSSI);
 
-//    if Position.HasPacketRSSI then begin
-//        Sources[ID].PacketRSSI := ',    Packet RSSI ' + IntToStr(Position.PacketRSSI);
-//    end;
+        if HABSources[SourceIndex].LatestPosition.InUse then begin
+            // We have a position so we know what payload we last received
+            frmPayloads.ShowCurrentRSSI(HABSources[SourceIndex].LatestPosition.PayloadID, Position.CurrentRSSI);
+        end;
+    end;
+
+    if Position.HasPacketRSSI then begin
+        HABSources[SourceIndex].SourceForm.ShowPacketRSSI(0, Position.PacketRSSI);
+
+        if HABSources[SourceIndex].LatestPosition.InUse then begin
+            // We have a position so we know what payload we last received
+            frmPayloads.ShowPacketRSSI(HABSources[SourceIndex].LatestPosition.PayloadID, Position.PacketRSSI);
+        end;
+    end;
 
 //    if Position.HasFrequency then begin
 //        Sources[ID].FreqError := ',    Frequency Offset = ' + FormatFloat('0', Position.FrequencyError*1000) + ' Hz';

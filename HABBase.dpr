@@ -31,7 +31,8 @@ uses
   Habitat in '..\HABRx\Habitat.pas',
   SystemSettings in 'SystemSettings.pas' {frmSystemSettings},
   LogtailSettings in 'LogtailSettings.pas' {frmLogtailSettings},
-  Payload in 'Payload.pas' {frmPayload};
+  Payload in 'Payload.pas' {frmPayload},
+  LoRaSerialSource in 'LoRaSerialSource.pas' {frmLoRaSerialSource};
 
 {$R *.res}
 

@@ -6,10 +6,10 @@ inherited frmSources: TfrmSources
   TextHeight = 13
   inherited pnlMain: TPanel
     Width = 302
-    ExplicitWidth = 1065
+    ExplicitWidth = 302
     inherited Panel1: TPanel
       Width = 302
-      ExplicitWidth = 1065
+      ExplicitWidth = 302
       inherited lblTitle: TLabel
         Width = 285
         Caption = 'Sources'
@@ -23,7 +23,6 @@ inherited frmSources: TfrmSources
       Height = 446
       Align = alClient
       TabOrder = 1
-      ExplicitWidth = 1065
     end
   end
 end

@@ -8,11 +8,11 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, AdvObj,
-  BaseGrid, AdvGrid, DBAdvGrid, Source, Vcl.StdCtrls;
+  BaseGrid, AdvGrid, DBAdvGrid, Source, Vcl.StdCtrls, Vcl.ComCtrls,
+  AdvSmoothButton, AdvPanel;
 
 type
   TfrmPayload = class(TfrmBase)
-    DBAdvGrid3: TDBAdvGrid;
     tblPositions: TFDMemTable;
     tblLivePayloadsCounter: TIntegerField;
     tblLivePayloadsTimestamp: TDateTimeField;
@@ -27,6 +27,17 @@ type
     btnUp: TButton;
     btnDown: TButton;
     pnlTitle: TPanel;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    DBAdvGrid3: TDBAdvGrid;
+    pnlCommon: TAdvPanel;
+    Label9: TLabel;
+    btnSave: TAdvSmoothButton;
+    btnCancel: TAdvSmoothButton;
+    edtCurrentRSSI: TEdit;
+    Label1: TLabel;
+    edtPacketRSSI: TEdit;
     procedure btnDownClick(Sender: TObject);
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -38,6 +49,8 @@ type
     { Public declarations }
     procedure AddPosition(Position: THABPosition; Sources: String);
     procedure UpdatePosition(Position: THABPosition; Sources: String);
+    procedure ShowPacketRSSI(PacketRSSI: Integer);
+    procedure ShowCurrentRSSI(CurrentRSSI: Integer);
   end;
 
 
@@ -117,5 +130,16 @@ begin
     btnDown.Visible := True;
 end;
 
+procedure TfrmPayload.ShowPacketRSSI(PacketRSSI: Integer);
+begin
+    TabSheet2.TabVisible := True;
+    edtPacketRSSI.Text := PacketRSSI.ToString;
+end;
+
+procedure TfrmPayload.ShowCurrentRSSI(CurrentRSSI: Integer);
+begin
+    TabSheet2.TabVisible := True;
+    edtCurrentRSSI.Text := CurrentRSSI.ToString;
+end;
 
 end.

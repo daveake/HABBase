@@ -34,12 +34,15 @@ type
     { Private declarations }
     HABPayloads: Array[1..32] of TPayload;
     function AddOrUpdatePayloadInOurList(Position: THABPosition; SourceCode: String; var PositionIsNew: Boolean): Integer;
+    function FindPayload(PayloadID: String): Integer;
     function FindOrAddPayload(PayloadID: String): Integer;
     function PositionHasChanged(NewPosition, OldPosition: THABPosition): Boolean;
   public
     { Public declarations }
     function NewPosition(Position: THABPosition; SourceCode, SourceDescription: String): Boolean;
     procedure UpdateActivePayloads;
+    procedure ShowPacketRSSI(PayloadID: String; PacketRSSI: Integer);
+    procedure ShowCurrentRSSI(PayloadID: String; CurrentRSSI: Integer);
   end;
 
 var
@@ -177,6 +180,25 @@ end;
 
 function TfrmPayloads.FindOrAddPayload(PayloadID: String): Integer;
 var
+    PayloadIndex: Integer;
+begin
+    PayloadIndex := FindPayload(PayloadID);
+
+    if PayloadIndex = 0 then begin
+        // Add new one
+        for PayloadIndex := Low(HABPayloads) to High(HABPayloads) do begin
+            if not HABPayloads[PayloadIndex].InUse then begin
+                Result := PayloadIndex;
+                Exit;
+            end;
+        end;
+    end;
+
+    Result := 0;
+end;
+
+function TfrmPayloads.FindPayload(PayloadID: String): Integer;
+var
     i: Integer;
 begin
     for i := Low(HABPayloads) to High(HABPayloads) do begin
@@ -185,14 +207,6 @@ begin
                 Result := i;
                 Exit;
             end;
-        end;
-    end;
-
-    // Add new one
-    for i := Low(HABPayloads) to High(HABPayloads) do begin
-        if not HABPayloads[i].InUse then begin
-            Result := i;
-            Exit;
         end;
     end;
 
@@ -259,6 +273,28 @@ begin
             end;
             Next;
         end;
+    end;
+end;
+
+procedure TfrmPayloads.ShowPacketRSSI(PayloadID: String; PacketRSSI: Integer);
+var
+    PayloadIndex: Integer;
+begin
+    PayloadIndex := FindPayload(PayloadID);
+
+    if PayloadIndex > 0 then begin
+        HABPayloads[PayloadIndex].Form.ShowPacketRSSI(PacketRSSI);
+    end;
+end;
+
+procedure TfrmPayloads.ShowCurrentRSSI(PayloadID: String; CurrentRSSI: Integer);
+var
+    PayloadIndex: Integer;
+begin
+    PayloadIndex := FindPayload(PayloadID);
+
+    if PayloadIndex > 0 then begin
+        HABPayloads[PayloadIndex].Form.ShowCurrentRSSI(CurrentRSSI);
     end;
 end;
 

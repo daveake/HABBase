@@ -9,7 +9,7 @@ uses
   Source, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid, Data.DB,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Menus;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Menus, Vcl.ComCtrls;
 
 type
   TfrmLogtail = class(TfrmSource)

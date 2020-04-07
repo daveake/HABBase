@@ -9,7 +9,7 @@ inherited frmLogtail: TfrmLogtail
       Width = 382
       Height = 0
       Align = alTop
-      TabOrder = 1
+      TabOrder = 2
       ExplicitWidth = 348
       ControlData = {
         4C0000007B270000000000000000000000000000000000000000000000000000
@@ -17,9 +17,6 @@ inherited frmLogtail: TfrmLogtail
         2B2E126200000000000000004C0000000114020000000000C000000000000046
         8000000000000000000000000000000000000000000000000000000000000000
         00000000000000000100000000000000000000000000000000000000}
-    end
-    inherited DBAdvGrid3: TDBAdvGrid
-      TabOrder = 2
     end
   end
   object Timer1: TTimer [1]

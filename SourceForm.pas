@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, AdvUtil, Vcl.Grids, AdvObj, BaseGrid,
   AdvGrid, DBAdvGrid, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  Vcl.Menus, Vcl.StdCtrls, Source;
+  Vcl.Menus, Vcl.StdCtrls, Source, Vcl.ComCtrls;
 
 type
   TfrmSource = class(TfrmBase)
@@ -22,7 +22,6 @@ type
     tblLivePayloadsDistance: TFloatField;
     srcPositions: TDataSource;
     tblPositionsPayloadID: TStringField;
-    DBAdvGrid3: TDBAdvGrid;
     btnSettings: TButton;
     menuSource: TPopupMenu;
     ModifySource: TMenuItem;
@@ -31,6 +30,9 @@ type
     btnUp: TButton;
     btnDown: TButton;
     pnlTitle: TPanel;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    DBAdvGrid3: TDBAdvGrid;
     procedure btnSettingsClick(Sender: TObject);
     procedure ModifySourceClick(Sender: TObject);
     procedure mnuAddNewSourceClick(Sender: TObject);
@@ -47,6 +49,8 @@ type
     SourceIndex: Integer;
     { Public declarations }
     Enabled: Boolean;
+    procedure ShowCurrentRSSI(Channel, CurrentRSSI: Integer); virtual;
+    procedure ShowPacketRSSI(Channel, PacketRSSI: Integer); virtual;
   end;
 
 
@@ -136,6 +140,16 @@ begin
             Last;
         end;
     end;
+end;
+
+procedure TfrmSource.ShowCurrentRSSI(Channel, CurrentRSSI: Integer);
+begin
+    // virtual
+end;
+
+procedure TfrmSource.ShowPacketRSSI(Channel, PacketRSSI: Integer);
+begin
+    // virtual
 end;
 
 end.
