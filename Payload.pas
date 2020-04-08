@@ -99,6 +99,8 @@ end;
 
 procedure TfrmPayload.FormCreate(Sender: TObject);
 begin
+    PageControl1.ActivePageIndex := 0;
+    TabSheet2.TabVisible := False;
     Up;
 end;
 

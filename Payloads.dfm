@@ -30,4 +30,10 @@ inherited frmPayloads: TfrmPayloads
     Left = 616
     Top = 272
   end
+  object tmrExpired: TTimer
+    Interval = 10000
+    OnTimer = tmrExpiredTimer
+    Left = 216
+    Top = 368
+  end
 end

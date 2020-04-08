@@ -77,6 +77,7 @@ begin
         frmMap.SetHomePosition;
         frmPayloads.UpdateActivePayloads;
     end;
+    frmPayloads.CheckForExpiredPayloads;
     frmSystemSettings.Free;
 end;
 

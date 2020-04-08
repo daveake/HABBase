@@ -2,7 +2,7 @@ object frmSystemSettings: TfrmSystemSettings
   Left = 0
   Top = 0
   Caption = 'frmSystemSettings'
-  ClientHeight = 169
+  ClientHeight = 220
   ClientWidth = 451
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object frmSystemSettings: TfrmSystemSettings
     Left = 0
     Top = 0
     Width = 451
-    Height = 169
+    Height = 220
     Margins.Left = 2
     Margins.Top = 2
     Margins.Right = 2
@@ -67,12 +67,13 @@ object frmSystemSettings: TfrmSystemSettings
     StatusBar.ColorTo = 14602191
     StatusBar.GradientDirection = gdVertical
     Text = ''
+    ExplicitHeight = 169
     DesignSize = (
       447
-      165)
+      216)
     FullHeight = 337
     object Label9: TLabel
-      Left = 30
+      Left = 62
       Top = 14
       Width = 40
       Height = 13
@@ -80,7 +81,7 @@ object frmSystemSettings: TfrmSystemSettings
       Caption = 'Callsign:'
     end
     object Label1: TLabel
-      Left = 27
+      Left = 59
       Top = 41
       Width = 43
       Height = 13
@@ -88,7 +89,7 @@ object frmSystemSettings: TfrmSystemSettings
       Caption = 'Latitude:'
     end
     object Label2: TLabel
-      Left = 19
+      Left = 51
       Top = 68
       Width = 51
       Height = 13
@@ -96,17 +97,39 @@ object frmSystemSettings: TfrmSystemSettings
       Caption = 'Longitude:'
     end
     object Label3: TLabel
-      Left = 29
+      Left = 61
       Top = 95
       Width = 41
       Height = 13
       Alignment = taRightJustify
       Caption = 'Altitude:'
     end
+    object Label4: TLabel
+      Left = 27
+      Top = 122
+      Width = 75
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Payload Expiry:'
+    end
+    object Label5: TLabel
+      Left = 163
+      Top = 95
+      Width = 114
+      Height = 13
+      Caption = 'm'
+    end
+    object Label6: TLabel
+      Left = 163
+      Top = 119
+      Width = 16
+      Height = 13
+      Caption = 'min'
+    end
     object btnSave: TAdvSmoothButton
       AlignWithMargins = True
       Left = 257
-      Top = 116
+      Top = 167
       Width = 82
       Height = 38
       Margins.Left = 2
@@ -140,12 +163,13 @@ object frmSystemSettings: TfrmSystemSettings
       Enabled = False
       Version = '2.2.1.2'
       OnClick = btnSaveClick
+      ExplicitTop = 116
       TMSStyle = 8
     end
     object btnCancel: TAdvSmoothButton
       AlignWithMargins = True
       Left = 351
-      Top = 116
+      Top = 167
       Width = 82
       Height = 38
       Margins.Left = 2
@@ -179,11 +203,12 @@ object frmSystemSettings: TfrmSystemSettings
       Version = '2.2.1.2'
       ModalResult = 2
       OnClick = btnCancelClick
+      ExplicitTop = 116
       TMSStyle = 8
     end
     object DBEdit1: TDBEdit
-      Left = 96
-      Top = 11
+      Left = 108
+      Top = 8
       Width = 121
       Height = 21
       DataField = 'Callsign'
@@ -192,8 +217,8 @@ object frmSystemSettings: TfrmSystemSettings
       OnChange = DBEdit1Change
     end
     object DBEdit2: TDBEdit
-      Left = 96
-      Top = 38
+      Left = 108
+      Top = 35
       Width = 121
       Height = 21
       DataField = 'Latitude'
@@ -202,8 +227,8 @@ object frmSystemSettings: TfrmSystemSettings
       OnChange = DBEdit1Change
     end
     object DBEdit3: TDBEdit
-      Left = 96
-      Top = 65
+      Left = 108
+      Top = 62
       Width = 121
       Height = 21
       DataField = 'Longitude'
@@ -212,13 +237,23 @@ object frmSystemSettings: TfrmSystemSettings
       OnChange = DBEdit1Change
     end
     object DBEdit4: TDBEdit
-      Left = 96
-      Top = 92
+      Left = 108
+      Top = 89
       Width = 49
       Height = 21
       DataField = 'Altitude'
       DataSource = DataModule1.srcSettings
       TabOrder = 5
+      OnChange = DBEdit1Change
+    end
+    object DBEdit5: TDBEdit
+      Left = 108
+      Top = 116
+      Width = 49
+      Height = 21
+      DataField = 'Expiry'
+      DataSource = DataModule1.srcSettings
+      TabOrder = 6
       OnChange = DBEdit1Change
     end
   end

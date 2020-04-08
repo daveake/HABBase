@@ -54,6 +54,7 @@ type
     tblWhiteListMask: TStringField;
     tblWhiteListDistance: TFloatField;
     tblSettingsRightWidth: TIntegerField;
+    tblSettingsExpiry: TIntegerField;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

@@ -105,7 +105,7 @@ inherited frmPayload: TfrmPayload
       Top = 44
       Width = 353
       Height = 306
-      ActivePage = TabSheet2
+      ActivePage = TabSheet1
       Align = alClient
       TabOrder = 1
       TabPosition = tpBottom
@@ -642,10 +642,6 @@ inherited frmPayload: TfrmPayload
           StatusBar.ColorTo = 14602191
           StatusBar.GradientDirection = gdVertical
           Text = ''
-          ExplicitLeft = 2
-          ExplicitTop = -2
-          ExplicitWidth = 374
-          ExplicitHeight = 278
           DesignSize = (
             341
             276)

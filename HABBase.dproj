@@ -87,6 +87,7 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_WriteableConstants>true</DCC_WriteableConstants>
         <Debugger_RunParams>d:\dropbox\dev\hab\apps\HABBase</Debugger_RunParams>
+        <Icon_MainIcon>HABBase_Icon.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>

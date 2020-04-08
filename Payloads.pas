@@ -29,7 +29,9 @@ type
   TfrmPayloads = class(TfrmNormal)
     scrollMain: TScrollBox;
     tmrUpdates: TTimer;
+    tmrExpired: TTimer;
     procedure tmrUpdatesTimer(Sender: TObject);
+    procedure tmrExpiredTimer(Sender: TObject);
   private
     { Private declarations }
     HABPayloads: Array[1..32] of TPayload;
@@ -43,6 +45,7 @@ type
     procedure UpdateActivePayloads;
     procedure ShowPacketRSSI(PayloadID: String; PacketRSSI: Integer);
     procedure ShowCurrentRSSI(PayloadID: String; CurrentRSSI: Integer);
+    procedure CheckForExpiredPayloads;
   end;
 
 var
@@ -167,13 +170,18 @@ begin
     end;
 end;
 
+procedure TfrmPayloads.tmrExpiredTimer(Sender: TObject);
+begin
+    CheckForExpiredPayloads;
+end;
+
 procedure TfrmPayloads.tmrUpdatesTimer(Sender: TObject);
 var
-    i: Integer;
+    PayloadIndex: Integer;
 begin
-    for i := Low(HABPayloads) to High(HABPayloads) do begin
-        if HABPayloads[i].InUse and (HABPayloads[i].Form <> nil) then begin
-            HABPayloads[i].Form.pnlTitle.Caption := HABPayloads[i].Position.PayloadID + ' (' + FormatDateTime('nn:ss', Now - HABPayloads[i].LastUpdate) + ')';
+    for PayloadIndex := Low(HABPayloads) to High(HABPayloads) do begin
+        if HABPayloads[PayloadIndex].InUse and (HABPayloads[PayloadIndex].Form <> nil) then begin
+            HABPayloads[PayloadIndex].Form.pnlTitle.Caption := HABPayloads[PayloadIndex].Position.PayloadID + ' (' + FormatDateTime('nn:ss', Now - HABPayloads[PayloadIndex].LastUpdate) + ')';
         end;
     end;
 end;
@@ -295,6 +303,24 @@ begin
 
     if PayloadIndex > 0 then begin
         HABPayloads[PayloadIndex].Form.ShowCurrentRSSI(CurrentRSSI);
+    end;
+end;
+
+procedure TfrmPayloads.CheckForExpiredPayloads;
+var
+    PayloadIndex: Integer;
+    MustHaveUpdatedSince: TDateTime;
+begin
+    MustHaveUpdatedSince := Now - DataModule1.tblSettings.FieldByName('Expiry').AsInteger * 60 / 86400;
+
+    for PayloadIndex := Low(HABPayloads) to High(HABPayloads) do begin
+        if HABPayloads[PayloadIndex].InUse then begin
+            if HABPayloads[PayloadIndex].LastUpdate < MustHaveUpdatedSince then begin
+                HABPayloads[PayloadIndex].InUse := False;
+                HABPayloads[PayloadIndex].Form.Free;
+                frmMap.RemovePayload(PayloadIndex);
+            end;
+        end;
     end;
 end;
 

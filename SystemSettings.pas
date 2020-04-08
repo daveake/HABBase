@@ -20,6 +20,10 @@ type
     Label2: TLabel;
     DBEdit4: TDBEdit;
     Label3: TLabel;
+    Label4: TLabel;
+    DBEdit5: TDBEdit;
+    Label5: TLabel;
+    Label6: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
