@@ -9,7 +9,7 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, AdvObj,
   BaseGrid, AdvGrid, DBAdvGrid, Source, Vcl.StdCtrls, Vcl.ComCtrls,
-  AdvSmoothButton, AdvPanel;
+  AdvSmoothButton, AdvPanel, AdvProgr, AdvGauge;
 
 type
   TfrmPayload = class(TfrmBase)
@@ -38,6 +38,9 @@ type
     edtCurrentRSSI: TEdit;
     Label1: TLabel;
     edtPacketRSSI: TEdit;
+    TabSheet3: TTabSheet;
+    lstTelemetry: TListBox;
+    AdvGauge1: TAdvGauge;
     procedure btnDownClick(Sender: TObject);
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -48,7 +51,7 @@ type
   public
     { Public declarations }
     procedure AddPosition(Position: THABPosition; Sources: String);
-    procedure UpdatePosition(Position: THABPosition; Sources: String);
+    procedure UpdateSources(Position: THABPosition; Sources: String);
     procedure ShowPacketRSSI(PacketRSSI: Integer);
     procedure ShowCurrentRSSI(CurrentRSSI: Integer);
   end;
@@ -84,6 +87,21 @@ begin
         except
             Last;
         end;
+
+        with lstTelemetry do begin
+            Items[0] := ' PayloadID: ' + PayloadID;
+            Items[1] := '   Counter: ' + IntToStr(Counter);
+            Items[2] := ' Timestamp: ' + FormatDateTime('hh:nn:ss', TimeStamp);
+            Items[3] := ' Latitude: ' + FormatFloat('0.0000', Latitude);
+            Items[4] := ' Longitude: ' + FormatFloat('0.0000', Longitude);
+            Items[5] := '  Altitude: ' + FormatFloat('0', Altitude) + ' m';
+            Items[6] := '  Distance: ' + FormatFloat('0.0', Distance) + 'km';
+            Items[7] := '   Sources: ' + Sources;
+            if ContainsPrediction then begin
+                Items[8] := ' Pred. Lat: ' + FormatFloat('0.0000', Latitude);
+                Items[9] := ' Pred. Lon: ' + FormatFloat('0.0000', Longitude);
+            end;
+        end;
     end;
 end;
 
@@ -104,7 +122,7 @@ begin
     Up;
 end;
 
-procedure TfrmPayload.UpdatePosition(Position: THABPosition; Sources: String);
+procedure TfrmPayload.UpdateSources(Position: THABPosition; Sources: String);
 var
     MyBookmark: TBookmark;
 begin
@@ -116,6 +134,8 @@ begin
         Post;
         GotoBookmark(MyBookmark);
     end;
+
+    lstTelemetry.Items[7] := '   Sources: ' + Sources;
 end;
 
 procedure TfrmPayload.Down;
@@ -142,6 +162,7 @@ procedure TfrmPayload.ShowCurrentRSSI(CurrentRSSI: Integer);
 begin
     TabSheet2.TabVisible := True;
     edtCurrentRSSI.Text := CurrentRSSI.ToString;
+    AdvGauge1.Position := CurrentRSSI;
 end;
 
 end.

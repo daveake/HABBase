@@ -144,6 +144,7 @@ inherited frmSource: TfrmSource
           ControlLook.FixedGradientTo = clWhite
           ControlLook.FixedGradientMirrorFrom = clWhite
           ControlLook.FixedGradientMirrorTo = clWhite
+          ControlLook.FixedGradientHoverFrom = clGray
           ControlLook.FixedGradientHoverTo = clWhite
           ControlLook.FixedGradientHoverMirrorFrom = clWhite
           ControlLook.FixedGradientHoverMirrorTo = clWhite
@@ -661,8 +662,12 @@ inherited frmSource: TfrmSource
     Top = 224
   end
   object menuSource: TPopupMenu
-    Left = 361
-    Top = 304
+    Left = 97
+    Top = 200
+    object EnableSource: TMenuItem
+      Caption = 'Enabled'
+      OnClick = EnableSourceClick
+    end
     object ModifySource: TMenuItem
       Caption = 'Modify Source'
       OnClick = ModifySourceClick

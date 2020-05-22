@@ -17,6 +17,7 @@ type
       InUse:          Boolean;
       Marker:         TMarker;
       MarkerName:     String;
+      Landing:        TMarker;
       Radial:         TPolylineItem;
       Track:          TPolylineItem;
       Position:       THABPosition;
@@ -38,7 +39,7 @@ type
     // PolylineItems: array[0..64] of TPolylineItem;
     FollowMode: TFollowMode;
     function FindMapMarker(PayloadID: String): Integer;
-    procedure AddOrUpdateMapMarker(PayloadIndex: Integer; Position: THABPosition; ImageName: String);
+    procedure AddOrUpdateMapMarker(PayloadIndex: Integer; Position: THABPosition; ColourText: String);
     procedure DrawRadial(PayloadIndex: Integer; NewHome: Boolean);
   public
     { Public declarations }
@@ -147,12 +148,7 @@ begin
 
     if OKToUpdateMap then begin
         // Find or create marker for this payload
-        AddOrUpdateMapMarker(PayloadIndex, Position, BalloonIconName(Position, ColourText, False));
-
-        // Update balloon prediction marker
-//        if Position.ContainsPrediction then begin
-//            AddOrUpdateMapMarker('X', Position.PredictedLatitude, Position.PredictedLongitude, BalloonIconName(Position, BalloonColour.Empty ));
-//        end;
+        AddOrUpdateMapMarker(PayloadIndex, Position, ColourText);
 
         // Line to Balloon
         DrawRadial(PayloadIndex, False);
@@ -178,27 +174,38 @@ begin
     end;
 end;
 
-procedure TfrmMap.AddOrUpdateMapMarker(PayloadIndex: Integer; Position: THABPosition; ImageName: String);
+procedure TfrmMap.AddOrUpdateMapMarker(PayloadIndex: Integer; Position: THABPosition; ColourText: String);
 var
     FileName: String;
 begin
     if not Balloons[PayloadIndex].InUse then begin
         Balloons[PayloadIndex].InUse := True;
         Balloons[PayloadIndex].Marker := GMap.Markers.Add(Position.Latitude, Position.Longitude, Position.PayloadID);
+    end else begin
+        Balloons[PayloadIndex].Marker.Latitude := Position.Latitude;
+        Balloons[PayloadIndex].Marker.Longitude := Position.Longitude;
     end;
 
-    Balloons[PayloadIndex].Marker.Latitude := Position.Latitude;
-    Balloons[PayloadIndex].Marker.Longitude := Position.Longitude;
+    if Position.ContainsPrediction then begin
+        if Balloons[PayloadIndex].Landing = nil then begin
+            FileName := ImageFolder + 'x-' + ColourText + '.png';
+            Balloons[PayloadIndex].Landing := GMap.Markers.Add(Position.PredictedLatitude,
+                                                               Position.PredictedLongitude,
+                                                               Position.PayloadID);
+            Balloons[PayloadIndex].Landing.Icon := StringReplace('File://' + FileName, '\', '/',[rfReplaceAll, rfIgnoreCase]);
+        end else begin
+            Balloons[PayloadIndex].Landing.Latitude := Position.PredictedLatitude;
+            Balloons[PayloadIndex].Landing.Longitude := Position.PredictedLongitude;
+        end;
+    end;
 
     // Marker.Icon := StringReplace('File://' + 'C:\Dropbox\dev\HAB\HABMobile2\images\' + ImageName + '.png', '\', '/',[rfReplaceAll, rfIgnoreCase]);
-    FileName := ImageFolder + ImageName + '.png';
+    FileName := ImageFolder + BalloonIconName(Position, ColourText, False) + '.png';
 
     if FileName <> Balloons[PayloadIndex].MarkerName then begin
         Balloons[PayloadIndex].MarkerName := FileName;
         if FileExists(FileName) then begin
             Balloons[PayloadIndex].Marker.Icon := StringReplace('File://' + FileName, '\', '/',[rfReplaceAll, rfIgnoreCase]);
-        end else begin
-            Caption := '11';
         end;
     end;
 end;

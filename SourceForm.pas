@@ -33,6 +33,7 @@ type
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     DBAdvGrid3: TDBAdvGrid;
+    EnableSource: TMenuItem;
     procedure btnSettingsClick(Sender: TObject);
     procedure ModifySourceClick(Sender: TObject);
     procedure mnuAddNewSourceClick(Sender: TObject);
@@ -41,6 +42,7 @@ type
     procedure btnDownClick(Sender: TObject);
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure EnableSourceClick(Sender: TObject);
   private
     { Private declarations }
     procedure Down;
@@ -70,6 +72,8 @@ var
     pnt: TPoint;
 begin
     if GetCursorPos(pnt) then begin
+        EnableSource.Checked := frmSources.SourceIsEnabled(SourceIndex);
+
         menuSource.Popup(pnt.X, pnt.Y);
     end;
 end;
@@ -104,6 +108,11 @@ begin
     pnlMain.Height := 350;
     btnDown.Visible := False;
     btnUp.Visible := True;
+end;
+
+procedure TfrmSource.EnableSourceClick(Sender: TObject);
+begin
+    frmSources.EnableSource(SourceIndex, EnableSource.Checked);
 end;
 
 procedure TfrmSource.Up;

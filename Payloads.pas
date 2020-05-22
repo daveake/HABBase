@@ -151,7 +151,7 @@ begin
                     HABPayloads[PayloadIndex].Sources := HABPayloads[PayloadIndex].Sources + ',' + SourceCode;
                 end;
 
-                HABPayloads[PayloadIndex].Form.UpdatePosition(Position, HABPayloads[PayloadIndex].Sources);
+                HABPayloads[PayloadIndex].Form.UpdateSources(Position, HABPayloads[PayloadIndex].Sources);
             end;
         end;
     end;
@@ -202,7 +202,7 @@ begin
         end;
     end;
 
-    Result := 0;
+    Result := PayloadIndex;
 end;
 
 function TfrmPayloads.FindPayload(PayloadID: String): Integer;

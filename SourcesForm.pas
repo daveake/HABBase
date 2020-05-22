@@ -10,8 +10,8 @@ uses
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, AdvSmoothButton, AdvPanel,
-  Source, SourceForm, Vcl.Menus, Habitat,
-  GatewaySource, SerialSource; // HabitatSource, UDPSource, SerialSource, BluetoothSource,
+  Source, SourceForm, Vcl.Menus, Habitat, SocketSource,
+  GatewaySource, SerialSource, TCPSettings; // HabitatSource, UDPSource, SerialSource, BluetoothSource,
 
 
 type
@@ -62,6 +62,8 @@ type
     procedure AddNewSource;
     procedure ModifySource(SourceIndex: Integer);
     procedure DeleteSource(SourceIndex: Integer);
+    function SourceIsEnabled(SourceIndex: Integer): Boolean;
+    procedure EnableSource(SourceIndex: Integer; EnableSource: Boolean);
   end;
 
 var
@@ -146,6 +148,9 @@ begin
         end else if SourceType = stSerial then begin
             SourceForm := TfrmLoRaSerialSource.Create(nil);
             Source := TSerialSource.Create(SourceIndex, Group, HABCallback);
+        end else if SourceType = stTCP then begin
+            SourceForm := TfrmSource.Create(nil);
+            Source := TSocketSource.Create(SourceIndex, Group, HABCallback);
 //        end else if SourceTypeText = 'DLFLDigi' then begin
 //            SourceType := stDLFLDigi;
 //            Form := TfrmDLFLDigiSource.Create(nil, HABDB, HabitatThread, SourceIndex);
@@ -478,7 +483,7 @@ begin
         stLogtail:  SettingsForm := TfrmLogtailSettings.Create(nil);
         stGateway:  SettingsForm := TfrmGatewaySettings.Create(nil);
         stSerial:   SettingsForm := TfrmLoRaSerialSettings.Create(nil);
-        stTCP:      SettingsForm := nil;
+        stTCP:      SettingsForm := TfrmTCPSettings.Create(nil);
         stUDP:      SettingsForm := nil;
         stHabitat:  SettingsForm := nil;
         else        SettingsForm := nil;
@@ -506,5 +511,23 @@ begin
         ReloadSourceSettings(SourceIndex);
     end;
 end;
+
+
+function TfrmSources.SourceIsEnabled(SourceIndex: Integer): Boolean;
+begin
+    Result := HABSources[SourceIndex].SourceEnabled;
+end;
+
+procedure TfrmSources.EnableSource(SourceIndex: Integer; EnableSource: Boolean);
+begin
+    HABSources[SourceIndex].SourceEnabled := EnableSource;
+    SetSettingBoolean(HABSources[SourceIndex].Group, 'Enabled', EnableSource);
+    if HABSources[SourceIndex].SourceForm <> nil then begin
+        HABSources[SourceIndex].SourceForm.Enabled := EnableSource;
+    end;
+    SetGroupChangedFlag(HABSources[SourceIndex].Group, True);
+    ShowSourceStatus(SourceIndex);
+end;
+
 
 end.
