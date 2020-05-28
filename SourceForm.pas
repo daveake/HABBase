@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, AdvUtil, Vcl.Grids, AdvObj, BaseGrid,
   AdvGrid, DBAdvGrid, Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  Vcl.Menus, Vcl.StdCtrls, Source, Vcl.ComCtrls;
+  Vcl.Menus, Vcl.StdCtrls, Source, Vcl.ComCtrls, AdvSmoothButton, AdvPanel;
 
 type
   TfrmSource = class(TfrmBase)
@@ -31,9 +31,11 @@ type
     btnDown: TButton;
     pnlTitle: TPanel;
     PageControl1: TPageControl;
-    TabSheet1: TTabSheet;
+    tabHistory: TTabSheet;
     DBAdvGrid3: TDBAdvGrid;
     EnableSource: TMenuItem;
+    tabStatus: TTabSheet;
+    lstLog: TListBox;
     procedure btnSettingsClick(Sender: TObject);
     procedure ModifySourceClick(Sender: TObject);
     procedure mnuAddNewSourceClick(Sender: TObject);
@@ -48,11 +50,18 @@ type
     procedure Down;
     procedure Up;
   public
-    SourceIndex: Integer;
     { Public declarations }
+    SourceIndex: Integer;
+//    SettingsID: Integer;
+    Group: String;
     Enabled: Boolean;
+    procedure AddStatusToLog(Status: String);
     procedure ShowCurrentRSSI(Channel, CurrentRSSI: Integer); virtual;
     procedure ShowPacketRSSI(Channel, PacketRSSI: Integer); virtual;
+    procedure ShowFrequencyError(Channel: Integer; FrequencyError: Double); virtual;
+    procedure ShowFrequency(Channel: Integer; Frequency: Double); virtual;
+    procedure ShowSetting(Setting, Value: String); virtual;
+    procedure DoAFC(FrequencyError: Double); virtual;
   end;
 
 
@@ -157,6 +166,38 @@ begin
 end;
 
 procedure TfrmSource.ShowPacketRSSI(Channel, PacketRSSI: Integer);
+begin
+    // virtual
+end;
+
+procedure TfrmSource.ShowFrequencyError(Channel: Integer; FrequencyError: Double);
+begin
+    // virtual
+end;
+
+procedure TfrmSource.ShowFrequency(Channel: Integer; Frequency: Double);
+begin
+    // virtual
+end;
+
+procedure TfrmSource.ShowSetting(Setting, Value: String);
+begin
+    // virtual
+end;
+
+procedure TfrmSource.AddStatusToLog(Status: String);
+begin
+    with lstLog do begin
+        if Items.Count > 30 then begin
+            Items.Delete(30);
+        end;
+
+        Items.Insert(0, Status);
+        ItemIndex := 0;
+    end;
+end;
+
+procedure TfrmSource.DoAFC(FrequencyError: Double);
 begin
     // virtual
 end;

@@ -35,7 +35,7 @@ type
 //        RSSILabel:    TLabel;
         CurrentRSSI:  String;
 //        PacketRSSI:   String;
-//        FreqError:    String;
+        FreqError:          Double;
         LatestPosition:     THABPosition;
     end;
 
@@ -54,11 +54,13 @@ type
     function ShowSettingsForm(SourceIndex: Integer): Boolean;
     function FindFreeSource: Integer;
     procedure HabitatStatusCallback(SourceID: Integer; Active, OK: Boolean);
-    procedure NewPosition(SourceIndex: Integer; Position: THABPosition);
+    function NewPosition(SourceIndex: Integer; Position: THABPosition): Boolean;
+    procedure AddStatusToLog(SourceIndex: Integer);
   public
     { Public declarations }
     procedure LoadSources;
     procedure HABCallback(SourceIndex: Integer; Connected: Boolean; Line: String; Position: THABPosition);
+    function StorePosition(SourceIndex: Integer; Connected: Boolean; Line: String; Position: THABPosition): Boolean;
     procedure AddNewSource;
     procedure ModifySource(SourceIndex: Integer);
     procedure DeleteSource(SourceIndex: Integer);
@@ -169,6 +171,7 @@ begin
 
         if SourceForm <> nil then begin
             SourceForm.SourceIndex := SourceIndex;
+            SourceForm.Group := Group;
         end;
 
         LoadSourceSettings(SourceIndex);
@@ -199,6 +202,9 @@ begin
             if (Setting <> '') and (Value <> '') then begin
                 SetSettingString(Group, Setting, Value);
             end;
+            if SourceForm <> nil then begin
+                SourceForm.ShowSetting(Setting, Value);
+            end;
         end;
 
         if SourceForm <> nil then begin
@@ -228,7 +234,7 @@ begin
 end;
 
 
-procedure TfrmSources.NewPosition(SourceIndex: Integer; Position: THABPosition);
+function TfrmSources.NewPosition(SourceIndex: Integer; Position: THABPosition): Boolean;
 var
     Callsign: String;
     PositionIsNew: Boolean;
@@ -272,6 +278,8 @@ begin
     if PositionIsNew or not Position.ReceivedRemotely then begin
         HABSources[SourceIndex].SourceForm.AddPosition(Position);
     end;
+
+    Result := PositionIsNew;
 end;
 
 procedure TfrmSources.ShowSourceStatus(SourceIndex: Integer);
@@ -293,6 +301,13 @@ begin
         end else begin
             SourceForm.pnlTitle.Color := clSilver;
         end;
+    end;
+end;
+
+procedure TfrmSources.AddStatusToLog(SourceIndex: Integer);
+begin
+    if HABSources[SourceIndex].SourceForm <> nil then begin
+        HABSources[SourceIndex].SourceForm.AddStatusToLog(HABSources[SourceIndex].Status);
     end;
 end;
 
@@ -354,24 +369,36 @@ end;
 
 
 procedure TfrmSources.HABCallback(SourceIndex: Integer; Connected: Boolean; Line: String; Position: THABPosition);
+begin
+    StorePosition(SourceIndex, Connected, Line, Position);
+end;
+
+function TfrmSources.StorePosition(SourceIndex: Integer; Connected: Boolean; Line: String; Position: THABPosition): Boolean;
 var
     Status: String;
     MyBookmark: TBookmark;
 begin
-    HABSources[SourceIndex].Started := True;
+    Result := False;
+
     // Mark connected
     if Connected <> HABSources[SourceIndex].Connected then begin
         HABSources[SourceIndex].Connected := Connected;
+        ShowSourceStatus(SourceIndex);
+    end else if not HABSources[SourceIndex].Started then begin
+        HABSources[SourceIndex].Started := True;
         ShowSourceStatus(SourceIndex);
     end;
 
     // New Position
     if Position.InUse then begin
         if Position.PayloadID <> '' then begin
-            NewPosition(SourceIndex, Position);
+            Result := NewPosition(SourceIndex, Position);
         end;
         Status := Position.Line;
         HABSources[SourceIndex].LatestPosition := Position;
+        if HABSources[SourceIndex].SourceForm <> nil then begin
+            HABSources[SourceIndex].SourceForm.DoAFC(HABSources[SourceIndex].FreqError);
+        end;
     end else if Line <> '' then begin
         Status := Line;
     end;
@@ -379,6 +406,7 @@ begin
     // Update status
     if (Status <> '') and (Status <> HABSources[SourceIndex].Status) then begin
         HABSources[SourceIndex].Status := Status;
+        AddStatusToLog(SourceIndex);
         with DataModule1.tblSources do begin
             MyBookmark := GetBookmark;
             if FindKey([HABSources[SourceIndex].SourceID]) then begin
@@ -391,7 +419,7 @@ begin
             end;
         end;
 
-        if not Position.InUse then begin
+        if (frmToolLog <> nil) and (not Position.InUse) then begin
             frmToolLog.AddToLog('Source ' + HABSources[SourceIndex].Code + ': ' + Status);
         end;
     end;
@@ -425,13 +453,16 @@ begin
         end;
     end;
 
-//    if Position.HasFrequency then begin
-//        Sources[ID].FreqError := ',    Frequency Offset = ' + FormatFloat('0', Position.FrequencyError*1000) + ' Hz';
-//    end;
+    if Position.HasFrequency then begin
+        HABSources[SourceIndex].FreqError := Position.FrequencyError / 1000.0;
 
-//    if Sources[ID].RSSILabel <> nil then begin
-//        Sources[ID].RSSILabel.Text := Sources[ID].CurrentRSSI + Sources[ID].PacketRSSI + Sources[ID].FreqError;
-//    end;
+        HABSources[SourceIndex].SourceForm.ShowFrequencyError(0, Position.FrequencyError);
+
+        if HABSources[SourceIndex].LatestPosition.InUse then begin
+            // We have a position so we know what payload we last received
+            frmPayloads.ShowFrequencyError(HABSources[SourceIndex].LatestPosition.PayloadID, Position.FrequencyError);
+        end;
+    end;
 end;
 
 procedure TfrmSources.DataSourceClick(Sender: TObject);

@@ -107,8 +107,8 @@ inherited frmPayload: TfrmPayload
       Height = 306
       ActivePage = TabSheet2
       Align = alClient
+      MultiLine = True
       TabOrder = 1
-      TabPosition = tpBottom
       object TabSheet3: TTabSheet
         Caption = 'Position'
         ImageIndex = 2
@@ -116,7 +116,7 @@ inherited frmPayload: TfrmPayload
           Left = 0
           Top = 0
           Width = 345
-          Height = 280
+          Height = 278
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -142,10 +142,6 @@ inherited frmPayload: TfrmPayload
             '')
           ParentFont = False
           TabOrder = 0
-          ExplicitLeft = 80
-          ExplicitTop = 88
-          ExplicitWidth = 121
-          ExplicitHeight = 97
         end
       end
       object TabSheet2: TTabSheet
@@ -155,7 +151,7 @@ inherited frmPayload: TfrmPayload
           Left = 0
           Top = 0
           Width = 345
-          Height = 280
+          Height = 278
           Margins.Left = 2
           Margins.Top = 2
           Margins.Right = 2
@@ -206,28 +202,37 @@ inherited frmPayload: TfrmPayload
           Text = ''
           DesignSize = (
             341
-            276)
+            274)
           FullHeight = 337
           object Label9: TLabel
-            Left = 35
-            Top = 70
+            Left = 11
+            Top = 22
             Width = 67
             Height = 13
             Alignment = taRightJustify
             Caption = 'Current RSSI:'
           end
           object Label1: TLabel
-            Left = 40
-            Top = 22
+            Left = 16
+            Top = 70
             Width = 62
             Height = 13
             Alignment = taRightJustify
             Caption = 'Packet RSSI:'
           end
+          object Label2: TLabel
+            Left = 197
+            Top = 70
+            Width = 57
+            Height = 13
+            Alignment = taRightJustify
+            Anchors = [akTop, akRight]
+            Caption = 'Freq. Error:'
+          end
           object btnSave: TAdvSmoothButton
             AlignWithMargins = True
             Left = 447
-            Top = 124
+            Top = 122
             Width = 82
             Height = 38
             Margins.Left = 2
@@ -268,7 +273,7 @@ inherited frmPayload: TfrmPayload
           object btnCancel: TAdvSmoothButton
             AlignWithMargins = True
             Left = 541
-            Top = 124
+            Top = 122
             Width = 82
             Height = 38
             Margins.Left = 2
@@ -307,8 +312,8 @@ inherited frmPayload: TfrmPayload
             TMSStyle = 8
           end
           object edtCurrentRSSI: TEdit
-            Left = 108
-            Top = 67
+            Left = 84
+            Top = 19
             Width = 69
             Height = 21
             Alignment = taCenter
@@ -316,8 +321,8 @@ inherited frmPayload: TfrmPayload
             TabOrder = 2
           end
           object edtPacketRSSI: TEdit
-            Left = 108
-            Top = 19
+            Left = 84
+            Top = 67
             Width = 69
             Height = 21
             Alignment = taCenter
@@ -328,7 +333,8 @@ inherited frmPayload: TfrmPayload
             Left = 8
             Top = 104
             Width = 321
-            Height = 161
+            Height = 159
+            Anchors = [akLeft, akTop, akRight, akBottom]
             ArcColor = clRed
             ArcWidth = 30
             Background.Color = clWhite
@@ -348,13 +354,25 @@ inherited frmPayload: TfrmPayload
             Kind = gkNone
             Needle.Color = clBlue
             Minimum = -150.000000000000000000
+            MinText = 'Left'
             Maximum = -20.000000000000000000
+            MaxText = 'Right'
             Position = -150.000000000000000000
             SplitArcColor = clGreen
             SplitPosition = -110.000000000000000000
             TextPosition = tpNone
             TopPosition = 100.000000000000000000
             Version = '1.2.1.0'
+          end
+          object edtFrequencyError: TEdit
+            Left = 260
+            Top = 67
+            Width = 69
+            Height = 21
+            Alignment = taCenter
+            Anchors = [akTop, akRight]
+            ReadOnly = True
+            TabOrder = 5
           end
         end
       end
@@ -364,15 +382,18 @@ inherited frmPayload: TfrmPayload
           Left = 0
           Top = 0
           Width = 345
-          Height = 280
+          Height = 278
           Cursor = crDefault
           Align = alClient
           ColCount = 7
+          DoubleBuffered = True
           DrawingStyle = gdsClassic
           FixedColor = clWhite
           FixedCols = 0
           RowCount = 2
           FixedRows = 1
+          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect]
+          ParentDoubleBuffered = False
           ScrollBars = ssBoth
           TabOrder = 0
           GridLineColor = 13948116
@@ -833,6 +854,35 @@ inherited frmPayload: TfrmPayload
             44
             46
             51)
+        end
+      end
+      object tabCharts: TTabSheet
+        Caption = 'Charts'
+        ImageIndex = 3
+        object AltitudeChart: TChart
+          Left = 0
+          Top = 0
+          Width = 345
+          Height = 278
+          Legend.Visible = False
+          SubTitle.Text.Strings = (
+            'Altitude (m)')
+          Title.Text.Strings = (
+            'TChart')
+          Align = alClient
+          TabOrder = 0
+          DefaultCanvas = 'TGDIPlusCanvas'
+          ColorPaletteIndex = 13
+          object Series1: TLineSeries
+            Brush.BackColor = clDefault
+            Pointer.InflateMargins = True
+            Pointer.Style = psRectangle
+            XValues.DateTime = True
+            XValues.Name = 'X'
+            XValues.Order = loAscending
+            YValues.Name = 'Y'
+            YValues.Order = loNone
+          end
         end
       end
     end

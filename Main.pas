@@ -121,8 +121,10 @@ begin
     frmPayloads.pnlMain.Parent := pnlRight;
 
     // Log
-    frmToolLog := TfrmToolLog.Create(nil);
-    frmToolLog.pnlMain.Parent := pnlLog;
+//    frmToolLog := TfrmToolLog.Create(nil);
+//    frmToolLog.pnlMain.Parent := pnlLog;
+    pnlLog.Visible := False;
+    AdvSplitter3.Visible := False;
 
     // White List
     frmToolWhiteList := TfrmToolWhiteList.Create(nil);

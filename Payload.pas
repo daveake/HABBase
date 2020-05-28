@@ -9,7 +9,8 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, AdvObj,
   BaseGrid, AdvGrid, DBAdvGrid, Source, Vcl.StdCtrls, Vcl.ComCtrls,
-  AdvSmoothButton, AdvPanel, AdvProgr, AdvGauge;
+  AdvSmoothButton, AdvPanel, AdvProgr, AdvGauge, VclTee.TeeGDIPlus,
+  VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart;
 
 type
   TfrmPayload = class(TfrmBase)
@@ -41,6 +42,11 @@ type
     TabSheet3: TTabSheet;
     lstTelemetry: TListBox;
     AdvGauge1: TAdvGauge;
+    Label2: TLabel;
+    edtFrequencyError: TEdit;
+    tabCharts: TTabSheet;
+    AltitudeChart: TChart;
+    Series1: TLineSeries;
     procedure btnDownClick(Sender: TObject);
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -54,6 +60,7 @@ type
     procedure UpdateSources(Position: THABPosition; Sources: String);
     procedure ShowPacketRSSI(PacketRSSI: Integer);
     procedure ShowCurrentRSSI(CurrentRSSI: Integer);
+    procedure ShowFrequencyError(FrequencyError: Double);
   end;
 
 
@@ -65,29 +72,35 @@ procedure TfrmPayload.AddPosition(Position: THABPosition; Sources: String);
 var
     MyBookmark: TBookmark;
 begin
-    with tblPositions, Position do begin
-        MyBookmark := GetBookmark;
-        if RecordCount > 10 then begin
-            Last;
-            Delete;
-        end;
-        First;
-        Insert;
-        FieldByName('Counter').AsInteger := Counter;
-        FieldByName('TimeStamp').AsDateTime := TimeStamp;
-        FieldByName('Latitude').AsFloat := Latitude;
-        FieldByName('Longitude').AsFloat := Longitude;
-        FieldByName('Altitude').AsFloat := Altitude;
-        FieldByName('Distance').AsFloat := Distance;
-        FieldByName('Sources').AsString := Sources;
-        Post;
-        try
-            GotoBookmark(MyBookmark);
-            Prior;
-        except
-            Last;
+    with Position do begin
+        // Table
+        with tblPositions do begin
+            DisableControls;
+            MyBookmark := GetBookmark;
+            if RecordCount > 10 then begin
+                Last;
+                Delete;
+            end;
+            First;
+            Insert;
+            FieldByName('Counter').AsInteger := Counter;
+            FieldByName('TimeStamp').AsDateTime := TimeStamp;
+            FieldByName('Latitude').AsFloat := Latitude;
+            FieldByName('Longitude').AsFloat := Longitude;
+            FieldByName('Altitude').AsFloat := Altitude;
+            FieldByName('Distance').AsFloat := Distance;
+            FieldByName('Sources').AsString := Sources;
+            Post;
+            try
+                GotoBookmark(MyBookmark);
+                Prior;
+            except
+                Last;
+            end;
+            EnableControls;
         end;
 
+        // Position tab
         with lstTelemetry do begin
             Items[0] := ' PayloadID: ' + PayloadID;
             Items[1] := '   Counter: ' + IntToStr(Counter);
@@ -102,6 +115,9 @@ begin
                 Items[9] := ' Pred. Lon: ' + FormatFloat('0.0000', Longitude);
             end;
         end;
+
+        // Charts
+        AltitudeChart.Series[0].AddXY(Now, Altitude);
     end;
 end;
 
@@ -127,12 +143,14 @@ var
     MyBookmark: TBookmark;
 begin
     with tblPositions, Position do begin
+        DisableControls;
         MyBookmark := GetBookmark;
         First;
         Edit;
         FieldByName('Sources').AsString := Sources;
         Post;
         GotoBookmark(MyBookmark);
+        EnableControls;
     end;
 
     lstTelemetry.Items[7] := '   Sources: ' + Sources;
@@ -163,6 +181,12 @@ begin
     TabSheet2.TabVisible := True;
     edtCurrentRSSI.Text := CurrentRSSI.ToString;
     AdvGauge1.Position := CurrentRSSI;
+end;
+
+procedure TfrmPayload.ShowFrequencyError(FrequencyError: Double);
+begin
+    TabSheet2.TabVisible := True;
+    edtFrequencyError.Text := FormatFloat('0.0', FrequencyError) + ' kHz';
 end;
 
 end.

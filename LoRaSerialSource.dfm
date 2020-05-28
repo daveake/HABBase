@@ -4,20 +4,15 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
   TextHeight = 13
   inherited pnlMain: TPanel
     inherited PageControl1: TPageControl
-      ActivePage = TabSheet2
-      inherited TabSheet1: TTabSheet
-        inherited DBAdvGrid3: TDBAdvGrid
-          ControlLook.FixedGradientHoverFrom = clGray
-        end
-      end
-      object TabSheet2: TTabSheet
+      ActivePage = tabSignal
+      object tabSignal: TTabSheet [1]
         Caption = 'Signal'
-        ImageIndex = 1
+        ImageIndex = 2
         object pnlCommon: TAdvPanel
           Left = 0
           Top = 0
           Width = 374
-          Height = 278
+          Height = 276
           Margins.Left = 2
           Margins.Top = 2
           Margins.Right = 2
@@ -66,15 +61,13 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
           StatusBar.ColorTo = 14602191
           StatusBar.GradientDirection = gdVertical
           Text = ''
-          ExplicitLeft = 2
-          ExplicitTop = -2
           DesignSize = (
             370
-            274)
+            272)
           FullHeight = 337
           object Label9: TLabel
             Left = 35
-            Top = 30
+            Top = 47
             Width = 67
             Height = 13
             Alignment = taRightJustify
@@ -82,16 +75,32 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
           end
           object Label1: TLabel
             Left = 40
-            Top = 70
+            Top = 74
             Width = 62
             Height = 13
             Alignment = taRightJustify
             Caption = 'Packet RSSI:'
           end
+          object Label2: TLabel
+            Left = 209
+            Top = 74
+            Width = 57
+            Height = 13
+            Alignment = taRightJustify
+            Caption = 'Freq. Error:'
+          end
+          object Label3: TLabel
+            Left = 186
+            Top = 15
+            Width = 20
+            Height = 13
+            Alignment = taRightJustify
+            Caption = 'MHz'
+          end
           object btnSave: TAdvSmoothButton
             AlignWithMargins = True
             Left = 447
-            Top = 124
+            Top = 122
             Width = 82
             Height = 38
             Margins.Left = 2
@@ -132,7 +141,7 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
           object btnCancel: TAdvSmoothButton
             AlignWithMargins = True
             Left = 541
-            Top = 124
+            Top = 122
             Width = 82
             Height = 38
             Margins.Left = 2
@@ -171,8 +180,8 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             TMSStyle = 8
           end
           object edtCurrentRSSI: TEdit
-            Left = 108
-            Top = 27
+            Left = 111
+            Top = 44
             Width = 69
             Height = 21
             Alignment = taCenter
@@ -180,16 +189,124 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             TabOrder = 2
           end
           object edtPacketRSSI: TEdit
-            Left = 108
-            Top = 67
+            Left = 111
+            Top = 71
             Width = 69
             Height = 21
             Alignment = taCenter
             ReadOnly = True
             TabOrder = 3
           end
+          object AdvGauge1: TAdvGauge
+            Left = 8
+            Top = 104
+            Width = 353
+            Height = 161
+            Anchors = [akLeft, akTop, akRight, akBottom]
+            ArcColor = clRed
+            ArcWidth = 30
+            Background.Color = clWhite
+            Background.ColorTo = clWhite
+            Background.ColorMirror = clNone
+            Background.ColorMirrorTo = clNone
+            Background.GradientType = gtVertical
+            Background.GradientMirrorType = gtSolid
+            Background.BorderColor = clWindowFrame
+            Background.Rounding = 0
+            Background.ShadowOffset = 0
+            Background.Glow = gmNone
+            EndNeedle.Color = clRed
+            EndPosition = 100.000000000000000000
+            ExtraNeedles = <>
+            MultiRanges = <>
+            Kind = gkNone
+            Needle.Color = clBlue
+            Minimum = -150.000000000000000000
+            MinText = 'Left'
+            Maximum = -20.000000000000000000
+            MaxText = 'Right'
+            Position = -150.000000000000000000
+            SplitArcColor = clGreen
+            SplitPosition = -110.000000000000000000
+            TextPosition = tpNone
+            TopPosition = 100.000000000000000000
+            Version = '1.2.1.0'
+          end
+          object edtFrequencyError: TEdit
+            Left = 272
+            Top = 71
+            Width = 69
+            Height = 21
+            Alignment = taCenter
+            ReadOnly = True
+            TabOrder = 5
+          end
+          object VrMediaButton1: TVrMediaButton
+            Left = 212
+            Top = 8
+            Width = 49
+            Height = 26
+            ButtonType = btNext
+            TabOrder = 6
+            OnClick = VrMediaButton1Click
+          end
+          object VrMediaButton2: TVrMediaButton
+            Left = 8
+            Top = 8
+            Width = 49
+            Height = 26
+            ButtonType = btBack
+            TabOrder = 7
+            OnClick = VrMediaButton2Click
+          end
+          object VrMediaButton3: TVrMediaButton
+            Left = 56
+            Top = 8
+            Width = 49
+            Height = 26
+            ButtonType = btPrev
+            TabOrder = 8
+            OnClick = VrMediaButton3Click
+          end
+          object VrMediaButton4: TVrMediaButton
+            Left = 261
+            Top = 8
+            Width = 49
+            Height = 26
+            ButtonType = btStep
+            TabOrder = 9
+            OnClick = VrMediaButton4Click
+          end
+          object edtFrequency: TEdit
+            Left = 111
+            Top = 8
+            Width = 69
+            Height = 26
+            Alignment = taCenter
+            ReadOnly = True
+            TabOrder = 10
+          end
+          object chkAFC: TAdvOfficeCheckBox
+            Left = 236
+            Top = 40
+            Width = 49
+            Height = 20
+            TabOrder = 11
+            Alignment = taRightJustify
+            Caption = 'AFC:'
+            ReturnIsTab = False
+            Version = '1.7.0.2'
+          end
         end
       end
     end
+  end
+  inherited tblPositions: TFDMemTable
+    Left = 264
+    Top = 276
+  end
+  inherited srcPositions: TDataSource
+    Left = 204
+    Top = 248
   end
 end

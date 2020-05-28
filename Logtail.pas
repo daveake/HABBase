@@ -77,9 +77,10 @@ procedure TfrmLogtail.ProcessLogtail(Strings: TStringList);
 const
     PreviousLastLine: String = '';
 var
-    i: Integer;
+    i, PositionCount: Integer;
     Position: THABPosition;
 begin
+    PositionCount := 0;
     Position := Default(THABPosition);
 
     if Strings.Count > 0 then begin
@@ -91,7 +92,9 @@ begin
 
                     // Add to list
 //                    frmSources.NewPosition(SourceIndex, Position);
-                      frmSources.HABCallback(SourceIndex, True, '', Position);
+                      if frmSources.StorePosition(SourceIndex, True, '', Position) then begin
+                          Inc(PositionCount);
+                      end;
 
                     // Clear for next payload
                     Position := Default(THABPosition);
@@ -100,6 +103,11 @@ begin
             PreviousLastLine := Strings[0];
         // end;
     end;
+
+    if PositionCount > 0 then begin
+        AddStatusToLog('Got ' + IntToStr(PositionCount) + ' new positions');
+    end;
+
 end;
 
 function TfrmLogtail.ProcessLogtailLine(Line: String; var Position: THABPosition): Boolean;

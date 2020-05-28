@@ -1,8 +1,10 @@
 inherited frmSource: TfrmSource
   Caption = 'Source'
+  ClientHeight = 355
   ClientWidth = 384
   OnCreate = FormCreate
   ExplicitWidth = 400
+  ExplicitHeight = 394
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
@@ -108,17 +110,29 @@ inherited frmSource: TfrmSource
       Top = 45
       Width = 382
       Height = 304
-      ActivePage = TabSheet1
+      ActivePage = tabStatus
       Align = alClient
       TabOrder = 1
-      TabPosition = tpBottom
-      object TabSheet1: TTabSheet
+      object tabStatus: TTabSheet
+        Caption = 'Status'
+        ImageIndex = 1
+        object lstLog: TListBox
+          Left = 0
+          Top = 0
+          Width = 374
+          Height = 276
+          Align = alClient
+          ItemHeight = 13
+          TabOrder = 0
+        end
+      end
+      object tabHistory: TTabSheet
         Caption = 'History'
         object DBAdvGrid3: TDBAdvGrid
           Left = 0
           Top = 0
           Width = 374
-          Height = 278
+          Height = 276
           Cursor = crDefault
           Align = alClient
           ColCount = 7
@@ -187,7 +201,7 @@ inherited frmSource: TfrmSource
             'Larger than'
             'Smaller than'
             'Clear')
-          FixedColWidth = 61
+          FixedColWidth = 58
           FixedRowHeight = 22
           FixedFont.Charset = DEFAULT_CHARSET
           FixedFont.Color = 3881787
@@ -273,7 +287,7 @@ inherited frmSource: TfrmSource
               PrintFont.Height = -11
               PrintFont.Name = 'Tahoma'
               PrintFont.Style = []
-              Width = 61
+              Width = 58
             end
             item
               Alignment = taRightJustify
@@ -300,7 +314,7 @@ inherited frmSource: TfrmSource
               PrintFont.Height = -11
               PrintFont.Name = 'Tahoma'
               PrintFont.Style = []
-              Width = 57
+              Width = 48
             end
             item
               Borders = []
@@ -315,6 +329,7 @@ inherited frmSource: TfrmSource
               Font.Height = -11
               Font.Name = 'Tahoma'
               Font.Style = []
+              Header = 'Time'
               HeaderFont.Charset = DEFAULT_CHARSET
               HeaderFont.Color = 3881787
               HeaderFont.Height = -11
@@ -326,7 +341,7 @@ inherited frmSource: TfrmSource
               PrintFont.Height = -11
               PrintFont.Name = 'Tahoma'
               PrintFont.Style = []
-              Width = 64
+              Width = 43
             end
             item
               Alignment = taRightJustify
@@ -353,7 +368,7 @@ inherited frmSource: TfrmSource
               PrintFont.Height = -11
               PrintFont.Name = 'Tahoma'
               PrintFont.Style = []
-              Width = 64
+              Width = 53
             end
             item
               Alignment = taRightJustify
@@ -380,7 +395,7 @@ inherited frmSource: TfrmSource
               PrintFont.Height = -11
               PrintFont.Name = 'Tahoma'
               PrintFont.Style = []
-              Width = 64
+              Width = 57
             end
             item
               Alignment = taRightJustify
@@ -407,7 +422,7 @@ inherited frmSource: TfrmSource
               PrintFont.Height = -11
               PrintFont.Name = 'Tahoma'
               PrintFont.Style = []
-              Width = 64
+              Width = 42
             end
             item
               Alignment = taRightJustify
@@ -434,7 +449,7 @@ inherited frmSource: TfrmSource
               PrintFont.Height = -11
               PrintFont.Name = 'Tahoma'
               PrintFont.Style = []
-              Width = 64
+              Width = 47
             end>
           DataSource = srcPositions
           InvalidPicture.Data = {
@@ -575,13 +590,13 @@ inherited frmSource: TfrmSource
             FFC003FF}
           ShowUnicode = False
           ColWidths = (
-            61
+            58
+            48
+            43
+            53
             57
-            64
-            64
-            64
-            64
-            64)
+            42
+            47)
         end
       end
     end
@@ -627,8 +642,8 @@ inherited frmSource: TfrmSource
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 312
-    Top = 168
+    Left = 324
+    Top = 112
     object tblPositionsPayloadID: TStringField
       FieldName = 'PayloadID'
     end
@@ -658,13 +673,14 @@ inherited frmSource: TfrmSource
   end
   object srcPositions: TDataSource
     DataSet = tblPositions
-    Left = 312
-    Top = 224
+    Left = 264
+    Top = 84
   end
   object menuSource: TPopupMenu
     Left = 97
     Top = 200
     object EnableSource: TMenuItem
+      AutoCheck = True
       Caption = 'Enabled'
       OnClick = EnableSourceClick
     end

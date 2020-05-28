@@ -45,6 +45,7 @@ type
     procedure UpdateActivePayloads;
     procedure ShowPacketRSSI(PayloadID: String; PacketRSSI: Integer);
     procedure ShowCurrentRSSI(PayloadID: String; CurrentRSSI: Integer);
+    procedure ShowFrequencyError(PayloadID: String; FrequencyError: Double);
     procedure CheckForExpiredPayloads;
   end;
 
@@ -66,7 +67,7 @@ begin
     DataModule1.AddPayloadToFullTable(Position);
 
     if frmMain.PayloadInWhiteList(Position) then begin
-        if DataModule1.AddPayloadToLiveTable(Position) then begin
+        if DataModule1.AddPayloadToLiveTable(Position) and (frmToolLog <> nil) then begin
             // New payload
             frmToolLog.AddToLog('Added Payload ' + Position.PayloadID + ', Rx by ' + SourceCode + ' (' + SourceDescription + ')');
         end;
@@ -303,6 +304,17 @@ begin
 
     if PayloadIndex > 0 then begin
         HABPayloads[PayloadIndex].Form.ShowCurrentRSSI(CurrentRSSI);
+    end;
+end;
+
+procedure TfrmPayloads.ShowFrequencyError(PayloadID: String; FrequencyError: Double);
+var
+    PayloadIndex: Integer;
+begin
+    PayloadIndex := FindPayload(PayloadID);
+
+    if PayloadIndex > 0 then begin
+        HABPayloads[PayloadIndex].Form.ShowFrequencyError(FrequencyError);
     end;
 end;
 
