@@ -105,7 +105,7 @@ begin
             Items[0] := ' PayloadID: ' + PayloadID;
             Items[1] := '   Counter: ' + IntToStr(Counter);
             Items[2] := ' Timestamp: ' + FormatDateTime('hh:nn:ss', TimeStamp);
-            Items[3] := ' Latitude: ' + FormatFloat('0.0000', Latitude);
+            Items[3] := '  Latitude: ' + FormatFloat('0.0000', Latitude);
             Items[4] := ' Longitude: ' + FormatFloat('0.0000', Longitude);
             Items[5] := '  Altitude: ' + FormatFloat('0', Altitude) + ' m';
             Items[6] := '  Distance: ' + FormatFloat('0.0', Distance) + 'km';

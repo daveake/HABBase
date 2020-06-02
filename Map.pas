@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Normal, Vcl.StdCtrls,
-  UWebGMapsCommon, UWebGMaps, UWebGMapsPolylines, UWebGMapsMarkers,
+  UWebGMapsCommon, UWebGMaps, UWebGMapsPolylines, UWebGMapsMarkers, UWebGMapsPolygons,
   Vcl.ExtCtrls,
   Source;
 
@@ -14,13 +14,14 @@ type
 
 type
   TBalloon = record
-      InUse:          Boolean;
-      Marker:         TMarker;
-      MarkerName:     String;
-      Landing:        TMarker;
-      Radial:         TPolylineItem;
-      Track:          TPolylineItem;
-      Position:       THABPosition;
+      InUse:        Boolean;
+      Marker:       TMarker;
+      MarkerName:   String;
+      Landing:      TMarker;
+      Radial:       TPolylineItem;
+      Track:        TPolylineItem;
+      Horizon:      Array[0..1] of TPolygonItem;
+      Position:     THABPosition;
   end;
 
 type
@@ -41,6 +42,7 @@ type
     function FindMapMarker(PayloadID: String): Integer;
     procedure AddOrUpdateMapMarker(PayloadIndex: Integer; Position: THABPosition; ColourText: String);
     procedure DrawRadial(PayloadIndex: Integer; NewHome: Boolean);
+    procedure DrawHorizon(PayloadIndex: Integer);
   public
     { Public declarations }
     function ProcessNewPosition(PayloadIndex: Integer; Position: THABPosition; Colour: TColor; ColourText: String): Boolean;
@@ -55,7 +57,7 @@ implementation
 
 {$R *.dfm}
 
-uses Data, BaseTypes;
+uses Data, BaseTypes, Miscellaneous;
 
 // IF THE FOLLOWING LINE GIVES AN ERROR
 
@@ -152,6 +154,9 @@ begin
 
         // Line to Balloon
         DrawRadial(PayloadIndex, False);
+
+        // Reception horizon
+        DrawHorizon(PayloadIndex);
 
         // Balloon Path
         if Balloons[PayloadIndex].Track = nil then begin
@@ -264,6 +269,42 @@ begin
         end;
     end;
 end;
+
+procedure TfrmMap.DrawHorizon(PayloadIndex: Integer);
+const
+    Colors: Array[0..1] of TColor = (clLime, clBlue);
+    Radius: Array[0..1] of Double = (0.0, 5.0);
+var
+    i: Integer;
+    NewCircle: Boolean;
+begin
+    for i := 0 to 1 do begin
+        if Balloons[PayloadIndex].Horizon[i] = nil then begin
+            Balloons[PayloadIndex].Horizon[i] := GMap.Polygons.Add;
+            Balloons[PayloadIndex].Horizon[i].Polygon.PolygonType := ptCircle;
+            Balloons[PayloadIndex].Horizon[i].Polygon.BorderColor := Colors[i];
+            Balloons[PayloadIndex].Horizon[i].Polygon.BackgroundColor := clNone;
+            Balloons[PayloadIndex].Horizon[i].Polygon.HoverBorderColor := Colors[i];
+            Balloons[PayloadIndex].Horizon[i].Polygon.HoverBackgroundColor := clNone;
+            Balloons[PayloadIndex].Horizon[i].Polygon.BackgroundOpacity := 0;
+            Balloons[PayloadIndex].Horizon[i].Polygon.BorderWidth := 2;
+            NewCircle := True;
+        end else begin;
+            NewCircle := False;
+        end;
+
+        Balloons[PayloadIndex].Horizon[i].Polygon.Radius := Round(1000.0 * CalculateHorizonRadius(Balloons[PayloadIndex].Position.Altitude, Radius[i]));
+        Balloons[PayloadIndex].Horizon[i].Polygon.Center.Latitude := Balloons[PayloadIndex].Position.Latitude;
+        Balloons[PayloadIndex].Horizon[i].Polygon.Center.Longitude := Balloons[PayloadIndex].Position.Longitude;
+
+        if NewCircle then begin
+            GMap.CreateMapPolygon(Balloons[PayloadIndex].Horizon[i].Polygon);
+        end else begin
+            GMap.UpdateMapPolygon(Balloons[PayloadIndex].Horizon[i].Polygon);
+        end;
+    end;
+end;
+
 
 procedure TfrmMap.RemovePayload(PayloadIndex: Integer);
 begin
