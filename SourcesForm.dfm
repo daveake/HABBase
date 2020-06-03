@@ -11,7 +11,7 @@ inherited frmSources: TfrmSources
       Width = 302
       ExplicitWidth = 302
       inherited lblTitle: TLabel
-        Width = 285
+        Width = 46
         Caption = 'Sources'
         ExplicitWidth = 46
       end

@@ -116,7 +116,6 @@
             <Form>frmBase</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\HABRx\HABTypes.pas"/>
         <DCCReference Include="..\HABRx\Miscellaneous.pas"/>
         <DCCReference Include="..\HABRx\SerialSource.pas"/>
         <DCCReference Include="..\HABRx\SocketSource.pas"/>
@@ -199,6 +198,15 @@
         </DCCReference>
         <DCCReference Include="LoRaSerialSource.pas">
             <Form>frmLoRaSerialSource</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\HABRx\UDPSource.pas"/>
+        <DCCReference Include="UDPSettings.pas">
+            <Form>frmUDPSettings</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="TCPSettings.pas">
+            <Form>frmTCPSettings</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

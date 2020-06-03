@@ -5,7 +5,6 @@ uses
   Main in 'Main.pas' {frmMain},
   Data in 'Data.pas' {DataModule1: TDataModule},
   Base in 'Base.pas' {frmBase},
-  HABTypes in '..\HABRx\HABTypes.pas',
   Miscellaneous in '..\HABRx\Miscellaneous.pas',
   SerialSource in '..\HABRx\SerialSource.pas',
   SocketSource in '..\HABRx\SocketSource.pas',
@@ -32,7 +31,10 @@ uses
   SystemSettings in 'SystemSettings.pas' {frmSystemSettings},
   LogtailSettings in 'LogtailSettings.pas' {frmLogtailSettings},
   Payload in 'Payload.pas' {frmPayload},
-  LoRaSerialSource in 'LoRaSerialSource.pas' {frmLoRaSerialSource};
+  LoRaSerialSource in 'LoRaSerialSource.pas' {frmLoRaSerialSource},
+  UDPSource in '..\HABRx\UDPSource.pas',
+  UDPSettings in 'UDPSettings.pas' {frmUDPSettings},
+  TCPSettings in 'TCPSettings.pas' {frmTCPSettings};
 
 {$R *.res}
 
@@ -40,5 +42,7 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TfrmUDPSettings, frmUDPSettings);
+  Application.CreateForm(TfrmTCPSettings, frmTCPSettings);
   Application.Run;
 end.

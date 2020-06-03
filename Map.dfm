@@ -34,6 +34,7 @@ inherited frmMap: TfrmMap
       Version = '3.1.5.0'
       OnDownloadStart = GMapDownloadStart
       OnDownloadFinish = GMapDownloadFinish
+      OnMarkerClick = GMapMarkerClick
     end
     inherited Panel1: TPanel
       TabOrder = 1

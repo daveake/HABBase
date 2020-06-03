@@ -10,8 +10,8 @@ uses
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, AdvSmoothButton, AdvPanel,
-  Source, SourceForm, Vcl.Menus, Habitat, SocketSource,
-  GatewaySource, SerialSource, TCPSettings; // HabitatSource, UDPSource, SerialSource, BluetoothSource,
+  Miscellaneous, Source, SourceForm, Vcl.Menus, Habitat, SocketSource, UDPSource,
+  GatewaySource, SerialSource, TCPSettings, UDPSettings; // HabitatSource, UDPSource, SerialSource, BluetoothSource,
 
 
 type
@@ -75,7 +75,7 @@ implementation
 
 {$R *.dfm}
 
-uses Data, Logtail, Main, ToolLog, Map, Miscellaneous, SettingsForm, NewSource, Payloads, Misc,
+uses Data, Logtail, Main, ToolLog, Map, SettingsForm, NewSource, Payloads, Misc,
      LogtailSettings, GatewaySettings, LoRaSerialSettings,
      LoRaSerialSource;
 
@@ -153,6 +153,9 @@ begin
         end else if SourceType = stTCP then begin
             SourceForm := TfrmSource.Create(nil);
             Source := TSocketSource.Create(SourceIndex, Group, HABCallback);
+        end else if SourceType = stUDP then begin
+            SourceForm := TfrmSource.Create(nil);
+            Source := TUDPSource.Create(SourceIndex, Group, HABCallback);
 //        end else if SourceTypeText = 'DLFLDigi' then begin
 //            SourceType := stDLFLDigi;
 //            Form := TfrmDLFLDigiSource.Create(nil, HABDB, HabitatThread, SourceIndex);
@@ -162,9 +165,6 @@ begin
 //        end else if SourceTypeText = 'Habitat' then begin
 //            SourceType := stHabitat;
 //            Form := TfrmHabitatSource.Create(nil, HABDB, HabitatThread, SourceIndex);
-//        end else if SourceTypeText = 'UDP' then begin
-//            SourceType := stUDP;
-//            Form := TfrmUDPSource.Create(nil, HABDB, HabitatThread, SourceIndex);
         end else begin
             SourceForm := nil;
         end;
@@ -259,6 +259,14 @@ begin
         Position.Distance := CalculateDistance(Position.Latitude, Position.Longitude,
                                                DataModule1.tblSettings.FieldByName('Latitude').Asfloat,
                                                DataModule1.tblSettings.FieldByName('Longitude').AsFloat) / 1000.0;
+    end;
+
+    // Calculate elevation
+    if (not DataModule1.tblSettings.FieldByName('Latitude').IsNull) and (not DataModule1.tblSettings.FieldByName('Longitude').IsNull) then begin
+        Position.Elevation := CalculateElevation(DataModule1.tblSettings.FieldByName('Latitude').Asfloat,
+                                                 DataModule1.tblSettings.FieldByName('Longitude').AsFloat,
+                                                 DataModule1.tblSettings.FieldByName('Altitude').AsFloat,
+                                                 Position.Latitude, Position.Longitude, Position.Altitude);
     end;
 
     // Add to our payload list
@@ -515,7 +523,7 @@ begin
         stGateway:  SettingsForm := TfrmGatewaySettings.Create(nil);
         stSerial:   SettingsForm := TfrmLoRaSerialSettings.Create(nil);
         stTCP:      SettingsForm := TfrmTCPSettings.Create(nil);
-        stUDP:      SettingsForm := nil;
+        stUDP:      SettingsForm := TfrmUDPSettings.Create(nil);
         stHabitat:  SettingsForm := nil;
         else        SettingsForm := nil;
     end;
@@ -551,13 +559,29 @@ end;
 
 procedure TfrmSources.EnableSource(SourceIndex: Integer; EnableSource: Boolean);
 begin
-    HABSources[SourceIndex].SourceEnabled := EnableSource;
+    // Tell source form
     SetSettingBoolean(HABSources[SourceIndex].Group, 'Enabled', EnableSource);
     if HABSources[SourceIndex].SourceForm <> nil then begin
         HABSources[SourceIndex].SourceForm.Enabled := EnableSource;
     end;
+
+    // Tell source thread
+    HABSources[SourceIndex].SourceEnabled := EnableSource;
     SetGroupChangedFlag(HABSources[SourceIndex].Group, True);
+
+    // Show status
     ShowSourceStatus(SourceIndex);
+
+    // Save in table / file
+    with DataModule1.tblSources do begin
+        if FindKey([HABSources[SourceIndex].SourceID]) then begin
+            Edit;
+            FieldByName('Enabled').AsBoolean := EnableSource;
+            Post;
+
+            SaveToFile(ExtractFilePath(Application.ExeName) + 'sources.json');
+        end;
+    end;
 end;
 
 

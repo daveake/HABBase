@@ -9,7 +9,7 @@ uses
   FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, FireDAC.VCLUI.Wait,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Data.DB,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Stan.StorageJSON,
-  VCL.Forms, FireDAC.Stan.StorageBin, Source;
+  VCL.Forms, FireDAC.Stan.StorageBin, Miscellaneous, Source;
 
 type
   TDataModule1 = class(TDataModule)

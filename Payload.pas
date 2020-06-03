@@ -8,7 +8,7 @@ uses
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, AdvObj,
-  BaseGrid, AdvGrid, DBAdvGrid, Source, Vcl.StdCtrls, Vcl.ComCtrls,
+  BaseGrid, AdvGrid, DBAdvGrid, Miscellaneous, Source, Vcl.StdCtrls, Vcl.ComCtrls,
   AdvSmoothButton, AdvPanel, AdvProgr, AdvGauge, VclTee.TeeGDIPlus,
   VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart;
 
@@ -61,6 +61,7 @@ type
     procedure ShowPacketRSSI(PacketRSSI: Integer);
     procedure ShowCurrentRSSI(CurrentRSSI: Integer);
     procedure ShowFrequencyError(FrequencyError: Double);
+    procedure ShowDetails(Show: Boolean);
   end;
 
 
@@ -102,17 +103,24 @@ begin
 
         // Position tab
         with lstTelemetry do begin
-            Items[0] := ' PayloadID: ' + PayloadID;
-            Items[1] := '   Counter: ' + IntToStr(Counter);
-            Items[2] := ' Timestamp: ' + FormatDateTime('hh:nn:ss', TimeStamp);
-            Items[3] := '  Latitude: ' + FormatFloat('0.0000', Latitude);
-            Items[4] := ' Longitude: ' + FormatFloat('0.0000', Longitude);
-            Items[5] := '  Altitude: ' + FormatFloat('0', Altitude) + ' m';
-            Items[6] := '  Distance: ' + FormatFloat('0.0', Distance) + 'km';
-            Items[7] := '   Sources: ' + Sources;
+            Items[0] := '  PayloadID: ' + PayloadID;
+            Items[1] := '    Counter: ' + IntToStr(Counter);
+            Items[2] := '  Timestamp: ' + FormatDateTime('hh:nn:ss', TimeStamp);
+            Items[3] := '   Latitude: ' + FormatFloat('0.0000', Latitude);
+            Items[4] := '  Longitude: ' + FormatFloat('0.0000', Longitude);
+            Items[5] := '   Altitude: ' + FormatFloat('0', Altitude) + ' m';
+            if HaveAscentRate then begin
+                Items[6] := 'Ascent Rate: ' + FormatFloat('0.0', AscentRate) + ' m/s';
+            end;
+            if (Satellites > 0) or (SatelliteFieldIndex > 0) then begin
+                Items[7] := ' Satellites: ' + IntToStr(Satellites);
+            end;
+            Items[8] := '   Distance: ' + FormatFloat('0.0', Distance) + ' km';
+            Items[9] := '  Elevation: ' + FormatFloat('0.0', Elevation) + ' deg';
+            Items[10] := '    Sources: ' + Sources;
             if ContainsPrediction then begin
-                Items[8] := ' Pred. Lat: ' + FormatFloat('0.0000', Latitude);
-                Items[9] := ' Pred. Lon: ' + FormatFloat('0.0000', Longitude);
+                Items[11] := '  Pred. Lat: ' + FormatFloat('0.0000', Latitude);
+                Items[12] := '  Pred. Lon: ' + FormatFloat('0.0000', Longitude);
             end;
         end;
 
@@ -187,6 +195,16 @@ procedure TfrmPayload.ShowFrequencyError(FrequencyError: Double);
 begin
     TabSheet2.TabVisible := True;
     edtFrequencyError.Text := FormatFloat('0.0', FrequencyError) + ' kHz';
+end;
+
+
+procedure TfrmPayload.ShowDetails(Show: Boolean);
+begin
+    if Show then begin
+        Down;
+    end else begin
+        Up;
+    end;
 end;
 
 end.

@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, SourceForm, Vcl.ExtCtrls, Vcl.OleCtrls,
   SHDocVw, Vcl.StdCtrls, MSHTML, ActiveX, DateUtils,
-  Source, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  Miscellaneous, Source, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid, Data.DB,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Menus, Vcl.ComCtrls;
@@ -31,7 +31,7 @@ implementation
 
 {$R *.dfm}
 
-uses Main, SourcesForm, Miscellaneous;
+uses Main, SourcesForm;
 
 procedure TfrmLogtail.Timer1Timer(Sender: TObject);
 const
@@ -215,6 +215,10 @@ begin
             end;
         end else if Command = 'sentence_id' then begin
             Position.Counter := Round(GetFloat(Line, ','));
+        end else if Command = 'satellites' then begin
+            Position.Satellites := GetInteger(Line, ',');
+        end else if Command = '_sentence' then begin
+            Position.Line := Line;
         end else if Command = 'time' then begin
             GetString(Line, '"');
             Value := GetString(Line, '"');

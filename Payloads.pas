@@ -6,12 +6,13 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Normal, Vcl.StdCtrls, Vcl.ExtCtrls,
   AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid, Payload,
-  Source, Math;
+  Miscellaneous, Source, Math;
 
 type
     TPayload = record
         InUse:              Boolean;
         Position:           THABPosition;
+        PreviousPosition:   THABPosition;
         Form:               TfrmPayload;
         ColourText:         String;
         Colour:             TColor;
@@ -23,7 +24,6 @@ type
 //        Position:       THABPosition;
 //        GotGPS:         Boolean;
 //        Count:          Integer;
-        AscentRate:     Double;
     end;
 
   TfrmPayloads = class(TfrmNormal)
@@ -47,6 +47,7 @@ type
     procedure ShowCurrentRSSI(PayloadID: String; CurrentRSSI: Integer);
     procedure ShowFrequencyError(PayloadID: String; FrequencyError: Double);
     procedure CheckForExpiredPayloads;
+    procedure HighlightPayload(PayloadID: String);
   end;
 
 var
@@ -56,7 +57,7 @@ implementation
 
 {$R *.dfm}
 
-uses Main, Data, ToolLog, Map, BaseTypes, Miscellaneous;
+uses Main, Data, ToolLog, Map, BaseTypes;
 
 function TfrmPayloads.NewPosition(Position: THABPosition; SourceCode, SourceDescription: String): Boolean;
 var
@@ -118,26 +119,9 @@ begin
             HABPayloads[PayloadIndex].Sources := SourceCode;
             // Store latest position
 
-            // Flight mode calculation
+            DoPositionCalculations(HABPayloads[PayloadIndex].Position, Position);
 
-            if HABPayloads[PayloadIndex].Position.InUse and (Position.TimeStamp > HABPayloads[PayloadIndex].Position.TimeStamp) then begin
-                HABPayloads[PayloadIndex].AscentRate := (Position.Altitude - HABPayloads[PayloadIndex].Position.Altitude) /
-                                                       ((Position.TimeStamp - HABPayloads[PayloadIndex].Position.TimeStamp) * 86400);
-                if HABPayloads[PayloadIndex].AscentRate < -2 then begin
-                    Position.FlightMode := fmDescending;
-                end else if HABPayloads[PayloadIndex].AscentRate > 2 then begin
-                    Position.FlightMode := fmLaunched;
-                end else if abs(HABPayloads[PayloadIndex].AscentRate) < 1 then begin
-                    Position.FlightMode := fmLanded;
-                end else if HABPayloads[PayloadIndex].Position.FlightMode = fmIdle then begin
-                    Position.FlightMode := fmLaunched;
-                end else begin
-                    Position.FlightMode := HABPayloads[PayloadIndex].Position.FlightMode;
-                end;
-            end else begin
-                Position.FlightMode := fmLaunched;
-            end;
-
+            HABPayloads[PayloadIndex].PreviousPosition := HABPayloads[PayloadIndex].Position;
             HABPayloads[PayloadIndex].Position := Position;
 
             HABPayloads[PayloadIndex].LastUpdate := Now;
@@ -331,6 +315,20 @@ begin
                 HABPayloads[PayloadIndex].InUse := False;
                 HABPayloads[PayloadIndex].Form.Free;
                 frmMap.RemovePayload(PayloadIndex);
+            end;
+        end;
+    end;
+end;
+
+procedure TfrmPayloads.HighlightPayload(PayloadID: String);
+var
+    SelectedPayload, PayloadIndex: Integer;
+begin
+    SelectedPayload := FindPayload(PayloadID);
+    if SelectedPayload > 0 then begin
+        for PayloadIndex := Low(HABPayloads) to High(HABPayloads) do begin
+            if HABPayloads[PayloadIndex].InUse and (HABPayloads[PayloadIndex].Form <> nil) then begin
+                HABPayloads[PayloadIndex].Form.ShowDetails(PayloadIndex = SelectedPayload);
             end;
         end;
     end;

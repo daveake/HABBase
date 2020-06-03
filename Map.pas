@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Normal, Vcl.StdCtrls,
   UWebGMapsCommon, UWebGMaps, UWebGMapsPolylines, UWebGMapsMarkers, UWebGMapsPolygons,
   Vcl.ExtCtrls,
-  Source;
+  Miscellaneous, Source;
 
 type
   TFollowMode = (fmInit, fmNone, fmCar, fmPayload);
@@ -30,6 +30,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure GMapDownloadFinish(Sender: TObject);
     procedure GMapDownloadStart(Sender: TObject);
+    procedure GMapMarkerClick(Sender: TObject; MarkerTitle: string;
+      IdMarker: Integer; Latitude, Longitude: Double; Button: TMouseButton);
   private
     { Private declarations }
     Balloons: Array[1..32] of TBalloon;
@@ -57,7 +59,7 @@ implementation
 
 {$R *.dfm}
 
-uses Data, BaseTypes, Miscellaneous;
+uses Data, BaseTypes, Payloads;
 
 // IF THE FOLLOWING LINE GIVES AN ERROR
 
@@ -110,6 +112,12 @@ begin
     // OKToUpdateMap := False;
 end;
 
+procedure TfrmMap.GMapMarkerClick(Sender: TObject; MarkerTitle: string;
+  IdMarker: Integer; Latitude, Longitude: Double; Button: TMouseButton);
+begin
+    frmPayloads.HighlightPayload(MarkerTitle);
+end;
+
 function TfrmMap.FindMapMarker(PayloadID: String): Integer;
 var
     i: Integer;
@@ -133,7 +141,7 @@ begin
 //        Result := 'x-' + BalloonColour;
 //    end else begin
         case Position.FlightMode of
-            fmIdle:         Result := 'payload-' + ColourText;
+            fmIdle:         Result := 'balloon-' + ColourText;
             fmLaunched:     Result := 'balloon-' + ColourText;
             fmDescending:   Result := 'parachute-' + ColourText;
             fmLanded:       Result := 'payload-' + ColourText;
@@ -325,6 +333,16 @@ begin
             GMap.PolyLines.Delete(Track.Index);
             // Track.Free;
             Track := nil;
+        end;
+        if Horizon[0] <> nil then begin
+            GMap.DeleteMapPolygon(Horizon[0].Index);
+            GMap.Polygons.Delete(Horizon[0].Index);
+            Horizon[0] := nil;
+        end;
+        if Horizon[1] <> nil then begin
+            GMap.DeleteMapPolygon(Horizon[1].Index);
+            GMap.Polygons.Delete(Horizon[1].Index);
+            Horizon[1] := nil;
         end;
     end;
 end;
