@@ -196,8 +196,8 @@
             <Form>frmPayload</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="LoRaSerialSource.pas">
-            <Form>frmLoRaSerialSource</Form>
+        <DCCReference Include="LoRaGatewaySource.pas">
+            <Form>frmLoRaGatewaySource</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\HABRx\UDPSource.pas"/>
@@ -207,6 +207,10 @@
         </DCCReference>
         <DCCReference Include="TCPSettings.pas">
             <Form>frmTCPSettings</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="LoRaSerialSource.pas">
+            <Form>frmLoRaSerialSource</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

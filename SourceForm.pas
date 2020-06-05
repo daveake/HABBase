@@ -61,7 +61,7 @@ type
     procedure ShowFrequencyError(Channel: Integer; FrequencyError: Double); virtual;
     procedure ShowFrequency(Channel: Integer; Frequency: Double); virtual;
     procedure ShowSetting(Setting, Value: String); virtual;
-    procedure DoAFC(FrequencyError: Double); virtual;
+    procedure DoAFC(Channel: Integer; FrequencyError: Double); virtual;
   end;
 
 
@@ -197,7 +197,7 @@ begin
     end;
 end;
 
-procedure TfrmSource.DoAFC(FrequencyError: Double);
+procedure TfrmSource.DoAFC(Channel: Integer; FrequencyError: Double);
 begin
     // virtual
 end;

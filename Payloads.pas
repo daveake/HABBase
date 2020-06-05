@@ -107,7 +107,8 @@ begin
             // Add form
             HABPayloads[PayloadIndex].Form := TfrmPayload.Create(nil);
             HABPayloads[PayloadIndex].Form.pnlMain.Parent := scrollMain;    // pnlMain;
-            HABPayloads[PayloadIndex].Form.pnlTitle.Caption := Position.PayloadID + ' (00:00)';
+            HABPayloads[PayloadIndex].Form.pnlTitle.Caption := Position.PayloadID;
+            HABPayloads[PayloadIndex].Form.pnlTSS.Caption := '00:00';
             HABPayloads[PayloadIndex].Form.pnlTitle.Color := BGColours[(PayloadIndex-1) mod (High(BGColours)+1)];
             HABPayloads[PayloadIndex].Form.pnlTitle.Font.Color := FGColours[(PayloadIndex-1) mod (High(FGColours)+1)];
         end;
@@ -163,10 +164,22 @@ end;
 procedure TfrmPayloads.tmrUpdatesTimer(Sender: TObject);
 var
     PayloadIndex: Integer;
+    SecondsSinceSignal: Double;
 begin
     for PayloadIndex := Low(HABPayloads) to High(HABPayloads) do begin
         if HABPayloads[PayloadIndex].InUse and (HABPayloads[PayloadIndex].Form <> nil) then begin
-            HABPayloads[PayloadIndex].Form.pnlTitle.Caption := HABPayloads[PayloadIndex].Position.PayloadID + ' (' + FormatDateTime('nn:ss', Now - HABPayloads[PayloadIndex].LastUpdate) + ')';
+            HABPayloads[PayloadIndex].Form.pnlTSS.Caption := FormatDateTime('nn:ss', Now - HABPayloads[PayloadIndex].LastUpdate);
+            SecondsSinceSignal := (Now - HABPayloads[PayloadIndex].LastUpdate) * 86400;
+            if SecondsSinceSignal < 60 then begin
+                HABPayloads[PayloadIndex].Form.pnlTSS.Color := clLime;
+                HABPayloads[PayloadIndex].Form.pnlTSS.Font.Color := clBlack;
+            end else if SecondsSinceSignal < 240 then begin
+                HABPayloads[PayloadIndex].Form.pnlTSS.Color := clYellow;
+                HABPayloads[PayloadIndex].Form.pnlTSS.Font.Color := clBlack;
+            end else begin
+                HABPayloads[PayloadIndex].Form.pnlTSS.Color := clRed;
+                HABPayloads[PayloadIndex].Form.pnlTSS.Font.Color := clWhite;
+            end;
         end;
     end;
 end;

@@ -33,9 +33,10 @@ type
         LastPacketAt:       TDateTime;
 //        ValueLabel:   TLabel;
 //        RSSILabel:    TLabel;
-        CurrentRSSI:  String;
+//        CurrentRSSI:  String;
 //        PacketRSSI:   String;
-        FreqError:          Double;
+        FreqError:          Array[0..1] of Double;
+        MultipleChannels:   Boolean;
         LatestPosition:     THABPosition;
     end;
 
@@ -77,7 +78,7 @@ implementation
 
 uses Data, Logtail, Main, ToolLog, Map, SettingsForm, NewSource, Payloads, Misc,
      LogtailSettings, GatewaySettings, LoRaSerialSettings,
-     LoRaSerialSource;
+     LoRaSerialSource, LoRaGatewaySource;
 
 procedure TfrmSources.LoadSources;
 var
@@ -145,8 +146,9 @@ begin
             SourceForm := TfrmLogtail.Create(nil);
             // SourceForm.pnlMain.Parent := frmMain.pnlHidden;
         end else if SourceType = stGateway then begin
-            SourceForm := TfrmSource.Create(nil);
+            SourceForm := TfrmLoRaGatewaySource.Create(nil);
             Source := TGatewaySource.Create(SourceIndex, Group, HABCallback);
+            MultipleChannels := True;
         end else if SourceType = stSerial then begin
             SourceForm := TfrmLoRaSerialSource.Create(nil);
             Source := TSerialSource.Create(SourceIndex, Group, HABCallback);
@@ -297,17 +299,22 @@ begin
         if SourceEnabled then begin
             if Connected then begin
                 if (Now - LastPacketAt) < 60/86400 then begin
-                    SourceForm.pnlTitle.Color := clGreen;
+                    SourceForm.pnlTitle.Color := clLime;
+                    SourceForm.pnlTitle.Font.Color := clBlack;
                 end else begin
-                    SourceForm.pnlTitle.Color := clOlive;
+                    SourceForm.pnlTitle.Color := clGreen;
+                    SourceForm.pnlTitle.Font.Color := clWhite;
                 end;
             end else if Started then begin
                 SourceForm.pnlTitle.Color := clRed;
+                SourceForm.pnlTitle.Font.Color := clWhite;
             end else begin
-                SourceForm.pnlTitle.Color := clGray;
+                SourceForm.pnlTitle.Color := clSilver;
+                SourceForm.pnlTitle.Font.Color := clBlack;
             end;
         end else begin
-            SourceForm.pnlTitle.Color := clSilver;
+            SourceForm.pnlTitle.Color := clGray;
+            SourceForm.pnlTitle.Font.Color := clWhite;
         end;
     end;
 end;
@@ -402,10 +409,14 @@ begin
         if Position.PayloadID <> '' then begin
             Result := NewPosition(SourceIndex, Position);
         end;
-        Status := Position.Line;
+        if HABSources[SourceIndex].MultipleChannels then begin
+            Status := IntToStr(Position.Channel) + ': ' + Position.Line;
+        end else begin
+            Status := Position.Line;
+        end;
         HABSources[SourceIndex].LatestPosition := Position;
         if HABSources[SourceIndex].SourceForm <> nil then begin
-            HABSources[SourceIndex].SourceForm.DoAFC(HABSources[SourceIndex].FreqError);
+            HABSources[SourceIndex].SourceForm.DoAFC(Position.Channel, HABSources[SourceIndex].FreqError[Position.Channel]);
         end;
     end else if Line <> '' then begin
         Status := Line;
@@ -444,7 +455,7 @@ begin
 //    end;
 
     if Position.HasCurrentRSSI then begin
-        HABSources[SourceIndex].SourceForm.ShowCurrentRSSI(0, Position.CurrentRSSI);
+        HABSources[SourceIndex].SourceForm.ShowCurrentRSSI(Position.Channel, Position.CurrentRSSI);
 
         if HABSources[SourceIndex].LatestPosition.InUse then begin
             // We have a position so we know what payload we last received
@@ -453,7 +464,7 @@ begin
     end;
 
     if Position.HasPacketRSSI then begin
-        HABSources[SourceIndex].SourceForm.ShowPacketRSSI(0, Position.PacketRSSI);
+        HABSources[SourceIndex].SourceForm.ShowPacketRSSI(Position.Channel, Position.PacketRSSI);
 
         if HABSources[SourceIndex].LatestPosition.InUse then begin
             // We have a position so we know what payload we last received
@@ -462,9 +473,9 @@ begin
     end;
 
     if Position.HasFrequency then begin
-        HABSources[SourceIndex].FreqError := Position.FrequencyError / 1000.0;
+        HABSources[SourceIndex].FreqError[Position.Channel] := Position.FrequencyError / 1000.0;
 
-        HABSources[SourceIndex].SourceForm.ShowFrequencyError(0, Position.FrequencyError);
+        HABSources[SourceIndex].SourceForm.ShowFrequencyError(Position.Channel, Position.FrequencyError);
 
         if HABSources[SourceIndex].LatestPosition.InUse then begin
             // We have a position so we know what payload we last received

@@ -47,7 +47,7 @@ type
     procedure ShowFrequencyError(Channel: Integer; FrequencyError: Double); override;
     procedure ShowFrequency(Channel: Integer; Frequency: Double); override;
     procedure ShowSetting(Setting, Value: String); override;
-    procedure DoAFC(FrequencyError: Double); override;
+    procedure DoAFC(Channel: Integer; FrequencyError: Double); override;
   end;
 
 
@@ -66,7 +66,7 @@ end;
 procedure TfrmLoRaSerialSource.ShowCurrentRSSI(Channel, CurrentRSSI: Integer);
 begin
     edtCurrentRSSI.Text := CurrentRSSI.ToString;
-    AdvGauge1.Position := CurrentRSSI;
+    AdvGauge1.Position := min(AdvGauge1.Maximum, CurrentRSSI);
 end;
 
 procedure TfrmLoRaSerialSource.ShowPacketRSSI(Channel, PacketRSSI: Integer);
@@ -76,7 +76,7 @@ end;
 
 procedure TfrmLoRaSerialSource.ShowFrequencyError(Channel: Integer; FrequencyError: Double);
 begin
-    edtFrequencyError.Text := FormatFloat('0.000', FrequencyError) + ' kHz';
+    edtFrequencyError.Text := FormatFloat('0.0', FrequencyError) + ' kHz';
 end;
 
 procedure TfrmLoRaSerialSource.ShowFrequency(Channel: Integer; Frequency: Double);
@@ -132,7 +132,7 @@ begin
     end;
 end;
 
-procedure TfrmLoRaSerialSource.DoAFC(FrequencyError: Double);
+procedure TfrmLoRaSerialSource.DoAFC(Channel: Integer; FrequencyError: Double);
 begin
     if chkAFC.Checked and (abs(FrequencyError) > 0.001) then begin
         OffsetFrequency(FrequencyError);

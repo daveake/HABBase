@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Base, Vcl.ExtCtrls, AdvUtil,
-  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param, Math,
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, AdvObj,
   BaseGrid, AdvGrid, DBAdvGrid, Miscellaneous, Source, Vcl.StdCtrls, Vcl.ComCtrls,
@@ -47,6 +47,7 @@ type
     tabCharts: TTabSheet;
     AltitudeChart: TChart;
     Series1: TLineSeries;
+    pnlTSS: TPanel;
     procedure btnDownClick(Sender: TObject);
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -188,7 +189,7 @@ procedure TfrmPayload.ShowCurrentRSSI(CurrentRSSI: Integer);
 begin
     TabSheet2.TabVisible := True;
     edtCurrentRSSI.Text := CurrentRSSI.ToString;
-    AdvGauge1.Position := CurrentRSSI;
+    AdvGauge1.Position := min(AdvGauge1.Maximum, CurrentRSSI);
 end;
 
 procedure TfrmPayload.ShowFrequencyError(FrequencyError: Double);

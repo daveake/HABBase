@@ -95,6 +95,8 @@ object frmMain: TfrmMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
+      ExplicitLeft = -6
+      ExplicitTop = 198
     end
     object pnlWhiteList: TPanel
       Left = 0

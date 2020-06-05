@@ -24,8 +24,6 @@ type
     { Public declarations }
   end;
 
-var
-  frmTCPSettings: TfrmTCPSettings;
 
 implementation
 

@@ -1,5 +1,5 @@
 inherited frmPayload: TfrmPayload
-  Caption = 'v'
+  Caption = 'Payload'
   ClientWidth = 353
   OnCreate = FormCreate
   ExplicitWidth = 369
@@ -82,9 +82,9 @@ inherited frmPayload: TfrmPayload
       end
       object pnlTitle: TPanel
         AlignWithMargins = True
-        Left = 3
+        Left = 59
         Top = 3
-        Width = 248
+        Width = 192
         Height = 32
         Align = alClient
         BevelOuter = bvNone
@@ -98,6 +98,26 @@ inherited frmPayload: TfrmPayload
         ParentBackground = False
         ParentFont = False
         TabOrder = 3
+        ExplicitLeft = 3
+        ExplicitWidth = 248
+      end
+      object pnlTSS: TPanel
+        AlignWithMargins = True
+        Left = 3
+        Top = 3
+        Width = 50
+        Height = 32
+        Align = alLeft
+        BevelOuter = bvNone
+        Color = clSilver
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentBackground = False
+        ParentFont = False
+        TabOrder = 4
       end
     end
     object PageControl1: TPageControl
@@ -105,7 +125,7 @@ inherited frmPayload: TfrmPayload
       Top = 44
       Width = 353
       Height = 306
-      ActivePage = TabSheet3
+      ActivePage = TabSheet2
       Align = alClient
       MultiLine = True
       TabOrder = 1
@@ -355,11 +375,11 @@ inherited frmPayload: TfrmPayload
             Needle.Color = clBlue
             Minimum = -150.000000000000000000
             MinText = 'Left'
-            Maximum = -20.000000000000000000
+            Maximum = -80.000000000000000000
             MaxText = 'Right'
             Position = -150.000000000000000000
             SplitArcColor = clGreen
-            SplitPosition = -110.000000000000000000
+            SplitPosition = -130.000000000000000000
             TextPosition = tpNone
             TopPosition = 100.000000000000000000
             Version = '1.2.1.0'

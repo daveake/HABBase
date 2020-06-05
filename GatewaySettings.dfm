@@ -63,7 +63,9 @@ inherited frmGatewaySettings: TfrmGatewaySettings
       OnChange = edtHostChange
     end
     inherited btnSave: TAdvSmoothButton
+      Left = 455
       Top = 124
+      ExplicitLeft = 455
       ExplicitTop = 124
       TMSStyle = 8
     end

@@ -31,10 +31,11 @@ uses
   SystemSettings in 'SystemSettings.pas' {frmSystemSettings},
   LogtailSettings in 'LogtailSettings.pas' {frmLogtailSettings},
   Payload in 'Payload.pas' {frmPayload},
-  LoRaSerialSource in 'LoRaSerialSource.pas' {frmLoRaSerialSource},
+  LoRaGatewaySource in 'LoRaGatewaySource.pas' {frmLoRaGatewaySource},
   UDPSource in '..\HABRx\UDPSource.pas',
   UDPSettings in 'UDPSettings.pas' {frmUDPSettings},
-  TCPSettings in 'TCPSettings.pas' {frmTCPSettings};
+  TCPSettings in 'TCPSettings.pas' {frmTCPSettings},
+  LoRaSerialSource in 'LoRaSerialSource.pas' {frmLoRaSerialSource};
 
 {$R *.res}
 
@@ -42,7 +43,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmUDPSettings, frmUDPSettings);
-  Application.CreateForm(TfrmTCPSettings, frmTCPSettings);
   Application.Run;
 end.

@@ -9,7 +9,8 @@ inherited frmTCPSettings: TfrmTCPSettings
   inherited pnlCommon: TAdvPanel
     Width = 574
     Height = 152
-    ExplicitHeight = 177
+    ExplicitWidth = 574
+    ExplicitHeight = 152
     FullHeight = 337
     object Label1: TLabel [2]
       Left = 32
@@ -36,13 +37,15 @@ inherited frmTCPSettings: TfrmTCPSettings
     inherited btnSave: TAdvSmoothButton
       Left = 380
       Top = 99
-      ExplicitTop = 124
+      ExplicitLeft = 380
+      ExplicitTop = 99
       TMSStyle = 8
     end
     inherited btnCancel: TAdvSmoothButton
       Left = 474
       Top = 99
-      ExplicitTop = 124
+      ExplicitLeft = 474
+      ExplicitTop = 99
       TMSStyle = 8
     end
     object edtHost: TEdit

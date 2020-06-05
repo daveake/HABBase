@@ -223,9 +223,9 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             Needle.Color = clBlue
             Minimum = -150.000000000000000000
             MinText = 'Left'
-            Maximum = -20.000000000000000000
+            Maximum = -80.000000000000000000
             MaxText = 'Right'
-            Position = -150.000000000000000000
+            Position = -130.000000000000000000
             SplitArcColor = clGreen
             SplitPosition = -110.000000000000000000
             TextPosition = tpNone
@@ -281,7 +281,7 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             Left = 111
             Top = 8
             Width = 69
-            Height = 26
+            Height = 21
             Alignment = taCenter
             ReadOnly = True
             TabOrder = 10

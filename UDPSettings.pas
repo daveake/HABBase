@@ -22,8 +22,6 @@ type
     { Public declarations }
   end;
 
-var
-  frmUDPSettings: TfrmUDPSettings;
 
 implementation
 
