@@ -1,10 +1,13 @@
 inherited frmGatewaySettings: TfrmGatewaySettings
   Caption = 'Gateway Settings'
   ClientHeight = 177
+  ClientWidth = 664
+  ExplicitWidth = 680
   ExplicitHeight = 216
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlCommon: TAdvPanel
+    Width = 664
     Height = 177
     ExplicitHeight = 177
     FullHeight = 337
@@ -63,13 +66,14 @@ inherited frmGatewaySettings: TfrmGatewaySettings
       OnChange = edtHostChange
     end
     inherited btnSave: TAdvSmoothButton
-      Left = 455
+      Left = 478
       Top = 124
       ExplicitLeft = 455
       ExplicitTop = 124
       TMSStyle = 8
     end
     inherited btnCancel: TAdvSmoothButton
+      Left = 564
       Top = 124
       ExplicitTop = 124
       TMSStyle = 8
@@ -126,6 +130,28 @@ inherited frmGatewaySettings: TfrmGatewaySettings
       MaxLength = 1
       TabOrder = 10
       OnChange = edtHostChange
+    end
+    object chkAFC1: TAdvOfficeCheckBox
+      Left = 384
+      Top = 100
+      Width = 49
+      Height = 20
+      TabOrder = 11
+      Alignment = taRightJustify
+      Caption = 'AFC:'
+      ReturnIsTab = False
+      Version = '1.7.0.2'
+    end
+    object chkAFC2: TAdvOfficeCheckBox
+      Left = 384
+      Top = 126
+      Width = 49
+      Height = 20
+      TabOrder = 12
+      Alignment = taRightJustify
+      Caption = 'AFC:'
+      ReturnIsTab = False
+      Version = '1.7.0.2'
     end
   end
 end

@@ -21,6 +21,8 @@ type
     edtFrequency2: TEdit;
     Label6: TLabel;
     edtMode2: TEdit;
+    chkAFC1: TAdvOfficeCheckBox;
+    chkAFC2: TAdvOfficeCheckBox;
     procedure edtHostChange(Sender: TObject);
   private
     { Private declarations }
@@ -50,9 +52,11 @@ begin
 
     SetSettingString(Group, 'Frequency_0', edtFrequency1.Text);
     SetSettingInteger(Group, 'Mode_0', StrToIntDef(edtMode1.Text, 0));
+    SetSettingBoolean(Group, 'AFC_0', chkAFC1.Checked);
 
     SetSettingString(Group, 'Frequency_1', edtFrequency2.Text);
     SetSettingInteger(Group, 'Mode_1', StrToIntDef(edtMode2.Text, 0));
+    SetSettingBoolean(Group, 'AFC_1', chkAFC2.Checked);
 
     // Tell source things have changed
     inherited;
@@ -77,8 +81,11 @@ begin
 
         edtFrequency1.Text := GetSetting('Frequency_0', Settings);
         edtMode1.Text      := GetSetting('Mode_0', Settings);
+        chkAFC1.Checked    := GetBooleanSetting('AFC_0', Settings);
+
         edtFrequency2.Text := GetSetting('Frequency_1', Settings);
         edtMode2.Text      := GetSetting('Mode_1', Settings);
+        chkAFC2.Checked    := GetBooleanSetting('AFC_1', Settings);
     end;
 end;
 
@@ -91,8 +98,10 @@ begin
         FieldByName('Port').AsString := edtPort.Text;
         FieldByName('Settings').AsString := 'Frequency_0=' + edtFrequency1.Text + ';' +
                                             'Mode_0=' + edtMode1.Text + ';' +
+                                            'AFC_0=' + BoolToStr(chkAFC1.Checked, True) + ';' +
                                             'Frequency_1=' + edtFrequency2.Text + ';' +
-                                            'Mode_1=' + edtMode2.Text;
+                                            'Mode_1=' + edtMode2.Text + ';' +
+                                            'AFC_1=' + BoolToStr(chkAFC2.Checked, True);
     end;
 end;
 

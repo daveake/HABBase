@@ -292,6 +292,7 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             Width = 49
             Height = 20
             TabOrder = 11
+            OnClick = chkAFC0Click
             Alignment = taRightJustify
             Caption = 'AFC:'
             ReturnIsTab = False
@@ -591,6 +592,7 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             Width = 49
             Height = 20
             TabOrder = 11
+            OnClick = chkAFC0Click
             Alignment = taRightJustify
             Caption = 'AFC:'
             ReturnIsTab = False

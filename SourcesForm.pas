@@ -482,6 +482,10 @@ begin
             frmPayloads.ShowFrequencyError(HABSources[SourceIndex].LatestPosition.PayloadID, Position.FrequencyError);
         end;
     end;
+
+    if Position.CurrentFrequency > 0.0 then begin
+        HABSources[SourceIndex].SourceForm.ShowFrequency(Position.Channel, Position.CurrentFrequency);
+    end;
 end;
 
 procedure TfrmSources.DataSourceClick(Sender: TObject);

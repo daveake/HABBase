@@ -54,10 +54,12 @@ type
     procedure VrMediaButton4Click(Sender: TObject);
     procedure VrMediaButton3Click(Sender: TObject);
     procedure VrMediaButton2Click(Sender: TObject);
+    procedure chkAFC0Click(Sender: TObject);
   private
     { Private declarations }
     procedure SetFrequency(Channel: Integer; Frequency: Double);
     procedure OffsetFrequency(Channel: Integer; Offset: Double);
+    procedure SetAFC(Channel: Integer; Enabled: Boolean);
   public
     { Public declarations }
     procedure ShowCurrentRSSI(Channel, CurrentRSSI: Integer); override;
@@ -65,7 +67,6 @@ type
     procedure ShowFrequencyError(Channel: Integer; FrequencyError: Double); override;
     procedure ShowFrequency(Channel: Integer; Frequency: Double); override;
     procedure ShowSetting(Setting, Value: String); override;
-    procedure DoAFC(Channel: Integer; FrequencyError: Double); override;
   end;
 
 
@@ -74,6 +75,11 @@ implementation
 {$R *.dfm}
 
 uses Miscellaneous;
+
+procedure TfrmLoRaGatewaySource.chkAFC0Click(Sender: TObject);
+begin
+    SetAFC(TAdvOfficeCheckBox(Sender).Tag, TAdvOfficeCheckBox(Sender).Checked);
+end;
 
 procedure TfrmLoRaGatewaySource.FormCreate(Sender: TObject);
 begin
@@ -113,9 +119,9 @@ end;
 procedure TfrmLoRaGatewaySource.ShowFrequency(Channel: Integer; Frequency: Double);
 begin
     if Channel = 0 then begin
-        edtFrequency0.Text := FormatFloat('0.000', Frequency);
+        edtFrequency0.Text := FormatFloat('0.0000', Frequency);
     end else begin
-        edtFrequency1.Text := FormatFloat('0.000', Frequency);
+        edtFrequency1.Text := FormatFloat('0.0000', Frequency);
     end;
 end;
 
@@ -126,6 +132,10 @@ begin
         edtFrequency0.Text := Value;
     end else if Setting = 'Frequency_1' then begin
         edtFrequency1.Text := Value;
+    end else if Setting = 'AFC_0' then begin
+        chkAFC0.Checked := Value = 'True';
+    end else if Setting = 'AFC_1' then begin
+        chkAFC1.Checked := Value = 'True';
     end;
 end;
 
@@ -162,6 +172,17 @@ begin
     SetGroupChangedFlag(Group, True);
 end;
 
+procedure TfrmLoRaGatewaySource.SetAFC(Channel: Integer; Enabled: Boolean);
+begin
+    if Channel = 0 then begin
+        SetSettingString(Group, 'AFC_0', BoolToStr(chkAFC0.Checked, True));
+    end else begin
+        SetSettingString(Group, 'AFC_1', BoolToStr(chkAFC1.Checked, True));
+    end;
+
+    SetGroupChangedFlag(Group, True);
+end;
+
 procedure TfrmLoRaGatewaySource.OffsetFrequency(Channel: Integer; Offset: Double);
 var
     Frequency: Double;
@@ -176,15 +197,6 @@ begin
         SetFrequency(Channel, Frequency + Offset);
     except
 
-    end;
-end;
-
-procedure TfrmLoRaGatewaySource.DoAFC(Channel: Integer; FrequencyError: Double);
-begin
-    if (Channel = 0) and chkAFC0.Checked and (abs(FrequencyError) > 0.001) then begin
-        OffsetFrequency(Channel, FrequencyError);
-    end else if (Channel = 1) and chkAFC1.Checked and (abs(FrequencyError) > 0.001) then begin
-        OffsetFrequency(Channel, FrequencyError);
     end;
 end;
 
