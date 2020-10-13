@@ -27,64 +27,11 @@ inherited frmPayload: TfrmPayload
       ParentBackground = False
       ParentFont = False
       TabOrder = 0
-      object btnSettings: TButton
-        AlignWithMargins = True
-        Left = 319
-        Top = 1
-        Width = 27
-        Height = 35
-        Margins.Top = 1
-        Margins.Right = 1
-        Margins.Bottom = 2
-        Align = alRight
-        Caption = '...'
-        TabOrder = 0
-      end
-      object btnUp: TButton
-        AlignWithMargins = True
-        Left = 288
-        Top = 1
-        Width = 27
-        Height = 35
-        Margins.Top = 1
-        Margins.Right = 1
-        Margins.Bottom = 2
-        Align = alRight
-        Caption = #9650
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 1
-        OnClick = btnUpClick
-      end
-      object btnDown: TButton
-        AlignWithMargins = True
-        Left = 257
-        Top = 1
-        Width = 27
-        Height = 35
-        Margins.Top = 1
-        Margins.Right = 1
-        Margins.Bottom = 2
-        Align = alRight
-        Caption = #9660
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 2
-        OnClick = btnDownClick
-      end
       object pnlTitle: TPanel
         AlignWithMargins = True
-        Left = 59
+        Left = 3
         Top = 3
-        Width = 192
+        Width = 341
         Height = 32
         Align = alClient
         BevelOuter = bvNone
@@ -97,27 +44,78 @@ inherited frmPayload: TfrmPayload
         Font.Style = []
         ParentBackground = False
         ParentFont = False
-        TabOrder = 3
-        ExplicitLeft = 3
-        ExplicitWidth = 248
-      end
-      object pnlTSS: TPanel
-        AlignWithMargins = True
-        Left = 3
-        Top = 3
-        Width = 50
-        Height = 32
-        Align = alLeft
-        BevelOuter = bvNone
-        Color = clSilver
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -16
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentBackground = False
-        ParentFont = False
-        TabOrder = 4
+        TabOrder = 0
+        object pnlTSS: TPanel
+          AlignWithMargins = True
+          Left = 3
+          Top = 3
+          Width = 50
+          Height = 26
+          Align = alLeft
+          BevelOuter = bvNone
+          Color = clSilver
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 0
+        end
+        object btnDown: TButton
+          AlignWithMargins = True
+          Left = 282
+          Top = 1
+          Width = 27
+          Height = 29
+          Margins.Top = 1
+          Margins.Right = 1
+          Margins.Bottom = 2
+          Align = alRight
+          Caption = #9660
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+          OnClick = btnDownClick
+        end
+        object btnUp: TButton
+          AlignWithMargins = True
+          Left = 251
+          Top = 1
+          Width = 27
+          Height = 29
+          Margins.Top = 1
+          Margins.Right = 1
+          Margins.Bottom = 2
+          Align = alRight
+          Caption = #9650
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 2
+          OnClick = btnUpClick
+        end
+        object btnSettings: TButton
+          AlignWithMargins = True
+          Left = 313
+          Top = 1
+          Width = 27
+          Height = 29
+          Margins.Top = 1
+          Margins.Right = 1
+          Margins.Bottom = 2
+          Align = alRight
+          Caption = '...'
+          TabOrder = 3
+        end
       end
     end
     object PageControl1: TPageControl
@@ -125,7 +123,7 @@ inherited frmPayload: TfrmPayload
       Top = 44
       Width = 353
       Height = 306
-      ActivePage = TabSheet2
+      ActivePage = TabSheet1
       Align = alClient
       MultiLine = True
       TabOrder = 1
@@ -414,6 +412,7 @@ inherited frmPayload: TfrmPayload
           FixedRows = 1
           Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect]
           ParentDoubleBuffered = False
+          PopupMenu = PopupMenu1
           ScrollBars = ssBoth
           TabOrder = 0
           GridLineColor = 13948116
@@ -982,5 +981,13 @@ inherited frmPayload: TfrmPayload
     DataSet = tblPositions
     Left = 312
     Top = 224
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 168
+    Top = 176
+    object ClearHistory1: TMenuItem
+      Caption = 'Clear History'
+      OnClick = ClearHistory1Click
+    end
   end
 end

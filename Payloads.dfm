@@ -36,4 +36,9 @@ inherited frmPayloads: TfrmPayloads
     Left = 216
     Top = 368
   end
+  object UDPClient: TIdUDPClient
+    Port = 0
+    Left = 60
+    Top = 366
+  end
 end

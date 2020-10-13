@@ -37,7 +37,7 @@ type
     tblSettingsFormTop: TIntegerField;
     tblSettingsFormWidth: TIntegerField;
     tblSettingsFormHeight: TIntegerField;
-    tblSettingsTopLeftHeight: TIntegerField;
+    tblSettingsUDPPort: TIntegerField;
     tblSettingsTopHeight: TIntegerField;
     tblSettingsBottomLeftHeight: TIntegerField;
     tblSettingsBottomHeight: TIntegerField;

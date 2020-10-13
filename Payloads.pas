@@ -6,7 +6,8 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Normal, Vcl.StdCtrls, Vcl.ExtCtrls,
   AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid, Payload,
-  Miscellaneous, Source, Math;
+  Miscellaneous, Source, Math, IdBaseComponent, IdComponent, IdUDPBase,
+  IdUDPClient;
 
 type
     TPayload = record
@@ -18,18 +19,13 @@ type
         Colour:             TColor;
         Sources:            String;
         LastUpdate:         TDateTime;
-//        Button:             TAdvSmoothButton;
-//        PayloadID:      String;
-//        // Indicator:      TAdvSmoothStatusIndicator;
-//        Position:       THABPosition;
-//        GotGPS:         Boolean;
-//        Count:          Integer;
     end;
 
   TfrmPayloads = class(TfrmNormal)
     scrollMain: TScrollBox;
     tmrUpdates: TTimer;
     tmrExpired: TTimer;
+    UDPClient: TIdUDPClient;
     procedure tmrUpdatesTimer(Sender: TObject);
     procedure tmrExpiredTimer(Sender: TObject);
   private
@@ -39,6 +35,7 @@ type
     function FindPayload(PayloadID: String): Integer;
     function FindOrAddPayload(PayloadID: String): Integer;
     function PositionHasChanged(NewPosition, OldPosition: THABPosition): Boolean;
+    procedure SendPositionToUDP(Position: THABPosition);
   public
     { Public declarations }
     function NewPosition(Position: THABPosition; SourceCode, SourceDescription: String): Boolean;
@@ -129,6 +126,9 @@ begin
 
             // Add to history
             HABPayloads[PayloadIndex].Form.AddPosition(Position, SourceCode);
+
+            // Send out on UDP port
+            SendPositionToUDP(Position);
         end else begin
             if Pos(',' + SourceCode + ',', ',' + HABPayloads[PayloadIndex].Sources + ',') = 0 then begin
                 if HABPayloads[PayloadIndex].Sources = '' then begin
@@ -344,6 +344,17 @@ begin
                 HABPayloads[PayloadIndex].Form.ShowDetails(PayloadIndex = SelectedPayload);
             end;
         end;
+    end;
+end;
+
+procedure TfrmPayloads.SendPositionToUDP(Position: THABPosition);
+var
+    Port: Integer;
+begin
+    Port := DataModule1.tblSettings.FieldByName('UDPPort').AsInteger;
+
+    if Port > 0 then begin
+        UDPClient.Broadcast(Position.Line, Port);
     end;
 end;
 

@@ -110,6 +110,19 @@ begin
 
 end;
 
+function TrimSentence(Sentence: String): String;
+var
+    Dollar, LineFeed: Integer;
+begin
+    Dollar := Pos('$', Sentence);
+    LineFeed := Pos('\', Sentence);
+
+    if Dollar = 0 then Dollar := 1;
+    if LineFeed = 0 then LineFeed := Length(Sentence);
+
+    Result := Copy(Sentence, Dollar, LineFeed-Dollar);
+end;
+
 function TfrmLogtail.ProcessLogtailLine(Line: String; var Position: THABPosition): Boolean;
 var
     i, j, Posn: Integer;
@@ -218,7 +231,7 @@ begin
         end else if Command = 'satellites' then begin
             Position.Satellites := GetInteger(Line, ',');
         end else if Command = '_sentence' then begin
-            Position.Line := Line;
+            Position.Line := TrimSentence(Line);
         end else if Command = 'time' then begin
             GetString(Line, '"');
             Value := GetString(Line, '"');

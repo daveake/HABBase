@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'HAB Base Station Manager'
+  Caption = 'HAB Base Station Manager V1.1.0'
   ClientHeight = 847
   ClientWidth = 1398
   Color = clBtnFace
@@ -54,141 +54,23 @@ object frmMain: TfrmMain
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 0
-    object AdvSplitter3: TAdvSplitter
+    object pnlSettings: TPanel
       Left = 0
-      Top = 553
+      Top = 788
       Width = 329
-      Height = 16
-      Cursor = crVSplit
-      Align = alTop
-      Appearance.BorderColor = clNone
-      Appearance.BorderColorHot = clNone
-      Appearance.Color = clWhite
-      Appearance.ColorTo = clSilver
-      Appearance.ColorHot = clWhite
-      Appearance.ColorHotTo = clGray
-      GripStyle = sgDots
-      ExplicitLeft = 10
-      ExplicitTop = 537
-    end
-    object AdvSplitter2: TAdvSplitter
-      Left = 0
-      Top = 176
-      Width = 329
-      Height = 16
-      Cursor = crVSplit
-      Align = alTop
-      Appearance.BorderColor = clNone
-      Appearance.BorderColorHot = clNone
-      Appearance.Color = clWhite
-      Appearance.ColorTo = clSilver
-      Appearance.ColorHot = clWhite
-      Appearance.ColorHotTo = clGray
-      GripStyle = sgDots
-      ExplicitTop = 361
-    end
-    object pnlLog: TPanel
-      Left = 0
-      Top = 192
-      Width = 329
-      Height = 361
-      Align = alTop
+      Height = 59
+      Align = alBottom
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitLeft = -6
-      ExplicitTop = 198
-    end
-    object pnlWhiteList: TPanel
-      Left = 0
-      Top = 0
-      Width = 329
-      Height = 176
-      Align = alTop
-      BevelOuter = bvNone
-      TabOrder = 1
     end
     object pnlSources: TPanel
       Left = 0
-      Top = 569
+      Top = 0
       Width = 329
-      Height = 180
+      Height = 788
       Align = alClient
       BevelOuter = bvNone
-      TabOrder = 2
-    end
-    object AdvSmoothButton2: TAdvSmoothButton
-      AlignWithMargins = True
-      Left = 6
-      Top = 755
-      Width = 317
-      Height = 40
-      Margins.Left = 6
-      Margins.Top = 6
-      Margins.Right = 6
-      Align = alBottom
-      Appearance.Font.Charset = DEFAULT_CHARSET
-      Appearance.Font.Color = 2303013
-      Appearance.Font.Height = -11
-      Appearance.Font.Name = 'Tahoma'
-      Appearance.Font.Style = []
-      Status.Caption = '0'
-      Status.Appearance.Fill.Color = clRed
-      Status.Appearance.Fill.ColorMirror = clNone
-      Status.Appearance.Fill.ColorMirrorTo = clNone
-      Status.Appearance.Fill.GradientType = gtSolid
-      Status.Appearance.Fill.GradientMirrorType = gtSolid
-      Status.Appearance.Fill.BorderColor = clGray
-      Status.Appearance.Fill.Rounding = 0
-      Status.Appearance.Fill.ShadowOffset = 0
-      Status.Appearance.Fill.Glow = gmNone
-      Status.Appearance.Font.Charset = DEFAULT_CHARSET
-      Status.Appearance.Font.Color = clWhite
-      Status.Appearance.Font.Height = -11
-      Status.Appearance.Font.Name = 'Tahoma'
-      Status.Appearance.Font.Style = []
-      Caption = 'Add Source'
-      ParentFont = False
-      TabOrder = 3
-      Version = '2.2.1.2'
-      OnClick = AdvSmoothButton2Click
-      TMSStyle = 8
-    end
-    object AdvSmoothButton1: TAdvSmoothButton
-      AlignWithMargins = True
-      Left = 6
-      Top = 801
-      Width = 317
-      Height = 40
-      Margins.Left = 6
-      Margins.Right = 6
-      Margins.Bottom = 6
-      Align = alBottom
-      Appearance.Font.Charset = DEFAULT_CHARSET
-      Appearance.Font.Color = 2303013
-      Appearance.Font.Height = -11
-      Appearance.Font.Name = 'Tahoma'
-      Appearance.Font.Style = []
-      Status.Caption = '0'
-      Status.Appearance.Fill.Color = clRed
-      Status.Appearance.Fill.ColorMirror = clNone
-      Status.Appearance.Fill.ColorMirrorTo = clNone
-      Status.Appearance.Fill.GradientType = gtSolid
-      Status.Appearance.Fill.GradientMirrorType = gtSolid
-      Status.Appearance.Fill.BorderColor = clGray
-      Status.Appearance.Fill.Rounding = 0
-      Status.Appearance.Fill.ShadowOffset = 0
-      Status.Appearance.Fill.Glow = gmNone
-      Status.Appearance.Font.Charset = DEFAULT_CHARSET
-      Status.Appearance.Font.Color = clWhite
-      Status.Appearance.Font.Height = -11
-      Status.Appearance.Font.Name = 'Tahoma'
-      Status.Appearance.Font.Style = []
-      Caption = 'Settings'
-      ParentFont = False
-      TabOrder = 4
-      Version = '2.2.1.2'
-      OnClick = AdvSmoothButton1Click
-      TMSStyle = 8
+      TabOrder = 1
     end
   end
   object pnlMain: TPanel

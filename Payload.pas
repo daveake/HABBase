@@ -10,7 +10,7 @@ uses
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, AdvObj,
   BaseGrid, AdvGrid, DBAdvGrid, Miscellaneous, Source, Vcl.StdCtrls, Vcl.ComCtrls,
   AdvSmoothButton, AdvPanel, AdvProgr, AdvGauge, VclTee.TeeGDIPlus,
-  VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart;
+  VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart, Vcl.Menus;
 
 type
   TfrmPayload = class(TfrmBase)
@@ -24,9 +24,6 @@ type
     srcPositions: TDataSource;
     tblPositionsSources: TStringField;
     pnlTop: TPanel;
-    btnSettings: TButton;
-    btnUp: TButton;
-    btnDown: TButton;
     pnlTitle: TPanel;
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
@@ -48,9 +45,15 @@ type
     AltitudeChart: TChart;
     Series1: TLineSeries;
     pnlTSS: TPanel;
+    btnDown: TButton;
+    btnUp: TButton;
+    btnSettings: TButton;
+    PopupMenu1: TPopupMenu;
+    ClearHistory1: TMenuItem;
     procedure btnDownClick(Sender: TObject);
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure ClearHistory1Click(Sender: TObject);
   private
     { Private declarations }
     procedure Down;
@@ -138,6 +141,15 @@ end;
 procedure TfrmPayload.btnUpClick(Sender: TObject);
 begin
     Up;
+end;
+
+procedure TfrmPayload.ClearHistory1Click(Sender: TObject);
+begin
+    with tblPositions do begin
+        while RecordCount > 0 do begin
+            Delete;
+        end;
+    end;
 end;
 
 procedure TfrmPayload.FormCreate(Sender: TObject);

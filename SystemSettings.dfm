@@ -1,7 +1,7 @@
 object frmSystemSettings: TfrmSystemSettings
   Left = 0
   Top = 0
-  Caption = 'frmSystemSettings'
+  Caption = 'System Settings'
   ClientHeight = 220
   ClientWidth = 451
   Color = clBtnFace
@@ -67,7 +67,6 @@ object frmSystemSettings: TfrmSystemSettings
     StatusBar.ColorTo = 14602191
     StatusBar.GradientDirection = gdVertical
     Text = ''
-    ExplicitHeight = 169
     DesignSize = (
       447
       216)
@@ -115,7 +114,7 @@ object frmSystemSettings: TfrmSystemSettings
     object Label5: TLabel
       Left = 163
       Top = 95
-      Width = 114
+      Width = 8
       Height = 13
       Caption = 'm'
     end
@@ -125,6 +124,14 @@ object frmSystemSettings: TfrmSystemSettings
       Width = 16
       Height = 13
       Caption = 'min'
+    end
+    object Label7: TLabel
+      Left = 22
+      Top = 149
+      Width = 80
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'UDP Output Port'
     end
     object btnSave: TAdvSmoothButton
       AlignWithMargins = True
@@ -163,7 +170,6 @@ object frmSystemSettings: TfrmSystemSettings
       Enabled = False
       Version = '2.2.1.2'
       OnClick = btnSaveClick
-      ExplicitTop = 116
       TMSStyle = 8
     end
     object btnCancel: TAdvSmoothButton
@@ -203,7 +209,6 @@ object frmSystemSettings: TfrmSystemSettings
       Version = '2.2.1.2'
       ModalResult = 2
       OnClick = btnCancelClick
-      ExplicitTop = 116
       TMSStyle = 8
     end
     object DBEdit1: TDBEdit
@@ -254,6 +259,16 @@ object frmSystemSettings: TfrmSystemSettings
       DataField = 'Expiry'
       DataSource = DataModule1.srcSettings
       TabOrder = 6
+      OnChange = DBEdit1Change
+    end
+    object DBEdit6: TDBEdit
+      Left = 108
+      Top = 143
+      Width = 49
+      Height = 21
+      DataField = 'UDPPort'
+      DataSource = DataModule1.srcSettings
+      TabOrder = 7
       OnChange = DBEdit1Change
     end
   end

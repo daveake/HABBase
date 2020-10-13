@@ -22,13 +22,10 @@ type
     tblLivePayloadsDistance: TFloatField;
     srcPositions: TDataSource;
     tblPositionsPayloadID: TStringField;
-    btnSettings: TButton;
     menuSource: TPopupMenu;
     ModifySource: TMenuItem;
     DeleteSource: TMenuItem;
     mnuAddNewSource: TMenuItem;
-    btnUp: TButton;
-    btnDown: TButton;
     pnlTitle: TPanel;
     PageControl1: TPageControl;
     tabHistory: TTabSheet;
@@ -36,6 +33,10 @@ type
     EnableSource: TMenuItem;
     tabStatus: TTabSheet;
     lstLog: TListBox;
+    btnDown: TButton;
+    btnUp: TButton;
+    btnSettings: TButton;
+    lblTitle: TLabel;
     procedure btnSettingsClick(Sender: TObject);
     procedure ModifySourceClick(Sender: TObject);
     procedure mnuAddNewSourceClick(Sender: TObject);

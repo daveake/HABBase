@@ -26,15 +26,10 @@ type
         Description:        String;
         SourceType:         TSourceType;
         SourceForm:         TfrmSource;
-//        Indicator:          TAdvSmoothStatusIndicator;
         Source:             TSource;
         Upload:             Boolean;
         Status:             String;
         LastPacketAt:       TDateTime;
-//        ValueLabel:   TLabel;
-//        RSSILabel:    TLabel;
-//        CurrentRSSI:  String;
-//        PacketRSSI:   String;
         FreqError:          Array[0..1] of Double;
         MultipleChannels:   Boolean;
         LatestPosition:     THABPosition;
@@ -43,6 +38,8 @@ type
 type
   TfrmSources = class(TfrmNormal)
     scrollMain: TScrollBox;
+    btnAddSource: TAdvSmoothButton;
+    procedure btnAddSourceClick(Sender: TObject);
   private
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
@@ -114,6 +111,8 @@ end;
 
 procedure TfrmSources.LoadSource(SourceIndex: Integer);
 begin
+    btnAddSource.Visible := False;
+
     with HABSources[SourceIndex], DataModule1.tblSources do begin
         InUse := True;
         SourceID := FieldByName('ID').AsInteger;
@@ -216,7 +215,7 @@ begin
 //        Indicator.Caption := Code;
 
         if SourceForm <> nil then begin
-            SourceForm.pnlTitle.Caption := Code + ': ' + Description;
+            SourceForm.lblTitle.Caption := Code + ': ' + Description;
             SourceForm.pnlMain.Parent := scrollMain;
         end;
 
@@ -326,6 +325,11 @@ begin
     end;
 end;
 
+
+procedure TfrmSources.btnAddSourceClick(Sender: TObject);
+begin
+    AddNewSource;
+end;
 
 function TfrmSources.FindFreeSource: Integer;
 var

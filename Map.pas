@@ -280,7 +280,7 @@ end;
 
 procedure TfrmMap.DrawHorizon(PayloadIndex: Integer);
 const
-    Colors: Array[0..1] of TColor = (clLime, clBlue);
+    Colors: Array[0..1] of TColor = (clBlue, clLime);
     Radius: Array[0..1] of Double = (0.0, 5.0);
 var
     i: Integer;

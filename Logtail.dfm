@@ -18,6 +18,14 @@ inherited frmLogtail: TfrmLogtail
         8000000000000000000000000000000000000000000000000000000000000000
         00000000000000000100000000000000000000000000000000000000}
     end
+    inherited pnlTop: TPanel
+      inherited pnlTitle: TPanel
+        inherited lblTitle: TLabel
+          Width = 271
+          Height = 23
+        end
+      end
+    end
   end
   object Timer1: TTimer [1]
     OnTimer = Timer1Timer

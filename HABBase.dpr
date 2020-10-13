@@ -35,7 +35,8 @@ uses
   UDPSource in '..\HABRx\UDPSource.pas',
   UDPSettings in 'UDPSettings.pas' {frmUDPSettings},
   TCPSettings in 'TCPSettings.pas' {frmTCPSettings},
-  LoRaSerialSource in 'LoRaSerialSource.pas' {frmLoRaSerialSource};
+  LoRaSerialSource in 'LoRaSerialSource.pas' {frmLoRaSerialSource},
+  ToolSettings in 'ToolSettings.pas' {frmToolSettings};
 
 {$R *.res}
 
@@ -43,5 +44,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TfrmToolSettings, frmToolSettings);
   Application.Run;
 end.

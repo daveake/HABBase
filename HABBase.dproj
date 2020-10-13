@@ -86,8 +86,8 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_WriteableConstants>true</DCC_WriteableConstants>
-        <Debugger_RunParams>d:\dropbox\dev\hab\apps\HABBase</Debugger_RunParams>
         <Icon_MainIcon>HABBase_Icon.ico</Icon_MainIcon>
+        <Debugger_RunParams>D:\Dropbox\dev\HAB\Apps\HABBase</Debugger_RunParams>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -98,6 +98,9 @@
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+        <DCC_WriteableConstants>true</DCC_WriteableConstants>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <Debugger_RunParams>D:\Dropbox\dev\HAB\Apps\HABBase</Debugger_RunParams>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -211,6 +214,10 @@
         </DCCReference>
         <DCCReference Include="LoRaSerialSource.pas">
             <Form>frmLoRaSerialSource</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ToolSettings.pas">
+            <Form>frmToolSettings</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">

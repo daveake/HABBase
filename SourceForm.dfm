@@ -31,69 +31,14 @@ inherited frmSource: TfrmSource
       ParentBackground = False
       ParentFont = False
       TabOrder = 0
-      object btnSettings: TButton
-        AlignWithMargins = True
-        Left = 348
-        Top = 1
-        Width = 27
-        Height = 35
-        Margins.Top = 1
-        Margins.Right = 1
-        Margins.Bottom = 2
-        Align = alRight
-        Caption = '...'
-        TabOrder = 0
-        OnClick = btnSettingsClick
-      end
-      object btnUp: TButton
-        AlignWithMargins = True
-        Left = 317
-        Top = 1
-        Width = 27
-        Height = 35
-        Margins.Top = 1
-        Margins.Right = 1
-        Margins.Bottom = 2
-        Align = alRight
-        Caption = #9650
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 1
-        OnClick = btnUpClick
-      end
-      object btnDown: TButton
-        AlignWithMargins = True
-        Left = 286
-        Top = 1
-        Width = 27
-        Height = 35
-        Margins.Top = 1
-        Margins.Right = 1
-        Margins.Bottom = 2
-        Align = alRight
-        Caption = #9660
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Tahoma'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 2
-        OnClick = btnDownClick
-      end
       object pnlTitle: TPanel
         AlignWithMargins = True
         Left = 3
         Top = 3
-        Width = 277
+        Width = 370
         Height = 32
         Align = alClient
         BevelOuter = bvNone
-        Caption = 'Source Code'
         Color = clGray
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -102,7 +47,83 @@ inherited frmSource: TfrmSource
         Font.Style = []
         ParentBackground = False
         ParentFont = False
-        TabOrder = 3
+        TabOrder = 0
+        ExplicitWidth = 277
+        object lblTitle: TLabel
+          AlignWithMargins = True
+          Left = 3
+          Top = 6
+          Width = 271
+          Height = 23
+          Margins.Top = 6
+          Align = alClient
+          Alignment = taCenter
+          Caption = 'Source Code'
+          ExplicitLeft = 72
+          ExplicitTop = 12
+          ExplicitWidth = 89
+          ExplicitHeight = 19
+        end
+        object btnDown: TButton
+          AlignWithMargins = True
+          Left = 311
+          Top = 1
+          Width = 27
+          Height = 29
+          Margins.Top = 1
+          Margins.Right = 1
+          Margins.Bottom = 2
+          Align = alRight
+          Caption = #9660
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+          OnClick = btnDownClick
+          ExplicitLeft = 286
+          ExplicitHeight = 35
+        end
+        object btnUp: TButton
+          AlignWithMargins = True
+          Left = 280
+          Top = 1
+          Width = 27
+          Height = 29
+          Margins.Top = 1
+          Margins.Right = 1
+          Margins.Bottom = 2
+          Align = alRight
+          Caption = #9650
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+          OnClick = btnUpClick
+          ExplicitLeft = 317
+          ExplicitHeight = 35
+        end
+        object btnSettings: TButton
+          AlignWithMargins = True
+          Left = 342
+          Top = 1
+          Width = 27
+          Height = 29
+          Margins.Top = 1
+          Margins.Right = 1
+          Margins.Bottom = 2
+          Align = alRight
+          Caption = '...'
+          TabOrder = 2
+          OnClick = btnSettingsClick
+          ExplicitLeft = 348
+          ExplicitHeight = 35
+        end
       end
     end
     object PageControl1: TPageControl

@@ -1,5 +1,5 @@
 inherited frmWhiteList: TfrmWhiteList
-  Caption = 'White List'
+  Caption = 'Balloon Filter - Which Balloons To Show'
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13

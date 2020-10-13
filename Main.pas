@@ -23,21 +23,14 @@ type
   TfrmMain = class(TForm)
     AdvSplitter1: TAdvSplitter;
     pnlLeft: TPanel;
-    pnlLog: TPanel;
-    AdvSplitter3: TAdvSplitter;
-    pnlWhiteList: TPanel;
+    pnlSettings: TPanel;
     pnlSources: TPanel;
     pnlMain: TPanel;
     pnlMiddle: TPanel;
-    AdvSplitter2: TAdvSplitter;
-    AdvSmoothButton2: TAdvSmoothButton;
-    AdvSmoothButton1: TAdvSmoothButton;
     AdvSplitter10: TAdvSplitter;
     pnlRight: TPanel;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure AdvSmoothButton2Click(Sender: TObject);
-    procedure AdvSmoothButton1Click(Sender: TObject);
   private
     { Private declarations }
     PayloadMasks: TPayloadMasks;
@@ -59,32 +52,15 @@ implementation
 
 uses Data,
      // Tools
-     ToolWhiteList, ToolLog,
+     // ToolWhiteList,
+     ToolLog, ToolSettings,
      // Main Forms
      Map, Payloads,
      // Sources
-     SourcesForm,
-     SystemSettings;
+     SourcesForm;
+     // temSettings;
 
 {$R *.dfm}
-
-procedure TfrmMain.AdvSmoothButton1Click(Sender: TObject);
-var
-    frmSystemSettings: TfrmSystemSettings;
-begin
-    frmSystemSettings := TfrmSystemSettings.Create(nil);
-    if frmSystemSettings.ShowModal = mrOK then begin
-        frmMap.SetHomePosition;
-        frmPayloads.UpdateActivePayloads;
-    end;
-    frmPayloads.CheckForExpiredPayloads;
-    frmSystemSettings.Free;
-end;
-
-procedure TfrmMain.AdvSmoothButton2Click(Sender: TObject);
-begin
-    frmSources.AddNewSource;
-end;
 
 procedure TfrmMain.FormActivate(Sender: TObject);
 const
@@ -120,15 +96,11 @@ begin
     frmPayloads := TfrmPayloads.Create(nil);
     frmPayloads.pnlMain.Parent := pnlRight;
 
-    // Log
-//    frmToolLog := TfrmToolLog.Create(nil);
-//    frmToolLog.pnlMain.Parent := pnlLog;
-    pnlLog.Visible := False;
-    AdvSplitter3.Visible := False;
-
     // White List
-    frmToolWhiteList := TfrmToolWhiteList.Create(nil);
-    frmToolWhiteList.pnlMain.Parent := pnlWhiteList;
+//    frmToolWhiteList := TfrmToolWhiteList.Create(nil);
+//    frmToolWhiteList.pnlMain.Parent := pnlWhiteList;
+    frmToolSettings := TfrmToolSettings.Create(nil);
+    frmToolSettings.pnlMain.Parent := pnlSettings;
 
     // Sources
     frmSources := TfrmSources.Create(nil);
@@ -290,8 +262,8 @@ begin
             pnlRight.Width := FieldByName('RightWidth').AsInteger;
 
             // Panels
-            pnlWhiteList.Height := FieldByName('TopMiddleHeight').AsInteger;
-            pnlSources.Height := FieldByName('BottomLeftHeight').AsInteger;
+//            pnlWhiteList.Height := FieldByName('TopMiddleHeight').AsInteger;
+//            pnlSources.Height := FieldByName('BottomLeftHeight').AsInteger;
         end;
     end;
 end;
@@ -311,8 +283,8 @@ begin
         FieldByName('RightWidth').AsInteger := pnlRight.Width;
 
         // Panels
-        FieldByName('TopMiddleHeight').AsInteger := pnlWhiteList.Height;
-        FieldByName('BottomLeftHeight').AsInteger := pnlSources.Height;
+//        FieldByName('TopMiddleHeight').AsInteger := pnlWhiteList.Height;
+//        FieldByName('BottomLeftHeight').AsInteger := pnlSources.Height;
 
         Post;
         SaveToFile(ExtractFilePath(Application.ExeName) + 'settings.json');
