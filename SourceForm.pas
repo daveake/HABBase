@@ -37,6 +37,8 @@ type
     btnUp: TButton;
     btnSettings: TButton;
     lblTitle: TLabel;
+    PopupMenu1: TPopupMenu;
+    ClearHistory1: TMenuItem;
     procedure btnSettingsClick(Sender: TObject);
     procedure ModifySourceClick(Sender: TObject);
     procedure mnuAddNewSourceClick(Sender: TObject);
@@ -46,6 +48,7 @@ type
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure EnableSourceClick(Sender: TObject);
+    procedure ClearHistory1Click(Sender: TObject);
   private
     { Private declarations }
     procedure Down;
@@ -91,6 +94,15 @@ end;
 procedure TfrmSource.btnUpClick(Sender: TObject);
 begin
     Up;
+end;
+
+procedure TfrmSource.ClearHistory1Click(Sender: TObject);
+begin
+    with tblPositions do begin
+        while RecordCount > 0 do begin
+            Delete;
+        end;
+    end;
 end;
 
 procedure TfrmSource.DeleteSourceClick(Sender: TObject);

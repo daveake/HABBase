@@ -48,7 +48,6 @@ inherited frmSource: TfrmSource
         ParentBackground = False
         ParentFont = False
         TabOrder = 0
-        ExplicitWidth = 277
         object lblTitle: TLabel
           AlignWithMargins = True
           Left = 3
@@ -59,8 +58,6 @@ inherited frmSource: TfrmSource
           Align = alClient
           Alignment = taCenter
           Caption = 'Source Code'
-          ExplicitLeft = 72
-          ExplicitTop = 12
           ExplicitWidth = 89
           ExplicitHeight = 19
         end
@@ -83,8 +80,6 @@ inherited frmSource: TfrmSource
           ParentFont = False
           TabOrder = 0
           OnClick = btnDownClick
-          ExplicitLeft = 286
-          ExplicitHeight = 35
         end
         object btnUp: TButton
           AlignWithMargins = True
@@ -105,8 +100,6 @@ inherited frmSource: TfrmSource
           ParentFont = False
           TabOrder = 1
           OnClick = btnUpClick
-          ExplicitLeft = 317
-          ExplicitHeight = 35
         end
         object btnSettings: TButton
           AlignWithMargins = True
@@ -121,8 +114,6 @@ inherited frmSource: TfrmSource
           Caption = '...'
           TabOrder = 2
           OnClick = btnSettingsClick
-          ExplicitLeft = 348
-          ExplicitHeight = 35
         end
       end
     end
@@ -131,7 +122,7 @@ inherited frmSource: TfrmSource
       Top = 45
       Width = 382
       Height = 304
-      ActivePage = tabStatus
+      ActivePage = tabHistory
       Align = alClient
       TabOrder = 1
       object tabStatus: TTabSheet
@@ -162,6 +153,7 @@ inherited frmSource: TfrmSource
           FixedCols = 0
           RowCount = 2
           FixedRows = 1
+          PopupMenu = PopupMenu1
           ScrollBars = ssBoth
           TabOrder = 0
           GridLineColor = 13948116
@@ -716,6 +708,14 @@ inherited frmSource: TfrmSource
     object mnuAddNewSource: TMenuItem
       Caption = 'Add New Source'
       OnClick = mnuAddNewSourceClick
+    end
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 248
+    Top = 184
+    object ClearHistory1: TMenuItem
+      Caption = 'Clear History'
+      OnClick = ClearHistory1Click
     end
   end
 end
