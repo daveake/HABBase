@@ -4,14 +4,14 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Normal, Vcl.StdCtrls, Vcl.ExtCtrls, BaseTypes,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Normal, Vcl.StdCtrls, Vcl.ExtCtrls, BaseTypes, SSDV,
   AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid, AdvSmoothStatusIndicator, AdvGDIP,
   Data.FMTBcd, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, AdvSmoothButton, AdvPanel,
-  Miscellaneous, Source, SourceForm, Vcl.Menus, Habitat, SocketSource, UDPSource,
-  GatewaySource, SerialSource, TCPSettings, UDPSettings; // HabitatSource, UDPSource, SerialSource, BluetoothSource,
+  FireDAC.Comp.Client, AdvSmoothButton, AdvPanel, Miscellaneous, Vcl.Menus,
+  Source, SourceForm, Habitat, HABLink, SocketSource, UDPSource,
+  GatewaySource, SerialSource, TCPSettings, UDPSettings;
 
 
 type
@@ -44,6 +44,8 @@ type
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
     HabitatUploader: THabitatThread;
+    HabLinkUploader: THABLinkThread;
+    SSDVUploader: TSSDVThread;
     procedure ShowSourceStatus(SourceIndex: Integer);
     procedure LoadSource(SourceIndex: Integer);
     procedure ReloadSourceSettings(SourceIndex: Integer);
@@ -52,6 +54,7 @@ type
     function ShowSettingsForm(SourceIndex: Integer): Boolean;
     function FindFreeSource: Integer;
     procedure HabitatStatusCallback(SourceID: Integer; Active, OK: Boolean);
+    procedure HabLinkStatusCallback(SourceID: Integer; Active, OK: Boolean);
     function NewPosition(SourceIndex: Integer; Position: THABPosition): Boolean;
     procedure AddStatusToLog(SourceIndex: Integer);
   public
@@ -64,6 +67,7 @@ type
     procedure DeleteSource(SourceIndex: Integer);
     function SourceIsEnabled(SourceIndex: Integer): Boolean;
     procedure EnableSource(SourceIndex: Integer; EnableSource: Boolean);
+    procedure SendUplink(SourceIndex: Integer; When: TUplinkWhen; WhenValue, Channel: Integer; Prefix, Msg, Password: String);
   end;
 
 var
@@ -73,7 +77,7 @@ implementation
 
 {$R *.dfm}
 
-uses Data, Logtail, Main, ToolLog, Map, SettingsForm, NewSource, Payloads, Misc,
+uses Data, Logtail, Main, Map, SettingsForm, NewSource, Payloads, Misc,
      LogtailSettings, GatewaySettings, LoRaSerialSettings,
      LoRaSerialSource, LoRaGatewaySource;
 
@@ -86,6 +90,14 @@ begin
     // Habitat uploader
     HabitatUploader := THabitatThread.Create(HabitatStatusCallback);
 
+    // SSDV Uploader
+    SSDVUploader := TSSDVThread.Create(nil);
+
+    // HabLink uploader
+    if ParamCount > 1 then begin
+        HabLinkUploader := THABLinkThread.Create(HabLinkStatusCallback);
+        HabLinkUploader.SetListener('HAB Base', 'V1.2', DataModule1.tblSettings.FieldByName('Callsign').AsString);
+    end;
 
     with DataModule1.tblSources do begin
         First;
@@ -281,6 +293,11 @@ begin
         end;
     end;
 
+    if ParamCount > 1 then begin
+        HabLinkUploader.SendTelemetry(Position.Line);
+    end;
+
+
     ShowSourceStatus(SourceIndex);
 
     // Add to source history
@@ -394,7 +411,7 @@ end;
 
 function TfrmSources.StorePosition(SourceIndex: Integer; Connected: Boolean; Line: String; Position: THABPosition): Boolean;
 var
-    Status: String;
+    Status, Callsign: String;
     MyBookmark: TBookmark;
 begin
     Result := False;
@@ -441,22 +458,18 @@ begin
                 GotoBookmark(MyBookmark);
             end;
         end;
-
-        if (frmToolLog <> nil) and (not Position.InUse) then begin
-            frmToolLog.AddToLog('Source ' + HABSources[SourceIndex].Code + ': ' + Status);
-        end;
     end;
 
 
     // SSDV Packet
-//    if Position.IsSSDV then begin
-//        if GetSettingBoolean('LoRaSerial', 'SSDV', False) then begin
-//            Callsign := GetSettingString('LoRaSerial', 'Callsign', '');
-//            if Callsign <> '' then begin
-//                HabitatUploader.SaveSSDVToHabitat(Position.Line, Callsign);
-//            end;
-//        end;
-//    end;
+    if Position.IsSSDV then begin
+        if GetSettingBoolean('LoRaSerial', 'SSDV', False) then begin
+            Callsign := GetSettingString('LoRaSerial', 'Callsign', '');
+            if Callsign <> '' then begin
+                SSDVUploader.SaveSSDVToHabitat(Position.Line, Callsign);
+            end;
+        end;
+    end;
 
     if Position.HasCurrentRSSI then begin
         HABSources[SourceIndex].SourceForm.ShowCurrentRSSI(Position.Channel, Position.CurrentRSSI);
@@ -487,8 +500,12 @@ begin
         end;
     end;
 
-    if Position.CurrentFrequency > 0.0 then begin
-        HABSources[SourceIndex].SourceForm.ShowFrequency(Position.Channel, Position.CurrentFrequency);
+    if Position.Device <> '' then begin
+        HABSources[SourceIndex].SourceForm.AddStatusToLog('Device = ' + Position.Device);
+    end;
+
+    if Position.Version <> '' then begin
+        HABSources[SourceIndex].SourceForm.AddStatusToLog('Version = ' + Position.Version);
     end;
 end;
 
@@ -563,6 +580,11 @@ begin
     // frmMain.UploadStatus(SourceID, Active, OK);
 end;
 
+procedure TfrmSources.HabLinkStatusCallback(SourceID: Integer; Active, OK: Boolean);
+begin
+    // frmMain.UploadStatus(SourceID, Active, OK);
+end;
+
 procedure TfrmSources.ModifySource(SourceIndex: Integer);
 begin
     if ShowSettingsForm(SourceIndex) then begin
@@ -603,5 +625,9 @@ begin
     end;
 end;
 
+procedure TfrmSources.SendUplink(SourceIndex: Integer; When: TUplinkWhen; WhenValue, Channel: Integer; Prefix, Msg, Password: String);
+begin
+    HABSources[SourceIndex].Source.SendUplink(When, WhenValue, Channel, Prefix, Msg, Password);
+end;
 
 end.

@@ -3,6 +3,14 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
+    inherited pnlTop: TPanel
+      inherited pnlTitle: TPanel
+        inherited lblTitle: TLabel
+          Width = 271
+          Height = 23
+        end
+      end
+    end
     inherited PageControl1: TPageControl
       ActivePage = tabSignal
       object tabSignal: TTabSheet [1]
@@ -66,32 +74,32 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             272)
           FullHeight = 337
           object Label9: TLabel
-            Left = 35
-            Top = 47
+            Left = 32
+            Top = 39
             Width = 67
             Height = 13
             Alignment = taRightJustify
             Caption = 'Current RSSI:'
           end
           object Label1: TLabel
-            Left = 40
-            Top = 74
+            Left = 37
+            Top = 66
             Width = 62
             Height = 13
             Alignment = taRightJustify
             Caption = 'Packet RSSI:'
           end
           object Label2: TLabel
-            Left = 209
-            Top = 74
+            Left = 206
+            Top = 61
             Width = 57
             Height = 13
             Alignment = taRightJustify
             Caption = 'Freq. Error:'
           end
           object Label3: TLabel
-            Left = 186
-            Top = 15
+            Left = 183
+            Top = 11
             Width = 20
             Height = 13
             Alignment = taRightJustify
@@ -180,8 +188,8 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             TMSStyle = 8
           end
           object edtCurrentRSSI: TEdit
-            Left = 111
-            Top = 44
+            Left = 108
+            Top = 36
             Width = 69
             Height = 21
             Alignment = taCenter
@@ -189,8 +197,8 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             TabOrder = 2
           end
           object edtPacketRSSI: TEdit
-            Left = 111
-            Top = 71
+            Left = 108
+            Top = 63
             Width = 69
             Height = 21
             Alignment = taCenter
@@ -198,10 +206,10 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             TabOrder = 3
           end
           object AdvGauge1: TAdvGauge
-            Left = 8
-            Top = 104
+            Left = 5
+            Top = 123
             Width = 353
-            Height = 161
+            Height = 143
             Anchors = [akLeft, akTop, akRight, akBottom]
             ArcColor = clRed
             ArcWidth = 30
@@ -233,8 +241,8 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             Version = '1.2.1.0'
           end
           object edtFrequencyError: TEdit
-            Left = 272
-            Top = 71
+            Left = 269
+            Top = 58
             Width = 69
             Height = 21
             Alignment = taCenter
@@ -242,8 +250,8 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             TabOrder = 5
           end
           object VrMediaButton1: TVrMediaButton
-            Left = 212
-            Top = 8
+            Left = 209
+            Top = 4
             Width = 49
             Height = 26
             ButtonType = btNext
@@ -251,8 +259,8 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             OnClick = VrMediaButton1Click
           end
           object VrMediaButton2: TVrMediaButton
-            Left = 8
-            Top = 8
+            Left = 5
+            Top = 4
             Width = 49
             Height = 26
             ButtonType = btBack
@@ -260,8 +268,8 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             OnClick = VrMediaButton2Click
           end
           object VrMediaButton3: TVrMediaButton
-            Left = 56
-            Top = 8
+            Left = 53
+            Top = 4
             Width = 49
             Height = 26
             ButtonType = btPrev
@@ -269,8 +277,8 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             OnClick = VrMediaButton3Click
           end
           object VrMediaButton4: TVrMediaButton
-            Left = 261
-            Top = 8
+            Left = 258
+            Top = 4
             Width = 49
             Height = 26
             ButtonType = btStep
@@ -278,17 +286,17 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             OnClick = VrMediaButton4Click
           end
           object edtFrequency: TEdit
-            Left = 111
-            Top = 8
+            Left = 108
+            Top = 4
             Width = 69
             Height = 21
             Alignment = taCenter
-            ReadOnly = True
             TabOrder = 10
+            OnExit = edtFrequencyExit
           end
           object chkAFC: TAdvOfficeCheckBox
             Left = 236
-            Top = 40
+            Top = 36
             Width = 49
             Height = 20
             TabOrder = 11
@@ -297,16 +305,145 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             ReturnIsTab = False
             Version = '1.7.0.2'
           end
+          object ProgressBar1: TProgressBar
+            Left = 5
+            Top = 90
+            Width = 240
+            Height = 27
+            Max = 21
+            BarColor = clNavy
+            TabOrder = 12
+          end
+          object Button2: TButton
+            Left = 256
+            Top = 90
+            Width = 102
+            Height = 27
+            Caption = 'Search +/- 10kHz'
+            TabOrder = 13
+            OnClick = Button2Click
+          end
+        end
+      end
+      inherited tabUplink: TTabSheet
+        TabVisible = True
+        ExplicitLeft = 4
+        inherited lblUploadPayload: TLabel
+          Left = 42
+          Top = 10
+          ExplicitLeft = 42
+          ExplicitTop = 10
+        end
+        inherited lblUploadType: TLabel
+          Left = 26
+          Top = 95
+          ExplicitLeft = 26
+          ExplicitTop = 95
+        end
+        object Label4: TLabel [2]
+          Left = 69
+          Top = 44
+          Width = 50
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'Password:'
+        end
+        object lblWhenType: TLabel [3]
+          Left = 45
+          Top = 168
+          Width = 74
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'When To Send:'
+        end
+        object lblWhenSeconds: TLabel [4]
+          Left = 10
+          Top = 208
+          Width = 112
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'Seconds after minute@'
+          Visible = False
+        end
+        inherited edtUploadPayload: TEdit
+          Top = 7
+          ExplicitTop = 7
+        end
+        inherited btnSendUpload: TButton
+          Top = 242
+          ExplicitTop = 242
+        end
+        inherited PageControl2: TPageControl
+          Top = 76
+          ActivePage = tabCutdown
+          TabOrder = 3
+          ExplicitTop = 76
+          inherited tabCutdown: TTabSheet
+            ExplicitWidth = 229
+          end
+          inherited tabOutput: TTabSheet
+            ExplicitWidth = 229
+          end
+          inherited tabServo: TTabSheet
+            ExplicitWidth = 229
+          end
+          inherited tabScript: TTabSheet
+            ExplicitTop = 32
+          end
+        end
+        object edtPassword: TEdit
+          Left = 128
+          Top = 41
+          Width = 121
+          Height = 21
+          TabOrder = 2
+          OnKeyPress = edtUploadPayloadKeyPress
+        end
+        object cmbUploadWhen: TComboBox
+          Left = 128
+          Top = 165
+          Width = 121
+          Height = 21
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 4
+          Text = 'Now'
+          OnCloseUp = cmbUploadWhenCloseUp
+          Items.Strings = (
+            'Now'
+            'At seconds'
+            'After Rx')
+        end
+        object edtWhenSeconds: TEdit
+          Left = 128
+          Top = 204
+          Width = 121
+          Height = 21
+          TabOrder = 5
+          Text = '5'
+          Visible = False
+          OnKeyPress = edtUploadPayloadKeyPress
         end
       end
     end
   end
   inherited tblPositions: TFDMemTable
     Left = 264
-    Top = 276
+    Top = 248
   end
   inherited srcPositions: TDataSource
     Left = 204
     Top = 248
+  end
+  inherited PopupMenu1: TPopupMenu
+    Left = 336
+    Top = 224
+  end
+  object tmrSearch: TTimer
+    Enabled = False
+    Interval = 5000
+    OnTimer = tmrSearchTimer
+    Left = 328
+    Top = 79
   end
 end

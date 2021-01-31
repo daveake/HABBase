@@ -230,6 +230,7 @@ object frmSystemSettings: TfrmSystemSettings
       DataSource = DataModule1.srcSettings
       TabOrder = 3
       OnChange = DBEdit1Change
+      OnKeyPress = DBEdit2KeyPress
     end
     object DBEdit3: TDBEdit
       Left = 108
@@ -240,6 +241,7 @@ object frmSystemSettings: TfrmSystemSettings
       DataSource = DataModule1.srcSettings
       TabOrder = 4
       OnChange = DBEdit1Change
+      OnKeyPress = DBEdit2KeyPress
     end
     object DBEdit4: TDBEdit
       Left = 108

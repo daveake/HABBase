@@ -54,7 +54,7 @@ implementation
 
 {$R *.dfm}
 
-uses Main, Data, ToolLog, Map, BaseTypes;
+uses Main, Data, Map, BaseTypes;
 
 function TfrmPayloads.NewPosition(Position: THABPosition; SourceCode, SourceDescription: String): Boolean;
 var
@@ -65,11 +65,6 @@ begin
     DataModule1.AddPayloadToFullTable(Position);
 
     if frmMain.PayloadInWhiteList(Position) then begin
-        if DataModule1.AddPayloadToLiveTable(Position) and (frmToolLog <> nil) then begin
-            // New payload
-            frmToolLog.AddToLog('Added Payload ' + Position.PayloadID + ', Rx by ' + SourceCode + ' (' + SourceDescription + ')');
-        end;
-
         PayloadIndex := AddOrUpdatePayloadInOurList(Position, SourceCode, PositionIsNew);
 
         if PayloadIndex > 0 then begin
@@ -267,8 +262,6 @@ begin
             if frmMain.PayloadInWhiteList(Position) then begin
                 if DataModule1.AddPayloadToLiveTable(Position) then begin
                     // New payload
-                    frmToolLog.AddToLog('Added Payload ' + Position.PayloadID + ', from history');
-
                     PayloadIndex := AddOrUpdatePayloadInOurList(Position, '', PositionIsNew);
 
                     if PayloadIndex > 0 then begin

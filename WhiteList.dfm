@@ -1,5 +1,6 @@
 inherited frmWhiteList: TfrmWhiteList
   Caption = 'Balloon Filter - Which Balloons To Show'
+  OnActivate = FormActivate
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
@@ -692,5 +693,12 @@ inherited frmWhiteList: TfrmWhiteList
       TabOrder = 6
       OnChange = DBEdit1Change
     end
+  end
+  object tmrInit: TTimer
+    Enabled = False
+    Interval = 10
+    OnTimer = tmrInitTimer
+    Left = 560
+    Top = 48
   end
 end

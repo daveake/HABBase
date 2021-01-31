@@ -53,7 +53,7 @@ implementation
 uses Data,
      // Tools
      // ToolWhiteList,
-     ToolLog, ToolSettings,
+     ToolSettings,
      // Main Forms
      Map, Payloads,
      // Sources

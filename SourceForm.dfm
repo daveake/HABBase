@@ -122,7 +122,7 @@ inherited frmSource: TfrmSource
       Top = 45
       Width = 382
       Height = 304
-      ActivePage = tabHistory
+      ActivePage = tabStatus
       Align = alClient
       TabOrder = 1
       object tabStatus: TTabSheet
@@ -612,6 +612,246 @@ inherited frmSource: TfrmSource
             47)
         end
       end
+      object tabUplink: TTabSheet
+        Caption = 'Uplink'
+        ImageIndex = 2
+        TabVisible = False
+        object lblUploadPayload: TLabel
+          Left = 34
+          Top = 6
+          Width = 77
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'Target Payload:'
+        end
+        object lblUploadType: TLabel
+          Left = 18
+          Top = 84
+          Width = 93
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'Command To Send:'
+        end
+        object edtUploadPayload: TEdit
+          Left = 128
+          Top = 3
+          Width = 121
+          Height = 21
+          TabOrder = 0
+          OnKeyPress = edtUploadPayloadKeyPress
+        end
+        object btnSendUpload: TButton
+          Left = 128
+          Top = 248
+          Width = 121
+          Height = 25
+          Caption = 'SEND'
+          Enabled = False
+          TabOrder = 1
+          OnClick = btnSendUploadClick
+        end
+        object PageControl2: TPageControl
+          Left = 128
+          Top = 84
+          Width = 237
+          Height = 77
+          ActivePage = tabScript
+          TabOrder = 2
+          object tabCutdown: TTabSheet
+            Caption = 'Cutdown'
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 217
+            ExplicitHeight = 0
+            object lblCutdownPeriod: TLabel
+              Left = 109
+              Top = 7
+              Width = 50
+              Height = 13
+              Alignment = taRightJustify
+              Caption = 'Period (s):'
+            end
+            object Label8: TLabel
+              Left = 118
+              Top = 29
+              Width = 41
+              Height = 13
+              Alignment = taRightJustify
+              Caption = 'Altitude:'
+            end
+            object edtCutdownPeriod: TEdit
+              Left = 165
+              Top = 3
+              Width = 52
+              Height = 21
+              TabOrder = 0
+              Text = '5'
+              OnKeyPress = edtUploadPayloadKeyPress
+            end
+            object chkCutdownNow: TRadioButton
+              Left = 8
+              Top = 4
+              Width = 95
+              Height = 17
+              Caption = 'Cutdown Now'
+              Checked = True
+              TabOrder = 1
+              TabStop = True
+            end
+            object chkCutdownAltitude: TRadioButton
+              Left = 8
+              Top = 27
+              Width = 81
+              Height = 17
+              Caption = 'At Altitude'
+              TabOrder = 2
+            end
+            object edtAltitude: TEdit
+              Left = 165
+              Top = 25
+              Width = 52
+              Height = 21
+              TabOrder = 3
+              Text = '30000'
+              OnKeyPress = edtUploadPayloadKeyPress
+            end
+          end
+          object tabOutput: TTabSheet
+            Caption = 'Output'
+            ImageIndex = 1
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 217
+            ExplicitHeight = 0
+            object lblOutputPin: TLabel
+              Left = 13
+              Top = 16
+              Width = 18
+              Height = 13
+              Alignment = taRightJustify
+              Caption = 'Pin:'
+            end
+            object lblOutputPeriod: TLabel
+              Left = 85
+              Top = 16
+              Width = 50
+              Height = 13
+              Alignment = taRightJustify
+              Caption = 'Period (s):'
+            end
+            object edtPin: TEdit
+              Left = 37
+              Top = 12
+              Width = 28
+              Height = 21
+              TabOrder = 0
+              OnKeyPress = edtUploadPayloadKeyPress
+            end
+            object edtPinPeriod: TEdit
+              Left = 141
+              Top = 12
+              Width = 52
+              Height = 21
+              TabOrder = 1
+              Text = '5'
+              OnKeyPress = edtUploadPayloadKeyPress
+            end
+          end
+          object tabServo: TTabSheet
+            Caption = 'Servo'
+            ImageIndex = 2
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 217
+            ExplicitHeight = 0
+            object lblServoPin: TLabel
+              Left = 5
+              Top = 20
+              Width = 18
+              Height = 13
+              Alignment = taRightJustify
+              Caption = 'Pin:'
+            end
+            object lblServoPeriod: TLabel
+              Left = 69
+              Top = 20
+              Width = 50
+              Height = 13
+              Alignment = taRightJustify
+              Caption = 'Period (s):'
+            end
+            object lblServoPosn: TLabel
+              Left = 165
+              Top = 20
+              Width = 27
+              Height = 13
+              Alignment = taRightJustify
+              Caption = 'Posn:'
+            end
+            object edtServoPin: TEdit
+              Left = 29
+              Top = 16
+              Width = 28
+              Height = 21
+              TabOrder = 0
+              OnKeyPress = edtUploadPayloadKeyPress
+            end
+            object edtServoPeriod: TEdit
+              Left = 125
+              Top = 16
+              Width = 28
+              Height = 21
+              TabOrder = 1
+              Text = '5'
+              OnKeyPress = edtUploadPayloadKeyPress
+            end
+            object edtServoPosition: TEdit
+              Left = 198
+              Top = 16
+              Width = 28
+              Height = 21
+              TabOrder = 2
+              OnKeyPress = edtUploadPayloadKeyPress
+            end
+          end
+          object tabScript: TTabSheet
+            Caption = 'Script'
+            ImageIndex = 3
+            object lblScriptName: TLabel
+              Left = 4
+              Top = 20
+              Width = 31
+              Height = 13
+              Alignment = taRightJustify
+              Caption = 'Script:'
+            end
+            object lblScriptParameters: TLabel
+              Left = 120
+              Top = 20
+              Width = 39
+              Height = 13
+              Alignment = taRightJustify
+              Caption = 'Params:'
+            end
+            object edtScriptName: TEdit
+              Left = 41
+              Top = 16
+              Width = 68
+              Height = 21
+              TabOrder = 0
+              OnKeyPress = edtUploadPayloadKeyPress
+            end
+            object edtScriptParameters: TEdit
+              Left = 165
+              Top = 16
+              Width = 52
+              Height = 21
+              TabOrder = 1
+              OnKeyPress = edtUploadPayloadKeyPress
+            end
+          end
+        end
+      end
     end
   end
   object tblPositions: TFDMemTable
@@ -690,8 +930,8 @@ inherited frmSource: TfrmSource
     Top = 84
   end
   object menuSource: TPopupMenu
-    Left = 97
-    Top = 200
+    Left = 313
+    Top = 252
     object EnableSource: TMenuItem
       AutoCheck = True
       Caption = 'Enabled'
@@ -711,8 +951,8 @@ inherited frmSource: TfrmSource
     end
   end
   object PopupMenu1: TPopupMenu
-    Left = 248
-    Top = 184
+    Left = 332
+    Top = 304
     object ClearHistory1: TMenuItem
       Caption = 'Clear History'
       OnClick = ClearHistory1Click

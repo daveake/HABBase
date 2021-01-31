@@ -15,7 +15,6 @@ uses
   Normal in 'Normal.pas' {frmNormal},
   Tool in 'Tool.pas' {frmTool},
   ToolWhiteList in 'ToolWhiteList.pas' {frmToolWhiteList},
-  ToolLog in 'ToolLog.pas' {frmToolLog},
   WhiteList in 'WhiteList.pas' {frmWhiteList},
   Map in 'Map.pas' {frmMap},
   Payloads in 'Payloads.pas' {frmPayloads},
@@ -36,7 +35,9 @@ uses
   UDPSettings in 'UDPSettings.pas' {frmUDPSettings},
   TCPSettings in 'TCPSettings.pas' {frmTCPSettings},
   LoRaSerialSource in 'LoRaSerialSource.pas' {frmLoRaSerialSource},
-  ToolSettings in 'ToolSettings.pas' {frmToolSettings};
+  ToolSettings in 'ToolSettings.pas' {frmToolSettings},
+  SSDV in '..\HABRx\SSDV.pas',
+  HABLink in '..\HABRx\HABLink.pas';
 
 {$R *.res}
 
@@ -44,6 +45,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TfrmToolSettings, frmToolSettings);
   Application.Run;
 end.

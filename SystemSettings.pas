@@ -30,6 +30,7 @@ type
     procedure btnCancelClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
     procedure DBEdit1Change(Sender: TObject);
+    procedure DBEdit2KeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
     Latitude, Longitude: Double;
@@ -65,6 +66,13 @@ end;
 procedure TfrmSystemSettings.DBEdit1Change(Sender: TObject);
 begin
     btnSave.Enabled := True;
+end;
+
+procedure TfrmSystemSettings.DBEdit2KeyPress(Sender: TObject; var Key: Char);
+begin
+    if (Key = '.') and (FormatSettings.DecimalSeparator <> '.') then begin
+        Key := FormatSettings.DecimalSeparator;
+    end;
 end;
 
 procedure TfrmSystemSettings.FormCreate(Sender: TObject);

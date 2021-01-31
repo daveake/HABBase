@@ -9,6 +9,7 @@ inherited frmGatewaySettings: TfrmGatewaySettings
   inherited pnlCommon: TAdvPanel
     Width = 664
     Height = 177
+    ExplicitWidth = 664
     ExplicitHeight = 177
     FullHeight = 337
     object Label1: TLabel [2]
@@ -68,13 +69,14 @@ inherited frmGatewaySettings: TfrmGatewaySettings
     inherited btnSave: TAdvSmoothButton
       Left = 478
       Top = 124
-      ExplicitLeft = 455
+      ExplicitLeft = 478
       ExplicitTop = 124
       TMSStyle = 8
     end
     inherited btnCancel: TAdvSmoothButton
       Left = 564
       Top = 124
+      ExplicitLeft = 564
       ExplicitTop = 124
       TMSStyle = 8
     end

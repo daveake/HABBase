@@ -123,7 +123,7 @@ inherited frmPayload: TfrmPayload
       Top = 44
       Width = 353
       Height = 306
-      ActivePage = TabSheet1
+      ActivePage = TabSheet3
       Align = alClient
       MultiLine = True
       TabOrder = 1

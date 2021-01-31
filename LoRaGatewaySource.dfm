@@ -3,6 +3,14 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
+    inherited pnlTop: TPanel
+      inherited pnlTitle: TPanel
+        inherited lblTitle: TLabel
+          Width = 271
+          Height = 23
+        end
+      end
+    end
     inherited PageControl1: TPageControl
       ActivePage = tabSignal
       object tabSignal: TTabSheet [1]
@@ -66,32 +74,32 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             272)
           FullHeight = 337
           object Label9: TLabel
-            Left = 35
-            Top = 47
+            Left = 32
+            Top = 42
             Width = 67
             Height = 13
             Alignment = taRightJustify
             Caption = 'Current RSSI:'
           end
           object Label1: TLabel
-            Left = 40
-            Top = 74
+            Left = 37
+            Top = 69
             Width = 62
             Height = 13
             Alignment = taRightJustify
             Caption = 'Packet RSSI:'
           end
           object Label2: TLabel
-            Left = 209
-            Top = 74
+            Left = 206
+            Top = 69
             Width = 57
             Height = 13
             Alignment = taRightJustify
             Caption = 'Freq. Error:'
           end
           object Label3: TLabel
-            Left = 186
-            Top = 15
+            Left = 183
+            Top = 11
             Width = 20
             Height = 13
             Alignment = taRightJustify
@@ -180,8 +188,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             TMSStyle = 8
           end
           object edtCurrentRSSI0: TEdit
-            Left = 111
-            Top = 44
+            Left = 108
+            Top = 39
             Width = 69
             Height = 21
             Alignment = taCenter
@@ -189,8 +197,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             TabOrder = 2
           end
           object edtPacketRSSI0: TEdit
-            Left = 111
-            Top = 71
+            Left = 108
+            Top = 66
             Width = 69
             Height = 21
             Alignment = taCenter
@@ -198,10 +206,10 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             TabOrder = 3
           end
           object AdvGauge0: TAdvGauge
-            Left = 8
-            Top = 104
+            Left = 5
+            Top = 128
             Width = 353
-            Height = 161
+            Height = 137
             Anchors = [akLeft, akTop, akRight, akBottom]
             ArcColor = clRed
             ArcWidth = 30
@@ -233,8 +241,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             Version = '1.2.1.0'
           end
           object edtFrequencyError0: TEdit
-            Left = 272
-            Top = 71
+            Left = 269
+            Top = 66
             Width = 69
             Height = 21
             Alignment = taCenter
@@ -242,8 +250,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             TabOrder = 5
           end
           object VrMediaButton1: TVrMediaButton
-            Left = 212
-            Top = 8
+            Left = 209
+            Top = 4
             Width = 49
             Height = 26
             ButtonType = btNext
@@ -251,8 +259,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             OnClick = VrMediaButton1Click
           end
           object VrMediaButton2: TVrMediaButton
-            Left = 8
-            Top = 8
+            Left = 5
+            Top = 4
             Width = 49
             Height = 26
             ButtonType = btBack
@@ -260,8 +268,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             OnClick = VrMediaButton2Click
           end
           object VrMediaButton3: TVrMediaButton
-            Left = 56
-            Top = 8
+            Left = 53
+            Top = 4
             Width = 49
             Height = 26
             ButtonType = btPrev
@@ -269,8 +277,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             OnClick = VrMediaButton3Click
           end
           object VrMediaButton4: TVrMediaButton
-            Left = 261
-            Top = 8
+            Left = 258
+            Top = 4
             Width = 49
             Height = 26
             ButtonType = btStep
@@ -278,17 +286,17 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             OnClick = VrMediaButton4Click
           end
           object edtFrequency0: TEdit
-            Left = 111
-            Top = 8
+            Left = 108
+            Top = 4
             Width = 69
             Height = 21
             Alignment = taCenter
-            ReadOnly = True
             TabOrder = 10
+            OnExit = edtFrequency0Exit
           end
           object chkAFC0: TAdvOfficeCheckBox
-            Left = 236
-            Top = 40
+            Left = 209
+            Top = 42
             Width = 49
             Height = 20
             TabOrder = 11
@@ -297,6 +305,24 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             Caption = 'AFC:'
             ReturnIsTab = False
             Version = '1.7.0.2'
+          end
+          object ProgressBar0: TProgressBar
+            Left = 9
+            Top = 94
+            Width = 240
+            Height = 27
+            Max = 21
+            BarColor = clNavy
+            TabOrder = 12
+          end
+          object btnSearch1: TButton
+            Left = 260
+            Top = 94
+            Width = 102
+            Height = 27
+            Caption = 'Search +/- 10kHz'
+            TabOrder = 13
+            OnClick = btnSearch1Click
           end
         end
       end
@@ -361,32 +387,32 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             272)
           FullHeight = 337
           object Label4: TLabel
-            Left = 35
-            Top = 47
+            Left = 32
+            Top = 39
             Width = 67
             Height = 13
             Alignment = taRightJustify
             Caption = 'Current RSSI:'
           end
           object Label5: TLabel
-            Left = 40
-            Top = 74
+            Left = 37
+            Top = 66
             Width = 62
             Height = 13
             Alignment = taRightJustify
             Caption = 'Packet RSSI:'
           end
           object Label6: TLabel
-            Left = 209
-            Top = 74
+            Left = 206
+            Top = 66
             Width = 57
             Height = 13
             Alignment = taRightJustify
             Caption = 'Freq. Error:'
           end
           object Label7: TLabel
-            Left = 186
-            Top = 15
+            Left = 183
+            Top = 11
             Width = 20
             Height = 13
             Alignment = taRightJustify
@@ -475,8 +501,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             TMSStyle = 8
           end
           object edtCurrentRSSI1: TEdit
-            Left = 111
-            Top = 44
+            Left = 108
+            Top = 36
             Width = 69
             Height = 21
             Alignment = taCenter
@@ -484,8 +510,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             TabOrder = 2
           end
           object edtPacketRSSI1: TEdit
-            Left = 111
-            Top = 71
+            Left = 108
+            Top = 63
             Width = 69
             Height = 21
             Alignment = taCenter
@@ -493,10 +519,10 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             TabOrder = 3
           end
           object AdvGauge1: TAdvGauge
-            Left = 8
-            Top = 104
+            Left = 5
+            Top = 123
             Width = 353
-            Height = 161
+            Height = 142
             Anchors = [akLeft, akTop, akRight, akBottom]
             ArcColor = clRed
             ArcWidth = 30
@@ -528,8 +554,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             Version = '1.2.1.0'
           end
           object edtFrequencyError1: TEdit
-            Left = 272
-            Top = 71
+            Left = 269
+            Top = 63
             Width = 69
             Height = 21
             Alignment = taCenter
@@ -538,8 +564,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
           end
           object VrMediaButton5: TVrMediaButton
             Tag = 1
-            Left = 212
-            Top = 8
+            Left = 209
+            Top = 4
             Width = 49
             Height = 26
             ButtonType = btNext
@@ -548,8 +574,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
           end
           object VrMediaButton6: TVrMediaButton
             Tag = 1
-            Left = 8
-            Top = 8
+            Left = 5
+            Top = 4
             Width = 49
             Height = 26
             ButtonType = btBack
@@ -558,8 +584,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
           end
           object VrMediaButton7: TVrMediaButton
             Tag = 1
-            Left = 56
-            Top = 8
+            Left = 53
+            Top = 4
             Width = 49
             Height = 26
             ButtonType = btPrev
@@ -568,8 +594,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
           end
           object VrMediaButton8: TVrMediaButton
             Tag = 1
-            Left = 261
-            Top = 8
+            Left = 258
+            Top = 4
             Width = 49
             Height = 26
             ButtonType = btStep
@@ -577,18 +603,19 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             OnClick = VrMediaButton4Click
           end
           object edtFrequency1: TEdit
-            Left = 111
-            Top = 8
+            Tag = 1
+            Left = 108
+            Top = 4
             Width = 69
             Height = 21
             Alignment = taCenter
-            ReadOnly = True
             TabOrder = 10
+            OnExit = edtFrequency0Exit
           end
           object chkAFC1: TAdvOfficeCheckBox
             Tag = 1
-            Left = 236
-            Top = 40
+            Left = 233
+            Top = 36
             Width = 49
             Height = 20
             TabOrder = 11
@@ -598,16 +625,98 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             ReturnIsTab = False
             Version = '1.7.0.2'
           end
+          object ProgressBar1: TProgressBar
+            Left = 5
+            Top = 90
+            Width = 240
+            Height = 27
+            Max = 21
+            BarColor = clNavy
+            TabOrder = 12
+          end
+          object btnSearch2: TButton
+            Tag = 1
+            Left = 256
+            Top = 90
+            Width = 102
+            Height = 27
+            Caption = 'Search +/- 10kHz'
+            TabOrder = 13
+            OnClick = btnSearch1Click
+          end
+        end
+      end
+      inherited tabUplink: TTabSheet
+        TabVisible = True
+        ExplicitLeft = 4
+        inherited lblUploadPayload: TLabel
+          Top = 18
+          ExplicitTop = 18
+        end
+        inherited lblUploadType: TLabel
+          Top = 120
+          ExplicitTop = 120
+        end
+        object lblUploadChannel: TLabel [2]
+          Left = 41
+          Top = 56
+          Width = 70
+          Height = 13
+          Alignment = taRightJustify
+          Caption = 'LoRa Channel:'
+        end
+        inherited edtUploadPayload: TEdit
+          Top = 15
+          ExplicitTop = 15
+        end
+        inherited btnSendUpload: TButton
+          Top = 197
+          ExplicitTop = 197
+        end
+        object cmbUploadChannel: TComboBox [5]
+          Left = 128
+          Top = 53
+          Width = 121
+          Height = 21
+          Style = csDropDownList
+          ItemIndex = 0
+          TabOrder = 3
+          Text = '0'
+          OnCloseUp = cmbUploadCommandCloseUp
+          Items.Strings = (
+            '0'
+            '1')
+        end
+        inherited PageControl2: TPageControl
+          Top = 100
+          ActivePage = tabCutdown
+          ExplicitTop = 100
+          inherited tabCutdown: TTabSheet
+            ExplicitWidth = 229
+          end
+          inherited tabOutput: TTabSheet
+            ExplicitWidth = 229
+          end
+          inherited tabServo: TTabSheet
+            ExplicitWidth = 229
+          end
         end
       end
     end
   end
   inherited tblPositions: TFDMemTable
-    Left = 264
-    Top = 276
+    Left = 316
+    Top = 304
   end
   inherited srcPositions: TDataSource
     Left = 204
     Top = 248
+  end
+  object tmrSearch: TTimer
+    Enabled = False
+    Interval = 5000
+    OnTimer = tmrSearchTimer
+    Left = 328
+    Top = 79
   end
 end

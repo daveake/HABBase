@@ -23,6 +23,7 @@ type
     btnDelete: TAdvSmoothButton;
     btnSave: TAdvSmoothButton;
     btnCancel: TAdvSmoothButton;
+    tmrInit: TTimer;
     procedure btnAppendClick(Sender: TObject);
     procedure btnDeleteClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);
@@ -30,8 +31,11 @@ type
     procedure FormCreate(Sender: TObject);
     procedure DBCheckBox1Click(Sender: TObject);
     procedure DBEdit1Change(Sender: TObject);
+    procedure tmrInitTimer(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   private
     { Private declarations }
+    Loading: Boolean;
     procedure ShowEditing(Editing: Boolean);
   public
     { Public declarations }
@@ -80,18 +84,32 @@ begin
     ShowEditing(True);
 end;
 
+procedure TfrmWhiteList.FormActivate(Sender: TObject);
+begin
+    tmrInit.Enabled := True;
+end;
+
 procedure TfrmWhiteList.FormCreate(Sender: TObject);
 begin
-    ShowEditing(True);
+    Loading := True;
 end;
 
 procedure TfrmWhiteList.ShowEditing(Editing: Boolean);
 begin
+    Editing := Editing and not Loading;
+
     btnAppend.Enabled := not Editing;
     btnDelete.Enabled := not Editing;
     AdvSmoothButton1.Enabled := not Editing;
     btnSave.Enabled := Editing;
     btnCancel.Enabled := Editing;
+end;
+
+procedure TfrmWhiteList.tmrInitTimer(Sender: TObject);
+begin
+    Loading := False;
+    tmrInit.Enabled := False;
+    ShowEditing(False);
 end;
 
 end.

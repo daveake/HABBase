@@ -59,8 +59,6 @@ inherited frmSources: TfrmSources
         TabOrder = 0
         Version = '2.2.1.2'
         OnClick = btnAddSourceClick
-        ExplicitTop = 755
-        ExplicitWidth = 317
         TMSStyle = 8
       end
     end

@@ -39,26 +39,64 @@ type
     lblTitle: TLabel;
     PopupMenu1: TPopupMenu;
     ClearHistory1: TMenuItem;
+    tabUplink: TTabSheet;
+    lblUploadPayload: TLabel;
+    edtUploadPayload: TEdit;
+    lblUploadType: TLabel;
+    btnSendUpload: TButton;
+    PageControl2: TPageControl;
+    tabCutdown: TTabSheet;
+    tabOutput: TTabSheet;
+    lblOutputPin: TLabel;
+    edtPin: TEdit;
+    edtPinPeriod: TEdit;
+    lblOutputPeriod: TLabel;
+    tabServo: TTabSheet;
+    lblServoPin: TLabel;
+    edtServoPin: TEdit;
+    lblServoPeriod: TLabel;
+    edtServoPeriod: TEdit;
+    edtServoPosition: TEdit;
+    lblServoPosn: TLabel;
+    tabScript: TTabSheet;
+    lblScriptName: TLabel;
+    edtScriptName: TEdit;
+    lblScriptParameters: TLabel;
+    edtScriptParameters: TEdit;
+    lblCutdownPeriod: TLabel;
+    edtCutdownPeriod: TEdit;
+    chkCutdownNow: TRadioButton;
+    chkCutdownAltitude: TRadioButton;
+    Label8: TLabel;
+    edtAltitude: TEdit;
     procedure btnSettingsClick(Sender: TObject);
     procedure ModifySourceClick(Sender: TObject);
     procedure mnuAddNewSourceClick(Sender: TObject);
     procedure DeleteSourceClick(Sender: TObject);
-    procedure AddPosition(Position: THABPosition);
     procedure btnDownClick(Sender: TObject);
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure EnableSourceClick(Sender: TObject);
     procedure ClearHistory1Click(Sender: TObject);
+    procedure edtUploadPayloadKeyPress(Sender: TObject; var Key: Char);
+    procedure cmbUploadCommandCloseUp(Sender: TObject);
+    procedure btnSendUploadClick(Sender: TObject);
   private
     { Private declarations }
+    DisableCallsignUpdates: Boolean;
     procedure Down;
     procedure Up;
+  protected
+    function OKToEnableSendButton: Boolean; virtual;
+    procedure SendUploadCommand; virtual;
+    function BuildUplinkCommand: String;
   public
     { Public declarations }
     SourceIndex: Integer;
 //    SettingsID: Integer;
     Group: String;
     Enabled: Boolean;
+    procedure AddPosition(Position: THABPosition); virtual;
     procedure AddStatusToLog(Status: String);
     procedure ShowCurrentRSSI(Channel, CurrentRSSI: Integer); virtual;
     procedure ShowPacketRSSI(Channel, PacketRSSI: Integer); virtual;
@@ -78,6 +116,11 @@ uses SourcesForm;
 procedure TfrmSource.btnDownClick(Sender: TObject);
 begin
     Down;
+end;
+
+procedure TfrmSource.btnSendUploadClick(Sender: TObject);
+begin
+    SendUploadCommand;
 end;
 
 procedure TfrmSource.btnSettingsClick(Sender: TObject);
@@ -105,6 +148,11 @@ begin
     end;
 end;
 
+procedure TfrmSource.cmbUploadCommandCloseUp(Sender: TObject);
+begin
+    btnSendUpload.Enabled := OKToEnableSendButton;
+end;
+
 procedure TfrmSource.DeleteSourceClick(Sender: TObject);
 begin
     frmSources.DeleteSource(SourceIndex);
@@ -130,6 +178,13 @@ begin
     pnlMain.Height := 350;
     btnDown.Visible := False;
     btnUp.Visible := True;
+end;
+
+procedure TfrmSource.edtUploadPayloadKeyPress(Sender: TObject; var Key: Char);
+begin
+    DisableCallsignUpdates := True;
+
+    btnSendUpload.Enabled := OKToEnableSendButton;
 end;
 
 procedure TfrmSource.EnableSourceClick(Sender: TObject);
@@ -171,6 +226,11 @@ begin
             Last;
         end;
     end;
+
+    if not DisableCallsignUpdates then begin
+        edtUploadPayload.Text := Position.PayloadID;
+        btnSendUpload.Enabled := OKToEnableSendButton;
+    end;
 end;
 
 procedure TfrmSource.ShowCurrentRSSI(Channel, CurrentRSSI: Integer);
@@ -211,6 +271,39 @@ begin
 end;
 
 procedure TfrmSource.DoAFC(Channel: Integer; FrequencyError: Double);
+begin
+    // virtual
+end;
+
+function TfrmSource.OKToEnableSendButton: Boolean;
+begin
+    Result := (edtUploadPayload.Text <> '');    // and (cmbUploadCommand.ItemIndex >= 0);
+end;
+
+function TfrmSource.BuildUplinkCommand: String;
+begin
+    if PageControl2.ActivePage = tabCutdown then begin
+        Result := 'C';
+        if chkCutdownAltitude.Checked then begin
+            Result := Result + 'A' + IntToStr(StrToIntDef(edtAltitude.Text, 0));
+        end else begin
+            Result := Result + 'N' + IntToStr(StrToIntDef(edtCutdownPeriod.Text, 0));
+        end;
+    end else if PageControl2.ActivePage = tabOutput then begin
+        Result := 'P' + IntToStr(StrToIntDef(edtPin.Text, 0)) + ',' +
+                        IntToStr(StrToIntDef(edtPinPeriod.Text, 0))
+    end else if PageControl2.ActivePage = tabServo then begin
+        Result := 'S' + IntToStr(StrToIntDef(edtServoPin.Text, 0)) + ',' +
+                        IntToStr(StrToIntDef(edtServoPeriod.Text, 0)) + ',' +
+                        IntToStr(StrToIntDef(edtServoPosition.Text, 0));
+    end else begin
+        Result := 'R' + edtScriptName.Text + ',' + edtScriptParameters.Text;
+    end;
+
+    Result := edtUploadPayload.Text + '/' + Result;
+end;
+
+procedure TfrmSource.SendUploadCommand;
 begin
     // virtual
 end;

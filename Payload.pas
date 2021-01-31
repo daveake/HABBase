@@ -121,10 +121,10 @@ begin
             end;
             Items[8] := '   Distance: ' + FormatFloat('0.0', Distance) + ' km';
             Items[9] := '  Elevation: ' + FormatFloat('0.0', Elevation) + ' deg';
-            Items[10] := '    Sources: ' + Sources;
+            // Items[10] := '    Sources: ' + Sources;
             if ContainsPrediction then begin
-                Items[11] := '  Pred. Lat: ' + FormatFloat('0.0000', Latitude);
-                Items[12] := '  Pred. Lon: ' + FormatFloat('0.0000', Longitude);
+                Items[10] := '  Pred. Lat: ' + FormatFloat('0.0000', Latitude);
+                Items[11] := '  Pred. Lon: ' + FormatFloat('0.0000', Longitude);
             end;
         end;
 

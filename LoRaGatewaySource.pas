@@ -6,10 +6,10 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, SourceForm, AdvUtil, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
-  FireDAC.Phys.Intf, FireDAC.DApt.Intf, Vcl.Menus, Data.DB, Math,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, Vcl.Menus, Data.DB, Math, Miscellaneous,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, AdvObj, BaseGrid,
   AdvGrid, DBAdvGrid, Vcl.ComCtrls, Vcl.StdCtrls, Vcl.ExtCtrls, AdvSmoothButton,
-  AdvOfficeButtons, AdvPanel, AdvGauge, VrControls, VrNavigator;
+  AdvOfficeButtons, AdvPanel, AdvGauge, VrControls, VrNavigator, Source;
 
 type
   TfrmLoRaGatewaySource = class(TfrmSource)
@@ -49,19 +49,37 @@ type
     VrMediaButton8: TVrMediaButton;
     edtFrequency1: TEdit;
     chkAFC1: TAdvOfficeCheckBox;
+    lblUploadChannel: TLabel;
+    cmbUploadChannel: TComboBox;
+    ProgressBar1: TProgressBar;
+    btnSearch2: TButton;
+    ProgressBar0: TProgressBar;
+    btnSearch1: TButton;
+    tmrSearch: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure VrMediaButton1Click(Sender: TObject);
     procedure VrMediaButton4Click(Sender: TObject);
     procedure VrMediaButton3Click(Sender: TObject);
     procedure VrMediaButton2Click(Sender: TObject);
     procedure chkAFC0Click(Sender: TObject);
+    procedure edtFrequency0Exit(Sender: TObject);
+    procedure btnSearch1Click(Sender: TObject);
+    procedure tmrSearchTimer(Sender: TObject);
   private
     { Private declarations }
+    Searching: Boolean;
+    SearchCentreFrequency, SearchFrequencyError: Double;
+    SearchChannel, SearchPacketCount, SearchStep: Integer;
     procedure SetFrequency(Channel: Integer; Frequency: Double);
     procedure OffsetFrequency(Channel: Integer; Offset: Double);
     procedure SetAFC(Channel: Integer; Enabled: Boolean);
+    procedure NextSearch;
+    procedure StopSearch;
+  protected
+    procedure SendUploadCommand; override;
   public
     { Public declarations }
+    procedure AddPosition(Position: THABPosition); override;
     procedure ShowCurrentRSSI(Channel, CurrentRSSI: Integer); override;
     procedure ShowPacketRSSI(Channel, PacketRSSI: Integer); override;
     procedure ShowFrequencyError(Channel: Integer; FrequencyError: Double); override;
@@ -74,7 +92,22 @@ implementation
 
 {$R *.dfm}
 
-uses Miscellaneous;
+uses SourcesForm;
+
+procedure TfrmLoRaGatewaySource.btnSearch1Click(Sender: TObject);
+begin
+    SearchChannel := TButton(Sender).Tag;
+
+    if SearchChannel = 1 then begin
+        SearchCentreFrequency := MyStrToFloat(edtFrequency1.Text);
+    end else begin
+        SearchCentreFrequency := MyStrToFloat(edtFrequency0.Text);
+    end;
+
+    SearchStep := -6;
+    Searching := True;
+    NextSearch;
+end;
 
 procedure TfrmLoRaGatewaySource.chkAFC0Click(Sender: TObject);
 begin
@@ -110,18 +143,22 @@ end;
 procedure TfrmLoRaGatewaySource.ShowFrequencyError(Channel: Integer; FrequencyError: Double);
 begin
     if Channel = 0 then begin
-        edtFrequencyError0.Text := FormatFloat('0.0', FrequencyError) + ' kHz';
+        edtFrequencyError0.Text := MyFormatFloat('0.0', FrequencyError) + ' kHz';
     end else begin
-        edtFrequencyError1.Text := FormatFloat('0.0', FrequencyError) + ' kHz';
+        edtFrequencyError1.Text := MyFormatFloat('0.0', FrequencyError) + ' kHz';
+    end;
+
+    if Searching and (Channel = SearchChannel) then begin
+        SearchFrequencyError := FrequencyError;
     end;
 end;
 
 procedure TfrmLoRaGatewaySource.ShowFrequency(Channel: Integer; Frequency: Double);
 begin
     if Channel = 0 then begin
-        edtFrequency0.Text := FormatFloat('0.0000', Frequency);
+        edtFrequency0.Text := MyFormatFloat('0.0000', Frequency);
     end else begin
-        edtFrequency1.Text := FormatFloat('0.0000', Frequency);
+        edtFrequency1.Text := MyFormatFloat('0.0000', Frequency);
     end;
 end;
 
@@ -162,12 +199,14 @@ end;
 procedure TfrmLoRaGatewaySource.SetFrequency(Channel: Integer; Frequency: Double);
 begin
     if Channel = 0 then begin
-        edtFrequency0.Text := FormatFloat('0.0000', Frequency);
+        edtFrequency0.Text := MyFormatFloat('0.0000', Frequency);
         SetSettingString(Group, 'Frequency_0', edtFrequency0.Text);
     end else begin
-        edtFrequency1.Text := FormatFloat('0.0000', Frequency);
+        edtFrequency1.Text := MyFormatFloat('0.0000', Frequency);
         SetSettingString(Group, 'Frequency_1', edtFrequency1.Text);
     end;
+
+    AddStatusToLog('Set Ch' + Channel.ToString + ' to ' + MyFormatFloat('0.0000', Frequency));
 
     SetGroupChangedFlag(Group, True);
 end;
@@ -189,9 +228,9 @@ var
 begin
     try
         if Channel = 0 then begin
-            Frequency := StrToFloat(edtFrequency0.Text);
+            Frequency := MyStrToFloat(edtFrequency0.Text);
         end else begin
-            Frequency := StrToFloat(edtFrequency1.Text);
+            Frequency := MyStrToFloat(edtFrequency1.Text);
         end;
 
         SetFrequency(Channel, Frequency + Offset);
@@ -199,5 +238,81 @@ begin
 
     end;
 end;
+
+procedure TfrmLoRaGatewaySource.edtFrequency0Exit(Sender: TObject);
+begin
+    OffsetFrequency(TVrMediaButton(Sender).Tag, 0);
+end;
+
+procedure TfrmLoRaGatewaySource.SendUploadCommand;
+begin
+//    Command := 'send:' + cmbUploadChannel.Text + edtUploadPayload.Text + '/' + CommandCode + 'N' + edtCutdownPeriod.Text;
+
+//    frmSources.SendToSource(SourceIndex, Command);
+
+    frmSources.SendUplink(SourceIndex, uwNow, 0, cmbUploadChannel.ItemIndex+1, 'send:', BuildUplinkCommand, '');
+end;
+
+procedure TfrmLoRaGatewaySource.NextSearch;
+begin
+    Inc(SearchStep);
+
+    if SearchStep > 5 then begin
+        if SearchChannel = 1 then begin
+            ProgressBar1.Position := 0;
+            edtFrequency0Exit(edtFrequency1);
+        end else begin
+            ProgressBar1.Position := 0;
+            edtFrequency0Exit(edtFrequency0);
+        end;
+        Searching := False;
+    end else begin
+        ProgressBar1.Position := SearchStep + 6;
+
+        SetFrequency(SearchChannel, SearchCentreFrequency + SearchStep * 0.002);
+
+        SearchPacketCount := 0;
+        tmrSearch.Enabled := True;
+    end;
+end;
+
+procedure TfrmLoRaGatewaySource.StopSearch;
+begin
+    if SearchChannel = 1 then begin
+        edtFrequency1.Text := MyFormatFloat('0.000#', MyStrToFloat(edtFrequency1.Text) + SearchFrequencyError / 1000);
+        edtFrequency0Exit(edtFrequency1);
+    end else begin
+        edtFrequency0.Text := MyFormatFloat('0.000#', MyStrToFloat(edtFrequency0.Text) + SearchFrequencyError / 1000);
+        edtFrequency0Exit(edtFrequency0);
+    end;
+
+    ProgressBar0.Position := 0;
+    ProgressBar1.Position := 0;
+
+    // pnlSearchFrequency.Caption := '';
+
+    Searching := False;
+end;
+
+procedure TfrmLoRaGatewaySource.tmrSearchTimer(Sender: TObject);
+begin
+    tmrSearch.Enabled := False;
+
+    if SearchPacketCount > 1 then begin
+        StopSearch;
+    end else begin
+        NextSearch;
+    end;
+end;
+
+procedure TfrmLoRaGatewaySource.AddPosition(Position: THABPosition);
+begin
+    inherited;
+
+    if Searching and (Position.Channel = SearchChannel) then begin
+        Inc(SearchPacketCount);
+    end;
+end;
+
 
 end.

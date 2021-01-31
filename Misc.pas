@@ -2,8 +2,11 @@ unit Misc;
 
 interface
 
+uses SysUtils;
+
 function GetSetting(FieldName, Settings: String): String;
 function GetBooleanSetting(FieldName, Settings: String): Boolean;
+function MyStrToFloat(Value: String): Double;
 
 implementation
 
@@ -33,6 +36,19 @@ begin
     Temp := GetSetting(FieldName, Settings);
 
     Result := Pos('T', Temp) > 0;
+end;
+
+function MyStrToFloat(Value: String): Double;
+begin
+    if FormatSettings.DecimalSeparator <> '.' then begin
+        Value := StringReplace(Value, '.', FormatSettings.DecimalSeparator, []);
+    end;
+
+    try
+        Result := StrToFloat(Value);   // , LFormat);
+    except
+        Result := 0;
+    end;
 end;
 
 
