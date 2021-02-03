@@ -6,11 +6,11 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Normal, Vcl.StdCtrls, Vcl.ExtCtrls, BaseTypes, SSDV,
   AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid, AdvSmoothStatusIndicator, AdvGDIP,
-  Data.FMTBcd, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  Data.FMTBcd, Data.DB, FireDAC.Stan.Intf, FireDAC.Stan.Option, Math,
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, AdvSmoothButton, AdvPanel, Miscellaneous, Vcl.Menus,
-  Source, SourceForm, Habitat, HABLink, SocketSource, UDPSource,
+  Source, SourceForm, Habitat, HABLink, SocketSource, UDPSource, APRSSource,
   GatewaySource, SerialSource, TCPSettings, UDPSettings;
 
 
@@ -57,6 +57,7 @@ type
     procedure HabLinkStatusCallback(SourceID: Integer; Active, OK: Boolean);
     function NewPosition(SourceIndex: Integer; Position: THABPosition): Boolean;
     procedure AddStatusToLog(SourceIndex: Integer);
+    function APRSFilter: String;
   public
     { Public declarations }
     procedure LoadSources;
@@ -68,6 +69,7 @@ type
     function SourceIsEnabled(SourceIndex: Integer): Boolean;
     procedure EnableSource(SourceIndex: Integer; EnableSource: Boolean);
     procedure SendUplink(SourceIndex: Integer; When: TUplinkWhen; WhenValue, Channel: Integer; Prefix, Msg, Password: String);
+    procedure UpdateSourceFilters;
   end;
 
 var
@@ -96,7 +98,7 @@ begin
     // HabLink uploader
     if ParamCount > 1 then begin
         HabLinkUploader := THABLinkThread.Create(HabLinkStatusCallback);
-        HabLinkUploader.SetListener('HAB Base', 'V1.2', DataModule1.tblSettings.FieldByName('Callsign').AsString);
+        HabLinkUploader.SetListener('HAB Base', 'V1.3', DataModule1.tblSettings.FieldByName('Callsign').AsString);
     end;
 
     with DataModule1.tblSources do begin
@@ -169,6 +171,10 @@ begin
         end else if SourceType = stUDP then begin
             SourceForm := TfrmSource.Create(nil);
             Source := TUDPSource.Create(SourceIndex, Group, HABCallback);
+        end else if SourceType = stAPRS then begin
+            SourceForm := TfrmSource.Create(nil);
+            Source := TAPRSSource.Create(SourceIndex, Group, HABCallback);
+            Source.SetFilter(APRSFilter);
 //        end else if SourceTypeText = 'DLFLDigi' then begin
 //            SourceType := stDLFLDigi;
 //            Form := TfrmDLFLDigiSource.Create(nil, HABDB, HabitatThread, SourceIndex);
@@ -365,6 +371,7 @@ end;
 procedure TfrmSources.AddNewSource;
 var
     SourceIndex: Integer;
+    frmNewSource: TfrmNewSource;
 begin
     SourceIndex := FindFreeSource;
 
@@ -560,6 +567,7 @@ begin
         stSerial:   SettingsForm := TfrmLoRaSerialSettings.Create(nil);
         stTCP:      SettingsForm := TfrmTCPSettings.Create(nil);
         stUDP:      SettingsForm := TfrmUDPSettings.Create(nil);
+        stAPRS:     SettingsForm := TfrmTCPSettings.Create(nil);
         stHabitat:  SettingsForm := nil;
         else        SettingsForm := nil;
     end;
@@ -629,5 +637,49 @@ procedure TfrmSources.SendUplink(SourceIndex: Integer; When: TUplinkWhen; WhenVa
 begin
     HABSources[SourceIndex].Source.SendUplink(When, WhenValue, Channel, Prefix, Msg, Password);
 end;
+
+procedure TfrmSources.UpdateSourceFilters;
+var
+    i: Integer;
+begin
+    for i := Low(HABSources) to High(HABSources) do begin
+        if HABSources[i].InUse then begin
+            if HABSources[i].SourceType = stAPRS then begin
+                // Update APRS source filter
+
+                HABSources[i].Source.SetFilter(APRSFilter);
+            end;
+        end;
+    end;
+end;
+
+
+function TfrmSources.APRSFilter: String;
+var
+    Latitude, Longitude, Distance: Double;
+begin
+    // r/51.9/-2.5/50000
+
+    Latitude := DataModule1.tblSettings.FieldByName('Latitude').AsFloat;
+    Longitude := DataModule1.tblSettings.FieldByName('Longitude').AsFloat;
+
+    Distance := 0;
+    with DataModule1.tblWhiteList do begin
+        First;
+        while not EOF do begin
+            if FieldByName('Distance').AsFloat > Distance then begin
+                Distance := FieldByName('Distance').AsFloat;
+            end;
+
+            Next;
+        end;
+    end;
+
+    Result := ' r/' +
+              MyFormatFloat('0.00000', Latitude) + '/' +
+              MyFormatFloat('0.00000', Longitude) + '/' +
+              MyFormatFloat('0', Distance);
+end;
+
 
 end.

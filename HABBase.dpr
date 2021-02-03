@@ -37,7 +37,8 @@ uses
   LoRaSerialSource in 'LoRaSerialSource.pas' {frmLoRaSerialSource},
   ToolSettings in 'ToolSettings.pas' {frmToolSettings},
   SSDV in '..\HABRx\SSDV.pas',
-  HABLink in '..\HABRx\HABLink.pas';
+  HABLink in '..\HABRx\HABLink.pas',
+  APRSSource in '..\HABRx\APRSSource.pas';
 
 {$R *.res}
 

@@ -19,9 +19,6 @@ type
     { Public declarations }
   end;
 
-var
-  frmNewSource: TfrmNewSource;
-
 implementation
 
 {$R *.dfm}

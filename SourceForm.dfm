@@ -58,6 +58,7 @@ inherited frmSource: TfrmSource
           Align = alClient
           Alignment = taCenter
           Caption = 'Source Code'
+          Transparent = True
           ExplicitWidth = 89
           ExplicitHeight = 19
         end
@@ -659,10 +660,6 @@ inherited frmSource: TfrmSource
           TabOrder = 2
           object tabCutdown: TTabSheet
             Caption = 'Cutdown'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 217
-            ExplicitHeight = 0
             object lblCutdownPeriod: TLabel
               Left = 109
               Top = 7
@@ -719,10 +716,6 @@ inherited frmSource: TfrmSource
           object tabOutput: TTabSheet
             Caption = 'Output'
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 217
-            ExplicitHeight = 0
             object lblOutputPin: TLabel
               Left = 13
               Top = 16
@@ -760,10 +753,6 @@ inherited frmSource: TfrmSource
           object tabServo: TTabSheet
             Caption = 'Servo'
             ImageIndex = 2
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 217
-            ExplicitHeight = 0
             object lblServoPin: TLabel
               Left = 5
               Top = 20

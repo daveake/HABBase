@@ -3,7 +3,7 @@ unit BaseTypes;
 interface
 
 type
-    TSourceType = (stLogtail, stGateway, stSerial, stTCP, stUDP, stHabitat);
+    TSourceType = (stLogtail, stGateway, stSerial, stTCP, stUDP, stHabitat, stAPRS);
 
     TPayloadMask = record
         HAB:            Boolean;

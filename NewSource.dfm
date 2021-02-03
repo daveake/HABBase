@@ -34,7 +34,8 @@ object frmNewSource: TfrmNewSource
       'Lora Serial'
       'TCP (DL-FLDigi)'
       'UDP (HABDEC, Sonde)'
-      'Habitat')
+      'Habitat'
+      'APRS')
   end
   object btnOK: TAdvSmoothButton
     AlignWithMargins = True

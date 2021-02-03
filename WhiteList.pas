@@ -43,7 +43,7 @@ type
 
 implementation
 
-uses Main, Payloads;
+uses Main, Payloads, SourcesForm;
 
 {$R *.dfm}
 
@@ -71,6 +71,7 @@ begin
     DataModule1.tblWhiteList.Post;
     DataModule1.tblWhiteList.SaveToFile(ExtractFilePath(Application.ExeName) + 'whitelist.json');
     frmPayloads.UpdateActivePayloads;
+    frmSources.UpdateSourceFilters;
     ShowEditing(False);
 end;
 
