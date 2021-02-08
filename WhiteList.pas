@@ -24,6 +24,7 @@ type
     btnSave: TAdvSmoothButton;
     btnCancel: TAdvSmoothButton;
     tmrInit: TTimer;
+    Label3: TLabel;
     procedure btnAppendClick(Sender: TObject);
     procedure btnDeleteClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);

@@ -8,6 +8,9 @@ function GetSetting(FieldName, Settings: String): String;
 function GetBooleanSetting(FieldName, Settings: String): Boolean;
 function MyStrToFloat(Value: String): Double;
 
+const
+    MAX_PAYLOADS = 100;
+
 implementation
 
 function GetSetting(FieldName, Settings: String): String;

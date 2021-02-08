@@ -134,6 +134,7 @@ begin
     FullLine := Line;
 
     if Copy(Line,1,1) = '[' then begin
+        // log messages
         // One of the lines we're interested in
 
 // [2020-03-03 09:36:41,239] DEBUG habitat.parser MainThread: Selected payload_configuration 8c36ab528b16cb3adf00b7e07a228854 for 'RS_DFM-616153'
@@ -211,6 +212,7 @@ begin
             end;
         end;
     end else if Copy(Line,1,3) = '  "' then begin
+        // Field values
         GetString(Line, '"');
         Command := GetString(Line, '":');
 
@@ -222,10 +224,10 @@ begin
         end else if Command = 'altitude' then begin
             Position.Altitude := GetFloat(Line, ',');
         end else if Command = 'payload' then begin
-            GetString(Line, '"');
-            if GetString(Line, '"') = Position.PayloadID then begin
-                Result := True;
-            end;
+//            GetString(Line, '"');
+//            if GetString(Line, '"') = Position.PayloadID then begin
+//                Result := True;
+//            end;
         end else if Command = 'sentence_id' then begin
             Position.Counter := Round(GetFloat(Line, ','));
         end else if Command = 'satellites' then begin
@@ -239,6 +241,10 @@ begin
                                              StrToIntDef(Copy(Value, 4, 2), 0),
                                              StrToIntDef(Copy(Value, 7, 2), 0),
                                              0);
+        end;
+    end else if Copy(Line,1,1) = '}' then begin
+        if Position.PayloadID <> '' then begin
+            Result := True;
         end;
     end;
 end;

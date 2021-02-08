@@ -110,21 +110,21 @@ begin
             Items[0] := '  PayloadID: ' + PayloadID;
             Items[1] := '    Counter: ' + IntToStr(Counter);
             Items[2] := '  Timestamp: ' + FormatDateTime('hh:nn:ss', TimeStamp);
-            Items[3] := '   Latitude: ' + FormatFloat('0.0000', Latitude);
-            Items[4] := '  Longitude: ' + FormatFloat('0.0000', Longitude);
+            Items[3] := '   Latitude: ' + MyFormatFloat('0.0000', Latitude);
+            Items[4] := '  Longitude: ' + MyFormatFloat('0.0000', Longitude);
             Items[5] := '   Altitude: ' + FormatFloat('0', Altitude) + ' m';
             if HaveAscentRate then begin
-                Items[6] := 'Ascent Rate: ' + FormatFloat('0.0', AscentRate) + ' m/s';
+                Items[6] := 'Ascent Rate: ' + MyFormatFloat('0.0', AscentRate) + ' m/s';
             end;
             if (Satellites > 0) or (SatelliteFieldIndex > 0) then begin
                 Items[7] := ' Satellites: ' + IntToStr(Satellites);
             end;
-            Items[8] := '   Distance: ' + FormatFloat('0.0', Distance) + ' km';
-            Items[9] := '  Elevation: ' + FormatFloat('0.0', Elevation) + ' deg';
+            Items[8] := '   Distance: ' + MyFormatFloat('0.0', Distance) + ' km';
+            Items[9] := '  Elevation: ' + MyFormatFloat('0.0', Elevation) + ' deg';
             // Items[10] := '    Sources: ' + Sources;
             if ContainsPrediction then begin
-                Items[10] := '  Pred. Lat: ' + FormatFloat('0.0000', Latitude);
-                Items[11] := '  Pred. Lon: ' + FormatFloat('0.0000', Longitude);
+                Items[10] := '  Pred. Lat: ' + MyFormatFloat('0.0000', Latitude);
+                Items[11] := '  Pred. Lon: ' + MyFormatFloat('0.0000', Longitude);
             end;
         end;
 

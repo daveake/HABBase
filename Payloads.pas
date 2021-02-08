@@ -30,7 +30,7 @@ type
     procedure tmrExpiredTimer(Sender: TObject);
   private
     { Private declarations }
-    HABPayloads: Array[1..32] of TPayload;
+    HABPayloads: Array[1..100] of TPayload;
     function AddOrUpdatePayloadInOurList(Position: THABPosition; SourceCode: String; var PositionIsNew: Boolean): Integer;
     function FindPayload(PayloadID: String): Integer;
     function FindOrAddPayload(PayloadID: String): Integer;
@@ -193,6 +193,8 @@ begin
                 Exit;
             end;
         end;
+
+        PayloadIndex := 0;
     end;
 
     Result := PayloadIndex;

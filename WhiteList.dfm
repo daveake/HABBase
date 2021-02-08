@@ -193,6 +193,13 @@ inherited frmWhiteList: TfrmWhiteList
       Alignment = taRightJustify
       Caption = 'Max Distance:'
     end
+    object Label3: TLabel
+      Left = 551
+      Top = 211
+      Width = 13
+      Height = 13
+      Caption = 'km'
+    end
     object DBAdvGrid2: TDBAdvGrid
       Left = 0
       Top = 0
