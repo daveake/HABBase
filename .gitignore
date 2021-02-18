@@ -78,3 +78,9 @@ Win32/
 
 # Google API key file
 key.pas
+
+Keys/
+*.keystore
+*.ksign
+
+*.
