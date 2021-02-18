@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Normal, Vcl.StdCtrls, Vcl.ExtCtrls,
   AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid, Payload,
   Miscellaneous, Source, Math, IdBaseComponent, IdComponent, IdUDPBase,
-  IdUDPClient;
+  IdUDPClient, Misc;
 
 type
     TPayload = record
@@ -28,9 +28,10 @@ type
     UDPClient: TIdUDPClient;
     procedure tmrUpdatesTimer(Sender: TObject);
     procedure tmrExpiredTimer(Sender: TObject);
+    procedure scrollMainClick(Sender: TObject);
   private
     { Private declarations }
-    HABPayloads: Array[1..100] of TPayload;
+    HABPayloads: Array[1..MAX_PAYLOADS] of TPayload;
     function AddOrUpdatePayloadInOurList(Position: THABPosition; SourceCode: String; var PositionIsNew: Boolean): Integer;
     function FindPayload(PayloadID: String): Integer;
     function FindOrAddPayload(PayloadID: String): Integer;
@@ -44,7 +45,7 @@ type
     procedure ShowCurrentRSSI(PayloadID: String; CurrentRSSI: Integer);
     procedure ShowFrequencyError(PayloadID: String; FrequencyError: Double);
     procedure CheckForExpiredPayloads;
-    procedure HighlightPayload(PayloadID: String);
+    procedure HighlightPayload(PayloadID: String; InList, OnMap: Boolean);
   end;
 
 var
@@ -149,6 +150,11 @@ begin
         Result := (NewPosition.Counter <> OldPosition.Counter) or
                   (NewPosition.TimeStamp <> OldPosition.TimeStamp);
     end;
+end;
+
+procedure TfrmPayloads.scrollMainClick(Sender: TObject);
+begin
+    frmMap.CentrePayloadOnMap(-1);
 end;
 
 procedure TfrmPayloads.tmrExpiredTimer(Sender: TObject);
@@ -328,17 +334,22 @@ begin
     end;
 end;
 
-procedure TfrmPayloads.HighlightPayload(PayloadID: String);
+procedure TfrmPayloads.HighlightPayload(PayloadID: String; InList, OnMap: Boolean);
 var
     SelectedPayload, PayloadIndex: Integer;
 begin
     SelectedPayload := FindPayload(PayloadID);
-    if SelectedPayload > 0 then begin
+
+    if InList and (SelectedPayload > 0) then begin
         for PayloadIndex := Low(HABPayloads) to High(HABPayloads) do begin
             if HABPayloads[PayloadIndex].InUse and (HABPayloads[PayloadIndex].Form <> nil) then begin
                 HABPayloads[PayloadIndex].Form.ShowDetails(PayloadIndex = SelectedPayload);
             end;
         end;
+    end;
+
+    if OnMap then begin
+        frmMap.CentrePayloadOnMap(SelectedPayload);
     end;
 end;
 

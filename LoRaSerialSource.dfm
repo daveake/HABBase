@@ -12,7 +12,7 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
       end
     end
     inherited PageControl1: TPageControl
-      ActivePage = tabSignal
+      ActivePage = tabUplink
       object tabSignal: TTabSheet [1]
         Caption = 'Signal'
         ImageIndex = 2
@@ -328,6 +328,9 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
       inherited tabUplink: TTabSheet
         TabVisible = True
         ExplicitLeft = 4
+        ExplicitTop = 24
+        ExplicitWidth = 374
+        ExplicitHeight = 276
         inherited lblUploadPayload: TLabel
           Left = 42
           Top = 10
@@ -336,21 +339,21 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
         end
         inherited lblUploadType: TLabel
           Left = 26
-          Top = 95
+          Top = 90
           ExplicitLeft = 26
-          ExplicitTop = 95
+          ExplicitTop = 90
         end
         object Label4: TLabel [2]
           Left = 69
-          Top = 44
+          Top = 37
           Width = 50
           Height = 13
           Alignment = taRightJustify
           Caption = 'Password:'
         end
         object lblWhenType: TLabel [3]
-          Left = 45
-          Top = 168
+          Left = 42
+          Top = 152
           Width = 74
           Height = 13
           Alignment = taRightJustify
@@ -358,50 +361,75 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
         end
         object lblWhenSeconds: TLabel [4]
           Left = 10
-          Top = 208
+          Top = 184
           Width = 112
           Height = 13
           Alignment = taRightJustify
           Caption = 'Seconds after minute@'
           Visible = False
         end
+        object lblVersionInfo: TLabel [5]
+          AlignWithMargins = True
+          Left = 3
+          Top = 260
+          Width = 368
+          Height = 13
+          Align = alBottom
+          Alignment = taCenter
+          Caption = '**** Uplink Needs Firmware V2.00 or later ****'
+          ExplicitWidth = 231
+        end
         inherited edtUploadPayload: TEdit
           Top = 7
           ExplicitTop = 7
         end
         inherited btnSendUpload: TButton
-          Top = 242
-          ExplicitTop = 242
+          Top = 214
+          ExplicitTop = 214
         end
         inherited PageControl2: TPageControl
-          Top = 76
+          Left = 125
+          Top = 61
           ActivePage = tabCutdown
           TabOrder = 3
-          ExplicitTop = 76
+          ExplicitLeft = 125
+          ExplicitTop = 61
           inherited tabCutdown: TTabSheet
+            ExplicitLeft = 4
+            ExplicitTop = 24
             ExplicitWidth = 229
+            ExplicitHeight = 49
           end
           inherited tabOutput: TTabSheet
+            ExplicitLeft = 4
+            ExplicitTop = 24
             ExplicitWidth = 229
+            ExplicitHeight = 49
           end
           inherited tabServo: TTabSheet
+            ExplicitLeft = 4
+            ExplicitTop = 24
             ExplicitWidth = 229
+            ExplicitHeight = 49
           end
           inherited tabScript: TTabSheet
-            ExplicitTop = 32
+            ExplicitLeft = 4
+            ExplicitTop = 24
+            ExplicitWidth = 229
+            ExplicitHeight = 49
           end
         end
         object edtPassword: TEdit
           Left = 128
-          Top = 41
+          Top = 34
           Width = 121
           Height = 21
           TabOrder = 2
           OnKeyPress = edtUploadPayloadKeyPress
         end
         object cmbUploadWhen: TComboBox
-          Left = 128
-          Top = 165
+          Left = 125
+          Top = 149
           Width = 121
           Height = 21
           Style = csDropDownList
@@ -416,7 +444,7 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
         end
         object edtWhenSeconds: TEdit
           Left = 128
-          Top = 204
+          Top = 180
           Width = 121
           Height = 21
           TabOrder = 5

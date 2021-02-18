@@ -241,9 +241,33 @@ begin
                                              StrToIntDef(Copy(Value, 4, 2), 0),
                                              StrToIntDef(Copy(Value, 7, 2), 0),
                                              0);
+        end else if Command = 'humidity' then begin
+            Position.Humidity := GetFloat(Line, ',');
+            Position.HaveHumidity := Position.Humidity >= 0;
+        end else if Command = 'temperrature_external' then begin
+            Position.ExternalTemperature := GetFloat(Line, ',');
+            Position.HaveExternalTemperature := True;
+        end else if Command = 'speed' then begin
+            Position.Speed := GetFloat(Line, ',');
+            Position.HaveSpeed := Position.Speed >= 0;
+        end else if Command = 'comment' then begin
+            // Sonde comment field is model then callsign then frequency
+            // "DFM09 DFM-17052971 403.871 MHz 5.0V",
+            // "RS41-SG R4330926 400.501 MHz 2.7V",
+            Line := Copy(Line, 3, Length(Line));                            // Skip '"' then get device
+            Position.Device := GetString(Line, ' ');
+            GetString(Line, ' ');                                           // Slip callsign
+            Position.CurrentFrequency := GetFloat(Line, ' ');
+        end else if Command = 'sentence_id' then begin
+            Position.Counter := Round(GetFloat(Line, ','));
+        end else if Command = 'sentence_id' then begin
+            Position.Counter := Round(GetFloat(Line, ','));
+        end else if Command = 'sentence_id' then begin
+            Position.Counter := Round(GetFloat(Line, ','));
         end;
     end else if Copy(Line,1,1) = '}' then begin
         if Position.PayloadID <> '' then begin
+            Position.IsSonde := Copy(Position.PayloadID, 1, 3) = 'RS_';
             Result := True;
         end;
     end;

@@ -40,6 +40,7 @@ type
     lblWhenSeconds: TLabel;
     cmbUploadWhen: TComboBox;
     edtWhenSeconds: TEdit;
+    lblVersionInfo: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure VrMediaButton1Click(Sender: TObject);
     procedure VrMediaButton4Click(Sender: TObject);
@@ -69,6 +70,7 @@ type
     procedure ShowFrequency(Channel: Integer; Frequency: Double); override;
     procedure ShowSetting(Setting, Value: String); override;
     procedure DoAFC(Channel: Integer; FrequencyError: Double); override;
+    procedure SetDeviceVersion(Version: Double); override;
   end;
 
 
@@ -247,5 +249,11 @@ begin
 
     frmSources.SendUplink(SourceIndex, When, WhenSeconds, -1, '~T*', BuildUplinkCommand, edtPassword.Text);
 end;
+
+procedure TfrmLoRaSerialSource.SetDeviceVersion(Version: Double);
+begin
+    lblVersionInfo.Visible := Version < 2.0;
+end;
+
 
 end.

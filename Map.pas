@@ -6,8 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Normal, Vcl.StdCtrls,
   UWebGMapsCommon, UWebGMaps, UWebGMapsPolylines, UWebGMapsMarkers, UWebGMapsPolygons,
-  Vcl.ExtCtrls,
-  Miscellaneous, Source;
+  Vcl.ExtCtrls, Miscellaneous, Source, Misc;
 
 type
   TFollowMode = (fmInit, fmNone, fmCar, fmPayload);
@@ -34,14 +33,14 @@ type
       IdMarker: Integer; Latitude, Longitude: Double; Button: TMouseButton);
   private
     { Private declarations }
-    Balloons: Array[1..32] of TBalloon;
+    Balloons: Array[1..MAX_PAYLOADS] of TBalloon;
     ImageFolder: String;
     OKToUpdateMap: Boolean;
     MastMarker: TMarker;
     // MarkerNames: array[0..64] of String;
     // PolylineItems: array[0..64] of TPolylineItem;
     FollowMode: TFollowMode;
-    function FindMapMarker(PayloadID: String): Integer;
+    // function FindMapMarker(PayloadID: String): Integer;
     procedure AddOrUpdateMapMarker(PayloadIndex: Integer; Position: THABPosition; ColourText: String);
     procedure DrawRadial(PayloadIndex: Integer; NewHome: Boolean);
     procedure DrawHorizon(PayloadIndex: Integer);
@@ -50,6 +49,7 @@ type
     function ProcessNewPosition(PayloadIndex: Integer; Position: THABPosition; Colour: TColor; ColourText: String): Boolean;
     procedure SetHomePosition;
     procedure RemovePayload(PayloadIndex: Integer);
+    procedure CentrePayloadOnMap(PayloadIndex: Integer);
   end;
 
 var
@@ -115,22 +115,7 @@ end;
 procedure TfrmMap.GMapMarkerClick(Sender: TObject; MarkerTitle: string;
   IdMarker: Integer; Latitude, Longitude: Double; Button: TMouseButton);
 begin
-    frmPayloads.HighlightPayload(MarkerTitle);
-end;
-
-function TfrmMap.FindMapMarker(PayloadID: String): Integer;
-var
-    i: Integer;
-begin
-    for i := 0 to GMap.Markers.Count-1 do begin
-        if GMap.Markers[i].Title = PayloadID then begin
-            // Found it
-            Result := i;
-            Exit;
-        end;
-    end;
-
-    Result := -1;
+    frmPayloads.HighlightPayload(MarkerTitle, True, False);
 end;
 
 function BalloonIconName(Position: THABPosition; ColourText: String; Target: Boolean=False): String;
@@ -154,36 +139,38 @@ function TfrmMap.ProcessNewPosition(PayloadIndex: Integer; Position: THABPositio
 begin
     Result := False;
 
-    Balloons[PayloadIndex].Position := Position;
+    if (Position.Latitude <> 0) and (Position.Longitude <> 0) then begin
+        Balloons[PayloadIndex].Position := Position;
 
-    if OKToUpdateMap then begin
-        // Find or create marker for this payload
-        AddOrUpdateMapMarker(PayloadIndex, Position, ColourText);
+        if OKToUpdateMap then begin
+            // Find or create marker for this payload
+            AddOrUpdateMapMarker(PayloadIndex, Position, ColourText);
 
-        // Line to Balloon
-        DrawRadial(PayloadIndex, False);
+            // Line to Balloon
+            DrawRadial(PayloadIndex, False);
 
-        // Reception horizon
-        DrawHorizon(PayloadIndex);
+            // Reception horizon
+            DrawHorizon(PayloadIndex);
 
-        // Balloon Path
-        if Balloons[PayloadIndex].Track = nil then begin
-            Balloons[PayloadIndex].Track := GMap.Polylines.Add;
-            Balloons[PayloadIndex].Track.Polyline.Color := Colour;
-            Balloons[PayloadIndex].Track.Polyline.Path.Add(Position.Latitude, Position.Longitude);
-            GMap.CreateMapPolyline(Balloons[PayloadIndex].Track.Polyline);
-        end else begin
-            Balloons[PayloadIndex].Track.Polyline.Path.Add(Position.Latitude, Position.Longitude);
-            GMap.UpdateMapPolyline(Balloons[PayloadIndex].Track.Polyline);
+            // Balloon Path
+            if Balloons[PayloadIndex].Track = nil then begin
+                Balloons[PayloadIndex].Track := GMap.Polylines.Add;
+                Balloons[PayloadIndex].Track.Polyline.Color := Colour;
+                Balloons[PayloadIndex].Track.Polyline.Path.Add(Position.Latitude, Position.Longitude);
+                GMap.CreateMapPolyline(Balloons[PayloadIndex].Track.Polyline);
+            end else begin
+                Balloons[PayloadIndex].Track.Polyline.Path.Add(Position.Latitude, Position.Longitude);
+                GMap.UpdateMapPolyline(Balloons[PayloadIndex].Track.Polyline);
+            end;
+
+
+            // Pan to balloon
+    //        if (FollowMode = fmPayload) and (Index = SelectedIndex) then begin
+    //            GMap.MapPanTo(Positions[Index].Position.Latitude, Positions[Index].Position.Longitude);
+    //        end;
+
+            Result := True;
         end;
-
-
-        // Pan to balloon
-//        if (FollowMode = fmPayload) and (Index = SelectedIndex) then begin
-//            GMap.MapPanTo(Positions[Index].Position.Latitude, Positions[Index].Position.Longitude);
-//        end;
-
-        Result := True;
     end;
 end;
 
@@ -194,6 +181,14 @@ begin
     if not Balloons[PayloadIndex].InUse then begin
         Balloons[PayloadIndex].InUse := True;
         Balloons[PayloadIndex].Marker := GMap.Markers.Add(Position.Latitude, Position.Longitude, Position.PayloadID);
+        // Balloons[PayloadIndex].Marker.Text := Position.PayloadID;
+        if Position.IsSonde then begin
+            Balloons[PayloadIndex].Marker.MapLabel.Color := clYellow;
+        end else begin
+            Balloons[PayloadIndex].Marker.MapLabel.Color := clLime;
+        end;
+        Balloons[PayloadIndex].Marker.MapLabel.Text := Position.PayloadID;
+        Balloons[PayloadIndex].Marker.MapLabel.OffsetTop := 70;
     end else begin
         Balloons[PayloadIndex].Marker.Latitude := Position.Latitude;
         Balloons[PayloadIndex].Marker.Longitude := Position.Longitude;
@@ -344,6 +339,33 @@ begin
             GMap.Polygons.Delete(Horizon[1].Index);
             Horizon[1] := nil;
         end;
+    end;
+end;
+
+//function TfrmMap.FindMapMarker(PayloadID: String): Integer;
+//var
+//    i: Integer;
+//begin
+//    for i := 0 to GMap.Markers.Count-1 do begin
+//        if GMap.Markers[i].Title = PayloadID then begin
+//            // Found it
+//            Result := i;
+//            Exit;
+//        end;
+//    end;
+//
+//    Result := -1;
+//end;
+
+
+procedure TfrmMap.CentrePayloadOnMap(PayloadIndex: Integer);
+begin
+    if PayloadIndex >= 0 then begin
+        if Balloons[PayloadIndex].Marker <> nil then begin
+            GMap.MapPanTo(Balloons[PayloadIndex].Marker.Latitude, Balloons[PayloadIndex].Marker.Longitude);
+        end;
+    end else begin
+        GMap.MapPanTo(GMap.MapOptions.DefaultLatitude, GMap.MapOptions.DefaultLongitude);
     end;
 end;
 

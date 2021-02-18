@@ -9,7 +9,7 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, AdvObj,
   BaseGrid, AdvGrid, DBAdvGrid, Miscellaneous, Source, Vcl.StdCtrls, Vcl.ComCtrls,
-  AdvSmoothButton, AdvPanel, AdvProgr, AdvGauge, VclTee.TeeGDIPlus,
+  AdvSmoothButton, AdvPanel, AdvProgr, AdvGauge, VclTee.TeeGDIPlus, Map,
   VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart, Vcl.Menus;
 
 type
@@ -54,10 +54,13 @@ type
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ClearHistory1Click(Sender: TObject);
+    procedure pnlTitleClick(Sender: TObject);
   private
     { Private declarations }
+    ItemIndex: Integer;
     procedure Down;
     procedure Up;
+    procedure AddItem(Title, Value: String);
   public
     { Public declarations }
     procedure AddPosition(Position: THABPosition; Sources: String);
@@ -72,6 +75,14 @@ type
 implementation
 
 {$R *.dfm}
+
+uses Payloads;
+
+procedure TfrmPayload.AddItem(Title, Value: String);
+begin
+    lstTelemetry.Items[ItemIndex] := Title.PadLeft(11) + ': ' + Value;
+    Inc(ItemIndex);
+end;
 
 procedure TfrmPayload.AddPosition(Position: THABPosition; Sources: String);
 var
@@ -106,26 +117,52 @@ begin
         end;
 
         // Position tab
-        with lstTelemetry do begin
-            Items[0] := '  PayloadID: ' + PayloadID;
-            Items[1] := '    Counter: ' + IntToStr(Counter);
-            Items[2] := '  Timestamp: ' + FormatDateTime('hh:nn:ss', TimeStamp);
-            Items[3] := '   Latitude: ' + MyFormatFloat('0.0000', Latitude);
-            Items[4] := '  Longitude: ' + MyFormatFloat('0.0000', Longitude);
-            Items[5] := '   Altitude: ' + FormatFloat('0', Altitude) + ' m';
-            if HaveAscentRate then begin
-                Items[6] := 'Ascent Rate: ' + MyFormatFloat('0.0', AscentRate) + ' m/s';
-            end;
-            if (Satellites > 0) or (SatelliteFieldIndex > 0) then begin
-                Items[7] := ' Satellites: ' + IntToStr(Satellites);
-            end;
-            Items[8] := '   Distance: ' + MyFormatFloat('0.0', Distance) + ' km';
-            Items[9] := '  Elevation: ' + MyFormatFloat('0.0', Elevation) + ' deg';
-            // Items[10] := '    Sources: ' + Sources;
-            if ContainsPrediction then begin
-                Items[10] := '  Pred. Lat: ' + MyFormatFloat('0.0000', Latitude);
-                Items[11] := '  Pred. Lon: ' + MyFormatFloat('0.0000', Longitude);
-            end;
+        ItemIndex := 0;
+        AddItem('PayloadID', PayloadID);
+
+        if Counter >= 0 then begin
+            AddItem('Counter', IntToStr(Counter));
+        end;
+
+        AddItem('Timestamp', FormatDateTime('hh:nn:ss', TimeStamp));
+        AddItem('Latitude', MyFormatFloat('0.0000', Latitude));
+        AddItem('Longitude', MyFormatFloat('0.0000', Longitude));
+        AddItem('Altitude', FormatFloat('0', Altitude) + ' m');
+
+        if HaveAscentRate then begin
+            AddItem('Ascent Rate', MyFormatFloat('0.0', AscentRate) + ' m/s');
+        end;
+
+        if (Satellites > 0) or (SatelliteFieldIndex > 0) then begin
+            AddItem('Satellites', IntToStr(Satellites));
+        end;
+
+        if HaveExternalTemperature then begin
+            AddItem('Ext. Temp.', MyFormatFloat('0.0', ExternalTemperature) + '°C');
+        end;
+
+        if HaveHumidity then begin
+            AddItem('Humidity', MyFormatFloat('0.0', Humidity) + '%');
+        end;
+
+        if HaveSpeed then begin
+            AddItem('Speed', MyFormatFloat('0.0', Speed) + 'kph');
+        end;
+
+        AddItem('Distance', MyFormatFloat('0.0', Distance) + ' km');
+        AddItem('Elevation', MyFormatFloat('0.0', Elevation) + ' deg');
+
+        if ContainsPrediction then begin
+            AddItem('Pred. Lat', MyFormatFloat('0.0000', Latitude));
+            AddItem('Pred. Lon', MyFormatFloat('0.0000', Longitude));
+        end;
+
+        if Device <> '' then begin
+            AddItem('Device', Device);
+        end;
+
+        if CurrentFrequency > 0 then begin
+            AddItem('Frequency', MyFormatFloat('0.000', CurrentFrequency) + 'MHz');
         end;
 
         // Charts
@@ -136,11 +173,13 @@ end;
 procedure TfrmPayload.btnDownClick(Sender: TObject);
 begin
     Down;
+    frmPayloads.HighlightPayload(pnlTitle.Caption, False, True);
 end;
 
 procedure TfrmPayload.btnUpClick(Sender: TObject);
 begin
     Up;
+    frmMap.CentrePayloadOnMap(-1);
 end;
 
 procedure TfrmPayload.ClearHistory1Click(Sender: TObject);
@@ -159,6 +198,11 @@ begin
     Up;
 end;
 
+procedure TfrmPayload.pnlTitleClick(Sender: TObject);
+begin
+    frmPayloads.HighlightPayload(pnlTitle.Caption, False, True);
+end;
+
 procedure TfrmPayload.UpdateSources(Position: THABPosition; Sources: String);
 var
     MyBookmark: TBookmark;
@@ -174,7 +218,7 @@ begin
         EnableControls;
     end;
 
-    lstTelemetry.Items[7] := '   Sources: ' + Sources;
+    // lstTelemetry.Items[7] := '   Sources: ' + Sources;
 end;
 
 procedure TfrmPayload.Down;

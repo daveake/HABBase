@@ -33,13 +33,17 @@ type
         FreqError:          Array[0..1] of Double;
         MultipleChannels:   Boolean;
         LatestPosition:     THABPosition;
+        HaveReceivedSSDV:   Boolean;
+        SSDVCount:          Integer;
     end;
 
 type
   TfrmSources = class(TfrmNormal)
     scrollMain: TScrollBox;
     btnAddSource: TAdvSmoothButton;
+    tmrSSDV: TTimer;
     procedure btnAddSourceClick(Sender: TObject);
+    procedure tmrSSDVTimer(Sender: TObject);
   private
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
@@ -470,12 +474,21 @@ begin
 
     // SSDV Packet
     if Position.IsSSDV then begin
-        if GetSettingBoolean('LoRaSerial', 'SSDV', False) then begin
-            Callsign := GetSettingString('LoRaSerial', 'Callsign', '');
+        if HABSources[SourceIndex].Upload then begin
+            Callsign := DataModule1.tblSettings.FieldByName('Callsign').AsString;
             if Callsign <> '' then begin
                 SSDVUploader.SaveSSDVToHabitat(Position.Line, Callsign);
             end;
         end;
+
+        if not HABSources[SourceIndex].HaveReceivedSSDV then begin
+            if HABSources[SourceIndex].SourceForm <> nil then begin
+                HABSources[SourceIndex].SourceForm.AddStatusToLog('Receiving SSDV');
+            end;
+            HABSources[SourceIndex].HaveReceivedSSDV := True;
+        end;
+
+        Inc(HABSources[SourceIndex].SSDVCount);
     end;
 
     if Position.HasCurrentRSSI then begin
@@ -513,6 +526,23 @@ begin
 
     if Position.Version <> '' then begin
         HABSources[SourceIndex].SourceForm.AddStatusToLog('Version = ' + Position.Version);
+        HABSources[SourceIndex].SourceForm.SetDeviceVersion(MyStrToFloat(Position.Version));
+    end;
+end;
+
+procedure TfrmSources.tmrSSDVTimer(Sender: TObject);
+var
+    i: Integer;
+begin
+    for i := Low(HABSources) to High(HABSources) do begin
+        if HABSources[i].InUse and
+           HABSources[i].HaveReceivedSSDV and
+           (HABSources[i].SSDVCount > 0) then begin
+            if HABSources[i].SourceForm <> nil then begin
+                HABSources[i].SourceForm.AddStatusToLog('Receiving ' + HABSources[i].SSDVCount.ToString + ' SSDV packets/min');
+            end;
+            HABSources[i].SSDVCount := 0;
+        end;
     end;
 end;
 

@@ -104,6 +104,7 @@ type
     procedure ShowFrequency(Channel: Integer; Frequency: Double); virtual;
     procedure ShowSetting(Setting, Value: String); virtual;
     procedure DoAFC(Channel: Integer; FrequencyError: Double); virtual;
+    procedure SetDeviceVersion(Version: Double); virtual;
   end;
 
 
@@ -304,6 +305,11 @@ begin
 end;
 
 procedure TfrmSource.SendUploadCommand;
+begin
+    // virtual
+end;
+
+procedure TfrmSource.SetDeviceVersion(Version: Double);
 begin
     // virtual
 end;

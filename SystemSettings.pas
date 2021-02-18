@@ -31,6 +31,7 @@ type
     procedure btnSaveClick(Sender: TObject);
     procedure DBEdit1Change(Sender: TObject);
     procedure DBEdit2KeyPress(Sender: TObject; var Key: Char);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
     Latitude, Longitude: Double;
@@ -80,6 +81,15 @@ begin
     Latitude := DataModule1.tblSettings.FieldByName('Latitude').AsFloat;
     Longitude := DataModule1.tblSettings.FieldByName('Longitude').AsFloat;
     DataModule1.tblSettings.Edit;
+end;
+
+procedure TfrmSystemSettings.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+    if FormatSettings.DecimalSeparator <> '.' then begin
+        if Key = '.' then begin
+            Key := FormatSettings.DecimalSeparator;
+        end;
+    end;
 end;
 
 end.

@@ -189,47 +189,46 @@ var
     i: Integer;
     OK: Boolean;
 begin
-    with PayloadMasks do begin
-        for i := 1 to Count do begin
-            with Masks[i] do begin
-                // Locally received ?
-                OK := True;
+    for i := 1 to PayloadMasks.Count do begin
+        // Locally received ?
+        OK := True;
 
-                if not Remote then begin
-                    OK := not Position.ReceivedRemotely;
+        if not PayloadMasks.Masks[i].Remote then begin
+            OK := not Position.ReceivedRemotely;
+        end;
+
+        // Distance
+        if OK then begin
+            if PayloadMasks.Masks[i].Distance > 1 then begin
+                OK := Position.Distance < PayloadMasks.Masks[i].Distance;
+            end;
+
+            // Balloon type
+            if OK then begin
+                if PayloadMasks.Masks[i].HAB and PayloadMasks.Masks[i].Sonde then begin
+                    // OK := True;
+                end else if PayloadMasks.Masks[i].HAB and not PayloadMasks.Masks[i].Sonde then begin
+                    // OK := PassFilter(Position.PayloadID, '!RS_*');
+                    if Position.IsSonde then begin
+                        OK := False;
+                    end;
+                end else if PayloadMasks.Masks[i].Sonde and not PayloadMasks.Masks[i].HAB then begin
+                    // OK := PassFilter(Position.PayloadID, 'RS_*');
+                    if not Position.IsSonde then begin
+                        OK := False;
+                    end;
+                end else begin
+                    OK := False;
                 end;
 
-                // Distance
+                // Mask
                 if OK then begin
-                    if Distance > 1 then begin
-                        OK := Position.Distance < Distance;
-                    end;
-
-                    // Balloon type
-                    if OK then begin
-                        if HAB and Sonde then begin
-                            OK := True;
-                        end else if HAB and not Sonde then begin
-                            OK := PassFilter(Position.PayloadID, '!RS_*');
-                        end else if Sonde and not HAB then begin
-                            OK := PassFilter(Position.PayloadID, 'RS_*');
-                        end else begin
-                            OK := False;
-                        end;
-
-                        // Mask
-                        if OK then begin
-                            OK := PassFilter(Position.PayloadID, Mask);
-                        end;
-
-                        if OK then begin
-                            Result := True;
-                            Exit;
-                        end;
+                    if PassFilter(Position.PayloadID, PayloadMasks.Masks[i].Mask) then begin
+                        Result := True;
+                        Exit;
                     end;
                 end;
             end;
-            Next;
         end;
     end;
 

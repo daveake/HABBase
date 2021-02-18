@@ -63,4 +63,10 @@ inherited frmSources: TfrmSources
       end
     end
   end
+  object tmrSSDV: TTimer
+    Interval = 60000
+    OnTimer = tmrSSDVTimer
+    Left = 192
+    Top = 288
+  end
 end

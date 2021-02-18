@@ -52,15 +52,13 @@ inherited frmSource: TfrmSource
           AlignWithMargins = True
           Left = 3
           Top = 6
-          Width = 271
-          Height = 23
+          Width = 89
+          Height = 19
           Margins.Top = 6
           Align = alClient
           Alignment = taCenter
           Caption = 'Source Code'
           Transparent = True
-          ExplicitWidth = 89
-          ExplicitHeight = 19
         end
         object btnDown: TButton
           AlignWithMargins = True
@@ -617,6 +615,10 @@ inherited frmSource: TfrmSource
         Caption = 'Uplink'
         ImageIndex = 2
         TabVisible = False
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lblUploadPayload: TLabel
           Left = 34
           Top = 6
@@ -660,6 +662,10 @@ inherited frmSource: TfrmSource
           TabOrder = 2
           object tabCutdown: TTabSheet
             Caption = 'Cutdown'
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object lblCutdownPeriod: TLabel
               Left = 109
               Top = 7
@@ -716,6 +722,10 @@ inherited frmSource: TfrmSource
           object tabOutput: TTabSheet
             Caption = 'Output'
             ImageIndex = 1
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object lblOutputPin: TLabel
               Left = 13
               Top = 16
@@ -753,6 +763,10 @@ inherited frmSource: TfrmSource
           object tabServo: TTabSheet
             Caption = 'Servo'
             ImageIndex = 2
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object lblServoPin: TLabel
               Left = 5
               Top = 20
@@ -806,6 +820,10 @@ inherited frmSource: TfrmSource
           object tabScript: TTabSheet
             Caption = 'Script'
             ImageIndex = 3
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 0
             object lblScriptName: TLabel
               Left = 4
               Top = 20

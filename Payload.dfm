@@ -45,6 +45,7 @@ inherited frmPayload: TfrmPayload
         ParentBackground = False
         ParentFont = False
         TabOrder = 0
+        OnClick = pnlTitleClick
         object pnlTSS: TPanel
           AlignWithMargins = True
           Left = 3
@@ -115,6 +116,7 @@ inherited frmPayload: TfrmPayload
           Align = alRight
           Caption = '...'
           TabOrder = 3
+          Visible = False
         end
       end
     end

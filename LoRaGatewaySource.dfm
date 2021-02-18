@@ -12,9 +12,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
       end
     end
     inherited PageControl1: TPageControl
-      ActivePage = tabSignal
       object tabSignal: TTabSheet [1]
-        Caption = 'Channel 1'
+        Caption = 'Channel 0'
         ImageIndex = 2
         object pnlCommon: TAdvPanel
           Left = 0
@@ -327,7 +326,7 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
         end
       end
       object TabSheet1: TTabSheet [2]
-        Caption = 'Channel 2'
+        Caption = 'Channel 1'
         ImageIndex = 3
         object AdvPanel1: TAdvPanel
           Left = 0

@@ -29,12 +29,12 @@ inherited frmGatewaySettings: TfrmGatewaySettings
       Caption = 'Port:'
     end
     object Label3: TLabel [4]
-      Left = 19
+      Left = 3
       Top = 102
-      Width = 35
+      Width = 51
       Height = 13
       Alignment = taRightJustify
-      Caption = 'Freq 1:'
+      Caption = 'Ch 0 Freq:'
     end
     object Label4: TLabel [5]
       Left = 252
@@ -45,12 +45,12 @@ inherited frmGatewaySettings: TfrmGatewaySettings
       Caption = 'Mode:'
     end
     object Label5: TLabel [6]
-      Left = 19
-      Top = 129
-      Width = 35
+      Left = 3
+      Top = 126
+      Width = 51
       Height = 13
       Alignment = taRightJustify
-      Caption = 'Freq 2:'
+      Caption = 'Ch 1 Freq:'
     end
     object Label6: TLabel [7]
       Left = 252

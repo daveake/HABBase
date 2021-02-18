@@ -12,6 +12,7 @@ object frmSystemSettings: TfrmSystemSettings
   Font.Style = []
   OldCreateOrder = False
   OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
   object pnlCommon: TAdvPanel

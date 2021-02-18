@@ -23,6 +23,7 @@ inherited frmPayloads: TfrmPayloads
       Height = 446
       Align = alClient
       TabOrder = 1
+      OnClick = scrollMainClick
     end
   end
   object tmrUpdates: TTimer

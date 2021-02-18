@@ -658,6 +658,7 @@ inherited frmWhiteList: TfrmWhiteList
       DataField = 'HAB'
       DataSource = DataModule1.srcWhiteList
       TabOrder = 2
+      OnClick = DBCheckBox1Click
     end
     object DBCheckBox3: TDBCheckBox
       Left = 368
@@ -668,6 +669,7 @@ inherited frmWhiteList: TfrmWhiteList
       DataField = 'Sonde'
       DataSource = DataModule1.srcWhiteList
       TabOrder = 3
+      OnClick = DBCheckBox1Click
     end
     object DBCheckBox4: TDBCheckBox
       Left = 368
