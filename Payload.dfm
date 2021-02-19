@@ -880,6 +880,10 @@ inherited frmPayload: TfrmPayload
       object tabCharts: TTabSheet
         Caption = 'Charts'
         ImageIndex = 3
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object AltitudeChart: TChart
           Left = 0
           Top = 0

@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'HAB Base Station Manager V1.3.4'
+  Caption = 'HAB Base Station Manager V1.3.5'
   ClientHeight = 847
   ClientWidth = 1398
   Color = clBtnFace

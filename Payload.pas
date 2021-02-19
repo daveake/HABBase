@@ -120,7 +120,7 @@ begin
         ItemIndex := 0;
         AddItem('PayloadID', PayloadID);
 
-        if Counter >= 0 then begin
+        if Counter > 0 then begin
             AddItem('Counter', IntToStr(Counter));
         end;
 
@@ -144,6 +144,11 @@ begin
         if HaveHumidity then begin
             AddItem('Humidity', MyFormatFloat('0.0', Humidity) + '%');
         end;
+
+        if BatteryVoltage > 0 then begin
+            AddItem('Battery', MyFormatFloat('0.0#', BatteryVoltage) + 'V');
+        end;
+
 
         if HaveSpeed then begin
             AddItem('Speed', MyFormatFloat('0.0', Speed) + 'kph');
