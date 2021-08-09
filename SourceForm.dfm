@@ -52,13 +52,15 @@ inherited frmSource: TfrmSource
           AlignWithMargins = True
           Left = 3
           Top = 6
-          Width = 89
-          Height = 19
+          Width = 271
+          Height = 23
           Margins.Top = 6
           Align = alClient
           Alignment = taCenter
           Caption = 'Source Code'
           Transparent = True
+          ExplicitWidth = 89
+          ExplicitHeight = 19
         end
         object btnDown: TButton
           AlignWithMargins = True

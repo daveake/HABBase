@@ -7,6 +7,7 @@ uses SysUtils;
 function GetSetting(FieldName, Settings: String): String;
 function GetBooleanSetting(FieldName, Settings: String): Boolean;
 function MyStrToFloat(Value: String): Double;
+function GetCommandLineParameter(ParameterName: String; var Value: String): Boolean;
 
 const
     MAX_PAYLOADS = 100;
@@ -54,5 +55,27 @@ begin
     end;
 end;
 
+function GetCommandLineParameter(ParameterName: String; var Value: String): Boolean;
+var
+    i, Len: Integer;
+begin
+    Value := '';
+
+    Len := Length(ParameterName) + 1;
+    ParameterName := UpperCase(ParameterName);
+
+    for i := 1 to ParamCount do begin
+        if ParameterName = UpperCase(ParamStr(i)) then begin
+            Result := True;
+            Exit;
+        end else if Copy(ParamStr(i), 1, Len) = (ParameterName + '=') then begin
+            Result := True;
+            Value := Copy(ParamStr(i), Len+1, 99);
+            Exit;
+        end;
+    end;
+
+    Result := False;
+end;
 
 end.

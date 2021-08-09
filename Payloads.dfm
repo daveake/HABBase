@@ -1,6 +1,7 @@
 inherited frmPayloads: TfrmPayloads
   Caption = 'Payloads'
   ClientWidth = 296
+  OnCreate = FormCreate
   ExplicitWidth = 312
   PixelsPerInch = 96
   TextHeight = 13
@@ -41,5 +42,11 @@ inherited frmPayloads: TfrmPayloads
     Port = 0
     Left = 60
     Top = 366
+  end
+  object tmrPredictions: TTimer
+    Interval = 500
+    OnTimer = tmrPredictionsTimer
+    Left = 168
+    Top = 312
   end
 end

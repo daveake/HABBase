@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, DateUtils, AdvSmoothStatusIndicator, AdvGDIP, AdvPanel, BaseTypes,
-  Miscellaneous, Source, AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid,
+  Miscellaneous, Source, AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid, Misc,
   AdvSmoothButton;
 
 type
@@ -29,11 +29,21 @@ type
     pnlMiddle: TPanel;
     AdvSplitter10: TAdvSplitter;
     pnlRight: TPanel;
+    pnlMap: TPanel;
+    pblMapTitle: TPanel;
+    lblTitle: TLabel;
+    lblBing: TLabel;
+    lblTomTom: TLabel;
+    lblGoogle: TLabel;
+    lblOpen: TLabel;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure lblBingClick(Sender: TObject);
   private
     { Private declarations }
+    UseFNCMap: Boolean;
     PayloadMasks: TPayloadMasks;
+    PayloadBlackList: String;
     procedure LoadData;
     procedure LoadForms;
     procedure LoadFormPositions;
@@ -42,7 +52,9 @@ type
     { Public declarations }
     procedure LoadPayloadMasks;
     function PayloadInWhiteList(Position: THABPosition): Boolean;
+    function PayloadInBlackList(PayloadID: String): Boolean;
     procedure UpdatedWhiteList;
+    procedure AddPayloadToBlackList(PayloadID: String);
   end;
 
 var
@@ -55,7 +67,8 @@ uses Data,
      // ToolWhiteList,
      ToolSettings,
      // Main Forms
-     Map, Payloads,
+     Map, GoogleMap, FNCMap,
+     Payloads,
      // Sources
      SourcesForm;
      // temSettings;
@@ -81,16 +94,37 @@ begin
     SaveFormPositions;
 end;
 
+procedure TfrmMain.lblBingClick(Sender: TObject);
+begin
+    lblBing.Font.Style := [];
+    lblGoogle.Font.Style := [];
+    lblOpen.Font.Style := [];
+    lblTomTom.Font.Style := [];
+
+    TLabel(Sender).Font.Style := [fsBold];
+
+    TfrmFNCMap(frmMap).SetMapSource(TLabel(Sender).Caption);
+end;
+
 procedure TfrmMain.LoadData;
 begin
     DataModule1 := TDataModule1.Create(nil);
 end;
 
 procedure TfrmMain.LoadForms;
+var
+    Dummy: String;
 begin
     // Map
-    frmMap := TfrmMap.Create(nil);
-    frmMap.pnlMain.Parent := pnlMiddle;
+    if GetCommandLineParameter('NewMap', Dummy) then begin
+        pnlMap.Visible := True;
+        frmMap := TfrmFNCMap.Create(nil);
+        TfrmFNCMap(frmMap).FNCMap.Parent := pnlMap;
+    end else begin
+        pnlMap.Visible := False;
+        frmMap := TfrmGMap.Create(nil);
+        frmMap.pnlMain.Parent := pnlMiddle;
+    end;
 
     // Live Payloads
     frmPayloads := TfrmPayloads.Create(nil);
@@ -117,8 +151,8 @@ begin
         while not EOF do begin
             if FieldByName('Enabled').AsBoolean then begin
                 Inc(Count);
-                Masks[Count].HAB := FieldByName('HAB').AsBoolean;
-                Masks[Count].Sonde := FieldByName('Sonde').AsBoolean;
+//                Masks[Count].HAB := FieldByName('HAB').AsBoolean;
+//                Masks[Count].Sonde := FieldByName('Sonde').AsBoolean;
                 Masks[Count].Remote := FieldByName('Remote').AsBoolean;
                 Masks[Count].Mask := FieldByName('Mask').AsString;
                 Masks[Count].Distance := FieldByName('Distance').AsFloat;
@@ -205,6 +239,8 @@ begin
 
             // Balloon type
             if OK then begin
+                (*
+                // Sondes are a separate source now so no need for this code
                 if PayloadMasks.Masks[i].HAB and PayloadMasks.Masks[i].Sonde then begin
                     // OK := True;
                 end else if PayloadMasks.Masks[i].HAB and not PayloadMasks.Masks[i].Sonde then begin
@@ -220,6 +256,7 @@ begin
                 end else begin
                     OK := False;
                 end;
+                *)
 
                 // Mask
                 if OK then begin
@@ -290,5 +327,17 @@ begin
     end;
 end;
 
+procedure TfrmMain.AddPayloadToBlackList(PayloadID: String);
+begin
+    if not PayloadInBlackList(PayloadID) then begin
+        PayloadBlackList := PayloadBlackList + #9 + PayloadID + #9;
+    end;
+
+end;
+
+function TfrmMain.PayloadInBlackList(PayloadID: String): Boolean;
+begin
+    Result := Pos(PayloadID, PayloadBlackList) > 0;
+end;
 
 end.

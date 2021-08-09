@@ -50,25 +50,45 @@ type
     btnSettings: TButton;
     PopupMenu1: TPopupMenu;
     ClearHistory1: TMenuItem;
+    Label3: TLabel;
+    edtSNR: TEdit;
+    menuPayload: TPopupMenu;
+    RemovePayload: TMenuItem;
+    RemoveAndBlock: TMenuItem;
+    TabSheet4: TTabSheet;
+    AdvPanel1: TAdvPanel;
+    Label4: TLabel;
+    AdvSmoothButton1: TAdvSmoothButton;
+    AdvSmoothButton2: TAdvSmoothButton;
+    edtBurstAltitude: TEdit;
+    btnSetBurst: TButton;
     procedure btnDownClick(Sender: TObject);
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ClearHistory1Click(Sender: TObject);
     procedure pnlTitleClick(Sender: TObject);
+    procedure btnSettingsClick(Sender: TObject);
+    procedure RemovePayloadClick(Sender: TObject);
+    procedure RemoveAndBlockClick(Sender: TObject);
+    procedure btnSetBurstClick(Sender: TObject);
   private
     { Private declarations }
     ItemIndex: Integer;
     procedure Down;
     procedure Up;
     procedure AddItem(Title, Value: String);
+    procedure AddOrUpdateItem(Title, Value: String);
   public
     { Public declarations }
+    PayloadIndex: Integer;
     procedure AddPosition(Position: THABPosition; Sources: String);
     procedure UpdateSources(Position: THABPosition; Sources: String);
+    procedure ShowSNR(SNR: Double);
     procedure ShowPacketRSSI(PacketRSSI: Integer);
     procedure ShowCurrentRSSI(CurrentRSSI: Integer);
     procedure ShowFrequencyError(FrequencyError: Double);
     procedure ShowDetails(Show: Boolean);
+    procedure UpdatePrediction(Position: THABPosition);
   end;
 
 
@@ -80,6 +100,10 @@ uses Payloads;
 
 procedure TfrmPayload.AddItem(Title, Value: String);
 begin
+    while ItemIndex >= lstTelemetry.Items.Count do begin
+        lstTelemetry.Items.Add('');
+    end;
+
     lstTelemetry.Items[ItemIndex] := Title.PadLeft(11) + ': ' + Value;
     Inc(ItemIndex);
 end;
@@ -155,11 +179,12 @@ begin
         end;
 
         AddItem('Distance', MyFormatFloat('0.0', Distance) + ' km');
-        AddItem('Elevation', MyFormatFloat('0.0', Elevation) + ' deg');
+        AddItem('Direction', MyFormatFloat('0.0', Direction * 180 / Pi) + '°');
+        AddItem('Elevation', MyFormatFloat('0.0', Elevation) + '°');
 
         if ContainsPrediction then begin
-            AddItem('Pred. Lat', MyFormatFloat('0.0000', Latitude));
-            AddItem('Pred. Lon', MyFormatFloat('0.0000', Longitude));
+            AddItem('Pred. Lat', MyFormatFloat('0.0000', PredictedLatitude));
+            AddItem('Pred. Lon', MyFormatFloat('0.0000', PredictedLongitude));
         end;
 
         if Device <> '' then begin
@@ -179,6 +204,24 @@ procedure TfrmPayload.btnDownClick(Sender: TObject);
 begin
     Down;
     frmPayloads.HighlightPayload(pnlTitle.Caption, False, True);
+end;
+
+procedure TfrmPayload.btnSetBurstClick(Sender: TObject);
+var
+    Altitude: Integer;
+begin
+    Altitude := StrToIntDef(edtBurstAltitude.Text, 0);
+
+    frmPayloads.UpdateBurstAltitude(PayloadIndex, Altitude);
+end;
+
+procedure TfrmPayload.btnSettingsClick(Sender: TObject);
+var
+    pnt: TPoint;
+begin
+    if GetCursorPos(pnt) then begin
+        menuPayload.Popup(pnt.X, pnt.Y);
+    end;
 end;
 
 procedure TfrmPayload.btnUpClick(Sender: TObject);
@@ -208,6 +251,16 @@ begin
     frmPayloads.HighlightPayload(pnlTitle.Caption, False, True);
 end;
 
+procedure TfrmPayload.RemoveAndBlockClick(Sender: TObject);
+begin
+    frmPayloads.RemovePayload(PayloadIndex, True);
+end;
+
+procedure TfrmPayload.RemovePayloadClick(Sender: TObject);
+begin
+    frmPayloads.RemovePayload(PayloadIndex);
+end;
+
 procedure TfrmPayload.UpdateSources(Position: THABPosition; Sources: String);
 var
     MyBookmark: TBookmark;
@@ -228,7 +281,7 @@ end;
 
 procedure TfrmPayload.Down;
 begin
-    pnlMain.Height := 350;
+    pnlMain.Height := Round(350 * ScaleFactor);
     btnDown.Visible := False;
     btnUp.Visible := True;
 end;
@@ -238,6 +291,12 @@ begin
     pnlMain.Height := pnlTop.Top + pnlTop.Height + pnlTop.Margins.Top + 1;
     btnUp.Visible := False;
     btnDown.Visible := True;
+end;
+
+procedure TfrmPayload.ShowSNR(SNR: Double);
+begin
+    TabSheet2.TabVisible := True;
+    edtSNR.Text := SNR.ToString;
 end;
 
 procedure TfrmPayload.ShowPacketRSSI(PacketRSSI: Integer);
@@ -266,6 +325,32 @@ begin
         Down;
     end else begin
         Up;
+    end;
+end;
+
+procedure TfrmPayload.AddOrUpdateItem(Title, Value: String);
+var
+    i: Integer;
+begin
+    for i := 0 to lstTelemetry.Items.Count-1 do begin
+        if Pos(Title, lstTelemetry.Items[i]) > 0 then begin
+            lstTelemetry.Items[i] := Title.PadLeft(11) + ': ' + Value;
+            Exit;
+        end;
+    end;
+
+    AddItem(Title, Value);
+end;
+
+procedure TfrmPayload.UpdatePrediction(Position: THABPosition);
+var
+    MyBookmark: TBookmark;
+begin
+    with Position do begin
+        if ContainsPrediction then begin
+            AddOrUpdateItem('Pred. Lat', MyFormatFloat('0.0000', PredictedLatitude));
+            AddOrUpdateItem('Pred. Lon', MyFormatFloat('0.0000', PredictedLongitude));
+        end;
     end;
 end;
 

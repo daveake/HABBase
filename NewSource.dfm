@@ -29,13 +29,13 @@ object frmNewSource: TfrmNewSource
     TabOrder = 0
     OnClick = ComboBox1Click
     Items.Strings = (
-      'Logtail'
+      'Logtail (habhub)'
       'LoRa Gateway'
       'Lora Serial'
       'TCP (DL-FLDigi)'
-      'UDP (HABDEC, Sonde)'
+      'UDP ( rdzTTGOSonde, HABDEC)'
       'Habitat'
-      'APRS')
+      'APRS / OGN')
   end
   object btnOK: TAdvSmoothButton
     AlignWithMargins = True

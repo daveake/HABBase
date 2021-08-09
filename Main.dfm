@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'HAB Base Station Manager V1.3.7'
+  Caption = 'HAB Base Station Manager V1.3.8'
   ClientHeight = 847
   ClientWidth = 1398
   Color = clBtnFace
@@ -89,6 +89,137 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
+      object pnlMap: TPanel
+        Left = 0
+        Top = 0
+        Width = 708
+        Height = 847
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 0
+        Visible = False
+        object pblMapTitle: TPanel
+          Left = 0
+          Top = 0
+          Width = 708
+          Height = 24
+          Align = alTop
+          BevelOuter = bvLowered
+          Color = clGray
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 0
+          object lblTitle: TLabel
+            AlignWithMargins = True
+            Left = 13
+            Top = 4
+            Width = 411
+            Height = 16
+            Margins.Left = 12
+            Align = alClient
+            Caption = 'Map'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWhite
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+            ExplicitWidth = 24
+          end
+          object lblBing: TLabel
+            AlignWithMargins = True
+            Left = 430
+            Top = 4
+            Width = 64
+            Height = 16
+            Align = alRight
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Bing'
+            Color = clSilver
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentColor = False
+            ParentFont = False
+            Transparent = False
+            OnClick = lblBingClick
+            ExplicitLeft = 360
+          end
+          object lblTomTom: TLabel
+            AlignWithMargins = True
+            Left = 640
+            Top = 4
+            Width = 64
+            Height = 16
+            Align = alRight
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'TomTom'
+            Color = clSilver
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentColor = False
+            ParentFont = False
+            Transparent = False
+            OnClick = lblBingClick
+          end
+          object lblGoogle: TLabel
+            AlignWithMargins = True
+            Left = 500
+            Top = 4
+            Width = 64
+            Height = 16
+            Align = alRight
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Google'
+            Color = clSilver
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+            Transparent = False
+            OnClick = lblBingClick
+            ExplicitLeft = 424
+          end
+          object lblOpen: TLabel
+            AlignWithMargins = True
+            Left = 570
+            Top = 4
+            Width = 64
+            Height = 16
+            Align = alRight
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Open'
+            Color = clSilver
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentColor = False
+            ParentFont = False
+            Transparent = False
+            OnClick = lblBingClick
+            ExplicitLeft = 640
+          end
+        end
+      end
     end
   end
   object pnlRight: TPanel

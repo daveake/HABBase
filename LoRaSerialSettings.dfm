@@ -1,6 +1,7 @@
 inherited frmLoRaSerialSettings: TfrmLoRaSerialSettings
   Caption = 'LoRa Serial Settings'
   ClientHeight = 155
+  OnCreate = FormCreate
   ExplicitHeight = 194
   PixelsPerInch = 96
   TextHeight = 13
@@ -42,22 +43,13 @@ inherited frmLoRaSerialSettings: TfrmLoRaSerialSettings
       ExplicitTop = 102
       TMSStyle = 8
     end
-    object edtPort: TEdit
-      Left = 60
-      Top = 59
-      Width = 60
-      Height = 21
-      MaxLength = 5
-      TabOrder = 5
-      OnChange = edtPortChange
-    end
     object edtFrequency1: TEdit
       Left = 60
       Top = 99
       Width = 106
       Height = 21
       MaxLength = 8
-      TabOrder = 6
+      TabOrder = 5
       OnChange = edtPortChange
     end
     object edtMode1: TEdit
@@ -66,7 +58,7 @@ inherited frmLoRaSerialSettings: TfrmLoRaSerialSettings
       Width = 60
       Height = 21
       MaxLength = 1
-      TabOrder = 7
+      TabOrder = 6
       OnChange = edtPortChange
     end
     object chkUpload: TAdvOfficeCheckBox
@@ -74,12 +66,21 @@ inherited frmLoRaSerialSettings: TfrmLoRaSerialSettings
       Top = 60
       Width = 120
       Height = 20
-      TabOrder = 8
+      TabOrder = 7
       OnClick = chKEnabledClick
       Alignment = taLeftJustify
       Caption = 'Upload To Habitat'
       ReturnIsTab = False
       Version = '1.7.0.2'
+    end
+    object cmbPort: TComboBox
+      Left = 60
+      Top = 59
+      Width = 106
+      Height = 22
+      Style = csOwnerDrawFixed
+      Sorted = True
+      TabOrder = 8
     end
   end
 end

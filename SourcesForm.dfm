@@ -1,6 +1,7 @@
 inherited frmSources: TfrmSources
   Caption = 'Sources'
   ClientWidth = 302
+  OnDestroy = FormDestroy
   ExplicitWidth = 318
   PixelsPerInch = 96
   TextHeight = 13

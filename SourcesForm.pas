@@ -11,7 +11,7 @@ uses
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, AdvSmoothButton, AdvPanel, Miscellaneous, Vcl.Menus,
   Source, SourceForm, Habitat, HABLink, SocketSource, UDPSource, APRSSource,
-  GatewaySource, SerialSource, TCPSettings, UDPSettings;
+  GatewaySource, SerialSource, TCPSettings, UDPSettings, APRSSettings;
 
 
 type
@@ -44,6 +44,7 @@ type
     tmrSSDV: TTimer;
     procedure btnAddSourceClick(Sender: TObject);
     procedure tmrSSDVTimer(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
@@ -62,6 +63,8 @@ type
     function NewPosition(SourceIndex: Integer; Position: THABPosition): Boolean;
     procedure AddStatusToLog(SourceIndex: Integer);
     function APRSFilter: String;
+    procedure CloseThread(Thread: TThread);
+    procedure WaitForThread(Thread: TThread);
   public
     { Public declarations }
     procedure LoadSources;
@@ -90,6 +93,7 @@ uses Data, Logtail, Main, Map, SettingsForm, NewSource, Payloads, Misc,
 procedure TfrmSources.LoadSources;
 var
     SourceIndex: Integer;
+    Dummy: String;
 begin
     InitialiseSettings;
 
@@ -100,7 +104,7 @@ begin
     SSDVUploader := TSSDVThread.Create(nil);
 
     // HabLink uploader
-    if ParamCount > 1 then begin
+    if GetCommandLineParameter('HABLink', Dummy) then begin
         HabLinkUploader := THABLinkThread.Create(HabLinkStatusCallback);
         HabLinkUploader.SetListener('HAB Base', 'V1.3', DataModule1.tblSettings.FieldByName('Callsign').AsString);
     end;
@@ -277,15 +281,18 @@ begin
         end;
     end;
 
-    // Calculate distance
     if (not DataModule1.tblSettings.FieldByName('Latitude').IsNull) and (not DataModule1.tblSettings.FieldByName('Longitude').IsNull) then begin
+        // Calculate distance
         Position.Distance := CalculateDistance(Position.Latitude, Position.Longitude,
                                                DataModule1.tblSettings.FieldByName('Latitude').Asfloat,
                                                DataModule1.tblSettings.FieldByName('Longitude').AsFloat) / 1000.0;
-    end;
 
-    // Calculate elevation
-    if (not DataModule1.tblSettings.FieldByName('Latitude').IsNull) and (not DataModule1.tblSettings.FieldByName('Longitude').IsNull) then begin
+        // Calculate direction
+        Position.Direction := CalculateDirection(Position.Latitude, Position.Longitude,
+                                                 DataModule1.tblSettings.FieldByName('Latitude').Asfloat,
+                                                 DataModule1.tblSettings.FieldByName('Longitude').AsFloat);
+
+        // Calculate elevation
         Position.Elevation := CalculateElevation(DataModule1.tblSettings.FieldByName('Latitude').Asfloat,
                                                  DataModule1.tblSettings.FieldByName('Longitude').AsFloat,
                                                  DataModule1.tblSettings.FieldByName('Altitude').AsFloat,
@@ -303,8 +310,10 @@ begin
         end;
     end;
 
-    if ParamCount > 1 then begin
-        HabLinkUploader.SendTelemetry(Position.Line);
+    if HabLinkUploader <> nil then begin
+        if HABSources[SourceIndex].Upload then begin
+            HabLinkUploader.SendTelemetry(Position.Line);
+        end;
     end;
 
 
@@ -370,6 +379,45 @@ begin
     end;
 
     Result := 0;
+end;
+
+procedure TfrmSources.CloseThread(Thread: TThread);
+begin
+    if Thread <> nil then begin
+        Thread.Terminate;
+    end;
+end;
+
+
+procedure TfrmSources.WaitForThread(Thread: TThread);
+begin
+    if Thread <> nil then begin
+        Thread.WaitFor;
+    end;
+end;
+
+procedure TfrmSources.FormDestroy(Sender: TObject);
+var
+    Index: Integer;
+begin
+    // Close and wait for threads
+
+    for Index := Low(HABSources) to High(HABSources) do begin
+        CloseThread(HABSources[Index].Source);
+    end;
+
+    CloseThread(HabitatUploader);
+    CloseThread(SSDVUploader);
+    CloseThread(HabLinkUploader);
+
+
+    WaitForThread(HabitatUploader);
+    WaitForThread(SSDVUploader);
+    WaitForThread(HabLinkUploader);
+
+    for Index := Low(HABSources) to High(HABSources) do begin
+        WaitForThread(HABSources[Index].Source);
+    end;
 end;
 
 procedure TfrmSources.AddNewSource;
@@ -500,6 +548,13 @@ begin
         end;
     end;
 
+    if Position.HasSNR then begin
+        if HABSources[SourceIndex].LatestPosition.InUse then begin
+            // We have a position so we know what payload we last received
+            frmPayloads.ShowSNR(HABSources[SourceIndex].LatestPosition.PayloadID, Position.SNR);
+        end;
+    end;
+
     if Position.HasPacketRSSI then begin
         HABSources[SourceIndex].SourceForm.ShowPacketRSSI(Position.Channel, Position.PacketRSSI);
 
@@ -597,7 +652,7 @@ begin
         stSerial:   SettingsForm := TfrmLoRaSerialSettings.Create(nil);
         stTCP:      SettingsForm := TfrmTCPSettings.Create(nil);
         stUDP:      SettingsForm := TfrmUDPSettings.Create(nil);
-        stAPRS:     SettingsForm := TfrmTCPSettings.Create(nil);
+        stAPRS:     SettingsForm := TfrmAPRSSettings.Create(nil);
         stHabitat:  SettingsForm := nil;
         else        SettingsForm := nil;
     end;

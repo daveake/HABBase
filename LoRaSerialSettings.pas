@@ -5,18 +5,19 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, SettingsForm, AdvSmoothButton,
-  AdvOfficeButtons, Vcl.StdCtrls, Vcl.ExtCtrls, AdvPanel;
+  AdvOfficeButtons, Vcl.StdCtrls, Vcl.ExtCtrls, AdvPanel, Registry;
 
 type
   TfrmLoRaSerialSettings = class(TfrmSettings)
     Label2: TLabel;
-    edtPort: TEdit;
     Label3: TLabel;
     edtFrequency1: TEdit;
     Label4: TLabel;
     edtMode1: TEdit;
     chkUpload: TAdvOfficeCheckBox;
+    cmbPort: TComboBox;
     procedure edtPortChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -38,7 +39,7 @@ procedure TfrmLoRaSerialSettings.ApplyChanges;
 begin
     // Send settings to source
 
-    SetSettingString(Group, 'Port', edtPort.Text);
+    SetSettingString(Group, 'Port', cmbPort.Text);
 
     SetSettingString(Group, 'Frequency', edtFrequency1.Text);
     SetSettingInteger(Group, 'Mode', StrToIntDef(edtMode1.Text, 0));
@@ -52,6 +53,33 @@ begin
     btnSave.Enabled := True;
 end;
 
+procedure TfrmLoRaSerialSettings.FormCreate(Sender: TObject);
+var
+    reg: TRegistry;
+    i: Integer;
+    st: TStringList;
+begin
+    cmbPort.Items.Clear;
+
+    reg := TRegistry.Create;
+    try
+        reg.RootKey := HKEY_LOCAL_MACHINE;
+        reg.OpenKeyReadOnly('hardware\devicemap\serialcomm');
+        st := TstringList.Create;
+        try
+            reg.GetValueNames(st);
+            for i := 0 to st.Count - 1 do begin
+                cmbPort.Items.Add(reg.Readstring(st.strings[i]));
+            end;
+        finally
+            st.Free;
+        end;
+        reg.CloseKey;
+    finally
+        reg.Free;
+    end;
+end;
+
 procedure TfrmLoRaSerialSettings.LoadFields;
 var
     Settings: String;
@@ -59,7 +87,11 @@ begin
     inherited;
 
     with DataModule1.tblSources do begin
-        edtPort.Text := FieldByName('Port').AsString;
+        if cmbPort.Items.IndexOf(FieldByName('Port').AsString) < 0 then begin
+            cmbPort.Items.Append(FieldByName('Port').AsString);
+        end;
+
+        cmbPort.ItemIndex := cmbPort.Items.IndexOf(FieldByName('Port').AsString);
 
         Settings := ';' + FieldByName('Settings').AsString;
 
@@ -74,7 +106,7 @@ begin
     inherited;
 
     with DataModule1.tblSources do begin
-        FieldByName('Port').AsString := edtPort.Text;
+        FieldByName('Port').AsString := cmbPort.Text;
         FieldByName('Settings').AsString := 'Frequency=' + edtFrequency1.Text + ';' +
                                             'Mode=' + edtMode1.Text + ';' +
                                             'Upload=' + BoolToStr(chkUpload.Checked, True);

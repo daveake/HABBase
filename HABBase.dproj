@@ -5,7 +5,7 @@
         <FrameworkType>VCL</FrameworkType>
         <MainSource>HABBase.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -87,7 +87,7 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_WriteableConstants>true</DCC_WriteableConstants>
         <Icon_MainIcon>HABBase_Icon.ico</Icon_MainIcon>
-        <Debugger_RunParams>D:\Dropbox\dev\HAB\Apps\HABBase Developer</Debugger_RunParams>
+        <Debugger_RunParams>PATH=D:\Dropbox\dev\HAB\Apps\HABBase xNewMap HABLink</Debugger_RunParams>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -223,6 +223,19 @@
         <DCCReference Include="..\HABRx\SSDV.pas"/>
         <DCCReference Include="..\HABRx\HABLink.pas"/>
         <DCCReference Include="..\HABRx\APRSSource.pas"/>
+        <DCCReference Include="GoogleMap.pas">
+            <Form>frmGMap</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="FNCMap.pas">
+            <Form>frmFNCMap</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\HABRx\Tawhiri.pas"/>
+        <DCCReference Include="APRSSettings.pas">
+            <Form>frmAPRSSettings</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

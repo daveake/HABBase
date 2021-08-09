@@ -13,8 +13,6 @@ type
     DBAdvGrid2: TDBAdvGrid;
     btnAppend: TAdvSmoothButton;
     DBCheckBox1: TDBCheckBox;
-    DBCheckBox2: TDBCheckBox;
-    DBCheckBox3: TDBCheckBox;
     DBCheckBox4: TDBCheckBox;
     DBEdit1: TDBEdit;
     Label1: TLabel;

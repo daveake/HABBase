@@ -176,7 +176,7 @@ end;
 
 procedure TfrmSource.Down;
 begin
-    pnlMain.Height := 350;
+    pnlMain.Height := Round(350 * ScaleFactor);
     btnDown.Visible := False;
     btnUp.Visible := True;
 end;

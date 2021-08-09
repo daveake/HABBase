@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Normal, Vcl.StdCtrls, Vcl.ExtCtrls,
   AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid, Payload,
   Miscellaneous, Source, Math, IdBaseComponent, IdComponent, IdUDPBase,
-  IdUDPClient, Misc;
+  IdUDPClient, Tawhiri, Misc;
 
 type
     TPayload = record
@@ -19,6 +19,8 @@ type
         Colour:             TColor;
         Sources:            String;
         LastUpdate:         TDateTime;
+        PredictionIndex:    Integer;
+        BurstAltitude:      Double;
     end;
 
   TfrmPayloads = class(TfrmNormal)
@@ -26,12 +28,16 @@ type
     tmrUpdates: TTimer;
     tmrExpired: TTimer;
     UDPClient: TIdUDPClient;
+    tmrPredictions: TTimer;
     procedure tmrUpdatesTimer(Sender: TObject);
     procedure tmrExpiredTimer(Sender: TObject);
     procedure scrollMainClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure tmrPredictionsTimer(Sender: TObject);
   private
     { Private declarations }
     HABPayloads: Array[1..MAX_PAYLOADS] of TPayload;
+    Predictor: TTawhiri;
     function AddOrUpdatePayloadInOurList(Position: THABPosition; SourceCode: String; var PositionIsNew: Boolean): Integer;
     function FindPayload(PayloadID: String): Integer;
     function FindOrAddPayload(PayloadID: String): Integer;
@@ -41,11 +47,14 @@ type
     { Public declarations }
     function NewPosition(Position: THABPosition; SourceCode, SourceDescription: String): Boolean;
     procedure UpdateActivePayloads;
+    procedure ShowSNR(PayloadID: String; SNR: Double);
     procedure ShowPacketRSSI(PayloadID: String; PacketRSSI: Integer);
     procedure ShowCurrentRSSI(PayloadID: String; CurrentRSSI: Integer);
     procedure ShowFrequencyError(PayloadID: String; FrequencyError: Double);
     procedure CheckForExpiredPayloads;
     procedure HighlightPayload(PayloadID: String; InList, OnMap: Boolean);
+    procedure RemovePayload(PayloadIndex: Integer; Block: Boolean = False);
+    procedure UpdateBurstAltitude(PayloadIndex: Integer; Altitude: Double);
   end;
 
 var
@@ -57,6 +66,14 @@ implementation
 
 uses Main, Data, Map, BaseTypes;
 
+procedure TfrmPayloads.FormCreate(Sender: TObject);
+begin
+    inherited;
+
+    // Predictor
+    Predictor := TTawhiri.Create;
+end;
+
 function TfrmPayloads.NewPosition(Position: THABPosition; SourceCode, SourceDescription: String): Boolean;
 var
     PayloadIndex: Integer;
@@ -65,10 +82,25 @@ begin
     PositionIsNew := False;
     DataModule1.AddPayloadToFullTable(Position);
 
-    if frmMain.PayloadInWhiteList(Position) then begin
+    if frmMain.PayloadInWhiteList(Position) and not frmMain.PayloadInBlackList(Position.PayloadID) then begin
         PayloadIndex := AddOrUpdatePayloadInOurList(Position, SourceCode, PositionIsNew);
 
         if PayloadIndex > 0 then begin
+            // Get a prediction ?
+            if HABPayloads[PayloadIndex].PredictionIndex <= 0 then begin
+                HABPayloads[PayloadIndex].PredictionIndex := Predictor.AddPayload(Position.PayloadID);
+            end;
+
+            if HABPayloads[PayloadIndex].PredictionIndex > 0 then begin
+                Predictor.UpdatePayload(HABPayloads[PayloadIndex].PredictionIndex,
+                                        HABPayloads[PayloadIndex].Position.Latitude,
+                                        HABPayloads[PayloadIndex].Position.Longitude,
+                                        HABPayloads[PayloadIndex].Position.Altitude,
+                                        HABPayloads[PayloadIndex].BurstAltitude,
+                                        HABPayloads[PayloadIndex].Position.AscentRate,
+                                        5);
+            end;
+
             // Update Map
             frmMap.ProcessNewPosition(PayloadIndex, HABPayloads[PayloadIndex].Position, HABPayloads[PayloadIndex].Colour, HABPayloads[PayloadIndex].ColourText);
         end;
@@ -99,6 +131,9 @@ begin
 
             // Add form
             HABPayloads[PayloadIndex].Form := TfrmPayload.Create(nil);
+            HABPayloads[PayloadIndex].Form.PayloadIndex := PayloadIndex;
+            HABPayloads[PayloadIndex].BurstAltitude := 30000;
+            HABPayloads[PayloadIndex].Form.edtBurstAltitude.Text := FormatFloat('0', HABPayloads[PayloadIndex].BurstAltitude);
             HABPayloads[PayloadIndex].Form.pnlMain.Parent := scrollMain;    // pnlMain;
             HABPayloads[PayloadIndex].Form.pnlTitle.Caption := Position.PayloadID;
             HABPayloads[PayloadIndex].Form.pnlTSS.Caption := '00:00';
@@ -160,6 +195,44 @@ end;
 procedure TfrmPayloads.tmrExpiredTimer(Sender: TObject);
 begin
     CheckForExpiredPayloads;
+end;
+
+procedure TfrmPayloads.tmrPredictionsTimer(Sender: TObject);
+var
+    PayloadIndex, Index: Integer;
+    PredictedLatitude, PredictedLongitude, PredictedAltitude: Double;
+    OK: Boolean;
+begin
+    for PayloadIndex := Low(HABPayloads) to High(HABPayloads) do begin
+        if HABPayloads[PayloadIndex].InUse and (HABPayloads[PayloadIndex].Form <> nil) then begin
+            if not HABPayloads[PayloadIndex].Position.ContainsPrediction then begin
+                if HABPayloads[PayloadIndex].PredictionIndex > 0 then begin
+                    if Predictor.PredictionUpdated(HABPayloads[PayloadIndex].PredictionIndex) then begin
+                        Predictor.GetPrediction(PayloadIndex, HABPayloads[PayloadIndex].Position.PredictedLatitude, HABPayloads[PayloadIndex].Position.PredictedLongitude, PredictedAltitude);
+                        HABPayloads[PayloadIndex].Position.ContainsPrediction := True;
+
+                        // Get and draw path
+                        frmMap.ClearPredictionPath(PayloadIndex, HABPayloads[PayloadIndex].Colour);
+                        Index := 0;
+                        repeat
+                            Inc(Index);
+                            OK := Predictor.GetPayloadPath(PayloadIndex, Index, PredictedLatitude, PredictedLongitude, PredictedAltitude);
+                            if OK then begin
+                                frmMap.AppendToPredictionPath(PayloadIndex, PredictedLatitude, PredictedLongitude, PredictedAltitude);
+                            end;
+
+                        until not OK;
+
+                        // Move marker on map
+                        frmMap.SetLandingMarker(PayloadIndex, HABPayloads[PayloadIndex].Position, HABPayloads[PayloadIndex].ColourText);
+
+                        // Updated in payload box
+                        HABPayloads[PayloadIndex].Form.UpdatePrediction(HABPayloads[PayloadIndex].Position);
+                    end;
+                end;
+            end;
+        end;
+    end;
 end;
 
 procedure TfrmPayloads.tmrUpdatesTimer(Sender: TObject);
@@ -242,9 +315,7 @@ begin
                                                                                  DataModule1.tblSettings.FieldByName('Longitude').AsFloat) / 1000.0;
                 if not frmMain.PayloadInWhiteList(HABPayloads[PayloadIndex].Position) then begin
                     // Remove it
-                    HABPayloads[PayloadIndex].InUse := False;
-                    HABPayloads[PayloadIndex].Form.Free;
-                    frmMap.RemovePayload(PayloadIndex);
+                    RemovePayload(PayloadIndex);
                 end;
             end;
         end;
@@ -280,6 +351,17 @@ begin
             end;
             Next;
         end;
+    end;
+end;
+
+procedure TfrmPayloads.ShowSNR(PayloadID: String; SNR: Double);
+var
+    PayloadIndex: Integer;
+begin
+    PayloadIndex := FindPayload(PayloadID);
+
+    if PayloadIndex > 0 then begin
+        HABPayloads[PayloadIndex].Form.ShowSNR(SNR);
     end;
 end;
 
@@ -326,9 +408,7 @@ begin
     for PayloadIndex := Low(HABPayloads) to High(HABPayloads) do begin
         if HABPayloads[PayloadIndex].InUse then begin
             if HABPayloads[PayloadIndex].LastUpdate < MustHaveUpdatedSince then begin
-                HABPayloads[PayloadIndex].InUse := False;
-                HABPayloads[PayloadIndex].Form.Free;
-                frmMap.RemovePayload(PayloadIndex);
+                RemovePayload(PayloadIndex);
             end;
         end;
     end;
@@ -362,6 +442,22 @@ begin
     if Port > 0 then begin
         UDPClient.Broadcast(Position.Line, Port);
     end;
+end;
+
+procedure TfrmPayloads.RemovePayload(PayloadIndex: Integer; Block: Boolean=False);
+begin
+    if Block then begin
+        frmMain.AddPayloadToBlackList(HABPayloads[PayloadIndex].Position.PayloadID);
+    end;
+
+    HABPayloads[PayloadIndex].InUse := False;
+    HABPayloads[PayloadIndex].Form.Free;
+    frmMap.RemovePayload(PayloadIndex);
+end;
+
+procedure TfrmPayloads.UpdateBurstAltitude(PayloadIndex: Integer; Altitude: Double);
+begin
+    HABPayloads[PayloadIndex].BurstAltitude := Altitude;
 end;
 
 end.

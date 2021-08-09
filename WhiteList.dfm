@@ -1,15 +1,20 @@
 inherited frmWhiteList: TfrmWhiteList
   Caption = 'Balloon Filter - Which Balloons To Show'
+  ClientWidth = 525
   OnActivate = FormActivate
   OnCreate = FormCreate
+  ExplicitWidth = 541
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlStatus: TAdvPanel
+    Width = 525
     FullHeight = 42
     inherited pnlHidden: TPanel
+      Left = 273
       ExplicitLeft = 383
     end
     inherited AdvSmoothButton1: TAdvSmoothButton
+      Left = 402
       Caption = 'Close'
       ExplicitLeft = 512
       ExplicitTop = 3
@@ -17,6 +22,7 @@ inherited frmWhiteList: TfrmWhiteList
       TMSStyle = 8
     end
     inherited AdvSmoothButton2: TAdvSmoothButton
+      Left = 276
       Visible = False
       ExplicitLeft = 386
       ExplicitTop = 3
@@ -173,12 +179,13 @@ inherited frmWhiteList: TfrmWhiteList
     end
   end
   inherited pnlMain: TPanel
-    ExplicitLeft = 0
-    ExplicitTop = 0
+    Width = 525
+    ExplicitLeft = 20
+    ExplicitTop = 72
     ExplicitWidth = 635
     ExplicitHeight = 250
     object Label1: TLabel
-      Left = 367
+      Left = 291
       Top = 171
       Width = 69
       Height = 13
@@ -186,7 +193,7 @@ inherited frmWhiteList: TfrmWhiteList
       Caption = 'Payload Mask:'
     end
     object Label2: TLabel
-      Left = 368
+      Left = 292
       Top = 211
       Width = 68
       Height = 13
@@ -194,7 +201,7 @@ inherited frmWhiteList: TfrmWhiteList
       Caption = 'Max Distance:'
     end
     object Label3: TLabel
-      Left = 551
+      Left = 475
       Top = 211
       Width = 13
       Height = 13
@@ -203,11 +210,11 @@ inherited frmWhiteList: TfrmWhiteList
     object DBAdvGrid2: TDBAdvGrid
       Left = 0
       Top = 0
-      Width = 337
+      Width = 237
       Height = 250
       Cursor = crDefault
       Align = alLeft
-      ColCount = 6
+      ColCount = 4
       DrawingStyle = gdsClassic
       FixedColor = clWhite
       FixedCols = 0
@@ -367,58 +374,6 @@ inherited frmWhiteList: TfrmWhiteList
           CheckFalse = 'N'
           CheckTrue = 'Y'
           Color = clWindow
-          FieldName = 'HAB'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          HeaderFont.Charset = DEFAULT_CHARSET
-          HeaderFont.Color = 3881787
-          HeaderFont.Height = -11
-          HeaderFont.Name = 'Tahoma'
-          HeaderFont.Style = []
-          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
-          PrintFont.Charset = DEFAULT_CHARSET
-          PrintFont.Color = clWindowText
-          PrintFont.Height = -11
-          PrintFont.Name = 'Tahoma'
-          PrintFont.Style = []
-          Width = 45
-        end
-        item
-          Borders = []
-          BorderPen.Color = clSilver
-          ButtonHeight = 18
-          CheckFalse = 'N'
-          CheckTrue = 'Y'
-          Color = clWindow
-          FieldName = 'Sonde'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = []
-          HeaderFont.Charset = DEFAULT_CHARSET
-          HeaderFont.Color = 3881787
-          HeaderFont.Height = -11
-          HeaderFont.Name = 'Tahoma'
-          HeaderFont.Style = []
-          PrintBorders = [cbTop, cbLeft, cbRight, cbBottom]
-          PrintFont.Charset = DEFAULT_CHARSET
-          PrintFont.Color = clWindowText
-          PrintFont.Height = -11
-          PrintFont.Name = 'Tahoma'
-          PrintFont.Style = []
-          Width = 42
-        end
-        item
-          Borders = []
-          BorderPen.Color = clSilver
-          ButtonHeight = 18
-          CheckFalse = 'N'
-          CheckTrue = 'Y'
-          Color = clWindow
           FieldName = 'Remote'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -463,7 +418,7 @@ inherited frmWhiteList: TfrmWhiteList
           PrintFont.Height = -11
           PrintFont.Name = 'Tahoma'
           PrintFont.Style = []
-          Width = 74
+          Width = 42
         end
         item
           Alignment = taRightJustify
@@ -490,7 +445,7 @@ inherited frmWhiteList: TfrmWhiteList
           PrintFont.Height = -11
           PrintFont.Name = 'Tahoma'
           PrintFont.Style = []
-          Width = 67
+          Width = 45
         end>
       DataSource = DataModule1.srcWhiteList
       InvalidPicture.Data = {
@@ -634,12 +589,10 @@ inherited frmWhiteList: TfrmWhiteList
         60
         45
         42
-        45
-        74
-        67)
+        45)
     end
     object DBCheckBox1: TDBCheckBox
-      Left = 368
+      Left = 292
       Top = 24
       Width = 97
       Height = 25
@@ -649,57 +602,35 @@ inherited frmWhiteList: TfrmWhiteList
       TabOrder = 1
       OnClick = DBCheckBox1Click
     end
-    object DBCheckBox2: TDBCheckBox
-      Left = 368
-      Top = 64
-      Width = 97
-      Height = 17
-      Caption = ' Include HABs'
-      DataField = 'HAB'
-      DataSource = DataModule1.srcWhiteList
-      TabOrder = 2
-      OnClick = DBCheckBox1Click
-    end
-    object DBCheckBox3: TDBCheckBox
-      Left = 368
-      Top = 96
-      Width = 97
-      Height = 17
-      Caption = ' Include Sondes'
-      DataField = 'Sonde'
-      DataSource = DataModule1.srcWhiteList
-      TabOrder = 3
-      OnClick = DBCheckBox1Click
-    end
     object DBCheckBox4: TDBCheckBox
-      Left = 368
-      Top = 128
+      Left = 292
+      Top = 76
       Width = 201
       Height = 17
       Caption = 'Include Remotely Received'
       DataField = 'Remote'
       DataSource = DataModule1.srcWhiteList
-      TabOrder = 4
+      TabOrder = 2
       OnClick = DBCheckBox1Click
     end
     object DBEdit1: TDBEdit
-      Left = 448
+      Left = 372
       Top = 168
       Width = 121
       Height = 21
       DataField = 'Mask'
       DataSource = DataModule1.srcWhiteList
-      TabOrder = 5
+      TabOrder = 3
       OnChange = DBEdit1Change
     end
     object DBEdit2: TDBEdit
-      Left = 448
+      Left = 372
       Top = 208
       Width = 73
       Height = 21
       DataField = 'Distance'
       DataSource = DataModule1.srcWhiteList
-      TabOrder = 6
+      TabOrder = 4
       OnChange = DBEdit1Change
     end
   end

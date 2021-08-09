@@ -116,7 +116,7 @@ inherited frmPayload: TfrmPayload
           Align = alRight
           Caption = '...'
           TabOrder = 3
-          Visible = False
+          OnClick = btnSettingsClick
         end
       end
     end
@@ -125,7 +125,7 @@ inherited frmPayload: TfrmPayload
       Top = 44
       Width = 353
       Height = 306
-      ActivePage = TabSheet3
+      ActivePage = TabSheet4
       Align = alClient
       MultiLine = True
       TabOrder = 1
@@ -140,10 +140,10 @@ inherited frmPayload: TfrmPayload
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -16
+          Font.Height = -15
           Font.Name = 'Courier New'
           Font.Style = []
-          ItemHeight = 18
+          ItemHeight = 17
           Items.Strings = (
             ''
             ''
@@ -248,6 +248,15 @@ inherited frmPayload: TfrmPayload
             Alignment = taRightJustify
             Anchors = [akTop, akRight]
             Caption = 'Freq. Error:'
+          end
+          object Label3: TLabel
+            Left = 230
+            Top = 22
+            Width = 24
+            Height = 13
+            Alignment = taRightJustify
+            Anchors = [akTop, akRight]
+            Caption = 'SNR:'
           end
           object btnSave: TAdvSmoothButton
             AlignWithMargins = True
@@ -393,6 +402,16 @@ inherited frmPayload: TfrmPayload
             Anchors = [akTop, akRight]
             ReadOnly = True
             TabOrder = 5
+          end
+          object edtSNR: TEdit
+            Left = 260
+            Top = 19
+            Width = 69
+            Height = 21
+            Alignment = taCenter
+            Anchors = [akTop, akRight]
+            ReadOnly = True
+            TabOrder = 6
           end
         end
       end
@@ -880,20 +899,14 @@ inherited frmPayload: TfrmPayload
       object tabCharts: TTabSheet
         Caption = 'Charts'
         ImageIndex = 3
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object AltitudeChart: TChart
           Left = 0
           Top = 0
           Width = 345
           Height = 278
           Legend.Visible = False
-          SubTitle.Text.Strings = (
-            'Altitude (m)')
           Title.Text.Strings = (
-            'TChart')
+            'Altitude (m)')
           Align = alClient
           TabOrder = 0
           DefaultCanvas = 'TGDIPlusCanvas'
@@ -907,6 +920,176 @@ inherited frmPayload: TfrmPayload
             XValues.Order = loAscending
             YValues.Name = 'Y'
             YValues.Order = loNone
+          end
+        end
+      end
+      object TabSheet4: TTabSheet
+        Caption = 'Settings'
+        ImageIndex = 4
+        object AdvPanel1: TAdvPanel
+          Left = 0
+          Top = 0
+          Width = 345
+          Height = 278
+          Margins.Left = 2
+          Margins.Top = 2
+          Margins.Right = 2
+          Margins.Bottom = 2
+          Align = alClient
+          BevelOuter = bvNone
+          BorderStyle = bsSingle
+          Color = clSilver
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+          UseDockManager = True
+          Version = '2.5.10.2'
+          BorderColor = clGray
+          Caption.Color = 15722471
+          Caption.ColorTo = 11176072
+          Caption.Font.Charset = DEFAULT_CHARSET
+          Caption.Font.Color = clWindowText
+          Caption.Font.Height = -16
+          Caption.Font.Name = 'Tahoma'
+          Caption.Font.Style = []
+          Caption.GradientDirection = gdVertical
+          Caption.Height = 14
+          Caption.Indent = 2
+          Caption.ShadeLight = 255
+          CollapsColor = clHighlight
+          CollapsDelay = 0
+          ColorTo = 14540253
+          ColorMirror = 14540253
+          ColorMirrorTo = clSilver
+          DoubleBuffered = True
+          ShadowColor = clBlack
+          ShadowOffset = 0
+          StatusBar.BorderColor = clNone
+          StatusBar.BorderStyle = bsSingle
+          StatusBar.Font.Charset = DEFAULT_CHARSET
+          StatusBar.Font.Color = clBlack
+          StatusBar.Font.Height = -11
+          StatusBar.Font.Name = 'Tahoma'
+          StatusBar.Font.Style = []
+          StatusBar.Color = 12560553
+          StatusBar.ColorTo = 14602191
+          StatusBar.GradientDirection = gdVertical
+          Text = ''
+          DesignSize = (
+            341
+            274)
+          FullHeight = 337
+          object Label4: TLabel
+            Left = 17
+            Top = 22
+            Width = 136
+            Height = 13
+            Alignment = taRightJustify
+            Caption = 'Burst Altitude for prediction:'
+          end
+          object AdvSmoothButton1: TAdvSmoothButton
+            AlignWithMargins = True
+            Left = 447
+            Top = 122
+            Width = 82
+            Height = 38
+            Margins.Left = 2
+            Margins.Top = 2
+            Margins.Right = 2
+            Margins.Bottom = 2
+            Anchors = [akRight, akBottom]
+            Appearance.Font.Charset = DEFAULT_CHARSET
+            Appearance.Font.Color = 2303013
+            Appearance.Font.Height = -11
+            Appearance.Font.Name = 'Tahoma'
+            Appearance.Font.Style = []
+            Appearance.SimpleLayout = True
+            Appearance.Rounding = 0
+            Status.Caption = '0'
+            Status.Appearance.Fill.Color = clRed
+            Status.Appearance.Fill.ColorMirror = clNone
+            Status.Appearance.Fill.ColorMirrorTo = clNone
+            Status.Appearance.Fill.GradientType = gtSolid
+            Status.Appearance.Fill.GradientMirrorType = gtSolid
+            Status.Appearance.Fill.BorderColor = clGray
+            Status.Appearance.Fill.Rounding = 0
+            Status.Appearance.Fill.ShadowOffset = 0
+            Status.Appearance.Fill.Glow = gmNone
+            Status.Appearance.Font.Charset = DEFAULT_CHARSET
+            Status.Appearance.Font.Color = clWhite
+            Status.Appearance.Font.Height = -11
+            Status.Appearance.Font.Name = 'Tahoma'
+            Status.Appearance.Font.Style = []
+            Caption = 'Save'
+            Color = clWhite
+            ParentFont = False
+            TabOrder = 0
+            Enabled = False
+            Version = '2.2.1.2'
+            TMSStyle = 8
+          end
+          object AdvSmoothButton2: TAdvSmoothButton
+            AlignWithMargins = True
+            Left = 541
+            Top = 122
+            Width = 82
+            Height = 38
+            Margins.Left = 2
+            Margins.Top = 2
+            Margins.Right = 2
+            Margins.Bottom = 2
+            Anchors = [akRight, akBottom]
+            Appearance.Font.Charset = DEFAULT_CHARSET
+            Appearance.Font.Color = 2303013
+            Appearance.Font.Height = -11
+            Appearance.Font.Name = 'Tahoma'
+            Appearance.Font.Style = []
+            Appearance.SimpleLayout = True
+            Appearance.Rounding = 0
+            Status.Caption = '0'
+            Status.Appearance.Fill.Color = clRed
+            Status.Appearance.Fill.ColorMirror = clNone
+            Status.Appearance.Fill.ColorMirrorTo = clNone
+            Status.Appearance.Fill.GradientType = gtSolid
+            Status.Appearance.Fill.GradientMirrorType = gtSolid
+            Status.Appearance.Fill.BorderColor = clGray
+            Status.Appearance.Fill.Rounding = 0
+            Status.Appearance.Fill.ShadowOffset = 0
+            Status.Appearance.Fill.Glow = gmNone
+            Status.Appearance.Font.Charset = DEFAULT_CHARSET
+            Status.Appearance.Font.Color = clWhite
+            Status.Appearance.Font.Height = -11
+            Status.Appearance.Font.Name = 'Tahoma'
+            Status.Appearance.Font.Style = []
+            Caption = 'Cancel'
+            Color = clWhite
+            ParentFont = False
+            TabOrder = 1
+            Version = '2.2.1.2'
+            ModalResult = 2
+            TMSStyle = 8
+          end
+          object edtBurstAltitude: TEdit
+            Left = 168
+            Top = 19
+            Width = 69
+            Height = 21
+            Alignment = taCenter
+            ReadOnly = True
+            TabOrder = 2
+          end
+          object btnSetBurst: TButton
+            Left = 256
+            Top = 17
+            Width = 61
+            Height = 25
+            Caption = 'Set'
+            TabOrder = 3
+            OnClick = btnSetBurstClick
           end
         end
       end
@@ -994,6 +1177,18 @@ inherited frmPayload: TfrmPayload
     object ClearHistory1: TMenuItem
       Caption = 'Clear History'
       OnClick = ClearHistory1Click
+    end
+  end
+  object menuPayload: TPopupMenu
+    Left = 229
+    Top = 176
+    object RemovePayload: TMenuItem
+      Caption = 'Remove Payload'
+      OnClick = RemovePayloadClick
+    end
+    object RemoveAndBlock: TMenuItem
+      Caption = 'Remove And Block'
+      OnClick = RemoveAndBlockClick
     end
   end
 end
