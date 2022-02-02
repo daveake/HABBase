@@ -39,7 +39,6 @@ uses
   SSDV in '..\HABRx\SSDV.pas',
   HABLink in '..\HABRx\HABLink.pas',
   APRSSource in '..\HABRx\APRSSource.pas',
-  GoogleMap in 'GoogleMap.pas' {frmGMap},
   FNCMap in 'FNCMap.pas' {frmFNCMap},
   Tawhiri in '..\HABRx\Tawhiri.pas',
   APRSSettings in 'APRSSettings.pas' {frmAPRSSettings};

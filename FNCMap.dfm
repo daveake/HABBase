@@ -5,11 +5,6 @@ inherited frmFNCMap: TfrmFNCMap
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
-    inherited Panel1: TPanel
-      inherited lblTitle: TLabel
-        Width = 816
-      end
-    end
     object FNCMap: TTMSFNCMaps
       Left = 0
       Top = 24
@@ -27,8 +22,10 @@ inherited frmFNCMap: TfrmFNCMap
       Markers = <>
       Options.DefaultLatitude = 52.000000000000000000
       Options.DefaultLongitude = 0.000000000000000000
+      Options.DefaultZoomLevel = 12.000000000000000000
       Service = msOpenLayers
       LocalFileAccess = True
+      ExplicitTop = 26
     end
   end
   object tmrCentreAtHome: TTimer

@@ -9,8 +9,9 @@ uses
   FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, AdvObj,
   BaseGrid, AdvGrid, DBAdvGrid, Miscellaneous, Source, Vcl.StdCtrls, Vcl.ComCtrls,
-  AdvSmoothButton, AdvPanel, AdvProgr, AdvGauge, VclTee.TeeGDIPlus, Map,
-  VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart, Vcl.Menus;
+  AdvSmoothButton, AdvPanel, AdvProgr, AdvGauge, Map, Vcl.Menus,
+  VCL.TMSFNCTypes, VCL.TMSFNCUtils, VCL.TMSFNCGraphics,
+  VCL.TMSFNCGraphicsTypes, VCL.TMSFNCChart;
 
 type
   TfrmPayload = class(TfrmBase)
@@ -42,8 +43,6 @@ type
     Label2: TLabel;
     edtFrequencyError: TEdit;
     tabCharts: TTabSheet;
-    AltitudeChart: TChart;
-    Series1: TLineSeries;
     pnlTSS: TPanel;
     btnDown: TButton;
     btnUp: TButton;
@@ -62,6 +61,7 @@ type
     AdvSmoothButton2: TAdvSmoothButton;
     edtBurstAltitude: TEdit;
     btnSetBurst: TButton;
+    AltitudeChart: TTMSFNCChart;
     procedure btnDownClick(Sender: TObject);
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -196,7 +196,7 @@ begin
         end;
 
         // Charts
-        AltitudeChart.Series[0].AddXY(Now, Altitude);
+        AltitudeChart.Series[0].AddXYPoint(Now, Altitude);
     end;
 end;
 

@@ -146,7 +146,6 @@ inherited frmSource: TfrmSource
           Top = 0
           Width = 374
           Height = 276
-          Cursor = crDefault
           Align = alClient
           ColCount = 7
           DrawingStyle = gdsClassic
@@ -155,11 +154,9 @@ inherited frmSource: TfrmSource
           RowCount = 2
           FixedRows = 1
           PopupMenu = PopupMenu1
-          ScrollBars = ssBoth
           TabOrder = 0
           GridLineColor = 13948116
           GridFixedLineColor = 11250603
-          HoverRowCells = [hcNormal, hcSelected]
           ActiveCellFont.Charset = DEFAULT_CHARSET
           ActiveCellFont.Color = 4474440
           ActiveCellFont.Height = -11
@@ -224,7 +221,6 @@ inherited frmSource: TfrmSource
           FixedFont.Style = [fsBold]
           FloatFormat = '%.2f'
           HoverButtons.Buttons = <>
-          HoverButtons.Position = hbLeftFromColumnLeft
           HTMLSettings.ImageFolder = 'images'
           HTMLSettings.ImageBaseName = 'img'
           Look = glCustom
@@ -266,13 +262,11 @@ inherited frmSource: TfrmSource
           SearchFooter.MatchCaseCaption = 'Match case'
           SearchFooter.ResultFormat = '(%d of %d)'
           SelectionColor = 13744549
-          SortSettings.DefaultFormat = ssAutomatic
           SortSettings.HeaderColor = clWhite
           SortSettings.HeaderColorTo = clWhite
           SortSettings.HeaderMirrorColor = clWhite
           SortSettings.HeaderMirrorColorTo = clWhite
-          UIStyle = tsCustom
-          Version = '2.5.0.6'
+          Version = '2.5.1.10'
           AutoCreateColumns = True
           AutoRemoveColumns = True
           Columns = <
@@ -617,10 +611,6 @@ inherited frmSource: TfrmSource
         Caption = 'Uplink'
         ImageIndex = 2
         TabVisible = False
-        ExplicitLeft = 0
-        ExplicitTop = 0
-        ExplicitWidth = 0
-        ExplicitHeight = 0
         object lblUploadPayload: TLabel
           Left = 34
           Top = 6
@@ -664,10 +654,6 @@ inherited frmSource: TfrmSource
           TabOrder = 2
           object tabCutdown: TTabSheet
             Caption = 'Cutdown'
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object lblCutdownPeriod: TLabel
               Left = 109
               Top = 7
@@ -724,10 +710,6 @@ inherited frmSource: TfrmSource
           object tabOutput: TTabSheet
             Caption = 'Output'
             ImageIndex = 1
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object lblOutputPin: TLabel
               Left = 13
               Top = 16
@@ -765,10 +747,6 @@ inherited frmSource: TfrmSource
           object tabServo: TTabSheet
             Caption = 'Servo'
             ImageIndex = 2
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object lblServoPin: TLabel
               Left = 5
               Top = 20
@@ -822,10 +800,6 @@ inherited frmSource: TfrmSource
           object tabScript: TTabSheet
             Caption = 'Script'
             ImageIndex = 3
-            ExplicitLeft = 0
-            ExplicitTop = 0
-            ExplicitWidth = 0
-            ExplicitHeight = 0
             object lblScriptName: TLabel
               Left = 4
               Top = 20

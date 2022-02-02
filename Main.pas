@@ -41,7 +41,6 @@ type
     procedure lblBingClick(Sender: TObject);
   private
     { Private declarations }
-    UseFNCMap: Boolean;
     PayloadMasks: TPayloadMasks;
     PayloadBlackList: String;
     procedure LoadData;
@@ -67,7 +66,7 @@ uses Data,
      // ToolWhiteList,
      ToolSettings,
      // Main Forms
-     Map, GoogleMap, FNCMap,
+     Map, FNCMap,
      Payloads,
      // Sources
      SourcesForm;
@@ -116,15 +115,9 @@ var
     Dummy: String;
 begin
     // Map
-    if GetCommandLineParameter('NewMap', Dummy) then begin
-        pnlMap.Visible := True;
-        frmMap := TfrmFNCMap.Create(nil);
-        TfrmFNCMap(frmMap).FNCMap.Parent := pnlMap;
-    end else begin
-        pnlMap.Visible := False;
-        frmMap := TfrmGMap.Create(nil);
-        frmMap.pnlMain.Parent := pnlMiddle;
-    end;
+    pnlMap.Visible := True;
+    frmMap := TfrmFNCMap.Create(nil);
+    TfrmFNCMap(frmMap).FNCMap.Parent := pnlMap;
 
     // Live Payloads
     frmPayloads := TfrmPayloads.Create(nil);

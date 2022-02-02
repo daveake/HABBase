@@ -71,6 +71,7 @@ type
     procedure ShowSetting(Setting, Value: String); override;
     procedure DoAFC(Channel: Integer; FrequencyError: Double); override;
     procedure SetDeviceVersion(Version: Double); override;
+    procedure SetFromCallingMode(CallingModeFrequency:   Double; CallingModeImplicit, CallingModeError, CallingModeBandwidth, CallingModeSpreading, CallingModeOptimize: Integer); override;
   end;
 
 
@@ -253,6 +254,18 @@ end;
 procedure TfrmLoRaSerialSource.SetDeviceVersion(Version: Double);
 begin
     lblVersionInfo.Visible := Version < 2.0;
+end;
+
+procedure TfrmLoRaSerialSource.SetFromCallingMode(CallingModeFrequency: Double; CallingModeImplicit, CallingModeError, CallingModeBandwidth, CallingModeSpreading, CallingModeOptimize: Integer);
+begin
+    edtFrequency.Text := MyFormatFloat('0.0000', CallingModeFrequency);
+    SetSettingString(Group, 'Frequency', edtFrequency.Text);
+    SetSettingString(Group, 'Mode', '1');
+    SetGroupChangedFlag(Group, True);
+
+    AddStatusToLog('CALLING MODE');
+    AddStatusToLog('Set frequency to ' + edtFrequency.Text);
+    AddStatusToLog('Set mode to ' + '1');
 end;
 
 

@@ -105,6 +105,7 @@ type
     procedure ShowSetting(Setting, Value: String); virtual;
     procedure DoAFC(Channel: Integer; FrequencyError: Double); virtual;
     procedure SetDeviceVersion(Version: Double); virtual;
+    procedure SetFromCallingMode(CallingModeFrequency:   Double; CallingModeImplicit, CallingModeError, CallingModeBandwidth, CallingModeSpreading, CallingModeOptimize: Integer); virtual;
   end;
 
 
@@ -310,6 +311,11 @@ begin
 end;
 
 procedure TfrmSource.SetDeviceVersion(Version: Double);
+begin
+    // virtual
+end;
+
+procedure TfrmSource.SetFromCallingMode(CallingModeFrequency:   Double; CallingModeImplicit, CallingModeError, CallingModeBandwidth, CallingModeSpreading, CallingModeOptimize: Integer);
 begin
     // virtual
 end;

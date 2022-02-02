@@ -498,6 +498,8 @@ begin
         if HABSources[SourceIndex].SourceForm <> nil then begin
             HABSources[SourceIndex].SourceForm.DoAFC(Position.Channel, HABSources[SourceIndex].FreqError[Position.Channel]);
         end;
+    end else if Position.CallingModeMessage then begin
+        Status := 'Calling Mode: ' + Position.PayloadID + ',' + FormatFloat('0.000', Position.CallingModeFrequency) + 'MHz';
     end else if Line <> '' then begin
         Status := Line;
     end;
@@ -582,6 +584,10 @@ begin
     if Position.Version <> '' then begin
         HABSources[SourceIndex].SourceForm.AddStatusToLog('Version = ' + Position.Version);
         HABSources[SourceIndex].SourceForm.SetDeviceVersion(MyStrToFloat(Position.Version));
+    end;
+
+    if Position.CallingModeMessage then begin
+        HABSources[SourceIndex].SourceForm.SetFromCallingMode(Position.CallingModeFrequency, Position.CallingModeImplicit, Position.CallingModeError, Position.CallingModeBandwidth, Position.CallingModeSpreading, Position.CallingModeOptimize);
     end;
 end;
 

@@ -250,7 +250,7 @@ begin
 
 //    frmSources.SendToSource(SourceIndex, Command);
 
-    frmSources.SendUplink(SourceIndex, uwNow, 0, cmbUploadChannel.ItemIndex+1, 'send:', BuildUplinkCommand, '');
+    frmSources.SendUplink(SourceIndex, uwNow, 0, cmbUploadChannel.ItemIndex, 'send:', '*' + BuildUplinkCommand, '');
 end;
 
 procedure TfrmLoRaGatewaySource.NextSearch;

@@ -3,15 +3,8 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
-    inherited pnlTop: TPanel
-      inherited pnlTitle: TPanel
-        inherited lblTitle: TLabel
-          Width = 271
-          Height = 23
-        end
-      end
-    end
     inherited PageControl1: TPageControl
+      ActivePage = tabUplink
       object tabSignal: TTabSheet [1]
         Caption = 'Channel 0'
         ImageIndex = 2
@@ -25,7 +18,6 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
           Margins.Right = 2
           Margins.Bottom = 2
           Align = alClient
-          BevelOuter = bvNone
           BorderStyle = bsSingle
           Color = clSilver
           Font.Charset = DEFAULT_CHARSET
@@ -36,7 +28,7 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
           ParentFont = False
           TabOrder = 0
           UseDockManager = True
-          Version = '2.5.10.2'
+          Version = '2.6.3.1'
           BorderColor = clGray
           Caption.Color = 15722471
           Caption.ColorTo = 11176072
@@ -142,7 +134,7 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             ParentFont = False
             TabOrder = 0
             Enabled = False
-            Version = '2.2.1.2'
+            Version = '2.2.3.1'
             TMSStyle = 8
           end
           object btnCancel: TAdvSmoothButton
@@ -182,7 +174,7 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             Color = clWhite
             ParentFont = False
             TabOrder = 1
-            Version = '2.2.1.2'
+            Version = '2.2.3.1'
             ModalResult = 2
             TMSStyle = 8
           end
@@ -303,7 +295,7 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             Alignment = taRightJustify
             Caption = 'AFC:'
             ReturnIsTab = False
-            Version = '1.7.0.2'
+            Version = '1.8.1.0'
           end
           object ProgressBar0: TProgressBar
             Left = 9
@@ -338,7 +330,6 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
           Margins.Right = 2
           Margins.Bottom = 2
           Align = alClient
-          BevelOuter = bvNone
           BorderStyle = bsSingle
           Color = clSilver
           Font.Charset = DEFAULT_CHARSET
@@ -349,7 +340,7 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
           ParentFont = False
           TabOrder = 0
           UseDockManager = True
-          Version = '2.5.10.2'
+          Version = '2.6.3.1'
           BorderColor = clGray
           Caption.Color = 15722471
           Caption.ColorTo = 11176072
@@ -455,7 +446,7 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             ParentFont = False
             TabOrder = 0
             Enabled = False
-            Version = '2.2.1.2'
+            Version = '2.2.3.1'
             TMSStyle = 8
           end
           object AdvSmoothButton2: TAdvSmoothButton
@@ -495,7 +486,7 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             Color = clWhite
             ParentFont = False
             TabOrder = 1
-            Version = '2.2.1.2'
+            Version = '2.2.3.1'
             ModalResult = 2
             TMSStyle = 8
           end
@@ -622,7 +613,7 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
             Alignment = taRightJustify
             Caption = 'AFC:'
             ReturnIsTab = False
-            Version = '1.7.0.2'
+            Version = '1.8.1.0'
           end
           object ProgressBar1: TProgressBar
             Left = 5
@@ -647,7 +638,6 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
       end
       inherited tabUplink: TTabSheet
         TabVisible = True
-        ExplicitLeft = 4
         inherited lblUploadPayload: TLabel
           Top = 18
           ExplicitTop = 18
@@ -690,15 +680,6 @@ inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
           Top = 100
           ActivePage = tabCutdown
           ExplicitTop = 100
-          inherited tabCutdown: TTabSheet
-            ExplicitWidth = 229
-          end
-          inherited tabOutput: TTabSheet
-            ExplicitWidth = 229
-          end
-          inherited tabServo: TTabSheet
-            ExplicitWidth = 229
-          end
         end
       end
     end

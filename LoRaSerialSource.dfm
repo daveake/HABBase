@@ -3,14 +3,6 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
-    inherited pnlTop: TPanel
-      inherited pnlTitle: TPanel
-        inherited lblTitle: TLabel
-          Width = 271
-          Height = 23
-        end
-      end
-    end
     inherited PageControl1: TPageControl
       ActivePage = tabUplink
       object tabSignal: TTabSheet [1]
@@ -26,7 +18,6 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
           Margins.Right = 2
           Margins.Bottom = 2
           Align = alClient
-          BevelOuter = bvNone
           BorderStyle = bsSingle
           Color = clSilver
           Font.Charset = DEFAULT_CHARSET
@@ -37,7 +28,7 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
           ParentFont = False
           TabOrder = 0
           UseDockManager = True
-          Version = '2.5.10.2'
+          Version = '2.6.3.1'
           BorderColor = clGray
           Caption.Color = 15722471
           Caption.ColorTo = 11176072
@@ -143,7 +134,7 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             ParentFont = False
             TabOrder = 0
             Enabled = False
-            Version = '2.2.1.2'
+            Version = '2.2.3.1'
             TMSStyle = 8
           end
           object btnCancel: TAdvSmoothButton
@@ -183,7 +174,7 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             Color = clWhite
             ParentFont = False
             TabOrder = 1
-            Version = '2.2.1.2'
+            Version = '2.2.3.1'
             ModalResult = 2
             TMSStyle = 8
           end
@@ -303,7 +294,7 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             Alignment = taRightJustify
             Caption = 'AFC:'
             ReturnIsTab = False
-            Version = '1.7.0.2'
+            Version = '1.8.1.0'
           end
           object ProgressBar1: TProgressBar
             Left = 5
@@ -327,10 +318,6 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
       end
       inherited tabUplink: TTabSheet
         TabVisible = True
-        ExplicitLeft = 4
-        ExplicitTop = 24
-        ExplicitWidth = 374
-        ExplicitHeight = 276
         inherited lblUploadPayload: TLabel
           Left = 42
           Top = 10
@@ -394,30 +381,6 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
           TabOrder = 3
           ExplicitLeft = 125
           ExplicitTop = 61
-          inherited tabCutdown: TTabSheet
-            ExplicitLeft = 4
-            ExplicitTop = 24
-            ExplicitWidth = 229
-            ExplicitHeight = 49
-          end
-          inherited tabOutput: TTabSheet
-            ExplicitLeft = 4
-            ExplicitTop = 24
-            ExplicitWidth = 229
-            ExplicitHeight = 49
-          end
-          inherited tabServo: TTabSheet
-            ExplicitLeft = 4
-            ExplicitTop = 24
-            ExplicitWidth = 229
-            ExplicitHeight = 49
-          end
-          inherited tabScript: TTabSheet
-            ExplicitLeft = 4
-            ExplicitTop = 24
-            ExplicitWidth = 229
-            ExplicitHeight = 49
-          end
         end
         object edtPassword: TEdit
           Left = 128

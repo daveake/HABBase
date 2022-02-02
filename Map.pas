@@ -5,7 +5,6 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Normal, Vcl.StdCtrls,
-  UWebGMapsCommon, UWebGMaps, UWebGMapsPolylines, UWebGMapsMarkers, UWebGMapsPolygons,
   VCL.TMSFNCMaps,
   Vcl.ExtCtrls, Miscellaneous, Source, Misc;
 
@@ -16,24 +15,18 @@ type
   TBalloon = record
       InUse:            Boolean;
 
-      Marker:           TMarker;
       FNCMarker:        TTMSFNCMapsMarker;
 
       MarkerName:       String;
 
-      Landing:          TMarker;
       FNCLanding:       TTMSFNCMapsMarker;
 
-      Radial:           TPolylineItem;
       FNCRadial:        TTMSFNCMapsPolyline;
 
-      Track:            TPolylineItem;
       FNCTrack:         TTMSFNCMapsPolyline;
 
-      Prediction:       TPolylineItem;
       FNCPrediction:    TTMSFNCMapsPolyline;
 
-      Horizon:          Array[0..1] of TPolygonItem;
       FNCHorizon:       Array[0..1] of TTMSFNCMapsCircle;
       Position:         THABPosition;
   end;
@@ -51,10 +44,8 @@ type
     // function FindMapMarker(PayloadID: String): Integer;
     procedure DrawBalloonRadials;
   protected
-    OKToUpdateMap: Boolean;
     ImageFolder: String;
     Balloons: Array[1..MAX_PAYLOADS] of TBalloon;
-    MastMarker: TMarker;
     FNCMastMarker: TTMSFNCMapsMarker;
     procedure DrawPath(PayloadIndex: Integer; Position: THABPosition; Colour: TColor); virtual;
     procedure CreateMarker(PayloadIndex: Integer; Position: THABPosition; ColourText: String); virtual;
@@ -91,8 +82,6 @@ var
     Path: String;
 begin
     FollowMode := fmInit;
-
-    OKToUpdateMap := True;
 
     if GetCommandLineParameter('PATH', Path) then begin
         ImageFolder := Path + '\Images\';
@@ -144,26 +133,24 @@ begin
     if (Position.Latitude <> 0) and (Position.Longitude <> 0) then begin
         Balloons[PayloadIndex].Position := Position;
 
-        if OKToUpdateMap then begin
-            // Find or create marker for this payload
-            AddOrUpdateMapMarker(PayloadIndex, Position, ColourText);
+        // Find or create marker for this payload
+        AddOrUpdateMapMarker(PayloadIndex, Position, ColourText);
 
-            // Line to Balloon
-            DrawRadial(PayloadIndex, False);
+        // Line to Balloon
+        DrawRadial(PayloadIndex, False);
 
-            // Reception horizon
-            DrawHorizon(PayloadIndex);
+        // Reception horizon
+        DrawHorizon(PayloadIndex);
 
-            // Balloon Path
-            DrawPath(PayloadIndex, Position, Colour);
+        // Balloon Path
+        DrawPath(PayloadIndex, Position, Colour);
 
-            // Pan to balloon
-    //        if (FollowMode = fmPayload) and (Index = SelectedIndex) then begin
-    //            GMap.MapPanTo(Positions[Index].Position.Latitude, Positions[Index].Position.Longitude);
-    //        end;
+        // Pan to balloon
+//        if (FollowMode = fmPayload) and (Index = SelectedIndex) then begin
+//            GMap.MapPanTo(Positions[Index].Position.Latitude, Positions[Index].Position.Longitude);
+//        end;
 
-            Result := True;
-        end;
+        Result := True;
     end;
 end;
 
@@ -173,9 +160,6 @@ begin
         Balloons[PayloadIndex].InUse := True;
 
         CreateMarker(PayloadIndex, Position, ColourText);
-    end else if Balloons[PayloadIndex].Marker <> nil then begin
-        Balloons[PayloadIndex].Marker.Latitude := Position.Latitude;
-        Balloons[PayloadIndex].Marker.Longitude := Position.Longitude;
     end else if Balloons[PayloadIndex].FNCMarker <> nil then begin
         Balloons[PayloadIndex].FNCMarker.Latitude := Position.Latitude;
         Balloons[PayloadIndex].FNCMarker.Longitude := Position.Longitude;

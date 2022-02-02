@@ -39,6 +39,7 @@ inherited frmSources: TfrmSources
         Appearance.Font.Height = -11
         Appearance.Font.Name = 'Tahoma'
         Appearance.Font.Style = []
+        Appearance.SimpleLayout = False
         Appearance.Rounding = 0
         Status.Caption = '0'
         Status.Appearance.Fill.Color = clRed
@@ -58,7 +59,7 @@ inherited frmSources: TfrmSources
         Caption = 'Add Source'
         ParentFont = False
         TabOrder = 0
-        Version = '2.2.1.2'
+        Version = '2.2.3.1'
         OnClick = btnAddSourceClick
         TMSStyle = 8
       end

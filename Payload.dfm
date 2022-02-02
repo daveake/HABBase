@@ -125,7 +125,7 @@ inherited frmPayload: TfrmPayload
       Top = 44
       Width = 353
       Height = 306
-      ActivePage = TabSheet4
+      ActivePage = tabCharts
       Align = alClient
       MultiLine = True
       TabOrder = 1
@@ -177,7 +177,6 @@ inherited frmPayload: TfrmPayload
           Margins.Right = 2
           Margins.Bottom = 2
           Align = alClient
-          BevelOuter = bvNone
           BorderStyle = bsSingle
           Color = clSilver
           Font.Charset = DEFAULT_CHARSET
@@ -188,7 +187,7 @@ inherited frmPayload: TfrmPayload
           ParentFont = False
           TabOrder = 0
           UseDockManager = True
-          Version = '2.5.10.2'
+          Version = '2.6.3.1'
           BorderColor = clGray
           Caption.Color = 15722471
           Caption.ColorTo = 11176072
@@ -296,7 +295,7 @@ inherited frmPayload: TfrmPayload
             ParentFont = False
             TabOrder = 0
             Enabled = False
-            Version = '2.2.1.2'
+            Version = '2.2.3.1'
             TMSStyle = 8
           end
           object btnCancel: TAdvSmoothButton
@@ -336,7 +335,7 @@ inherited frmPayload: TfrmPayload
             Color = clWhite
             ParentFont = False
             TabOrder = 1
-            Version = '2.2.1.2'
+            Version = '2.2.3.1'
             ModalResult = 2
             TMSStyle = 8
           end
@@ -422,7 +421,6 @@ inherited frmPayload: TfrmPayload
           Top = 0
           Width = 345
           Height = 278
-          Cursor = crDefault
           Align = alClient
           ColCount = 7
           DoubleBuffered = True
@@ -434,11 +432,9 @@ inherited frmPayload: TfrmPayload
           Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect]
           ParentDoubleBuffered = False
           PopupMenu = PopupMenu1
-          ScrollBars = ssBoth
           TabOrder = 0
           GridLineColor = 13948116
           GridFixedLineColor = 11250603
-          HoverRowCells = [hcNormal, hcSelected]
           ActiveCellFont.Charset = DEFAULT_CHARSET
           ActiveCellFont.Color = 4474440
           ActiveCellFont.Height = -11
@@ -503,7 +499,6 @@ inherited frmPayload: TfrmPayload
           FixedFont.Style = [fsBold]
           FloatFormat = '%.2f'
           HoverButtons.Buttons = <>
-          HoverButtons.Position = hbLeftFromColumnLeft
           HTMLSettings.ImageFolder = 'images'
           HTMLSettings.ImageBaseName = 'img'
           Look = glCustom
@@ -545,13 +540,11 @@ inherited frmPayload: TfrmPayload
           SearchFooter.MatchCaseCaption = 'Match case'
           SearchFooter.ResultFormat = '(%d of %d)'
           SelectionColor = 13744549
-          SortSettings.DefaultFormat = ssAutomatic
           SortSettings.HeaderColor = clWhite
           SortSettings.HeaderColorTo = clWhite
           SortSettings.HeaderMirrorColor = clWhite
           SortSettings.HeaderMirrorColorTo = clWhite
-          UIStyle = tsCustom
-          Version = '2.5.0.6'
+          Version = '2.5.1.10'
           AutoCreateColumns = True
           AutoRemoveColumns = True
           Columns = <
@@ -899,28 +892,287 @@ inherited frmPayload: TfrmPayload
       object tabCharts: TTabSheet
         Caption = 'Charts'
         ImageIndex = 3
-        object AltitudeChart: TChart
+        object AltitudeChart: TTMSFNCChart
           Left = 0
           Top = 0
           Width = 345
           Height = 278
-          Legend.Visible = False
-          Title.Text.Strings = (
-            'Altitude (m)')
+          ClickMargin = 10.000000000000000000
+          Legend.Fill.Color = 16775416
+          Legend.Stroke.Color = clGray
+          Legend.Font.Charset = DEFAULT_CHARSET
+          Legend.Font.Color = clWindowText
+          Legend.Font.Height = -11
+          Legend.Font.Name = 'Segoe UI'
+          Legend.Font.Style = []
+          Legend.Left = 10.000000000000000000
+          Legend.Top = 10.000000000000000000
+          Stroke.Color = clGray
+          SeriesMargins.Left = 0
+          SeriesMargins.Top = 0
+          SeriesMargins.Right = 0
+          SeriesMargins.Bottom = 0
+          Series = <
+            item
+              AnimationFactor = 4.000000000000000000
+              AutoYRange = arCommonZeroBased
+              Bar.Width = 65.000000000000000000
+              Bar.Spacing = 20.000000000000000000
+              MultiPoint.Width = 65.000000000000000000
+              Pie.Size = 200.000000000000000000
+              Pie.Margins.Left = 10
+              Pie.Margins.Top = 10
+              Pie.Margins.Right = 10
+              Pie.Margins.Bottom = 10
+              Pie.SweepAngle = 360.000000000000000000
+              Fill.Color = 10061943
+              LegendText = 'Serie 0'
+              Labels.Fill.Color = 16775416
+              Labels.Font.Charset = DEFAULT_CHARSET
+              Labels.Font.Color = clWindowText
+              Labels.Font.Height = -11
+              Labels.Font.Name = 'Segoe UI'
+              Labels.Font.Style = []
+              Labels.Format = '%.2f'
+              Labels.OffsetY = -10.000000000000000000
+              Labels.Stroke.Color = clGray
+              Markers.Fill.Color = 10061943
+              Markers.Height = 10.000000000000000000
+              Markers.Stroke.Color = 5197615
+              Markers.Width = 10.000000000000000000
+              MaxX = 10.000000000000000000
+              MaxY = 10.000000000000000000
+              MaxYOffsetPercentage = 10.000000000000000000
+              Offset3DX = 15.000000000000000000
+              Offset3DY = 15.000000000000000000
+              Points = <
+                item
+                  Annotations = <>
+                  YValue = 90.000000000000000000
+                  YValueSecond = 50.000000000000000000
+                  YValueVariable = 70.000000000000000000
+                  YValueLow = -6.000000000000000000
+                  YValueClose = 85.000000000000000000
+                  YValueHigh = 90.000000000000000000
+                  YValueOpen = 80.000000000000000000
+                  YValueMedian = 75.000000000000000000
+                end
+                item
+                  Annotations = <>
+                  XValue = 1.000000000000000000
+                  YValue = 88.000000000000000000
+                  YValueSecond = 48.000000000000000000
+                  YValueVariable = 68.000000000000000000
+                  YValueLow = 44.000000000000000000
+                  YValueClose = 88.000000000000000000
+                  YValueHigh = 88.000000000000000000
+                  YValueOpen = 81.000000000000000000
+                  YValueMedian = 79.000000000000000000
+                end
+                item
+                  Annotations = <>
+                  XValue = 2.000000000000000000
+                  YValue = 126.000000000000000000
+                  YValueSecond = 86.000000000000000000
+                  YValueVariable = 106.000000000000000000
+                  YValueLow = 24.000000000000000000
+                  YValueClose = 120.000000000000000000
+                  YValueHigh = 126.000000000000000000
+                  YValueOpen = 132.000000000000000000
+                  YValueMedian = 128.000000000000000000
+                end
+                item
+                  Annotations = <>
+                  XValue = 3.000000000000000000
+                  YValue = 153.000000000000000000
+                  YValueSecond = 113.000000000000000000
+                  YValueVariable = 133.000000000000000000
+                  YValueLow = 47.000000000000000000
+                  YValueClose = 158.000000000000000000
+                  YValueHigh = 153.000000000000000000
+                  YValueOpen = 154.000000000000000000
+                  YValueMedian = 153.000000000000000000
+                end
+                item
+                  Annotations = <>
+                  XValue = 4.000000000000000000
+                  YValue = 54.000000000000000000
+                  YValueSecond = 14.000000000000000000
+                  YValueVariable = 34.000000000000000000
+                  YValueLow = 64.000000000000000000
+                  YValueClose = 54.000000000000000000
+                  YValueHigh = 54.000000000000000000
+                  YValueOpen = 55.000000000000000000
+                  YValueMedian = 57.000000000000000000
+                end
+                item
+                  Annotations = <>
+                  XValue = 5.000000000000000000
+                  YValue = 151.000000000000000000
+                  YValueSecond = 111.000000000000000000
+                  YValueVariable = 131.000000000000000000
+                  YValueLow = 22.000000000000000000
+                  YValueClose = 141.000000000000000000
+                  YValueHigh = 151.000000000000000000
+                  YValueOpen = 159.000000000000000000
+                  YValueMedian = 161.000000000000000000
+                end
+                item
+                  Annotations = <>
+                  XValue = 6.000000000000000000
+                  YValue = 141.000000000000000000
+                  YValueSecond = 101.000000000000000000
+                  YValueVariable = 121.000000000000000000
+                  YValueLow = 18.000000000000000000
+                  YValueClose = 147.000000000000000000
+                  YValueHigh = 141.000000000000000000
+                  YValueOpen = 146.000000000000000000
+                  YValueMedian = 142.000000000000000000
+                end
+                item
+                  Annotations = <>
+                  XValue = 7.000000000000000000
+                  YValue = 134.000000000000000000
+                  YValueSecond = 94.000000000000000000
+                  YValueVariable = 114.000000000000000000
+                  YValueLow = 68.000000000000000000
+                  YValueClose = 142.000000000000000000
+                  YValueHigh = 134.000000000000000000
+                  YValueOpen = 125.000000000000000000
+                  YValueMedian = 128.000000000000000000
+                end
+                item
+                  Annotations = <>
+                  XValue = 8.000000000000000000
+                  YValue = 128.000000000000000000
+                  YValueSecond = 88.000000000000000000
+                  YValueVariable = 108.000000000000000000
+                  YValueLow = 77.000000000000000000
+                  YValueClose = 130.000000000000000000
+                  YValueHigh = 128.000000000000000000
+                  YValueOpen = 130.000000000000000000
+                  YValueMedian = 130.000000000000000000
+                end
+                item
+                  Annotations = <>
+                  XValue = 9.000000000000000000
+                  YValue = 147.000000000000000000
+                  YValueSecond = 107.000000000000000000
+                  YValueVariable = 127.000000000000000000
+                  YValueLow = 16.000000000000000000
+                  YValueClose = 140.000000000000000000
+                  YValueHigh = 147.000000000000000000
+                  YValueOpen = 144.000000000000000000
+                  YValueMedian = 145.000000000000000000
+                end
+                item
+                  Annotations = <>
+                  XValue = 10.000000000000000000
+                  YValue = 131.000000000000000000
+                  YValueSecond = 91.000000000000000000
+                  YValueVariable = 111.000000000000000000
+                  YValueLow = 8.000000000000000000
+                  YValueClose = 136.000000000000000000
+                  YValueHigh = 131.000000000000000000
+                  YValueOpen = 139.000000000000000000
+                  YValueMedian = 142.000000000000000000
+                end>
+              Legend.Fill.Color = 16775416
+              Legend.Font.Charset = DEFAULT_CHARSET
+              Legend.Font.Color = clWindowText
+              Legend.Font.Height = -11
+              Legend.Font.Name = 'Segoe UI'
+              Legend.Font.Style = []
+              Legend.Left = -10.000000000000000000
+              Legend.Stroke.Color = clGray
+              ShowInLegend = False
+              Stroke.Color = 5197615
+              XGrid.Visible = True
+              XValues.MajorUnit = 1.000000000000000000
+              XValues.MajorUnitFont.Charset = DEFAULT_CHARSET
+              XValues.MajorUnitFont.Color = clWindowText
+              XValues.MajorUnitFont.Height = -11
+              XValues.MajorUnitFont.Name = 'Segoe UI'
+              XValues.MajorUnitFont.Style = []
+              XValues.MajorUnitFormat = 'hh:mm'
+              XValues.MajorUnitFormatType = vftDateTime
+              XValues.MajorUnitSpacing = 5.000000000000000000
+              XValues.MajorUnitTickMarkSize = 10.000000000000000000
+              XValues.MajorUnitTickMarkColor = clSilver
+              XValues.MinorUnitFont.Charset = DEFAULT_CHARSET
+              XValues.MinorUnitFont.Color = clWindowText
+              XValues.MinorUnitFont.Height = -11
+              XValues.MinorUnitFont.Name = 'Segoe UI'
+              XValues.MinorUnitFont.Style = []
+              XValues.MinorUnitFormat = 'hh:mm'
+              XValues.MinorUnitFormatType = vftDateTime
+              XValues.MinorUnitSpacing = 5.000000000000000000
+              XValues.MinorUnitTickMarkSize = 7.000000000000000000
+              XValues.MinorUnitTickMarkColor = clSilver
+              XValues.Title.Font.Charset = DEFAULT_CHARSET
+              XValues.Title.Font.Color = clWindowText
+              XValues.Title.Font.Height = -11
+              XValues.Title.Font.Name = 'Segoe UI'
+              XValues.Title.Font.Style = []
+              XValues.Title.TextMargins.Left = 0
+              XValues.Title.TextMargins.Top = 0
+              XValues.Title.TextMargins.Right = 0
+              XValues.Title.TextMargins.Bottom = 0
+              YGrid.Visible = True
+              YValues.MajorUnit = 1.000000000000000000
+              YValues.MajorUnitFont.Charset = DEFAULT_CHARSET
+              YValues.MajorUnitFont.Color = clWindowText
+              YValues.MajorUnitFont.Height = -11
+              YValues.MajorUnitFont.Name = 'Segoe UI'
+              YValues.MajorUnitFont.Style = []
+              YValues.MajorUnitFormat = '%.0f'
+              YValues.MajorUnitSpacing = 5.000000000000000000
+              YValues.MajorUnitTickMarkSize = 10.000000000000000000
+              YValues.MajorUnitTickMarkColor = clSilver
+              YValues.MinorUnitFont.Charset = DEFAULT_CHARSET
+              YValues.MinorUnitFont.Color = clWindowText
+              YValues.MinorUnitFont.Height = -11
+              YValues.MinorUnitFont.Name = 'Segoe UI'
+              YValues.MinorUnitFont.Style = []
+              YValues.MinorUnitFormat = '%.0f'
+              YValues.MinorUnitSpacing = 5.000000000000000000
+              YValues.MinorUnitTickMarkSize = 7.000000000000000000
+              YValues.MinorUnitTickMarkColor = clSilver
+              YValues.Title.Font.Charset = DEFAULT_CHARSET
+              YValues.Title.Font.Color = clWindowText
+              YValues.Title.Font.Height = -11
+              YValues.Title.Font.Name = 'Segoe UI'
+              YValues.Title.Font.Style = []
+              YValues.Title.TextMargins.Left = 0
+              YValues.Title.TextMargins.Top = 0
+              YValues.Title.TextMargins.Right = 0
+              YValues.Title.TextMargins.Bottom = 0
+            end>
+          Title.Fill.Kind = gfkNone
+          Title.Fill.Color = 16775416
+          Title.Stroke.Color = clGray
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -11
+          Title.Font.Name = 'Segoe UI'
+          Title.Font.Style = []
+          Title.Height = 35.000000000000000000
+          Title.TextMargins.Left = 3
+          Title.TextMargins.Top = 3
+          Title.TextMargins.Right = 3
+          Title.TextMargins.Bottom = 3
+          Title.Text = 'Altitude (m)'
+          XAxis.Fill.Kind = gfkNone
+          XAxis.Fill.Color = 16775416
+          XAxis.Stroke.Color = clGray
+          XAxis.Height = 35.000000000000000000
+          YAxis.Fill.Kind = gfkNone
+          YAxis.Fill.Color = 16775416
+          YAxis.Stroke.Color = clGray
+          YAxis.Positions = [ypLeft]
+          YAxis.Width = 35.000000000000000000
           Align = alClient
           TabOrder = 0
-          DefaultCanvas = 'TGDIPlusCanvas'
-          ColorPaletteIndex = 13
-          object Series1: TLineSeries
-            Brush.BackColor = clDefault
-            Pointer.InflateMargins = True
-            Pointer.Style = psRectangle
-            XValues.DateTime = True
-            XValues.Name = 'X'
-            XValues.Order = loAscending
-            YValues.Name = 'Y'
-            YValues.Order = loNone
-          end
         end
       end
       object TabSheet4: TTabSheet
@@ -936,7 +1188,6 @@ inherited frmPayload: TfrmPayload
           Margins.Right = 2
           Margins.Bottom = 2
           Align = alClient
-          BevelOuter = bvNone
           BorderStyle = bsSingle
           Color = clSilver
           Font.Charset = DEFAULT_CHARSET
@@ -947,7 +1198,7 @@ inherited frmPayload: TfrmPayload
           ParentFont = False
           TabOrder = 0
           UseDockManager = True
-          Version = '2.5.10.2'
+          Version = '2.6.3.1'
           BorderColor = clGray
           Caption.Color = 15722471
           Caption.ColorTo = 11176072
@@ -1029,7 +1280,7 @@ inherited frmPayload: TfrmPayload
             ParentFont = False
             TabOrder = 0
             Enabled = False
-            Version = '2.2.1.2'
+            Version = '2.2.3.1'
             TMSStyle = 8
           end
           object AdvSmoothButton2: TAdvSmoothButton
@@ -1069,7 +1320,7 @@ inherited frmPayload: TfrmPayload
             Color = clWhite
             ParentFont = False
             TabOrder = 1
-            Version = '2.2.1.2'
+            Version = '2.2.3.1'
             ModalResult = 2
             TMSStyle = 8
           end
