@@ -15,9 +15,14 @@ Source: "settings.json"; DestDir: "{app}"; Flags: onlyifdoesntexist
 Source: "sources.json"; DestDir: "{app}"; Flags: onlyifdoesntexist
 Source: "whitelist.json"; DestDir: "{app}"; Flags: onlyifdoesntexist
 Source: "Images\*"; DestDir: "{app}\Images"; Flags: onlyifdoesntexist
-Source: "C:\Users\dave\AppData\Local\tmssoftware\registered\TMS VCL UI Pack\Edge Support\x86\WebView2Loader_x86.dll"; DestDir: "{sys}"; Flags: 32bit
+Source: "EdgeSupport\WebView2Loader_x86.dll"; DestDir: "{app}"; Flags: 32bit
+Source: "EdgeSupport\MicrosoftEdgeWebview2Setup.exe"; DestDir: "{app}"; Flags: 32bit
 
 
 [Icons]
 Name: "{group}\HAB Base"; Filename: "{app}\HABBase.exe"
 Name: "{commondesktop}\HAB Base"; Filename: "{app}\HABBase.exe"
+
+
+[Run]
+Filename: {app}\MicrosoftEdgeWebview2Setup.exe; WorkingDir: {app}; Flags: postinstall skipifsilent;

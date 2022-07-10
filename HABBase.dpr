@@ -39,9 +39,13 @@ uses
   SSDV in '..\HABRx\SSDV.pas',
   HABLink in '..\HABRx\HABLink.pas',
   APRSSource in '..\HABRx\APRSSource.pas',
-  FNCMap in 'FNCMap.pas' {frmFNCMap},
   Tawhiri in '..\HABRx\Tawhiri.pas',
-  APRSSettings in 'APRSSettings.pas' {frmAPRSSettings};
+  APRSSettings in 'APRSSettings.pas' {frmAPRSSettings},
+  MQTTUplink in '..\HABRx\MQTTUplink.pas',
+  MQTTSource in '..\HABRx\MQTTSource.pas',
+  HabitatSource in '..\HABRx\HabitatSource.pas',
+  MQTTSettings in 'MQTTSettings.pas' {frmMQTTSettings},
+  HabitatSettings in 'HabitatSettings.pas' {frmHabitatSettings};
 
 {$R *.res}
 

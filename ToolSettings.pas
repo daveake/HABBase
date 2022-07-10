@@ -27,7 +27,7 @@ implementation
 
 {$R *.dfm}
 
-uses Map, Payloads, WhiteList;
+uses Map, Payloads, WhiteList, SourcesForm;
 
 procedure TfrmToolSettings.btnFiltersClick(Sender: TObject);
 var
@@ -41,9 +41,16 @@ end;
 procedure TfrmToolSettings.btnSettingsClick(Sender: TObject);
 var
     frmSystemSettings: TfrmSystemSettings;
+    ModalResult: TModalResult;
 begin
     frmSystemSettings := TfrmSystemSettings.Create(nil);
-    if frmSystemSettings.ShowModal = mrOK then begin
+    ModalResult := frmSystemSettings.ShowModal;
+
+    if ModalResult in [mrOK, mrYes] then begin
+        frmSources.ApplySettings;
+    end;
+
+    if ModalResult = mrOK then begin
         frmMap.SetHomePosition;
         frmPayloads.UpdateActivePayloads;
     end;

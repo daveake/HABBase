@@ -2,7 +2,7 @@ object frmNewSource: TfrmNewSource
   Left = 0
   Top = 0
   Caption = 'New Source'
-  ClientHeight = 179
+  ClientHeight = 287
   ClientWidth = 521
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -10,22 +10,26 @@ object frmNewSource: TfrmNewSource
   Font.Height = -16
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
+  DesignSize = (
+    521
+    287)
   TextHeight = 19
   object Label1: TLabel
-    Left = 36
-    Top = 56
+    Left = 24
+    Top = 36
     Width = 152
     Height = 19
     Caption = 'Type Of New Source:'
   end
   object ComboBox1: TComboBox
     Left = 216
-    Top = 53
-    Width = 261
+    Top = 33
+    Width = 285
     Height = 27
     Style = csDropDownList
+    Anchors = [akLeft, akTop, akRight]
     TabOrder = 0
     OnClick = ComboBox1Click
     Items.Strings = (
@@ -35,18 +39,21 @@ object frmNewSource: TfrmNewSource
       'TCP (DL-FLDigi)'
       'UDP ( rdzTTGOSonde, HABDEC)'
       'Habitat'
-      'APRS / OGN')
+      'APRS / OGN'
+      'MQTT')
   end
   object btnOK: TAdvSmoothButton
     AlignWithMargins = True
-    Left = 303
-    Top = 121
+    Left = 327
+    Top = 234
     Width = 82
     Height = 36
     Margins.Left = 1
     Margins.Top = 1
     Margins.Right = 1
     Margins.Bottom = 1
+    Anchors = [akRight, akBottom]
+    Appearance.SimpleLayout = False
     Status.Caption = '0'
     Status.Appearance.Fill.Color = clRed
     Status.Appearance.Fill.ColorMirror = clNone
@@ -65,20 +72,22 @@ object frmNewSource: TfrmNewSource
     Caption = 'OK'
     TabOrder = 1
     Enabled = False
-    Version = '2.2.1.2'
+    Version = '2.2.3.1'
     ModalResult = 1
     TMSStyle = 8
   end
   object AdvSmoothButton1: TAdvSmoothButton
     AlignWithMargins = True
-    Left = 395
-    Top = 121
+    Left = 419
+    Top = 234
     Width = 82
     Height = 36
     Margins.Left = 1
     Margins.Top = 1
     Margins.Right = 1
     Margins.Bottom = 1
+    Anchors = [akRight, akBottom]
+    Appearance.SimpleLayout = False
     Status.Caption = '0'
     Status.Appearance.Fill.Color = clRed
     Status.Appearance.Fill.ColorMirror = clNone
@@ -96,8 +105,33 @@ object frmNewSource: TfrmNewSource
     Status.Appearance.Font.Style = []
     Caption = 'Cancel'
     TabOrder = 2
-    Version = '2.2.1.2'
+    Version = '2.2.3.1'
     ModalResult = 2
     TMSStyle = 8
+  end
+  object pnlAbout: TPanel
+    Left = 20
+    Top = 84
+    Width = 481
+    Height = 125
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    BevelOuter = bvLowered
+    TabOrder = 3
+    object lblAbout: TLabel
+      AlignWithMargins = True
+      Left = 7
+      Top = 7
+      Width = 467
+      Height = 111
+      Margins.Left = 6
+      Margins.Top = 6
+      Margins.Right = 6
+      Margins.Bottom = 6
+      Align = alClient
+      Alignment = taCenter
+      WordWrap = True
+      ExplicitWidth = 5
+      ExplicitHeight = 19
+    end
   end
 end

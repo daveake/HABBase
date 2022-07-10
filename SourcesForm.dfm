@@ -1,18 +1,18 @@
 inherited frmSources: TfrmSources
   Caption = 'Sources'
-  ClientWidth = 302
+  ClientWidth = 345
   OnDestroy = FormDestroy
-  ExplicitWidth = 318
+  ExplicitWidth = 361
   PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
-    Width = 302
-    ExplicitWidth = 302
+    Width = 345
+    ExplicitWidth = 345
     inherited Panel1: TPanel
-      Width = 302
-      ExplicitWidth = 302
+      Width = 345
+      ExplicitWidth = 345
       inherited lblTitle: TLabel
-        Width = 285
+        Width = 46
         Caption = 'Sources'
         ExplicitWidth = 46
       end
@@ -20,15 +20,15 @@ inherited frmSources: TfrmSources
     object scrollMain: TScrollBox
       Left = 0
       Top = 24
-      Width = 302
-      Height = 446
+      Width = 345
+      Height = 386
       Align = alClient
       TabOrder = 1
       object btnAddSource: TAdvSmoothButton
         AlignWithMargins = True
         Left = 6
         Top = 6
-        Width = 286
+        Width = 329
         Height = 40
         Margins.Left = 6
         Margins.Top = 6
@@ -62,6 +62,149 @@ inherited frmSources: TfrmSources
         Version = '2.2.3.1'
         OnClick = btnAddSourceClick
         TMSStyle = 8
+      end
+    end
+    object pnlUploads: TPanel
+      Left = 0
+      Top = 410
+      Width = 345
+      Height = 60
+      Align = alBottom
+      BevelOuter = bvNone
+      TabOrder = 2
+      OnResize = pnlUploadsResize
+      object indHABLINK: TAdvSmoothStatusIndicator
+        AlignWithMargins = True
+        Left = 90
+        Top = 27
+        Width = 80
+        Height = 30
+        Caption = 'HABLINK'
+        Version = '1.0.1.0'
+        Appearance.Fill.Color = clGray
+        Appearance.Fill.ColorMirror = clNone
+        Appearance.Fill.ColorMirrorTo = clNone
+        Appearance.Fill.GradientType = gtSolid
+        Appearance.Fill.GradientMirrorType = gtSolid
+        Appearance.Fill.BorderColor = clGray
+        Appearance.Fill.Rounding = 14
+        Appearance.Fill.ShadowOffset = 0
+        Appearance.Fill.Glow = gmNone
+        Appearance.Font.Charset = DEFAULT_CHARSET
+        Appearance.Font.Color = clWhite
+        Appearance.Font.Height = -16
+        Appearance.Font.Name = 'Arial'
+        Appearance.Font.Style = []
+        Align = alRight
+        ExplicitLeft = 82
+      end
+      object indMQTT: TAdvSmoothStatusIndicator
+        AlignWithMargins = True
+        Left = 176
+        Top = 27
+        Width = 80
+        Height = 30
+        Caption = 'MQTT'
+        Version = '1.0.1.0'
+        Appearance.Fill.Color = clGray
+        Appearance.Fill.ColorMirror = clNone
+        Appearance.Fill.ColorMirrorTo = clNone
+        Appearance.Fill.GradientType = gtSolid
+        Appearance.Fill.GradientMirrorType = gtSolid
+        Appearance.Fill.BorderColor = clGray
+        Appearance.Fill.Rounding = 14
+        Appearance.Fill.ShadowOffset = 0
+        Appearance.Fill.Glow = gmNone
+        Appearance.Font.Charset = DEFAULT_CHARSET
+        Appearance.Font.Color = clWhite
+        Appearance.Font.Height = -16
+        Appearance.Font.Name = 'Arial'
+        Appearance.Font.Style = []
+        Align = alRight
+        ExplicitLeft = 168
+      end
+      object indHABHUB: TAdvSmoothStatusIndicator
+        AlignWithMargins = True
+        Left = 3
+        Top = 27
+        Width = 81
+        Height = 30
+        Caption = 'HABHUB'
+        Version = '1.0.1.0'
+        Appearance.Fill.Color = clGray
+        Appearance.Fill.ColorMirror = clNone
+        Appearance.Fill.ColorMirrorTo = clNone
+        Appearance.Fill.GradientType = gtSolid
+        Appearance.Fill.GradientMirrorType = gtSolid
+        Appearance.Fill.BorderColor = clGray
+        Appearance.Fill.Rounding = 14
+        Appearance.Fill.ShadowOffset = 0
+        Appearance.Fill.Glow = gmNone
+        Appearance.Font.Charset = DEFAULT_CHARSET
+        Appearance.Font.Color = clWhite
+        Appearance.Font.Height = -16
+        Appearance.Font.Name = 'Arial'
+        Appearance.Font.Style = []
+        Align = alClient
+        ExplicitWidth = 80
+      end
+      object indSSDV: TAdvSmoothStatusIndicator
+        AlignWithMargins = True
+        Left = 262
+        Top = 27
+        Width = 80
+        Height = 30
+        Caption = 'SSDV'
+        Version = '1.0.1.0'
+        Appearance.Fill.Color = clGray
+        Appearance.Fill.ColorMirror = clNone
+        Appearance.Fill.ColorMirrorTo = clNone
+        Appearance.Fill.GradientType = gtSolid
+        Appearance.Fill.GradientMirrorType = gtSolid
+        Appearance.Fill.BorderColor = clGray
+        Appearance.Fill.Rounding = 14
+        Appearance.Fill.ShadowOffset = 0
+        Appearance.Fill.Glow = gmNone
+        Appearance.Font.Charset = DEFAULT_CHARSET
+        Appearance.Font.Color = clWhite
+        Appearance.Font.Height = -16
+        Appearance.Font.Name = 'Arial'
+        Appearance.Font.Style = []
+        Align = alRight
+        ExplicitLeft = 254
+      end
+      object Panel3: TPanel
+        Left = 0
+        Top = 0
+        Width = 345
+        Height = 24
+        Align = alTop
+        BevelOuter = bvLowered
+        Color = clGray
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Tahoma'
+        Font.Style = []
+        ParentBackground = False
+        ParentFont = False
+        TabOrder = 0
+        object Label1: TLabel
+          AlignWithMargins = True
+          Left = 13
+          Top = 4
+          Width = 79
+          Height = 16
+          Margins.Left = 12
+          Align = alClient
+          Caption = 'Upload Status'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentFont = False
+        end
       end
     end
   end

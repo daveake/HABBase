@@ -9,7 +9,8 @@ uses
   FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, FireDAC.VCLUI.Wait,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Data.DB,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client, FireDAC.Stan.StorageJSON,
-  VCL.Forms, FireDAC.Stan.StorageBin, Miscellaneous, Source;
+  VCL.Forms, FireDAC.Stan.StorageBin, Miscellaneous, Source,
+  FireDAC.Phys.SQLiteWrapper.Stat;
 
 type
   TDataModule1 = class(TDataModule)
@@ -55,10 +56,42 @@ type
     tblWhiteListDistance: TFloatField;
     tblSettingsRightWidth: TIntegerField;
     tblSettingsExpiry: TIntegerField;
+    tblClonedSources: TFDMemTable;
+    tblSettingsUplinkHABHUB: TBooleanField;
+    tblSettingsUplinkHABLINK: TBooleanField;
+    tblSettingsUplinkMQTT: TBooleanField;
+    tblSettingsUplinkSSDV: TBooleanField;
+    tblSettingsMQTTHost: TStringField;
+    tblSettingsMQTTTopic: TStringField;
+    tblSettingsMQTTUserName: TStringField;
+    tblSettingsMQTTPassword: TStringField;
+    tblClonedSettings: TFDMemTable;
+    StringField1: TStringField;
+    IntegerField1: TIntegerField;
+    IntegerField2: TIntegerField;
+    IntegerField3: TIntegerField;
+    IntegerField4: TIntegerField;
+    IntegerField5: TIntegerField;
+    IntegerField6: TIntegerField;
+    IntegerField7: TIntegerField;
+    IntegerField8: TIntegerField;
+    IntegerField9: TIntegerField;
+    FloatField1: TFloatField;
+    FloatField2: TFloatField;
+    FloatField3: TFloatField;
+    IntegerField10: TIntegerField;
+    IntegerField11: TIntegerField;
+    IntegerField12: TIntegerField;
+    BooleanField1: TBooleanField;
+    BooleanField2: TBooleanField;
+    BooleanField3: TBooleanField;
+    BooleanField4: TBooleanField;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
     function AddPayloadToTable(Position: THABPosition; Table: TFDMemTable): Boolean;
+    procedure LoadSettingsFromJSON;
+    procedure LoadSourcesFromJSON;
   public
     { Public declarations }
     procedure UpdateSource(ID: Integer; PayloadID: String);
@@ -77,23 +110,75 @@ implementation
 
 procedure TDataModule1.DataModuleCreate(Sender: TObject);
 var
-    Path, FileName: String;
+    FileName: String;
 begin
-    Path := ExtractFilePath(Application.ExeName);
+    LoadSettingsFromJSON;
 
-    FileName := Path + 'settings.json';
-    if FileExists(FileName) then begin
-        tblSettings.LoadFromFile(FileName);
-    end;
+    LoadSourcesFromJSON;
 
-    FileName := Path + 'sources.json';
-    if FileExists(FileName) then begin
-        tblSources.LoadFromFile(FileName);
-    end;
-
-    FileName := Path + 'whitelist.json';
+    FileName := ExtractFilePath(Application.ExeName) + 'whitelist.json';
     if FileExists(FileName) then begin
         tblWhiteList.LoadFromFile(FileName);
+    end;
+end;
+
+procedure TDataModule1.LoadSettingsFromJSON;
+var
+    i: Integer;
+    FileName: String;
+begin
+    FileName := ExtractFilePath(Application.ExeName) + 'settings.json';
+
+    if FileExists(FileName) then begin
+        try
+            tblSettings.LoadFromFile(FileName);
+        except
+            tblClonedSettings.LoadFromFile(FileName);
+
+            if tblClonedSettings.FieldDefs.Count < tblSettings.FieldDefs.Count then begin
+                while not tblClonedSettings.EOF do begin
+                    tblSettings.Append;
+                    for i := 0 to tblClonedSettings.Fields.Count-1 do begin
+                        tblSettings.Fields[i].Assign(tblClonedSettings.Fields[i]);
+                    end;
+                    tblSettings.Post;
+
+                    tblClonedSettings.Next;
+                end;
+            end else begin
+                tblSettings.LoadFromFile(FileName);
+            end;
+
+            tblClonedSettings.Close;
+        end;
+    end;
+end;
+
+procedure TDataModule1.LoadSourcesFromJSON;
+var
+    i: Integer;
+    FileName: String;
+begin
+    FileName := ExtractFilePath(Application.ExeName) + 'sources.json';
+
+    if FileExists(FileName) then begin
+        tblClonedSources.LoadFromFile(FileName);
+
+        if tblClonedSources.FieldDefs.Count < tblSources.FieldDefs.Count then begin
+            while not tblClonedSources.EOF do begin
+                tblSources.Append;
+                for i := 0 to tblClonedSources.Fields.Count-1 do begin
+                    tblSources.Fields[i].Assign(tblClonedSources.Fields[i]);
+                end;
+                tblSources.Post;
+
+                tblClonedSources.Next;
+            end;
+        end else begin
+            tblSources.LoadFromFile(FileName);
+        end;
+
+        tblClonedSources.Close;
     end;
 end;
 

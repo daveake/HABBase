@@ -2,15 +2,14 @@ object frmSystemSettings: TfrmSystemSettings
   Left = 0
   Top = 0
   Caption = 'System Settings'
-  ClientHeight = 220
-  ClientWidth = 451
+  ClientHeight = 310
+  ClientWidth = 597
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
   PixelsPerInch = 96
@@ -18,14 +17,13 @@ object frmSystemSettings: TfrmSystemSettings
   object pnlCommon: TAdvPanel
     Left = 0
     Top = 0
-    Width = 451
-    Height = 220
+    Width = 597
+    Height = 310
     Margins.Left = 2
     Margins.Top = 2
     Margins.Right = 2
     Margins.Bottom = 2
     Align = alClient
-    BevelOuter = bvNone
     BorderStyle = bsSingle
     Color = clSilver
     Font.Charset = DEFAULT_CHARSET
@@ -36,7 +34,7 @@ object frmSystemSettings: TfrmSystemSettings
     ParentFont = False
     TabOrder = 0
     UseDockManager = True
-    Version = '2.5.10.2'
+    Version = '2.6.3.1'
     BorderColor = clGray
     Caption.Color = 15722471
     Caption.ColorTo = 11176072
@@ -69,8 +67,8 @@ object frmSystemSettings: TfrmSystemSettings
     StatusBar.GradientDirection = gdVertical
     Text = ''
     DesignSize = (
-      447
-      216)
+      593
+      306)
     FullHeight = 337
     object Label9: TLabel
       Left = 62
@@ -134,10 +132,42 @@ object frmSystemSettings: TfrmSystemSettings
       Alignment = taRightJustify
       Caption = 'UDP Output Port'
     end
+    object Label8: TLabel
+      Left = 36
+      Top = 179
+      Width = 66
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'MQTT Broker:'
+    end
+    object Label10: TLabel
+      Left = 73
+      Top = 206
+      Width = 29
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Topic:'
+    end
+    object Label11: TLabel
+      Left = 46
+      Top = 233
+      Width = 56
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'User Name:'
+    end
+    object Label12: TLabel
+      Left = 52
+      Top = 260
+      Width = 50
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Password:'
+    end
     object btnSave: TAdvSmoothButton
       AlignWithMargins = True
-      Left = 257
-      Top = 167
+      Left = 403
+      Top = 257
       Width = 82
       Height = 38
       Margins.Left = 2
@@ -150,6 +180,7 @@ object frmSystemSettings: TfrmSystemSettings
       Appearance.Font.Height = -11
       Appearance.Font.Name = 'Tahoma'
       Appearance.Font.Style = []
+      Appearance.SimpleLayout = False
       Status.Caption = '0'
       Status.Appearance.Fill.Color = clRed
       Status.Appearance.Fill.ColorMirror = clNone
@@ -169,14 +200,14 @@ object frmSystemSettings: TfrmSystemSettings
       ParentFont = False
       TabOrder = 0
       Enabled = False
-      Version = '2.2.1.2'
+      Version = '2.2.3.1'
       OnClick = btnSaveClick
       TMSStyle = 8
     end
     object btnCancel: TAdvSmoothButton
       AlignWithMargins = True
-      Left = 351
-      Top = 167
+      Left = 497
+      Top = 257
       Width = 82
       Height = 38
       Margins.Left = 2
@@ -189,6 +220,7 @@ object frmSystemSettings: TfrmSystemSettings
       Appearance.Font.Height = -11
       Appearance.Font.Name = 'Tahoma'
       Appearance.Font.Style = []
+      Appearance.SimpleLayout = False
       Status.Caption = '0'
       Status.Appearance.Fill.Color = clRed
       Status.Appearance.Fill.ColorMirror = clNone
@@ -207,7 +239,7 @@ object frmSystemSettings: TfrmSystemSettings
       Caption = 'Cancel'
       ParentFont = False
       TabOrder = 1
-      Version = '2.2.1.2'
+      Version = '2.2.3.1'
       ModalResult = 2
       OnClick = btnCancelClick
       TMSStyle = 8
@@ -273,6 +305,112 @@ object frmSystemSettings: TfrmSystemSettings
       DataSource = DataModule1.srcSettings
       TabOrder = 7
       OnChange = DBEdit1Change
+    end
+    object DBEdit7: TDBEdit
+      Left = 108
+      Top = 173
+      Width = 121
+      Height = 21
+      DataField = 'MQTTHost'
+      DataSource = DataModule1.srcSettings
+      TabOrder = 8
+      OnChange = DBEdit1Change
+    end
+    object DBEdit8: TDBEdit
+      Left = 108
+      Top = 200
+      Width = 267
+      Height = 21
+      DataField = 'MQTTTopic'
+      DataSource = DataModule1.srcSettings
+      TabOrder = 9
+      OnChange = DBEdit1Change
+      OnKeyPress = DBEdit2KeyPress
+    end
+    object DBEdit9: TDBEdit
+      Left = 108
+      Top = 227
+      Width = 121
+      Height = 21
+      DataField = 'MQTTUserName'
+      DataSource = DataModule1.srcSettings
+      TabOrder = 10
+      OnChange = DBEdit1Change
+      OnKeyPress = DBEdit2KeyPress
+    end
+    object DBEdit10: TDBEdit
+      Left = 108
+      Top = 254
+      Width = 121
+      Height = 21
+      DataField = 'MQTTPassword'
+      DataSource = DataModule1.srcSettings
+      TabOrder = 11
+      OnChange = DBEdit1Change
+    end
+    object DBAdvOfficeCheckBox1: TDBAdvOfficeCheckBox
+      Left = 304
+      Top = 9
+      Width = 174
+      Height = 20
+      TabOrder = 12
+      Alignment = taLeftJustify
+      Caption = 'Enable HABHUB Uploads'
+      ReturnIsTab = False
+      State = cbGrayed
+      Version = '1.1.1.4'
+      DataField = 'UplinkHABHUB'
+      DataSource = DataModule1.srcSettings
+      ValueChecked = 'True'
+      ValueUnchecked = 'False'
+    end
+    object DBAdvOfficeCheckBox2: TDBAdvOfficeCheckBox
+      Left = 304
+      Top = 42
+      Width = 174
+      Height = 20
+      TabOrder = 13
+      Alignment = taLeftJustify
+      Caption = 'Enable HABLINK Uploads'
+      ReturnIsTab = False
+      State = cbGrayed
+      Version = '1.1.1.4'
+      DataField = 'UplinkHABLINK'
+      DataSource = DataModule1.srcSettings
+      ValueChecked = 'True'
+      ValueUnchecked = 'False'
+    end
+    object DBAdvOfficeCheckBox3: TDBAdvOfficeCheckBox
+      Left = 304
+      Top = 112
+      Width = 174
+      Height = 20
+      TabOrder = 14
+      Alignment = taLeftJustify
+      Caption = 'Enable SSDV Uploads'
+      ReturnIsTab = False
+      State = cbGrayed
+      Version = '1.1.1.4'
+      DataField = 'UplinkSSDV'
+      DataSource = DataModule1.srcSettings
+      ValueChecked = 'True'
+      ValueUnchecked = 'False'
+    end
+    object DBAdvOfficeCheckBox4: TDBAdvOfficeCheckBox
+      Left = 304
+      Top = 75
+      Width = 174
+      Height = 20
+      TabOrder = 15
+      Alignment = taLeftJustify
+      Caption = 'Enable MQTT Uploads'
+      ReturnIsTab = False
+      State = cbGrayed
+      Version = '1.1.1.4'
+      DataField = 'UplinkMQTT'
+      DataSource = DataModule1.srcSettings
+      ValueChecked = 'True'
+      ValueUnchecked = 'False'
     end
   end
 end

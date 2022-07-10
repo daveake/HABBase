@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data, Data.DB, Vcl.StdCtrls, Vcl.Mask,
-  Vcl.DBCtrls, AdvSmoothButton, Vcl.ExtCtrls, AdvPanel;
+  Vcl.DBCtrls, AdvSmoothButton, Vcl.ExtCtrls, AdvPanel, AdvOfficeButtons,
+  DBAdvOfficeButtons;
 
 type
   TfrmSystemSettings = class(TForm)
@@ -26,6 +27,18 @@ type
     Label6: TLabel;
     Label7: TLabel;
     DBEdit6: TDBEdit;
+    Label8: TLabel;
+    DBEdit7: TDBEdit;
+    Label10: TLabel;
+    DBEdit8: TDBEdit;
+    Label11: TLabel;
+    DBEdit9: TDBEdit;
+    Label12: TLabel;
+    DBEdit10: TDBEdit;
+    DBAdvOfficeCheckBox1: TDBAdvOfficeCheckBox;
+    DBAdvOfficeCheckBox2: TDBAdvOfficeCheckBox;
+    DBAdvOfficeCheckBox3: TDBAdvOfficeCheckBox;
+    DBAdvOfficeCheckBox4: TDBAdvOfficeCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);

@@ -9,6 +9,7 @@ inherited frmToolSettings: TfrmToolSettings
     Font.Height = -16
     ParentFont = False
     OnResize = pnlMainResize
+    ExplicitHeight = 82
     inherited Panel1: TPanel
       inherited lblTitle: TLabel
         Width = 303
@@ -32,6 +33,7 @@ inherited frmToolSettings: TfrmToolSettings
       Margins.Bottom = 6
       Align = alLeft
       Appearance.PictureAlignment = taCenter
+      Appearance.SimpleLayout = False
       Appearance.Rounding = 0
       Status.Caption = '0'
       Status.Appearance.Fill.Color = clRed
@@ -50,7 +52,7 @@ inherited frmToolSettings: TfrmToolSettings
       Status.Appearance.Font.Style = []
       Caption = 'System Settings'
       TabOrder = 1
-      Version = '2.2.1.2'
+      Version = '2.2.3.1'
       OnClick = btnSettingsClick
       TMSStyle = 8
     end
@@ -65,6 +67,7 @@ inherited frmToolSettings: TfrmToolSettings
       Margins.Bottom = 6
       Align = alClient
       Appearance.PictureAlignment = taCenter
+      Appearance.SimpleLayout = False
       Appearance.Rounding = 0
       Status.Caption = '0'
       Status.Appearance.Fill.Color = clRed
@@ -83,10 +86,8 @@ inherited frmToolSettings: TfrmToolSettings
       Status.Appearance.Font.Style = []
       Caption = 'Balloon Filters'
       TabOrder = 2
-      Version = '2.2.1.2'
+      Version = '2.2.3.1'
       OnClick = btnFiltersClick
-      ExplicitLeft = 6
-      ExplicitWidth = 99
       TMSStyle = 8
     end
   end

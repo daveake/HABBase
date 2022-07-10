@@ -69,9 +69,9 @@ inherited frmLoRaSerialSettings: TfrmLoRaSerialSettings
       TabOrder = 7
       OnClick = chKEnabledClick
       Alignment = taLeftJustify
-      Caption = 'Upload To Habitat'
+      Caption = 'Upload To Server(s)'
       ReturnIsTab = False
-      Version = '1.7.0.2'
+      Version = '1.8.1.0'
     end
     object cmbPort: TComboBox
       Left = 60

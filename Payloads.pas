@@ -403,7 +403,7 @@ var
     PayloadIndex: Integer;
     MustHaveUpdatedSince: TDateTime;
 begin
-    MustHaveUpdatedSince := Now - DataModule1.tblSettings.FieldByName('Expiry').AsInteger * 60 / 86400;
+    MustHaveUpdatedSince := Now - max(10, DataModule1.tblSettings.FieldByName('Expiry').AsInteger) * 60 / 86400;
 
     for PayloadIndex := Low(HABPayloads) to High(HABPayloads) do begin
         if HABPayloads[PayloadIndex].InUse then begin

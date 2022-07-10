@@ -66,7 +66,7 @@ uses Data,
      // ToolWhiteList,
      ToolSettings,
      // Main Forms
-     Map, FNCMap,
+     Map,
      Payloads,
      // Sources
      SourcesForm;
@@ -102,7 +102,7 @@ begin
 
     TLabel(Sender).Font.Style := [fsBold];
 
-    TfrmFNCMap(frmMap).SetMapSource(TLabel(Sender).Caption);
+    frmMap.SetMapSource(TLabel(Sender).Caption);
 end;
 
 procedure TfrmMain.LoadData;
@@ -116,8 +116,8 @@ var
 begin
     // Map
     pnlMap.Visible := True;
-    frmMap := TfrmFNCMap.Create(nil);
-    TfrmFNCMap(frmMap).FNCMap.Parent := pnlMap;
+    frmMap := TfrmMap.Create(nil);
+    frmMap.FNCMap.Parent := pnlMap;
 
     // Live Payloads
     frmPayloads := TfrmPayloads.Create(nil);
@@ -126,6 +126,9 @@ begin
     // White List
 //    frmToolWhiteList := TfrmToolWhiteList.Create(nil);
 //    frmToolWhiteList.pnlMain.Parent := pnlWhiteList;
+    frmToolSettings := TfrmToolSettings.Create(nil);
+    frmToolSettings.pnlMain.Parent := pnlSettings;
+
     frmToolSettings := TfrmToolSettings.Create(nil);
     frmToolSettings.pnlMain.Parent := pnlSettings;
 
