@@ -86,6 +86,7 @@ type
     BooleanField2: TBooleanField;
     BooleanField3: TBooleanField;
     BooleanField4: TBooleanField;
+    tblTemporary: TFDMemTable;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
@@ -122,6 +123,7 @@ begin
     end;
 end;
 
+(*
 procedure TDataModule1.LoadSettingsFromJSON;
 var
     i: Integer;
@@ -153,6 +155,39 @@ begin
         end;
     end;
 end;
+*)
+
+procedure TDataModule1.LoadSettingsFromJSON;
+var
+    i: Integer;
+    FileName: String;
+begin
+    FileName := ExtractFilePath(Application.ExeName) + 'settings.json';
+
+    if FileExists(FileName) then begin
+        try
+            tblSettings.LoadFromFile(FileName);
+        except
+            // Failed, presumably because settings file has an old format and there are missing fields
+
+            // Load settings file.  This won't fail as the temp table has no fielddefs
+            tblTemporary.LoadFromFile(FileName);
+
+            // Copy data over to settings table
+            tblSettings.Open;
+            tblSettings.Append;
+            for i := 0 to tblTemporary.Fields.Count-1 do begin
+                tblSettings.FieldByName(tblTemporary.Fields[i].FieldName).Assign(tblTemporary.Fields[i]);
+            end;
+            tblSettings.Post;
+
+            tblSettings.SaveToFile(FileName);
+
+            tblSettings.LoadFromFile(FileName);
+        end;
+    end;
+end;
+
 
 procedure TDataModule1.LoadSourcesFromJSON;
 var

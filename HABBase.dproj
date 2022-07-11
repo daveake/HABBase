@@ -5,7 +5,7 @@
         <FrameworkType>VCL</FrameworkType>
         <MainSource>HABBase.dpr</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -88,7 +88,7 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_WriteableConstants>true</DCC_WriteableConstants>
         <Icon_MainIcon>HABBase_Icon.ico</Icon_MainIcon>
-        <Debugger_RunParams>PATH=D:\Dropbox\dev\HAB\Apps\HABBase HABLink</Debugger_RunParams>
+        <Debugger_RunParams>PATH=D:\Dropbox\dev\HAB\Apps\HABBase</Debugger_RunParams>
         <VerInfo_MinorVer>4</VerInfo_MinorVer>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">

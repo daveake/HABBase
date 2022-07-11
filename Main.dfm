@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  Caption = 'HAB Base Station Manager V1.5.0'
+  Caption = 'HAB Base Station Manager V1.6.0'
   ClientHeight = 847
   ClientWidth = 1398
   Color = clBtnFace
@@ -12,7 +12,6 @@ object frmMain: TfrmMain
   Font.Style = []
   OnActivate = FormActivate
   OnClose = FormClose
-  PixelsPerInch = 96
   TextHeight = 13
   object AdvSplitter1: TAdvSplitter
     Left = 329

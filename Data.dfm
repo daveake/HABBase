@@ -1,8 +1,7 @@
 object DataModule1: TDataModule1
   OnCreate = DataModuleCreate
-  Height = 297
-  Width = 450
-  PixelsPerInch = 96
+  Height = 417
+  Width = 643
   object FDConnection: TFDConnection
     Params.Strings = (
       'Database=D:\Dropbox\dev\HAB\apps\HABBase\HABBase.db'
@@ -17,12 +16,12 @@ object DataModule1: TDataModule1
         TargetDataType = dtWideString
       end>
     LoginPrompt = False
-    Left = 48
-    Top = 73
+    Left = 28
+    Top = 25
   end
   object FDStanStorageJSONLink1: TFDStanStorageJSONLink
-    Left = 168
-    Top = 64
+    Left = 32
+    Top = 92
   end
   object tblSettings: TFDMemTable
     Active = True
@@ -138,8 +137,8 @@ object DataModule1: TDataModule1
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 272
-    Top = 36
+    Left = 204
+    Top = 28
     Content = {
       414442530F000000D90A0000FF00010001FF02FF03040016000000740062006C
       00530065007400740069006E0067007300050016000000740062006C00530065
@@ -417,8 +416,8 @@ object DataModule1: TDataModule1
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 16
-    Top = 156
+    Left = 200
+    Top = 104
     Content = {
       414442530F00000083060000FF00010001FF02FF03040014000000740062006C
       0053006F0075007200630065007300050014000000740062006C0053006F0075
@@ -499,13 +498,13 @@ object DataModule1: TDataModule1
   end
   object srcSources: TDataSource
     DataSet = tblSources
-    Left = 88
-    Top = 224
+    Left = 412
+    Top = 104
   end
   object srcWhiteList: TDataSource
     DataSet = tblWhiteList
-    Left = 168
-    Top = 224
+    Left = 412
+    Top = 184
   end
   object tblWhiteList: TFDMemTable
     Active = True
@@ -545,8 +544,8 @@ object DataModule1: TDataModule1
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 160
-    Top = 140
+    Left = 204
+    Top = 180
     Content = {
       414442530F00000095020000FF00010001FF02FF03040018000000740062006C
       00570068006900740065004C0069007300740005000A0000005400610062006C
@@ -664,18 +663,18 @@ object DataModule1: TDataModule1
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 232
-    Top = 168
+    Left = 208
+    Top = 264
   end
   object srcAllPayloads: TDataSource
     DataSet = tblAllPayloads
-    Left = 232
-    Top = 224
+    Left = 416
+    Top = 268
   end
   object srcLivePayloads: TDataSource
     DataSet = tblLivePayloads
-    Left = 312
-    Top = 224
+    Left = 412
+    Top = 348
   end
   object tblLivePayloads: TFDMemTable
     Active = True
@@ -723,8 +722,8 @@ object DataModule1: TDataModule1
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 312
-    Top = 168
+    Left = 208
+    Top = 340
     object tblLivePayloadsPayloadID: TStringField
       FieldName = 'PayloadID'
     end
@@ -757,8 +756,8 @@ object DataModule1: TDataModule1
   end
   object srcSettings: TDataSource
     DataSet = tblSettings
-    Left = 312
-    Top = 112
+    Left = 412
+    Top = 32
   end
   object tblClonedSources: TFDMemTable
     Active = True
@@ -832,11 +831,6 @@ object DataModule1: TDataModule1
         Name = 'Password'
         DataType = ftString
         Size = 32
-      end
-      item
-        Name = 'WhiteList'
-        DataType = ftString
-        Size = 255
       end>
     IndexDefs = <>
     IndexFieldNames = 'ID'
@@ -849,8 +843,8 @@ object DataModule1: TDataModule1
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 80
-    Top = 156
+    Left = 300
+    Top = 104
     Content = {
       414442530F00000010060000FF00010001FF02FF03040014000000740062006C
       0053006F0075007200630065007300050014000000740062006C0053006F0075
@@ -1020,7 +1014,7 @@ object DataModule1: TDataModule1
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 360
+    Left = 300
     Top = 28
     Content = {
       414442530F00000007090000FF00010001FF02FF03040022000000740062006C
@@ -1178,5 +1172,16 @@ object DataModule1: TDataModule1
     object BooleanField4: TBooleanField
       FieldName = 'UplinkSSDV'
     end
+  end
+  object tblTemporary: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 540
+    Top = 32
   end
 end
