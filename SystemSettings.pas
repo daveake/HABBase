@@ -39,6 +39,7 @@ type
     DBAdvOfficeCheckBox2: TDBAdvOfficeCheckBox;
     DBAdvOfficeCheckBox3: TDBAdvOfficeCheckBox;
     DBAdvOfficeCheckBox4: TDBAdvOfficeCheckBox;
+    DBAdvOfficeCheckBox5: TDBAdvOfficeCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnSaveClick(Sender: TObject);

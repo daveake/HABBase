@@ -3,7 +3,6 @@ inherited frmPayloads: TfrmPayloads
   ClientWidth = 296
   OnCreate = FormCreate
   ExplicitWidth = 312
-  PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
     Width = 296

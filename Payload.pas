@@ -11,7 +11,7 @@ uses
   BaseGrid, AdvGrid, DBAdvGrid, Miscellaneous, Source, Vcl.StdCtrls, Vcl.ComCtrls,
   AdvSmoothButton, AdvPanel, AdvProgr, AdvGauge, Map, Vcl.Menus,
   VCL.TMSFNCTypes, VCL.TMSFNCUtils, VCL.TMSFNCGraphics,
-  VCL.TMSFNCGraphicsTypes, VCL.TMSFNCChart;
+  VCL.TMSFNCGraphicsTypes, VCL.TMSFNCChart, HTMLabel;
 
 type
   TfrmPayload = class(TfrmBase)
@@ -62,6 +62,8 @@ type
     edtBurstAltitude: TEdit;
     btnSetBurst: TButton;
     AltitudeChart: TTMSFNCChart;
+    lblHABHUB: THTMLabel;
+    lblSondeHub: THTMLabel;
     procedure btnDownClick(Sender: TObject);
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -81,6 +83,7 @@ type
   public
     { Public declarations }
     PayloadIndex: Integer;
+    procedure SetPayloadID(PayloadID: String);
     procedure AddPosition(Position: THABPosition; Sources: String);
     procedure UpdateSources(Position: THABPosition; Sources: String);
     procedure ShowSNR(SNR: Double);
@@ -352,6 +355,15 @@ begin
             AddOrUpdateItem('Pred. Lon', MyFormatFloat('0.0000', PredictedLongitude));
         end;
     end;
+end;
+
+procedure TfrmPayload.SetPayloadID(PayloadID: String);
+begin
+    pnlTitle.Caption := PayloadID;
+
+    lblHABHUB.HtmlText.Text := '<a href="https://tracker.habhub.org/#!qm=All&q=' + PayloadID + '">Open in HABHUB Map</a>';
+
+    lblSondeHub.HtmlText.Text := '<a href="https://amateur.sondehub.org/#!mt=Mapnik&mz=11&qm=12h&f=' + PayloadID + '&q=' + PayloadID + '">Open in Sondehub Map</a>';
 end;
 
 end.

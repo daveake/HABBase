@@ -135,10 +135,10 @@ begin
             HABPayloads[PayloadIndex].BurstAltitude := 30000;
             HABPayloads[PayloadIndex].Form.edtBurstAltitude.Text := FormatFloat('0', HABPayloads[PayloadIndex].BurstAltitude);
             HABPayloads[PayloadIndex].Form.pnlMain.Parent := scrollMain;    // pnlMain;
-            HABPayloads[PayloadIndex].Form.pnlTitle.Caption := Position.PayloadID;
             HABPayloads[PayloadIndex].Form.pnlTSS.Caption := '00:00';
             HABPayloads[PayloadIndex].Form.pnlTitle.Color := BGColours[(PayloadIndex-1) mod (High(BGColours)+1)];
             HABPayloads[PayloadIndex].Form.pnlTitle.Font.Color := FGColours[(PayloadIndex-1) mod (High(FGColours)+1)];
+            HABPayloads[PayloadIndex].Form.SetPayloadID(Position.PayloadID);
         end;
 
         // New position ?

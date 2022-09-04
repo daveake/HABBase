@@ -3,7 +3,6 @@ inherited frmPayload: TfrmPayload
   ClientWidth = 353
   OnCreate = FormCreate
   ExplicitWidth = 369
-  PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
     Width = 353
@@ -125,7 +124,7 @@ inherited frmPayload: TfrmPayload
       Top = 44
       Width = 353
       Height = 306
-      ActivePage = TabSheet3
+      ActivePage = TabSheet4
       Align = alClient
       MultiLine = True
       TabOrder = 1
@@ -887,6 +886,9 @@ inherited frmPayload: TfrmPayload
             44
             46
             51)
+          RowHeights = (
+            22
+            22)
         end
       end
       object tabCharts: TTabSheet
@@ -1241,6 +1243,28 @@ inherited frmPayload: TfrmPayload
             Height = 13
             Alignment = taRightJustify
             Caption = 'Burst Altitude for prediction:'
+          end
+          object lblHABHUB: THTMLabel
+            Left = 17
+            Top = 76
+            Width = 300
+            Height = 17
+            Anchors = [akLeft, akTop, akRight]
+            HTMLText.Strings = (
+              'HABHUB')
+            Transparent = True
+            Version = '2.3.0.1'
+          end
+          object lblSondeHub: THTMLabel
+            Left = 17
+            Top = 108
+            Width = 300
+            Height = 17
+            Anchors = [akLeft, akTop, akRight]
+            HTMLText.Strings = (
+              'HABHUB')
+            Transparent = True
+            Version = '2.3.0.1'
           end
           object AdvSmoothButton1: TAdvSmoothButton
             AlignWithMargins = True

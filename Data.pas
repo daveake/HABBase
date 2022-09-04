@@ -65,28 +65,8 @@ type
     tblSettingsMQTTTopic: TStringField;
     tblSettingsMQTTUserName: TStringField;
     tblSettingsMQTTPassword: TStringField;
-    tblClonedSettings: TFDMemTable;
-    StringField1: TStringField;
-    IntegerField1: TIntegerField;
-    IntegerField2: TIntegerField;
-    IntegerField3: TIntegerField;
-    IntegerField4: TIntegerField;
-    IntegerField5: TIntegerField;
-    IntegerField6: TIntegerField;
-    IntegerField7: TIntegerField;
-    IntegerField8: TIntegerField;
-    IntegerField9: TIntegerField;
-    FloatField1: TFloatField;
-    FloatField2: TFloatField;
-    FloatField3: TFloatField;
-    IntegerField10: TIntegerField;
-    IntegerField11: TIntegerField;
-    IntegerField12: TIntegerField;
-    BooleanField1: TBooleanField;
-    BooleanField2: TBooleanField;
-    BooleanField3: TBooleanField;
-    BooleanField4: TBooleanField;
     tblTemporary: TFDMemTable;
+    tblSettingsUplinkSondehub: TBooleanField;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

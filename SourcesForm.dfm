@@ -1,9 +1,9 @@
 inherited frmSources: TfrmSources
   Caption = 'Sources'
   ClientWidth = 345
+  OnCreate = FormCreate
   OnDestroy = FormDestroy
   ExplicitWidth = 361
-  PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
     Width = 345
@@ -12,7 +12,7 @@ inherited frmSources: TfrmSources
       Width = 345
       ExplicitWidth = 345
       inherited lblTitle: TLabel
-        Width = 46
+        Width = 328
         Caption = 'Sources'
         ExplicitWidth = 46
       end
@@ -69,17 +69,21 @@ inherited frmSources: TfrmSources
       Top = 410
       Width = 345
       Height = 60
+      Margins.Left = 0
+      Margins.Right = 0
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
       OnResize = pnlUploadsResize
       object indHABLINK: TAdvSmoothStatusIndicator
         AlignWithMargins = True
-        Left = 90
+        Left = 79
         Top = 27
-        Width = 80
+        Width = 75
         Height = 30
-        Caption = 'HABLINK'
+        Margins.Left = 0
+        Margins.Right = 1
+        Caption = 'HABLink'
         Version = '1.0.1.0'
         Appearance.Fill.Color = clGray
         Appearance.Fill.ColorMirror = clNone
@@ -96,14 +100,16 @@ inherited frmSources: TfrmSources
         Appearance.Font.Name = 'Arial'
         Appearance.Font.Style = []
         Align = alRight
-        ExplicitLeft = 82
+        ExplicitLeft = 78
       end
       object indMQTT: TAdvSmoothStatusIndicator
         AlignWithMargins = True
-        Left = 176
+        Left = 236
         Top = 27
-        Width = 80
+        Width = 54
         Height = 30
+        Margins.Left = 0
+        Margins.Right = 1
         Caption = 'MQTT'
         Version = '1.0.1.0'
         Appearance.Fill.Color = clGray
@@ -121,14 +127,16 @@ inherited frmSources: TfrmSources
         Appearance.Font.Name = 'Arial'
         Appearance.Font.Style = []
         Align = alRight
-        ExplicitLeft = 168
+        ExplicitLeft = 235
       end
       object indHABHUB: TAdvSmoothStatusIndicator
         AlignWithMargins = True
-        Left = 3
+        Left = 0
         Top = 27
-        Width = 81
+        Width = 78
         Height = 30
+        Margins.Left = 0
+        Margins.Right = 1
         Caption = 'HABHUB'
         Version = '1.0.1.0'
         Appearance.Fill.Color = clGray
@@ -146,14 +154,17 @@ inherited frmSources: TfrmSources
         Appearance.Font.Name = 'Arial'
         Appearance.Font.Style = []
         Align = alClient
-        ExplicitWidth = 80
+        ExplicitLeft = 3
+        ExplicitWidth = 74
       end
       object indSSDV: TAdvSmoothStatusIndicator
         AlignWithMargins = True
-        Left = 262
+        Left = 291
         Top = 27
-        Width = 80
+        Width = 53
         Height = 30
+        Margins.Left = 0
+        Margins.Right = 1
         Caption = 'SSDV'
         Version = '1.0.1.0'
         Appearance.Fill.Color = clGray
@@ -171,7 +182,35 @@ inherited frmSources: TfrmSources
         Appearance.Font.Name = 'Arial'
         Appearance.Font.Style = []
         Align = alRight
-        ExplicitLeft = 254
+        ExplicitLeft = 292
+      end
+      object indSondehub: TAdvSmoothStatusIndicator
+        AlignWithMargins = True
+        Left = 155
+        Top = 27
+        Width = 80
+        Height = 30
+        Margins.Left = 0
+        Margins.Right = 1
+        Caption = 'Sondehub'
+        Version = '1.0.1.0'
+        Appearance.Fill.Color = clGray
+        Appearance.Fill.ColorMirror = clNone
+        Appearance.Fill.ColorMirrorTo = clNone
+        Appearance.Fill.GradientType = gtSolid
+        Appearance.Fill.GradientMirrorType = gtSolid
+        Appearance.Fill.BorderColor = clGray
+        Appearance.Fill.Rounding = 14
+        Appearance.Fill.ShadowOffset = 0
+        Appearance.Fill.Glow = gmNone
+        Appearance.Font.Charset = DEFAULT_CHARSET
+        Appearance.Font.Color = clWhite
+        Appearance.Font.Height = -16
+        Appearance.Font.Name = 'Arial'
+        Appearance.Font.Style = []
+        Align = alRight
+        ExplicitLeft = 90
+        ExplicitTop = 26
       end
       object Panel3: TPanel
         Left = 0
@@ -193,7 +232,7 @@ inherited frmSources: TfrmSources
           AlignWithMargins = True
           Left = 13
           Top = 4
-          Width = 79
+          Width = 328
           Height = 16
           Margins.Left = 12
           Align = alClient
@@ -204,6 +243,7 @@ inherited frmSources: TfrmSources
           Font.Name = 'Tahoma'
           Font.Style = []
           ParentFont = False
+          ExplicitWidth = 79
         end
       end
     end

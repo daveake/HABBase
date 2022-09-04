@@ -12,7 +12,6 @@ object frmSystemSettings: TfrmSystemSettings
   Font.Style = []
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
-  PixelsPerInch = 96
   TextHeight = 13
   object pnlCommon: TAdvPanel
     Left = 0
@@ -382,7 +381,7 @@ object frmSystemSettings: TfrmSystemSettings
     end
     object DBAdvOfficeCheckBox3: TDBAdvOfficeCheckBox
       Left = 304
-      Top = 112
+      Top = 144
       Width = 174
       Height = 20
       TabOrder = 14
@@ -408,6 +407,22 @@ object frmSystemSettings: TfrmSystemSettings
       State = cbGrayed
       Version = '1.1.1.4'
       DataField = 'UplinkMQTT'
+      DataSource = DataModule1.srcSettings
+      ValueChecked = 'True'
+      ValueUnchecked = 'False'
+    end
+    object DBAdvOfficeCheckBox5: TDBAdvOfficeCheckBox
+      Left = 304
+      Top = 112
+      Width = 174
+      Height = 20
+      TabOrder = 16
+      Alignment = taLeftJustify
+      Caption = 'Enable Sondehub Uploads'
+      ReturnIsTab = False
+      State = cbGrayed
+      Version = '1.1.1.4'
+      DataField = 'UplinkSondehub'
       DataSource = DataModule1.srcSettings
       ValueChecked = 'True'
       ValueUnchecked = 'False'

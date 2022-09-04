@@ -13,7 +13,7 @@ uses
   Source, SourceForm, SocketSource, UDPSource, APRSSource,
   GatewaySource, SerialSource, HabitatSource, MQTTSource,
   TCPSettings, UDPSettings, APRSSettings, MQTTSettings,
-  Habitat, HABLink, MQTTUplink, SSDV;
+  Habitat, HABLink, Sondehub, MQTTUplink, SSDV;
 
 
 type
@@ -60,15 +60,18 @@ type
     Panel3: TPanel;
     Label1: TLabel;
     indSSDV: TAdvSmoothStatusIndicator;
+    indSondehub: TAdvSmoothStatusIndicator;
     procedure btnAddSourceClick(Sender: TObject);
     procedure tmrSSDVTimer(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure pnlUploadsResize(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
-    Uploaders: Array[1..4] of TUploaders;
+    Uploaders: Array[1..5] of TUploaders;
     HabitatUploader: THabitatThread;
+    SondehubUploader: TSondehubThread;
     HabLinkUploader: THABLinkThread;
     SSDVUploader: TSSDVThread;
     MQTTUploader: TMQTTThread;
@@ -81,6 +84,7 @@ type
     function FindFreeSource: Integer;
     procedure HabitatStatusCallback(SourceID: Integer; Active, OK: Boolean);
     procedure HabLinkStatusCallback(SourceID: Integer; Active, OK: Boolean);
+    procedure SondehubStatusCallback(SourceID: Integer; Active, OK: Boolean);
     procedure MQTTStatusCallback(SourceID: Integer; Active, OK: Boolean);
     procedure SSDVStatusCallback(SourceID: Integer; Active, OK: Boolean);
     function NewPosition(SourceIndex: Integer; Position: THABPosition): Boolean;
@@ -121,11 +125,6 @@ var
     SourceIndex: Integer;
     Dummy: String;
 begin
-    Uploaders[1].Indicator := indHABHUB;
-    Uploaders[2].Indicator := indHABLINK;
-    Uploaders[3].Indicator := indMQTT;
-    Uploaders[4].Indicator := indSSDV;
-
     InitialiseSettings;
 
     // Habitat uploader
@@ -133,7 +132,14 @@ begin
 
     // HabLink uploader
     HabLinkUploader := THABLinkThread.Create(HabLinkStatusCallback);
-    HabLinkUploader.SetListener('HAB Base', 'V1.5', DataModule1.tblSettings.FieldByName('Callsign').AsString);
+    HabLinkUploader.SetListener(HAB_BASE, HAB_BASE_VERSION, DataModule1.tblSettings.FieldByName('Callsign').AsString);
+
+    // Sondehub uploader
+    SondehubUploader := TSondehubThread.Create(SondehubStatusCallback);
+    SondehubUploader.SetListener(HAB_BASE, HAB_BASE_VERSION, DataModule1.tblSettings.FieldByName('Callsign').AsString);
+    SondehubUploader.SetListenerPosition(DataModule1.tblSettings.FieldByName('Latitude').AsFloat,
+                                         DataModule1.tblSettings.FieldByName('Longitude').AsFloat,
+                                         DataModule1.tblSettings.FieldByName('Altitude').AsFloat);
 
     // MQTT Uploader
     MQTTUploader := TMQTTThread.Create(MQTTStatusCallback);
@@ -336,13 +342,19 @@ begin
     // Add to our payload list
     PositionIsNew := frmPayloads.NewPosition(Position, HABSources[SourceIndex].Code, HABSources[SourceIndex].Description);
 
-    // Upload telemtry
+    // Upload telemtry, if enabled for this source
     if HABSources[SourceIndex].Upload then begin
+        // Now check/upload to each target in turn
+
         if DataModule1.tblSettings.FieldByName('UplinkHABHUB').AsBoolean then begin
             Callsign := DataModule1.tblSettings.FieldByName('Callsign').AsString;
             if Callsign <> '' then begin
                 HabitatUploader.SaveTelemetryToHabitat(SourceIndex, Position.Line, Callsign);
             end;
+        end;
+
+        if DataModule1.tblSettings.FieldByName('UplinkSondehub').AsBoolean then begin
+            SondehubUploader.SaveTelemetryToSondehub(SourceIndex, Position);
         end;
 
         if DataModule1.tblSettings.FieldByName('UplinkHABLINK').AsBoolean then begin
@@ -365,10 +377,14 @@ begin
 end;
 
 procedure TfrmSources.pnlUploadsResize(Sender: TObject);
+var
+    i, ButtonWidth: Integer;
 begin
-    indSSDV.Width := pnlUploads.ClientWidth div 4 - indSSDV.Margins.Left - indSSDV.Margins.Right;
-    indHABLINK.Width := pnlUploads.ClientWidth div 4 - indSSDV.Margins.Left - indSSDV.Margins.Right;
-    indMQTT.Width := pnlUploads.ClientWidth div 4 - indSSDV.Margins.Left - indSSDV.Margins.Right;
+    ButtonWidth :=  pnlUploads.ClientWidth div 5 - indSSDV.Margins.Left - indSSDV.Margins.Right;
+
+    for i := 1 to 5 do begin
+        Uploaders[i].Indicator.Width := ButtonWidth;
+    end;
 end;
 
 procedure TfrmSources.ShowSourceStatus(SourceIndex: Integer);
@@ -438,6 +454,17 @@ begin
     if Thread <> nil then begin
         Thread.WaitFor;
     end;
+end;
+
+procedure TfrmSources.FormCreate(Sender: TObject);
+begin
+    inherited;
+
+    Uploaders[1].Indicator := indHABHUB;
+    Uploaders[2].Indicator := indHABLINK;
+    Uploaders[3].Indicator := indMQTT;
+    Uploaders[4].Indicator := indSSDV;
+    Uploaders[5].Indicator := indSondehub;
 end;
 
 procedure TfrmSources.FormDestroy(Sender: TObject);
@@ -759,6 +786,15 @@ begin
     ShowUplinkStatus(4);
 end;
 
+procedure TfrmSources.SondehubStatusCallback(SourceID: Integer; Active, OK: Boolean);
+begin
+    Uploaders[5].Attempted := Active;
+    Uploaders[5].Success := OK;
+    if OK then Uploaders[5].LastSuccess := Now;
+
+    ShowUplinkStatus(5);
+end;
+
 procedure TfrmSources.ModifySource(SourceIndex: Integer);
 begin
     if ShowSettingsForm(SourceIndex) then begin
@@ -898,6 +934,7 @@ begin
     Uploaders[2].Enabled := DataModule1.tblSettings.FieldByName('UplinkHABLINK').AsBoolean;
     Uploaders[3].Enabled := DataModule1.tblSettings.FieldByName('UplinkMQTT').AsBoolean;
     Uploaders[4].Enabled := DataModule1.tblSettings.FieldByName('UplinkSSDV').AsBoolean;
+    Uploaders[5].Enabled := DataModule1.tblSettings.FieldByName('UplinkSondehub').AsBoolean;
 
     try
         Topic := StringReplace(DataModule1.tblSettings.FieldByName('MQTTTopic').AsString, '$LISTENER$', DataModule1.tblSettings.FieldByName('Callsign').AsString, [rfReplaceAll, rfIgnoreCase]);

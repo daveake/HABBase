@@ -26,7 +26,7 @@ uses
   NewSource in 'NewSource.pas' {frmNewSource},
   LoRaSerialSettings in 'LoRaSerialSettings.pas' {frmLoRaSerialSettings},
   Misc in 'Misc.pas',
-  Habitat in '..\HABRx\Habitat.pas',
+  Sondehub in '..\HABRx\Sondehub.pas',
   SystemSettings in 'SystemSettings.pas' {frmSystemSettings},
   LogtailSettings in 'LogtailSettings.pas' {frmLogtailSettings},
   Payload in 'Payload.pas' {frmPayload},
@@ -45,7 +45,8 @@ uses
   MQTTSource in '..\HABRx\MQTTSource.pas',
   HabitatSource in '..\HABRx\HabitatSource.pas',
   MQTTSettings in 'MQTTSettings.pas' {frmMQTTSettings},
-  HabitatSettings in 'HabitatSettings.pas' {frmHabitatSettings};
+  HabitatSettings in 'HabitatSettings.pas' {frmHabitatSettings},
+  Habitat in '..\HABRx\Habitat.pas';
 
 {$R *.res}
 
