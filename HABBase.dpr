@@ -46,7 +46,9 @@ uses
   HabitatSource in '..\HABRx\HabitatSource.pas',
   MQTTSettings in 'MQTTSettings.pas' {frmMQTTSettings},
   HabitatSettings in 'HabitatSettings.pas' {frmHabitatSettings},
-  Habitat in '..\HABRx\Habitat.pas';
+  Habitat in '..\HABRx\Habitat.pas',
+  UploadStatus in 'UploadStatus.pas' {frmUploadStatus},
+  SondehubSource in '..\HABRx\SondehubSource.pas';
 
 {$R *.res}
 

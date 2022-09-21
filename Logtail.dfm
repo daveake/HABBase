@@ -1,6 +1,5 @@
 inherited frmLogtail: TfrmLogtail
   Caption = 'Logtail Source'
-  PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
     object WebBrowser1: TWebBrowser [0]
@@ -17,14 +16,6 @@ inherited frmLogtail: TfrmLogtail
         2B2E126200000000000000004C0000000114020000000000C000000000000046
         8000000000000000000000000000000000000000000000000000000000000000
         00000000000000000100000000000000000000000000000000000000}
-    end
-    inherited pnlTop: TPanel
-      inherited pnlTitle: TPanel
-        inherited lblTitle: TLabel
-          Width = 271
-          Height = 23
-        end
-      end
     end
   end
   object Timer1: TTimer [1]

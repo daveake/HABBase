@@ -156,6 +156,11 @@ begin
             // Copy data over to settings table
             tblSettings.Open;
             tblSettings.Append;
+
+            tblSettings.FieldByName('UplinkMQTT').AsBoolean := False;
+            tblSettings.FieldByName('UplinkSSDV').AsBoolean := False;
+            tblSettings.FieldByName('UplinkSondehub').AsBoolean := False;
+
             for i := 0 to tblTemporary.Fields.Count-1 do begin
                 tblSettings.FieldByName(tblTemporary.Fields[i].FieldName).Assign(tblTemporary.Fields[i]);
             end;

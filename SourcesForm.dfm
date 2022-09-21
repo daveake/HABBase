@@ -75,60 +75,6 @@ inherited frmSources: TfrmSources
       BevelOuter = bvNone
       TabOrder = 2
       OnResize = pnlUploadsResize
-      object indHABLINK: TAdvSmoothStatusIndicator
-        AlignWithMargins = True
-        Left = 79
-        Top = 27
-        Width = 75
-        Height = 30
-        Margins.Left = 0
-        Margins.Right = 1
-        Caption = 'HABLink'
-        Version = '1.0.1.0'
-        Appearance.Fill.Color = clGray
-        Appearance.Fill.ColorMirror = clNone
-        Appearance.Fill.ColorMirrorTo = clNone
-        Appearance.Fill.GradientType = gtSolid
-        Appearance.Fill.GradientMirrorType = gtSolid
-        Appearance.Fill.BorderColor = clGray
-        Appearance.Fill.Rounding = 14
-        Appearance.Fill.ShadowOffset = 0
-        Appearance.Fill.Glow = gmNone
-        Appearance.Font.Charset = DEFAULT_CHARSET
-        Appearance.Font.Color = clWhite
-        Appearance.Font.Height = -16
-        Appearance.Font.Name = 'Arial'
-        Appearance.Font.Style = []
-        Align = alRight
-        ExplicitLeft = 78
-      end
-      object indMQTT: TAdvSmoothStatusIndicator
-        AlignWithMargins = True
-        Left = 236
-        Top = 27
-        Width = 54
-        Height = 30
-        Margins.Left = 0
-        Margins.Right = 1
-        Caption = 'MQTT'
-        Version = '1.0.1.0'
-        Appearance.Fill.Color = clGray
-        Appearance.Fill.ColorMirror = clNone
-        Appearance.Fill.ColorMirrorTo = clNone
-        Appearance.Fill.GradientType = gtSolid
-        Appearance.Fill.GradientMirrorType = gtSolid
-        Appearance.Fill.BorderColor = clGray
-        Appearance.Fill.Rounding = 14
-        Appearance.Fill.ShadowOffset = 0
-        Appearance.Fill.Glow = gmNone
-        Appearance.Font.Charset = DEFAULT_CHARSET
-        Appearance.Font.Color = clWhite
-        Appearance.Font.Height = -16
-        Appearance.Font.Name = 'Arial'
-        Appearance.Font.Style = []
-        Align = alRight
-        ExplicitLeft = 235
-      end
       object indHABHUB: TAdvSmoothStatusIndicator
         AlignWithMargins = True
         Left = 0
@@ -154,18 +100,21 @@ inherited frmSources: TfrmSources
         Appearance.Font.Name = 'Arial'
         Appearance.Font.Style = []
         Align = alClient
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = UploaderClick
         ExplicitLeft = 3
         ExplicitWidth = 74
       end
-      object indSSDV: TAdvSmoothStatusIndicator
+      object indHABLINK: TAdvSmoothStatusIndicator
         AlignWithMargins = True
-        Left = 291
+        Left = 269
         Top = 27
-        Width = 53
+        Width = 75
         Height = 30
         Margins.Left = 0
         Margins.Right = 1
-        Caption = 'SSDV'
+        Caption = 'HABLink'
         Version = '1.0.1.0'
         Appearance.Fill.Color = clGray
         Appearance.Fill.ColorMirror = clNone
@@ -182,11 +131,14 @@ inherited frmSources: TfrmSources
         Appearance.Font.Name = 'Arial'
         Appearance.Font.Style = []
         Align = alRight
-        ExplicitLeft = 292
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = UploaderClick
+        ExplicitLeft = 78
       end
       object indSondehub: TAdvSmoothStatusIndicator
         AlignWithMargins = True
-        Left = 155
+        Left = 79
         Top = 27
         Width = 80
         Height = 30
@@ -209,8 +161,71 @@ inherited frmSources: TfrmSources
         Appearance.Font.Name = 'Arial'
         Appearance.Font.Style = []
         Align = alRight
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = UploaderClick
         ExplicitLeft = 90
         ExplicitTop = 26
+      end
+      object indMQTT: TAdvSmoothStatusIndicator
+        AlignWithMargins = True
+        Left = 160
+        Top = 27
+        Width = 54
+        Height = 30
+        Margins.Left = 0
+        Margins.Right = 1
+        Caption = 'MQTT'
+        Version = '1.0.1.0'
+        Appearance.Fill.Color = clGray
+        Appearance.Fill.ColorMirror = clNone
+        Appearance.Fill.ColorMirrorTo = clNone
+        Appearance.Fill.GradientType = gtSolid
+        Appearance.Fill.GradientMirrorType = gtSolid
+        Appearance.Fill.BorderColor = clGray
+        Appearance.Fill.Rounding = 14
+        Appearance.Fill.ShadowOffset = 0
+        Appearance.Fill.Glow = gmNone
+        Appearance.Font.Charset = DEFAULT_CHARSET
+        Appearance.Font.Color = clWhite
+        Appearance.Font.Height = -16
+        Appearance.Font.Name = 'Arial'
+        Appearance.Font.Style = []
+        Align = alRight
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = UploaderClick
+        ExplicitLeft = 235
+      end
+      object indSSDV: TAdvSmoothStatusIndicator
+        AlignWithMargins = True
+        Left = 215
+        Top = 27
+        Width = 53
+        Height = 30
+        Margins.Left = 0
+        Margins.Right = 1
+        Caption = 'SSDV'
+        Version = '1.0.1.0'
+        Appearance.Fill.Color = clGray
+        Appearance.Fill.ColorMirror = clNone
+        Appearance.Fill.ColorMirrorTo = clNone
+        Appearance.Fill.GradientType = gtSolid
+        Appearance.Fill.GradientMirrorType = gtSolid
+        Appearance.Fill.BorderColor = clGray
+        Appearance.Fill.Rounding = 14
+        Appearance.Fill.ShadowOffset = 0
+        Appearance.Fill.Glow = gmNone
+        Appearance.Font.Charset = DEFAULT_CHARSET
+        Appearance.Font.Color = clWhite
+        Appearance.Font.Height = -16
+        Appearance.Font.Name = 'Arial'
+        Appearance.Font.Style = []
+        Align = alRight
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = UploaderClick
+        ExplicitLeft = 292
       end
       object Panel3: TPanel
         Left = 0

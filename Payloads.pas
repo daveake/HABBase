@@ -160,16 +160,14 @@ begin
 
             // Send out on UDP port
             SendPositionToUDP(Position);
-        end else begin
-            if Pos(',' + SourceCode + ',', ',' + HABPayloads[PayloadIndex].Sources + ',') = 0 then begin
-                if HABPayloads[PayloadIndex].Sources = '' then begin
-                    HABPayloads[PayloadIndex].Sources := SourceCode;
-                end else begin
-                    HABPayloads[PayloadIndex].Sources := HABPayloads[PayloadIndex].Sources + ',' + SourceCode;
-                end;
-
-                HABPayloads[PayloadIndex].Form.UpdateSources(Position, HABPayloads[PayloadIndex].Sources);
+        end else if Pos(',' + SourceCode + ',', ',' + HABPayloads[PayloadIndex].Sources + ',') = 0 then begin
+            if HABPayloads[PayloadIndex].Sources = '' then begin
+                HABPayloads[PayloadIndex].Sources := SourceCode;
+            end else begin
+                HABPayloads[PayloadIndex].Sources := HABPayloads[PayloadIndex].Sources + ',' + SourceCode;
             end;
+
+            HABPayloads[PayloadIndex].Form.UpdateSources(Position, HABPayloads[PayloadIndex].Sources);
         end;
     end;
 

@@ -11,7 +11,7 @@ inherited frmPayloads: TfrmPayloads
       Width = 296
       ExplicitWidth = 296
       inherited lblTitle: TLabel
-        Width = 279
+        Width = 50
         Caption = 'Payloads'
         ExplicitWidth = 50
       end

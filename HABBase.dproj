@@ -64,10 +64,12 @@
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.4.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.6.3.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-        <VerInfo_MinorVer>4</VerInfo_MinorVer>
+        <VerInfo_MinorVer>6</VerInfo_MinorVer>
+        <VerInfo_Release>3</VerInfo_Release>
+        <AppDPIAwarenessMode>none</AppDPIAwarenessMode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <DCC_UsePackage>DBXSqliteDriver;RESTComponents;VCLTMSFNCChartPkgDXE12;DBXInterBaseDriver;vclactnband;vclFireDAC;tethering;FireDACADSDriver;FMXTMSFNCUIPackPkgDXE12;vcltouch;vcldb;bindcompfmx;inetdb;IcsFmxD103Run;IcsVclD103Run;FmxTeeUI;FireDACIBDriver;fmx;fmxdae;vclib;IndyCore;dbexpress;vclx;dsnap;advchartdXE12;FireDACCommon;VCLTMSFNCUIPackPkgDXE12;VCLTMSFNCCloudPackPkgDXE12;RESTBackendComponents;VCLRESTComponents;soapserver;vclie;bindengine;DBXMySQLDriver;CloudService;TMSVCLUIPackPkgDXE12;FireDACMySQLDriver;FireDACCommonODBC;FireDACCommonDriver;VCLTMSFNCCorePkgDXE12;inet;bindcompdbx;IndyIPCommon;vcl;IndyIPServer;IndySystem;TMSVCLIWPkgDXE12;VCLTMSFNCDashboardPackPkgDXE12;dsnapcon;FMXTMSFNCCorePkgDXE12;FireDACMSAccDriver;fmxFireDAC;vclimg;TeeDB;FireDAC;FireDACSqliteDriver;FireDACPgDriver;ibmonitor;TMSDiagram;FMXTee;soaprtl;DbxCommonDriver;ibxpress;Tee;xmlrtl;soapmidas;ibxbindings;fmxobj;vclwinx;rtl;DbxClientDriver;CustomIPTransport;vcldsnap;bindcomp;appanalytics;TMSVCLUIPackPkgExDXE12;FMXTMSFNCCloudPackPkgDXE12;IndyIPClient;bindcompvcl;IcsCommonD103Run;TeeUI;dbxcds;VclSmp;adortl;TMSWebGMapsPkgDXE12;dsnapxml;dbrtl;IndyProtocols;inetdbxpress;FMXTMSFNCChartPkgDXE12;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
@@ -90,14 +92,15 @@
         <Icon_MainIcon>HABBase_Icon.ico</Icon_MainIcon>
         <Debugger_RunParams>PATH=D:\Dropbox\dev\HAB\Apps\HABBase</Debugger_RunParams>
         <VerInfo_MinorVer>6</VerInfo_MinorVer>
-        <VerInfo_Release>2</VerInfo_Release>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.6.2.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Release>3</VerInfo_Release>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
         <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
         <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
         <DCC_DebugInformation>0</DCC_DebugInformation>
+        <VerInfo_Locale>2057</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.6.3.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
@@ -106,9 +109,9 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Debugger_RunParams>D:\Dropbox\dev\HAB\Apps\HABBase</Debugger_RunParams>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
-        <VerInfo_MinorVer>2</VerInfo_MinorVer>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.2.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_MinorVer>6</VerInfo_MinorVer>
         <Icon_MainIcon>HABBase_Icon1.ico</Icon_MainIcon>
+        <VerInfo_Release>3</VerInfo_Release>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -244,6 +247,11 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\HABRx\Habitat.pas"/>
+        <DCCReference Include="UploadStatus.pas">
+            <Form>frmUploadStatus</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\HABRx\SondehubSource.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

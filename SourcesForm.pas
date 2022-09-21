@@ -12,8 +12,8 @@ uses
   FireDAC.Comp.Client, AdvSmoothButton, AdvPanel, Miscellaneous, Vcl.Menus,
   Source, SourceForm, SocketSource, UDPSource, APRSSource,
   GatewaySource, SerialSource, HabitatSource, MQTTSource,
-  TCPSettings, UDPSettings, APRSSettings, MQTTSettings,
-  Habitat, HABLink, Sondehub, MQTTUplink, SSDV;
+  TCPSettings, UDPSettings, APRSSettings, MQTTSettings, UploadStatus,
+  Habitat, HABLink, Sondehub, MQTTUplink, SSDV, SondehubSource;
 
 
 type
@@ -40,12 +40,13 @@ type
     end;
 
 type
-    TUploaders = record
+    TUploader = record
         Enabled:            Boolean;
         Attempted:          Boolean;
         Success:            Boolean;
         LastSuccess:        TDateTime;
         Indicator:          TAdvSmoothStatusIndicator;
+        StatusForm:         TfrmUploadStatus;
     end;
 
 type
@@ -54,27 +55,29 @@ type
     btnAddSource: TAdvSmoothButton;
     tmrSSDV: TTimer;
     pnlUploads: TPanel;
-    indHABLINK: TAdvSmoothStatusIndicator;
-    indMQTT: TAdvSmoothStatusIndicator;
-    indHABHUB: TAdvSmoothStatusIndicator;
     Panel3: TPanel;
     Label1: TLabel;
-    indSSDV: TAdvSmoothStatusIndicator;
+    indHABHUB: TAdvSmoothStatusIndicator;
+    indHABLINK: TAdvSmoothStatusIndicator;
     indSondehub: TAdvSmoothStatusIndicator;
+    indMQTT: TAdvSmoothStatusIndicator;
+    indSSDV: TAdvSmoothStatusIndicator;
     procedure btnAddSourceClick(Sender: TObject);
     procedure tmrSSDVTimer(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure pnlUploadsResize(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure UploaderClick(Sender: TObject);
   private
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
-    Uploaders: Array[1..5] of TUploaders;
+    Uploaders: Array[1..5] of TUploader;
     HabitatUploader: THabitatThread;
     SondehubUploader: TSondehubThread;
     HabLinkUploader: THABLinkThread;
     SSDVUploader: TSSDVThread;
     MQTTUploader: TMQTTThread;
+    function MaximumPayloadDistance: Double;
     procedure ShowSourceStatus(SourceIndex: Integer);
     procedure LoadSource(SourceIndex: Integer);
     procedure ReloadSourceSettings(SourceIndex: Integer);
@@ -82,11 +85,11 @@ type
     procedure DataSourceClick(Sender: TObject);
     function ShowSettingsForm(SourceIndex: Integer): Boolean;
     function FindFreeSource: Integer;
-    procedure HabitatStatusCallback(SourceID: Integer; Active, OK: Boolean);
-    procedure HabLinkStatusCallback(SourceID: Integer; Active, OK: Boolean);
-    procedure SondehubStatusCallback(SourceID: Integer; Active, OK: Boolean);
-    procedure MQTTStatusCallback(SourceID: Integer; Active, OK: Boolean);
-    procedure SSDVStatusCallback(SourceID: Integer; Active, OK: Boolean);
+    procedure HabitatStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
+    procedure HabLinkStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
+    procedure SondehubStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
+    procedure MQTTStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
+    procedure SSDVStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
     function NewPosition(SourceIndex: Integer; Position: THABPosition): Boolean;
     procedure AddStatusToLog(SourceIndex: Integer);
     function APRSFilter: String;
@@ -108,6 +111,13 @@ type
     procedure UpdateSourceFilters;
     procedure ApplySettings;
   end;
+
+const
+    SONDEHUB_UPLOADER = 1;
+    MQTT_UPLOADER     = 2;
+    SSDV_UPLOADER     = 3;
+    HABLINK_UPLOADER  = 4;
+    HABHUB_UPLOADER   = 5;
 
 var
     frmSources: TfrmSources;
@@ -140,6 +150,10 @@ begin
     SondehubUploader.SetListenerPosition(DataModule1.tblSettings.FieldByName('Latitude').AsFloat,
                                          DataModule1.tblSettings.FieldByName('Longitude').AsFloat,
                                          DataModule1.tblSettings.FieldByName('Altitude').AsFloat);
+    Uploaders[SONDEHUB_UPLOADER].StatusForm.AddStatusToLog('Set listener as ' + HAB_BASE + ' / ' + DataModule1.tblSettings.FieldByName('Callsign').AsString);
+    Uploaders[SONDEHUB_UPLOADER].StatusForm.AddStatusToLog('Set listener position as ' + DataModule1.tblSettings.FieldByName('Latitude').AsString + ',' +
+                                                                                         DataModule1.tblSettings.FieldByName('Longitude').AsString + ',' +
+                                                                                         DataModule1.tblSettings.FieldByName('Altitude').AsString);
 
     // MQTT Uploader
     MQTTUploader := TMQTTThread.Create(MQTTStatusCallback);
@@ -229,6 +243,12 @@ begin
         end else if SourceType = stMQTT then begin
             SourceForm := TfrmSource.Create(nil);
             Source := TMQTTSource.Create(SourceIndex, Group, HABCallback);
+        end else if SourceType = stSondehub then begin
+            SourceForm := TfrmSource.Create(nil);
+            Source := TSondehubSource.Create(SourceIndex, Group, HABCallback);
+            TSondehubSource(Source).Latitude := DataModule1.tblSettings.FieldByName('Latitude').AsFloat;
+            TSondehubSource(Source).Longitude := DataModule1.tblSettings.FieldByName('Longitude').AsFloat;
+            TSondehubSource(Source).Radius := MaximumPayloadDistance;
         end else begin
             SourceForm := nil;
         end;
@@ -457,14 +477,22 @@ begin
 end;
 
 procedure TfrmSources.FormCreate(Sender: TObject);
+var
+    i: Integer;
 begin
     inherited;
 
-    Uploaders[1].Indicator := indHABHUB;
-    Uploaders[2].Indicator := indHABLINK;
-    Uploaders[3].Indicator := indMQTT;
-    Uploaders[4].Indicator := indSSDV;
-    Uploaders[5].Indicator := indSondehub;
+    Uploaders[SONDEHUB_UPLOADER].Indicator := indSondehub;
+    Uploaders[MQTT_UPLOADER].Indicator := indMQTT;
+    Uploaders[SSDV_UPLOADER].Indicator := indSSDV;
+    Uploaders[HABLINK_UPLOADER].Indicator := indHABLINK;
+    Uploaders[HABHUB_UPLOADER].Indicator := indHABHUB;
+
+    for i := Low(Uploaders) to High(Uploaders) do begin
+        Uploaders[i].Indicator.Tag := i;
+        Uploaders[i].StatusForm := TfrmUploadStatus.Create(nil);
+        Uploaders[i].StatusForm.Caption := Uploaders[i].StatusForm.Caption + ' - ' + Uploaders[i].Indicator.Caption;
+    end;
 end;
 
 procedure TfrmSources.FormDestroy(Sender: TObject);
@@ -728,14 +756,15 @@ begin
     Result := False;
 
     case HABSources[SourceIndex].SourceType of
-        stLogtail:  SettingsForm := TfrmLogtailSettings.Create(nil);
-        stGateway:  SettingsForm := TfrmGatewaySettings.Create(nil);
-        stSerial:   SettingsForm := TfrmLoRaSerialSettings.Create(nil);
-        stTCP:      SettingsForm := TfrmTCPSettings.Create(nil);
-        stUDP:      SettingsForm := TfrmUDPSettings.Create(nil);
-        stHabitat:  SettingsForm := TfrmHabitatSettings.Create(nil);
-        stAPRS:     SettingsForm := TfrmAPRSSettings.Create(nil);
-        stMQTT:     SettingsForm := TfrmMQTTSettings.Create(nil);
+        stLogtail:      SettingsForm := TfrmLogtailSettings.Create(nil);
+        stGateway:      SettingsForm := TfrmGatewaySettings.Create(nil);
+        stSerial:       SettingsForm := TfrmLoRaSerialSettings.Create(nil);
+        stTCP:          SettingsForm := TfrmTCPSettings.Create(nil);
+        stUDP:          SettingsForm := TfrmUDPSettings.Create(nil);
+        stHabitat:      SettingsForm := TfrmHabitatSettings.Create(nil);
+        stAPRS:         SettingsForm := TfrmAPRSSettings.Create(nil);
+        stMQTT:         SettingsForm := TfrmMQTTSettings.Create(nil);
+        stSondehub:     SettingsForm := TfrmLogtailSettings.Create(nil);
         else        SettingsForm := nil;
     end;
 
@@ -750,49 +779,75 @@ begin
     end;
 end;
 
-procedure TfrmSources.HabitatStatusCallback(SourceID: Integer; Active, OK: Boolean);
+procedure TfrmSources.HabitatStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
 begin
-    Uploaders[1].Attempted := Active;
-    Uploaders[1].Success := OK;
-    if OK then Uploaders[1].LastSuccess := Now;
+    Uploaders[HABHUB_UPLOADER].Attempted := Active;
+    Uploaders[HABHUB_UPLOADER].Success := OK;
+    Uploaders[HABHUB_UPLOADER].StatusForm.AddStatusToLog(Status);
+    Uploaders[HABHUB_UPLOADER].Indicator.Hint := Status;
 
-    ShowUplinkStatus(1);
+    if OK then Uploaders[HABHUB_UPLOADER].LastSuccess := Now;
+
+    ShowUplinkStatus(HABHUB_UPLOADER);
 end;
 
-procedure TfrmSources.HabLinkStatusCallback(SourceID: Integer; Active, OK: Boolean);
+procedure TfrmSources.HabLinkStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
 begin
-    Uploaders[2].Attempted := Active;
-    Uploaders[2].Success := OK;
-    if OK then Uploaders[2].LastSuccess := Now;
+    Uploaders[HABLINK_UPLOADER].Attempted := Active;
+    Uploaders[HABLINK_UPLOADER].Success := OK;
+    Uploaders[HABLINK_UPLOADER].StatusForm.AddStatusToLog(Status);
+    Uploaders[HABLINK_UPLOADER].Indicator.Hint := Status;
 
-    ShowUplinkStatus(2);
+    if OK then Uploaders[HABLINK_UPLOADER].LastSuccess := Now;
+
+    ShowUplinkStatus(HABLINK_UPLOADER);
 end;
 
-procedure TfrmSources.MQTTStatusCallback(SourceID: Integer; Active, OK: Boolean);
+procedure TfrmSources.UploaderClick(Sender: TObject);
+var
+    Index: Integer;
 begin
-    Uploaders[3].Attempted := Active;
-    Uploaders[3].Success := OK;
-    if OK then Uploaders[3].LastSuccess := Now;
+    Index := TAdvSmoothStatusIndicator(Sender).Tag;
 
-    ShowUplinkStatus(3);
+    if Uploaders[Index].StatusForm <> nil then begin
+        Uploaders[Index].StatusForm.Show;
+    end;
 end;
 
-procedure TfrmSources.SSDVStatusCallback(SourceID: Integer; Active, OK: Boolean);
+procedure TfrmSources.MQTTStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
 begin
-    Uploaders[4].Attempted := Active;
-    Uploaders[4].Success := OK;
-    if OK then Uploaders[4].LastSuccess := Now;
+    Uploaders[MQTT_UPLOADER].Attempted := Active;
+    Uploaders[MQTT_UPLOADER].Success := OK;
+    Uploaders[MQTT_UPLOADER].StatusForm.AddStatusToLog(Status);
+    Uploaders[MQTT_UPLOADER].Indicator.Hint := Status;
 
-    ShowUplinkStatus(4);
+    if OK then Uploaders[MQTT_UPLOADER].LastSuccess := Now;
+
+    ShowUplinkStatus(MQTT_UPLOADER);
 end;
 
-procedure TfrmSources.SondehubStatusCallback(SourceID: Integer; Active, OK: Boolean);
+procedure TfrmSources.SSDVStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
 begin
-    Uploaders[5].Attempted := Active;
-    Uploaders[5].Success := OK;
-    if OK then Uploaders[5].LastSuccess := Now;
+    Uploaders[SSDV_UPLOADER].Attempted := Active;
+    Uploaders[SSDV_UPLOADER].Success := OK;
+    Uploaders[SSDV_UPLOADER].StatusForm.AddStatusToLog(Status);
+    Uploaders[SSDV_UPLOADER].Indicator.Hint := Status;
 
-    ShowUplinkStatus(5);
+    if OK then Uploaders[SSDV_UPLOADER].LastSuccess := Now;
+
+    ShowUplinkStatus(SSDV_UPLOADER);
+end;
+
+procedure TfrmSources.SondehubStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
+begin
+    Uploaders[SONDEHUB_UPLOADER].Attempted := Active;
+    Uploaders[SONDEHUB_UPLOADER].Success := OK;
+    Uploaders[SONDEHUB_UPLOADER].StatusForm.AddStatusToLog(Status);
+    Uploaders[SONDEHUB_UPLOADER].Indicator.Hint := Status;
+
+    if OK then Uploaders[SONDEHUB_UPLOADER].LastSuccess := Now;
+
+    ShowUplinkStatus(SONDEHUB_UPLOADER);
 end;
 
 procedure TfrmSources.ModifySource(SourceIndex: Integer);
@@ -855,17 +910,12 @@ begin
     end;
 end;
 
-
-function TfrmSources.APRSFilter: String;
+function TfrmSources.MaximumPayloadDistance: Double;
 var
-    Latitude, Longitude, Distance: Double;
+    Distance: Double;
 begin
-    // r/51.9/-2.5/50000
-
-    Latitude := DataModule1.tblSettings.FieldByName('Latitude').AsFloat;
-    Longitude := DataModule1.tblSettings.FieldByName('Longitude').AsFloat;
-
     Distance := 0;
+
     with DataModule1.tblWhiteList do begin
         First;
         while not EOF do begin
@@ -876,6 +926,20 @@ begin
             Next;
         end;
     end;
+
+    Result := Distance;
+end;
+
+function TfrmSources.APRSFilter: String;
+var
+    Latitude, Longitude, Distance: Double;
+begin
+    // r/51.9/-2.5/50000
+
+    Latitude := DataModule1.tblSettings.FieldByName('Latitude').AsFloat;
+    Longitude := DataModule1.tblSettings.FieldByName('Longitude').AsFloat;
+
+    Distance := MaximumPayloadDistance;
 
     Result := ' r/' +
               MyFormatFloat('0.00000', Latitude) + '/' +
@@ -930,11 +994,10 @@ procedure TfrmSources.ApplySettings;
 var
     Topic: String;
 begin
-    Uploaders[1].Enabled := DataModule1.tblSettings.FieldByName('UplinkHABHUB').AsBoolean;
-    Uploaders[2].Enabled := DataModule1.tblSettings.FieldByName('UplinkHABLINK').AsBoolean;
-    Uploaders[3].Enabled := DataModule1.tblSettings.FieldByName('UplinkMQTT').AsBoolean;
-    Uploaders[4].Enabled := DataModule1.tblSettings.FieldByName('UplinkSSDV').AsBoolean;
-    Uploaders[5].Enabled := DataModule1.tblSettings.FieldByName('UplinkSondehub').AsBoolean;
+    Uploaders[SONDEHUB_UPLOADER].Enabled := DataModule1.tblSettings.FieldByName('UplinkSondehub').AsBoolean;
+    Uploaders[MQTT_UPLOADER].Enabled := DataModule1.tblSettings.FieldByName('UplinkMQTT').AsBoolean;
+    Uploaders[SSDV_UPLOADER].Enabled := DataModule1.tblSettings.FieldByName('UplinkSSDV').AsBoolean;
+    Uploaders[HABLINK_UPLOADER].Enabled := DataModule1.tblSettings.FieldByName('UplinkHABLINK').AsBoolean;
 
     try
         Topic := StringReplace(DataModule1.tblSettings.FieldByName('MQTTTopic').AsString, '$LISTENER$', DataModule1.tblSettings.FieldByName('Callsign').AsString, [rfReplaceAll, rfIgnoreCase]);

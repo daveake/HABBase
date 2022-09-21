@@ -11,7 +11,6 @@ object frmNewSource: TfrmNewSource
   Font.Name = 'Tahoma'
   Font.Style = []
   OnCreate = FormCreate
-  PixelsPerInch = 96
   DesignSize = (
     521
     287)
@@ -40,7 +39,8 @@ object frmNewSource: TfrmNewSource
       'UDP ( rdzTTGOSonde, HABDEC)'
       'Habitat'
       'APRS / OGN'
-      'MQTT')
+      'MQTT'
+      'Sondehub')
   end
   object btnOK: TAdvSmoothButton
     AlignWithMargins = True

@@ -5,7 +5,6 @@ inherited frmSource: TfrmSource
   OnCreate = FormCreate
   ExplicitWidth = 400
   ExplicitHeight = 394
-  PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
     Width = 384
@@ -50,15 +49,16 @@ inherited frmSource: TfrmSource
         TabOrder = 0
         object lblTitle: TLabel
           AlignWithMargins = True
-          Left = 3
+          Left = 35
           Top = 6
-          Width = 271
+          Width = 239
           Height = 23
           Margins.Top = 6
           Align = alClient
           Alignment = taCenter
           Caption = 'Source Code'
           Transparent = True
+          ExplicitLeft = 3
           ExplicitWidth = 89
           ExplicitHeight = 19
         end
@@ -115,6 +115,26 @@ inherited frmSource: TfrmSource
           Caption = '...'
           TabOrder = 2
           OnClick = btnSettingsClick
+        end
+        object pnlUpdated: TPanel
+          AlignWithMargins = True
+          Left = 3
+          Top = 3
+          Width = 26
+          Height = 26
+          Align = alLeft
+          BevelOuter = bvNone
+          BorderWidth = 1
+          BorderStyle = bsSingle
+          Color = clSilver
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 3
         end
       end
     end
@@ -605,6 +625,9 @@ inherited frmSource: TfrmSource
             57
             42
             47)
+          RowHeights = (
+            22
+            22)
         end
       end
       object tabUplink: TTabSheet
@@ -940,5 +963,11 @@ inherited frmSource: TfrmSource
       Caption = 'Clear History'
       OnClick = ClearHistory1Click
     end
+  end
+  object tmrUpdated: TTimer
+    Enabled = False
+    OnTimer = tmrUpdatedTimer
+    Left = 172
+    Top = 240
   end
 end

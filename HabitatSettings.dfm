@@ -1,11 +1,11 @@
 inherited frmHabitatSettings: TfrmHabitatSettings
-  Caption = 'Habitat Settings'
+  Caption = 'HABHUB/Sondehub Payload List Settings'
   ClientHeight = 141
   ExplicitHeight = 180
-  PixelsPerInch = 96
   TextHeight = 13
   inherited pnlCommon: TAdvPanel
     Height = 141
+    ExplicitHeight = 141
     FullHeight = 337
     inherited Label9: TLabel
       Left = 41
@@ -37,10 +37,12 @@ inherited frmHabitatSettings: TfrmHabitatSettings
     end
     inherited btnSave: TAdvSmoothButton
       Top = 88
+      ExplicitTop = 88
       TMSStyle = 8
     end
     inherited btnCancel: TAdvSmoothButton
       Top = 88
+      ExplicitTop = 88
       TMSStyle = 8
     end
     object edtWhiteList: TEdit

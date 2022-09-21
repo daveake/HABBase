@@ -69,6 +69,8 @@ type
     chkCutdownAltitude: TRadioButton;
     Label8: TLabel;
     edtAltitude: TEdit;
+    pnlUpdated: TPanel;
+    tmrUpdated: TTimer;
     procedure btnSettingsClick(Sender: TObject);
     procedure ModifySourceClick(Sender: TObject);
     procedure mnuAddNewSourceClick(Sender: TObject);
@@ -81,6 +83,7 @@ type
     procedure edtUploadPayloadKeyPress(Sender: TObject; var Key: Char);
     procedure cmbUploadCommandCloseUp(Sender: TObject);
     procedure btnSendUploadClick(Sender: TObject);
+    procedure tmrUpdatedTimer(Sender: TObject);
   private
     { Private declarations }
     DisableCallsignUpdates: Boolean;
@@ -233,6 +236,9 @@ begin
         edtUploadPayload.Text := Position.PayloadID;
         btnSendUpload.Enabled := OKToEnableSendButton;
     end;
+
+    pnlUpdated.Color := clLime;
+    tmrUpdated.Enabled := True;
 end;
 
 procedure TfrmSource.ShowCurrentRSSI(Channel, CurrentRSSI: Integer);
@@ -258,6 +264,12 @@ end;
 procedure TfrmSource.ShowSetting(Setting, Value: String);
 begin
     // virtual
+end;
+
+procedure TfrmSource.tmrUpdatedTimer(Sender: TObject);
+begin
+    tmrUpdated.Enabled := False;
+    pnlUpdated.Color := clSilver;
 end;
 
 procedure TfrmSource.AddStatusToLog(Status: String);

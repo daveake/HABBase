@@ -53,6 +53,8 @@ inherited frmPayload: TfrmPayload
           Height = 26
           Align = alLeft
           BevelOuter = bvNone
+          BorderWidth = 1
+          BorderStyle = bsSingle
           Color = clSilver
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -117,6 +119,26 @@ inherited frmPayload: TfrmPayload
           TabOrder = 3
           OnClick = btnSettingsClick
         end
+        object pnlUpdated: TPanel
+          AlignWithMargins = True
+          Left = 59
+          Top = 3
+          Width = 26
+          Height = 26
+          Align = alLeft
+          BevelOuter = bvNone
+          BorderWidth = 1
+          BorderStyle = bsSingle
+          Color = clSilver
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = 'Tahoma'
+          Font.Style = []
+          ParentBackground = False
+          ParentFont = False
+          TabOrder = 4
+        end
       end
     end
     object PageControl1: TPageControl
@@ -124,7 +146,7 @@ inherited frmPayload: TfrmPayload
       Top = 44
       Width = 353
       Height = 306
-      ActivePage = TabSheet4
+      ActivePage = TabSheet3
       Align = alClient
       MultiLine = True
       TabOrder = 1
@@ -134,33 +156,35 @@ inherited frmPayload: TfrmPayload
         object lstTelemetry: TListBox
           Left = 0
           Top = 0
-          Width = 345
+          Width = 220
           Height = 278
           Align = alClient
+          DoubleBuffered = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Courier New'
+          Font.Style = []
+          ItemHeight = 14
+          ParentDoubleBuffered = False
+          ParentFont = False
+          TabOrder = 0
+        end
+        object lstTemp: TListBox
+          Left = 220
+          Top = 0
+          Width = 125
+          Height = 278
+          Align = alRight
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -15
           Font.Name = 'Courier New'
           Font.Style = []
           ItemHeight = 17
-          Items.Strings = (
-            ''
-            ''
-            ''
-            ''
-            ''
-            ''
-            ''
-            ''
-            ''
-            ''
-            ''
-            ''
-            ''
-            ''
-            '')
           ParentFont = False
-          TabOrder = 0
+          TabOrder = 1
+          Visible = False
         end
       end
       object TabSheet2: TTabSheet
@@ -899,6 +923,42 @@ inherited frmPayload: TfrmPayload
           Top = 0
           Width = 345
           Height = 278
+          Appearance.ColorList = <
+            item
+              Color = 16105559
+            end
+            item
+              Color = 5644279
+            end
+            item
+              Color = 7936771
+            end
+            item
+              Color = 12275349
+            end
+            item
+              Color = 1296366
+            end
+            item
+              Color = 4350195
+            end
+            item
+              Color = 16544551
+            end
+            item
+              Color = 5820321
+            end
+            item
+              Color = 10922240
+            end
+            item
+              Color = 16376965
+            end>
+          Appearance.GlobalFont.Color = -1
+          Appearance.GlobalFont.Scale = 1.000000000000000000
+          Appearance.GlobalFont.Style = []
+          Appearance.ColorScheme = ccsColorList
+          Appearance.MonochromeColor = 11829830
           ClickMargin = 10.000000000000000000
           Legend.Fill.Color = 16775416
           Legend.Stroke.Color = clGray
@@ -1173,6 +1233,9 @@ inherited frmPayload: TfrmPayload
           YAxis.Stroke.Color = clGray
           YAxis.Positions = [ypLeft]
           YAxis.Width = 35.000000000000000000
+          DefaultLoadOptions.XValuesFormatString = '%.0f'
+          DefaultLoadOptions.YValuesFormatString = '%.2f'
+          DefaultLoadOptions.MaxYOffsetPercentage = 5.000000000000000000
           Align = alClient
           TabOrder = 0
         end
@@ -1465,5 +1528,11 @@ inherited frmPayload: TfrmPayload
       Caption = 'Remove And Block'
       OnClick = RemoveAndBlockClick
     end
+  end
+  object tmrUpdated: TTimer
+    Enabled = False
+    OnTimer = tmrUpdatedTimer
+    Left = 172
+    Top = 240
   end
 end

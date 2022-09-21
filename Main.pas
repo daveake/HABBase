@@ -39,6 +39,7 @@ type
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure lblBingClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
     PayloadMasks: TPayloadMasks;
@@ -91,6 +92,11 @@ end;
 procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
     SaveFormPositions;
+end;
+
+procedure TfrmMain.FormCreate(Sender: TObject);
+begin
+    Caption := Caption + ' ' + HAB_BASE_VERSION;
 end;
 
 procedure TfrmMain.lblBingClick(Sender: TObject);
