@@ -11,7 +11,8 @@ uses
   BaseGrid, AdvGrid, DBAdvGrid, Miscellaneous, Source, Vcl.StdCtrls, Vcl.ComCtrls,
   AdvSmoothButton, AdvPanel, AdvProgr, AdvGauge, Map, Vcl.Menus,
   VCL.TMSFNCTypes, VCL.TMSFNCUtils, VCL.TMSFNCGraphics,
-  VCL.TMSFNCGraphicsTypes, VCL.TMSFNCChart, HTMLabel;
+  VCL.TMSFNCGraphicsTypes, VCL.TMSFNCChart, HTMLabel, VclTee.TeeGDIPlus,
+  VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart, VCLTee.Series;
 
 type
   TfrmPayload = class(TfrmBase)
@@ -61,12 +62,13 @@ type
     AdvSmoothButton2: TAdvSmoothButton;
     edtBurstAltitude: TEdit;
     btnSetBurst: TButton;
-    AltitudeChart: TTMSFNCChart;
     lblHABHUB: THTMLabel;
     lblSondeHub: THTMLabel;
     pnlUpdated: TPanel;
     tmrUpdated: TTimer;
     lstTemp: TListBox;
+    Chart1: TChart;
+    Series1: TFastLineSeries;
     procedure btnDownClick(Sender: TObject);
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -299,7 +301,8 @@ begin
         end;
 
         // Charts
-        AltitudeChart.Series[0].AddXYPoint(Now, Altitude);
+        // AltitudeChart.Series[0].AddXYPoint(Now, Altitude);
+        Chart1.Series[0].AddXY(Now, Altitude);
     end;
 
     UpdateTelemetryList;

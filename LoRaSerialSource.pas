@@ -21,7 +21,6 @@ type
     btnCancel: TAdvSmoothButton;
     edtCurrentRSSI: TEdit;
     edtPacketRSSI: TEdit;
-    AdvGauge1: TAdvGauge;
     edtFrequencyError: TEdit;
     Label2: TLabel;
     VrMediaButton1: TVrMediaButton;
@@ -41,6 +40,7 @@ type
     cmbUploadWhen: TComboBox;
     edtWhenSeconds: TEdit;
     lblVersionInfo: TLabel;
+    AdvGauge1: TAdvGauge;
     procedure FormCreate(Sender: TObject);
     procedure VrMediaButton1Click(Sender: TObject);
     procedure VrMediaButton4Click(Sender: TObject);

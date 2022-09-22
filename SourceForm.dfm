@@ -58,7 +58,6 @@ inherited frmSource: TfrmSource
           Alignment = taCenter
           Caption = 'Source Code'
           Transparent = True
-          ExplicitLeft = 3
           ExplicitWidth = 89
           ExplicitHeight = 19
         end
@@ -232,7 +231,7 @@ inherited frmSource: TfrmSource
             'Larger than'
             'Smaller than'
             'Clear')
-          FixedColWidth = 58
+          FixedColWidth = 70
           FixedRowHeight = 22
           FixedFont.Charset = DEFAULT_CHARSET
           FixedFont.Color = 3881787
@@ -315,7 +314,7 @@ inherited frmSource: TfrmSource
               PrintFont.Height = -11
               PrintFont.Name = 'Tahoma'
               PrintFont.Style = []
-              Width = 58
+              Width = 70
             end
             item
               Alignment = taRightJustify
@@ -331,6 +330,7 @@ inherited frmSource: TfrmSource
               Font.Height = -11
               Font.Name = 'Tahoma'
               Font.Style = []
+              Header = 'Ctr'
               HeaderFont.Charset = DEFAULT_CHARSET
               HeaderFont.Color = 3881787
               HeaderFont.Height = -11
@@ -369,7 +369,7 @@ inherited frmSource: TfrmSource
               PrintFont.Height = -11
               PrintFont.Name = 'Tahoma'
               PrintFont.Style = []
-              Width = 43
+              Width = 51
             end
             item
               Alignment = taRightJustify
@@ -450,7 +450,6 @@ inherited frmSource: TfrmSource
               PrintFont.Height = -11
               PrintFont.Name = 'Tahoma'
               PrintFont.Style = []
-              Width = 42
             end
             item
               Alignment = taRightJustify
@@ -618,12 +617,12 @@ inherited frmSource: TfrmSource
             FFC003FF}
           ShowUnicode = False
           ColWidths = (
-            58
+            70
             48
-            43
+            51
             53
             57
-            42
+            50
             47)
           RowHeights = (
             22

@@ -1,6 +1,6 @@
 [Setup]
 AppName=HAB Base
-AppVersion=1.6.3
+AppVersion=1.6.6
 WizardStyle=modern
 DefaultDirName=c:\HAB\Base
 DefaultGroupName=HAB
@@ -15,6 +15,8 @@ Source: "settings.json"; DestDir: "{app}"; Flags: onlyifdoesntexist
 Source: "sources.json"; DestDir: "{app}"; Flags: onlyifdoesntexist
 Source: "whitelist.json"; DestDir: "{app}"; Flags: onlyifdoesntexist
 Source: "Images\*"; DestDir: "{app}\Images"; Flags: onlyifdoesntexist
+Source: "OpenSSL\libeay32.dll"; DestDir: "{app}"; Flags: 32bit
+Source: "OpenSSL\ssleay32.dll"; DestDir: "{app}"; Flags: 32bit
 Source: "EdgeSupport\WebView2Loader_x86.dll"; DestDir: "{app}"; Flags: 32bit
 Source: "EdgeSupport\MicrosoftEdgeWebview2Setup.exe"; DestDir: "{app}"; Flags: 32bit
 

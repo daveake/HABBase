@@ -1,14 +1,13 @@
 inherited frmTCPSettings: TfrmTCPSettings
   Caption = 'TCP/IP Settings'
-  ClientHeight = 152
+  ClientHeight = 160
   ClientWidth = 574
   ExplicitWidth = 590
-  ExplicitHeight = 191
-  PixelsPerInch = 96
+  ExplicitHeight = 199
   TextHeight = 13
   inherited pnlCommon: TAdvPanel
     Width = 574
-    Height = 152
+    Height = 160
     ExplicitWidth = 574
     ExplicitHeight = 152
     FullHeight = 337
@@ -36,14 +35,14 @@ inherited frmTCPSettings: TfrmTCPSettings
     end
     inherited btnSave: TAdvSmoothButton
       Left = 380
-      Top = 99
+      Top = 107
       ExplicitLeft = 380
       ExplicitTop = 99
       TMSStyle = 8
     end
     inherited btnCancel: TAdvSmoothButton
       Left = 474
-      Top = 99
+      Top = 107
       ExplicitLeft = 474
       ExplicitTop = 99
       TMSStyle = 8
@@ -64,6 +63,18 @@ inherited frmTCPSettings: TfrmTCPSettings
       MaxLength = 5
       TabOrder = 6
       OnChange = edtHostChange
+    end
+    object chkUpload: TAdvOfficeCheckBox
+      Left = 372
+      Top = 60
+      Width = 120
+      Height = 20
+      TabOrder = 7
+      OnClick = chKEnabledClick
+      Alignment = taLeftJustify
+      Caption = 'Upload To Server(s)'
+      ReturnIsTab = False
+      Version = '1.8.1.0'
     end
   end
 end

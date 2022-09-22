@@ -13,6 +13,7 @@ type
     edtHost: TEdit;
     Label2: TLabel;
     edtPort: TEdit;
+    chkUpload: TAdvOfficeCheckBox;
     procedure edtHostChange(Sender: TObject);
   private
     { Private declarations }
@@ -48,12 +49,17 @@ begin
 end;
 
 procedure TfrmTCPSettings.LoadFields;
+var
+    Settings: String;
 begin
     inherited;
 
     with DataModule1.tblSources do begin
         edtHost.Text := FieldByName('Host').AsString;
         edtPort.Text := FieldByName('Port').AsString;
+
+        Settings := ';' + FieldByName('Settings').AsString;
+        chkUpload.Checked  := GetBooleanSetting('Upload', Settings);
     end;
 end;
 
@@ -64,6 +70,7 @@ begin
     with DataModule1.tblSources do begin
         FieldByName('Host').AsString := edtHost.Text;
         FieldByName('Port').AsString := edtPort.Text;
+        FieldByName('Settings').AsString := 'Upload=' + BoolToStr(chkUpload.Checked, True);
     end;
 end;
 

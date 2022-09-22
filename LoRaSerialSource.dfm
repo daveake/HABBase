@@ -1,10 +1,9 @@
 inherited frmLoRaSerialSource: TfrmLoRaSerialSource
   Caption = 'LoRa Serial Source'
-  PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
     inherited PageControl1: TPageControl
-      ActivePage = tabUplink
+      ActivePage = tabSignal
       object tabSignal: TTabSheet [1]
         Caption = 'Signal'
         ImageIndex = 2
@@ -196,11 +195,94 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             ReadOnly = True
             TabOrder = 3
           end
-          object AdvGauge1: TAdvGauge
+          object edtFrequencyError: TEdit
+            Left = 269
+            Top = 58
+            Width = 69
+            Height = 21
+            Alignment = taCenter
+            ReadOnly = True
+            TabOrder = 4
+          end
+          object VrMediaButton1: TVrMediaButton
+            Left = 209
+            Top = 4
+            Width = 49
+            Height = 26
+            ButtonType = btNext
+            TabOrder = 5
+            OnClick = VrMediaButton1Click
+          end
+          object VrMediaButton2: TVrMediaButton
             Left = 5
+            Top = 4
+            Width = 49
+            Height = 26
+            ButtonType = btBack
+            TabOrder = 6
+            OnClick = VrMediaButton2Click
+          end
+          object VrMediaButton3: TVrMediaButton
+            Left = 53
+            Top = 4
+            Width = 49
+            Height = 26
+            ButtonType = btPrev
+            TabOrder = 7
+            OnClick = VrMediaButton3Click
+          end
+          object VrMediaButton4: TVrMediaButton
+            Left = 258
+            Top = 4
+            Width = 49
+            Height = 26
+            ButtonType = btStep
+            TabOrder = 8
+            OnClick = VrMediaButton4Click
+          end
+          object edtFrequency: TEdit
+            Left = 108
+            Top = 4
+            Width = 69
+            Height = 21
+            Alignment = taCenter
+            TabOrder = 9
+            OnExit = edtFrequencyExit
+          end
+          object chkAFC: TAdvOfficeCheckBox
+            Left = 236
+            Top = 36
+            Width = 49
+            Height = 20
+            TabOrder = 10
+            Alignment = taRightJustify
+            Caption = 'AFC:'
+            ReturnIsTab = False
+            Version = '1.8.1.0'
+          end
+          object ProgressBar1: TProgressBar
+            Left = 5
+            Top = 90
+            Width = 240
+            Height = 27
+            Max = 21
+            BarColor = clNavy
+            TabOrder = 11
+          end
+          object Button2: TButton
+            Left = 256
+            Top = 90
+            Width = 102
+            Height = 27
+            Caption = 'Search +/- 10kHz'
+            TabOrder = 12
+            OnClick = Button2Click
+          end
+          object AdvGauge1: TAdvGauge
+            Left = 8
             Top = 123
-            Width = 353
-            Height = 143
+            Width = 350
+            Height = 140
             Anchors = [akLeft, akTop, akRight, akBottom]
             ArcColor = clRed
             ArcWidth = 30
@@ -224,95 +306,12 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             MinText = 'Left'
             Maximum = -80.000000000000000000
             MaxText = 'Right'
-            Position = -130.000000000000000000
+            Position = -150.000000000000000000
             SplitArcColor = clGreen
-            SplitPosition = -110.000000000000000000
+            SplitPosition = -130.000000000000000000
             TextPosition = tpNone
             TopPosition = 100.000000000000000000
             Version = '1.2.1.0'
-          end
-          object edtFrequencyError: TEdit
-            Left = 269
-            Top = 58
-            Width = 69
-            Height = 21
-            Alignment = taCenter
-            ReadOnly = True
-            TabOrder = 5
-          end
-          object VrMediaButton1: TVrMediaButton
-            Left = 209
-            Top = 4
-            Width = 49
-            Height = 26
-            ButtonType = btNext
-            TabOrder = 6
-            OnClick = VrMediaButton1Click
-          end
-          object VrMediaButton2: TVrMediaButton
-            Left = 5
-            Top = 4
-            Width = 49
-            Height = 26
-            ButtonType = btBack
-            TabOrder = 7
-            OnClick = VrMediaButton2Click
-          end
-          object VrMediaButton3: TVrMediaButton
-            Left = 53
-            Top = 4
-            Width = 49
-            Height = 26
-            ButtonType = btPrev
-            TabOrder = 8
-            OnClick = VrMediaButton3Click
-          end
-          object VrMediaButton4: TVrMediaButton
-            Left = 258
-            Top = 4
-            Width = 49
-            Height = 26
-            ButtonType = btStep
-            TabOrder = 9
-            OnClick = VrMediaButton4Click
-          end
-          object edtFrequency: TEdit
-            Left = 108
-            Top = 4
-            Width = 69
-            Height = 21
-            Alignment = taCenter
-            TabOrder = 10
-            OnExit = edtFrequencyExit
-          end
-          object chkAFC: TAdvOfficeCheckBox
-            Left = 236
-            Top = 36
-            Width = 49
-            Height = 20
-            TabOrder = 11
-            Alignment = taRightJustify
-            Caption = 'AFC:'
-            ReturnIsTab = False
-            Version = '1.8.1.0'
-          end
-          object ProgressBar1: TProgressBar
-            Left = 5
-            Top = 90
-            Width = 240
-            Height = 27
-            Max = 21
-            BarColor = clNavy
-            TabOrder = 12
-          end
-          object Button2: TButton
-            Left = 256
-            Top = 90
-            Width = 102
-            Height = 27
-            Caption = 'Search +/- 10kHz'
-            TabOrder = 13
-            OnClick = Button2Click
           end
         end
       end
