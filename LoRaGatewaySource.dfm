@@ -1,10 +1,9 @@
 inherited frmLoRaGatewaySource: TfrmLoRaGatewaySource
   Caption = 'LoRa Gateway Source'
-  PixelsPerInch = 96
   TextHeight = 13
   inherited pnlMain: TPanel
     inherited PageControl1: TPageControl
-      ActivePage = tabUplink
+      ActivePage = tabSignal
       object tabSignal: TTabSheet [1]
         Caption = 'Channel 0'
         ImageIndex = 2

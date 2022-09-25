@@ -12,7 +12,7 @@ function GetCommandLineParameter(ParameterName: String; var Value: String): Bool
 const
     MAX_PAYLOADS = 100;
     HAB_BASE = 'HAB Base';
-    HAB_BASE_VERSION = 'V1.6.6';
+    HAB_BASE_VERSION = 'V1.6.7';
 
 implementation
 
@@ -21,6 +21,7 @@ var
     Position: Integer;
     Temp: String;
 begin
+    Settings := ';' + Settings;
     Position := Pos(';' + FieldName + '=', Settings);
     if Position > 0 then begin
         Temp := Copy(Settings, Position + Length(FieldName) + 2, 99);

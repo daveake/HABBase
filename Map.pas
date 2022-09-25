@@ -231,7 +231,7 @@ begin
         Balloons[PayloadIndex].FNCMarker.Longitude := Position.Longitude;
     end;
 
-    if Position.ContainsPrediction then begin
+    if Position.PredictionType <> ptNone then begin
         SetLandingMarker(PayloadIndex, Position, ColourText);
     end;
 

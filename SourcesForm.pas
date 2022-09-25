@@ -270,7 +270,7 @@ begin
         Code := FieldByName('Code').AsString;
         Description := FieldByName('Name').AsString;
 
-        Settings := ';' + FieldByName('Settings').AsString;
+        Settings := FieldByName('Settings').AsString;
 
         Upload := GetBooleanSetting('Upload', Settings);
         SourceEnabled := FieldByName('Enabled').AsBoolean;

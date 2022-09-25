@@ -924,6 +924,8 @@ inherited frmPayload: TfrmPayload
           Width = 345
           Height = 278
           Legend.Visible = False
+          Title.Text.Strings = (
+            'TChart')
           LeftAxis.Automatic = False
           LeftAxis.AutomaticMaximum = False
           LeftAxis.AutomaticMinimum = False

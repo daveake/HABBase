@@ -12,7 +12,7 @@ inherited frmSources: TfrmSources
       Width = 345
       ExplicitWidth = 345
       inherited lblTitle: TLabel
-        Width = 328
+        Width = 46
         Caption = 'Sources'
         ExplicitWidth = 46
       end
@@ -247,7 +247,7 @@ inherited frmSources: TfrmSources
           AlignWithMargins = True
           Left = 13
           Top = 4
-          Width = 328
+          Width = 79
           Height = 16
           Margins.Left = 12
           Align = alClient
@@ -258,7 +258,6 @@ inherited frmSources: TfrmSources
           Font.Name = 'Tahoma'
           Font.Style = []
           ParentFont = False
-          ExplicitWidth = 79
         end
       end
     end

@@ -6,7 +6,7 @@ inherited frmMap: TfrmMap
   inherited pnlMain: TPanel
     inherited Panel1: TPanel
       inherited lblTitle: TLabel
-        Width = 816
+        Width = 24
         Caption = 'Map'
         ExplicitWidth = 24
       end

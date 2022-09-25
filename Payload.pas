@@ -160,6 +160,7 @@ const
     CutdownStatii: Array[0..4] of String = ('Idle', 'Armed', 'Triggered (Alt)', 'Triggered (Man)', 'Triggered');
 var
     MyBookmark: TBookmark;
+    Prefix: String;
 begin
     with Position do begin
         // Table
@@ -249,13 +250,14 @@ begin
             end;
         end;
 
-
         AddItem(POSN_DISTANCE, 'Distance', MyFormatFloat('0.0', Distance) + ' km');
         AddItem(POSN_DIRECTION, 'Direction', MyFormatFloat('0.0', Direction * 180 / Pi) + ' °');
         AddItem(POSN_ELEVATION, 'Elevation', MyFormatFloat('0.0', Elevation) + ' °');
 
-        if ContainsPrediction then begin
-            AddItem(POSN_PRED_LAT, 'Pred. Lat', MyFormatFloat('0.0000', PredictedLatitude));
+        if PredictionType <> TPredictionType.ptNone then begin
+            if PredictionType = TPredictionType.ptTawhiri then Prefix := 'Tawhiri' else Prefix := 'On-board';
+
+            AddItem(POSN_PRED_LAT, Prefix + ' Pred. Lat', MyFormatFloat('0.0000', PredictedLatitude));
             AddItem(POSN_PRED_LON, 'Pred. Lon', MyFormatFloat('0.0000', PredictedLongitude));
 
             if CDA > 0 then begin
@@ -471,7 +473,7 @@ var
     MyBookmark: TBookmark;
 begin
     with Position do begin
-        if ContainsPrediction then begin
+        if PredictionType <> TPredictionType.ptNone then begin
             AddItem(POSN_PRED_LAT, 'Pred. Lat', MyFormatFloat('0.0000', PredictedLatitude));
             AddItem(POSN_PRED_LON, 'Pred. Lon', MyFormatFloat('0.0000', PredictedLongitude));
         end;

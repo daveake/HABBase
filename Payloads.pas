@@ -87,18 +87,20 @@ begin
 
         if PayloadIndex > 0 then begin
             // Get a prediction ?
-            if HABPayloads[PayloadIndex].PredictionIndex <= 0 then begin
-                HABPayloads[PayloadIndex].PredictionIndex := Predictor.AddPayload(Position.PayloadID);
-            end;
+            if Position.PredictionType = ptNone then begin
+                if HABPayloads[PayloadIndex].PredictionIndex <= 0 then begin
+                    HABPayloads[PayloadIndex].PredictionIndex := Predictor.AddPayload(Position.PayloadID);
+                end;
 
-            if HABPayloads[PayloadIndex].PredictionIndex > 0 then begin
-                Predictor.UpdatePayload(HABPayloads[PayloadIndex].PredictionIndex,
-                                        HABPayloads[PayloadIndex].Position.Latitude,
-                                        HABPayloads[PayloadIndex].Position.Longitude,
-                                        HABPayloads[PayloadIndex].Position.Altitude,
-                                        HABPayloads[PayloadIndex].BurstAltitude,
-                                        HABPayloads[PayloadIndex].Position.AscentRate,
-                                        5);
+                if HABPayloads[PayloadIndex].PredictionIndex > 0 then begin
+                    Predictor.UpdatePayload(HABPayloads[PayloadIndex].PredictionIndex,
+                                            HABPayloads[PayloadIndex].Position.Latitude,
+                                            HABPayloads[PayloadIndex].Position.Longitude,
+                                            HABPayloads[PayloadIndex].Position.Altitude,
+                                            HABPayloads[PayloadIndex].BurstAltitude,
+                                            HABPayloads[PayloadIndex].Position.AscentRate,
+                                            5);
+                end;
             end;
 
             // Update Map
@@ -203,11 +205,11 @@ var
 begin
     for PayloadIndex := Low(HABPayloads) to High(HABPayloads) do begin
         if HABPayloads[PayloadIndex].InUse and (HABPayloads[PayloadIndex].Form <> nil) then begin
-            if not HABPayloads[PayloadIndex].Position.ContainsPrediction then begin
+            if HABPayloads[PayloadIndex].Position.PredictionType = ptNone then begin
                 if HABPayloads[PayloadIndex].PredictionIndex > 0 then begin
                     if Predictor.PredictionUpdated(HABPayloads[PayloadIndex].PredictionIndex) then begin
                         Predictor.GetPrediction(PayloadIndex, HABPayloads[PayloadIndex].Position.PredictedLatitude, HABPayloads[PayloadIndex].Position.PredictedLongitude, PredictedAltitude);
-                        HABPayloads[PayloadIndex].Position.ContainsPrediction := True;
+                        HABPayloads[PayloadIndex].Position.PredictionType := ptTawhiri;
 
                         // Get and draw path
                         frmMap.ClearPredictionPath(PayloadIndex, HABPayloads[PayloadIndex].Colour);
