@@ -12,7 +12,7 @@ inherited frmSources: TfrmSources
       Width = 345
       ExplicitWidth = 345
       inherited lblTitle: TLabel
-        Width = 46
+        Width = 328
         Caption = 'Sources'
         ExplicitWidth = 46
       end
@@ -79,7 +79,7 @@ inherited frmSources: TfrmSources
         AlignWithMargins = True
         Left = 0
         Top = 27
-        Width = 78
+        Width = 68
         Height = 30
         Margins.Left = 0
         Margins.Right = 1
@@ -97,50 +97,19 @@ inherited frmSources: TfrmSources
         Appearance.Font.Charset = DEFAULT_CHARSET
         Appearance.Font.Color = clWhite
         Appearance.Font.Height = -16
-        Appearance.Font.Name = 'Arial'
+        Appearance.Font.Name = 'Arial Narrow'
         Appearance.Font.Style = []
         Align = alClient
         ParentShowHint = False
         ShowHint = True
         OnClick = UploaderClick
-        ExplicitLeft = 3
-        ExplicitWidth = 74
-      end
-      object indHABLINK: TAdvSmoothStatusIndicator
-        AlignWithMargins = True
-        Left = 269
-        Top = 27
-        Width = 75
-        Height = 30
-        Margins.Left = 0
-        Margins.Right = 1
-        Caption = 'HABLink'
-        Version = '1.0.1.0'
-        Appearance.Fill.Color = clGray
-        Appearance.Fill.ColorMirror = clNone
-        Appearance.Fill.ColorMirrorTo = clNone
-        Appearance.Fill.GradientType = gtSolid
-        Appearance.Fill.GradientMirrorType = gtSolid
-        Appearance.Fill.BorderColor = clGray
-        Appearance.Fill.Rounding = 14
-        Appearance.Fill.ShadowOffset = 0
-        Appearance.Fill.Glow = gmNone
-        Appearance.Font.Charset = DEFAULT_CHARSET
-        Appearance.Font.Color = clWhite
-        Appearance.Font.Height = -16
-        Appearance.Font.Name = 'Arial'
-        Appearance.Font.Style = []
-        Align = alRight
-        ParentShowHint = False
-        ShowHint = True
-        OnClick = UploaderClick
-        ExplicitLeft = 78
+        ExplicitTop = 26
       end
       object indSondehub: TAdvSmoothStatusIndicator
         AlignWithMargins = True
-        Left = 79
+        Left = 69
         Top = 27
-        Width = 80
+        Width = 68
         Height = 30
         Margins.Left = 0
         Margins.Right = 1
@@ -158,20 +127,19 @@ inherited frmSources: TfrmSources
         Appearance.Font.Charset = DEFAULT_CHARSET
         Appearance.Font.Color = clWhite
         Appearance.Font.Height = -16
-        Appearance.Font.Name = 'Arial'
+        Appearance.Font.Name = 'Arial Narrow'
         Appearance.Font.Style = []
         Align = alRight
         ParentShowHint = False
         ShowHint = True
         OnClick = UploaderClick
-        ExplicitLeft = 90
-        ExplicitTop = 26
+        ExplicitLeft = 65
       end
       object indMQTT: TAdvSmoothStatusIndicator
         AlignWithMargins = True
-        Left = 160
+        Left = 207
         Top = 27
-        Width = 54
+        Width = 68
         Height = 30
         Margins.Left = 0
         Margins.Right = 1
@@ -189,19 +157,19 @@ inherited frmSources: TfrmSources
         Appearance.Font.Charset = DEFAULT_CHARSET
         Appearance.Font.Color = clWhite
         Appearance.Font.Height = -16
-        Appearance.Font.Name = 'Arial'
+        Appearance.Font.Name = 'Arial Narrow'
         Appearance.Font.Style = []
         Align = alRight
         ParentShowHint = False
         ShowHint = True
         OnClick = UploaderClick
-        ExplicitLeft = 235
+        ExplicitLeft = 205
       end
       object indSSDV: TAdvSmoothStatusIndicator
         AlignWithMargins = True
-        Left = 215
+        Left = 276
         Top = 27
-        Width = 53
+        Width = 68
         Height = 30
         Margins.Left = 0
         Margins.Right = 1
@@ -219,13 +187,41 @@ inherited frmSources: TfrmSources
         Appearance.Font.Charset = DEFAULT_CHARSET
         Appearance.Font.Color = clWhite
         Appearance.Font.Height = -16
-        Appearance.Font.Name = 'Arial'
+        Appearance.Font.Name = 'Arial Narrow'
         Appearance.Font.Style = []
         Align = alRight
         ParentShowHint = False
         ShowHint = True
         OnClick = UploaderClick
-        ExplicitLeft = 292
+        ExplicitLeft = 275
+      end
+      object indHABLINK: TAdvSmoothStatusIndicator
+        AlignWithMargins = True
+        Left = 138
+        Top = 27
+        Width = 68
+        Height = 30
+        Margins.Left = 0
+        Margins.Right = 1
+        Caption = 'HABLink'
+        Version = '1.0.1.0'
+        Appearance.Fill.Color = clGray
+        Appearance.Fill.ColorMirror = clNone
+        Appearance.Fill.ColorMirrorTo = clNone
+        Appearance.Fill.GradientType = gtSolid
+        Appearance.Fill.GradientMirrorType = gtSolid
+        Appearance.Fill.BorderColor = clGray
+        Appearance.Fill.Rounding = 14
+        Appearance.Fill.ShadowOffset = 0
+        Appearance.Fill.Glow = gmNone
+        Appearance.Font.Charset = DEFAULT_CHARSET
+        Appearance.Font.Color = clWhite
+        Appearance.Font.Height = -16
+        Appearance.Font.Name = 'Arial Narrow'
+        Appearance.Font.Style = []
+        Align = alRight
+        OnClick = UploaderClick
+        ExplicitLeft = 135
       end
       object Panel3: TPanel
         Left = 0
@@ -247,7 +243,7 @@ inherited frmSources: TfrmSources
           AlignWithMargins = True
           Left = 13
           Top = 4
-          Width = 79
+          Width = 328
           Height = 16
           Margins.Left = 12
           Align = alClient
@@ -258,6 +254,7 @@ inherited frmSources: TfrmSources
           Font.Name = 'Tahoma'
           Font.Style = []
           ParentFont = False
+          ExplicitWidth = 79
         end
       end
     end

@@ -101,6 +101,7 @@ type
     Enabled: Boolean;
     procedure AddPosition(Position: THABPosition); virtual;
     procedure AddStatusToLog(Status: String);
+    procedure ShowSNR(Channel, SNR: Integer); virtual;
     procedure ShowCurrentRSSI(Channel, CurrentRSSI: Integer); virtual;
     procedure ShowPacketRSSI(Channel, PacketRSSI: Integer); virtual;
     procedure ShowFrequencyError(Channel: Integer; FrequencyError: Double); virtual;
@@ -239,6 +240,11 @@ begin
 
     pnlUpdated.Color := clLime;
     tmrUpdated.Enabled := True;
+end;
+
+procedure TfrmSource.ShowSNR(Channel, SNR: Integer);
+begin
+    // virtual
 end;
 
 procedure TfrmSource.ShowCurrentRSSI(Channel, CurrentRSSI: Integer);

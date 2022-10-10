@@ -47,7 +47,7 @@ type
     { Public declarations }
     function NewPosition(Position: THABPosition; SourceCode, SourceDescription: String): Boolean;
     procedure UpdateActivePayloads;
-    procedure ShowSNR(PayloadID: String; SNR: Double);
+    procedure ShowSNR(PayloadID: String; SNR: Integer);
     procedure ShowPacketRSSI(PayloadID: String; PacketRSSI: Integer);
     procedure ShowCurrentRSSI(PayloadID: String; CurrentRSSI: Integer);
     procedure ShowFrequencyError(PayloadID: String; FrequencyError: Double);
@@ -354,7 +354,7 @@ begin
     end;
 end;
 
-procedure TfrmPayloads.ShowSNR(PayloadID: String; SNR: Double);
+procedure TfrmPayloads.ShowSNR(PayloadID: String; SNR: Integer);
 var
     PayloadIndex: Integer;
 begin

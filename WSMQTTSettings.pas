@@ -1,4 +1,4 @@
-unit MQTTSettings;
+unit WSMQTTSettings;
 
 interface
 
@@ -8,7 +8,7 @@ uses
   AdvOfficeButtons, Vcl.StdCtrls, Vcl.ExtCtrls, AdvPanel, Miscellaneous;
 
 type
-  TfrmMQTTSettings = class(TfrmSettings)
+  TfrmWSMQTTSettings = class(TfrmSettings)
     Label1: TLabel;
     edtHost: TEdit;
     Label2: TLabel;
@@ -17,11 +17,11 @@ type
     edtUserName: TEdit;
     Label4: TLabel;
     edtPassword: TEdit;
-    AdvSmoothButton2: TAdvSmoothButton;
+    AdvSmoothButton1: TAdvSmoothButton;
     Label5: TLabel;
     edtPort: TEdit;
     procedure edtHostChange(Sender: TObject);
-    procedure AdvSmoothButton2Click(Sender: TObject);
+    procedure AdvSmoothButton1Click(Sender: TObject);
   private
     { Private declarations }
   protected
@@ -33,7 +33,7 @@ type
   end;
 
 var
-  frmMQTTSettings: TfrmMQTTSettings;
+  frmWSMQTTSettings: TfrmWSMQTTSettings;
 
 implementation
 
@@ -41,16 +41,16 @@ implementation
 
 uses Data, Misc;
 
-procedure TfrmMQTTSettings.AdvSmoothButton2Click(Sender: TObject);
+procedure TfrmWSMQTTSettings.AdvSmoothButton1Click(Sender: TObject);
 begin
-    edtHost.Text := 'hab.link';
-    edtPort.Text := '1883';
-    edtTopic.Text := 'payloads/#';
+    edtHost.Text := 'ws-reader.v2.sondehub.org';
+    edtPort.Text := '443';
+    edtTopic.Text := 'amateur/#';
     edtUserName.Text := '';
     edtPassword.Text := '';
 end;
 
-procedure TfrmMQTTSettings.ApplyChanges;
+procedure TfrmWSMQTTSettings.ApplyChanges;
 begin
     // Send settings to source
 
@@ -64,12 +64,12 @@ begin
     inherited;
 end;
 
-procedure TfrmMQTTSettings.edtHostChange(Sender: TObject);
+procedure TfrmWSMQTTSettings.edtHostChange(Sender: TObject);
 begin
     btnSave.Enabled := True;
 end;
 
-procedure TfrmMQTTSettings.LoadFields;
+procedure TfrmWSMQTTSettings.LoadFields;
 begin
     inherited;
 
@@ -82,7 +82,7 @@ begin
     end;
 end;
 
-procedure TfrmMQTTSettings.SaveFields;
+procedure TfrmWSMQTTSettings.SaveFields;
 begin
     inherited;
 

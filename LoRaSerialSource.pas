@@ -41,6 +41,8 @@ type
     edtWhenSeconds: TEdit;
     lblVersionInfo: TLabel;
     AdvGauge1: TAdvGauge;
+    Label5: TLabel;
+    edtSNR: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure VrMediaButton1Click(Sender: TObject);
     procedure VrMediaButton4Click(Sender: TObject);
@@ -64,6 +66,7 @@ type
   public
     { Public declarations }
     procedure AddPosition(Position: THABPosition); override;
+    procedure ShowSNR(Channel, SNR: Integer); override;
     procedure ShowCurrentRSSI(Channel, CurrentRSSI: Integer); override;
     procedure ShowPacketRSSI(Channel, PacketRSSI: Integer); override;
     procedure ShowFrequencyError(Channel: Integer; FrequencyError: Double); override;
@@ -90,6 +93,11 @@ procedure TfrmLoRaSerialSource.FormCreate(Sender: TObject);
 begin
     inherited;
     PageControl1.ActivePageIndex := 0;
+end;
+
+procedure TfrmLoRaSerialSource.ShowSNR(Channel, SNR: Integer);
+begin
+    edtSNR.Text := SNR.ToString;
 end;
 
 procedure TfrmLoRaSerialSource.ShowCurrentRSSI(Channel, CurrentRSSI: Integer);

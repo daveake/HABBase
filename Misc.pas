@@ -12,7 +12,7 @@ function GetCommandLineParameter(ParameterName: String; var Value: String): Bool
 const
     MAX_PAYLOADS = 100;
     HAB_BASE = 'HAB Base';
-    HAB_BASE_VERSION = 'V1.6.7';
+    HAB_BASE_VERSION = 'V1.6.8';
 
 implementation
 

@@ -37,18 +37,19 @@ uses
   LoRaSerialSource in 'LoRaSerialSource.pas' {frmLoRaSerialSource},
   ToolSettings in 'ToolSettings.pas' {frmToolSettings},
   SSDV in '..\HABRx\SSDV.pas',
-  HABLink in '..\HABRx\HABLink.pas',
   APRSSource in '..\HABRx\APRSSource.pas',
   Tawhiri in '..\HABRx\Tawhiri.pas',
   APRSSettings in 'APRSSettings.pas' {frmAPRSSettings},
   MQTTUplink in '..\HABRx\MQTTUplink.pas',
   MQTTSource in '..\HABRx\MQTTSource.pas',
   HabitatSource in '..\HABRx\HabitatSource.pas',
-  MQTTSettings in 'MQTTSettings.pas' {frmMQTTSettings},
+  WSMQTTSettings in 'WSMQTTSettings.pas' {frmWSMQTTSettings},
   HabitatSettings in 'HabitatSettings.pas' {frmHabitatSettings},
   Habitat in '..\HABRx\Habitat.pas',
   UploadStatus in 'UploadStatus.pas' {frmUploadStatus},
-  SondehubSource in '..\HABRx\SondehubSource.pas';
+  SondehubSource in '..\HABRx\SondehubSource.pas',
+  WSMQTTSource in '..\HABRx\WSMQTTSource.pas',
+  MQTTSettings in 'MQTTSettings.pas' {frmMQTTSettings};
 
 {$R *.res}
 
@@ -56,5 +57,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TfrmMQTTSettings, frmMQTTSettings);
   Application.Run;
 end.

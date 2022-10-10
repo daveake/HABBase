@@ -184,7 +184,8 @@ begin
     if FileExists(FileName) then begin
         tblClonedSources.LoadFromFile(FileName);
 
-        if tblClonedSources.FieldDefs.Count < tblSources.FieldDefs.Count then begin
+        if (tblClonedSources.FieldDefs.Count < tblSources.FieldDefs.Count) or
+           (tblClonedSources.fielddefs[5].size < tblsources.fielddefs[5].size) then begin
             while not tblClonedSources.EOF do begin
                 tblSources.Append;
                 for i := 0 to tblClonedSources.Fields.Count-1 do begin

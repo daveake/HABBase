@@ -363,28 +363,12 @@ object frmSystemSettings: TfrmSystemSettings
       ValueChecked = 'True'
       ValueUnchecked = 'False'
     end
-    object DBAdvOfficeCheckBox2: TDBAdvOfficeCheckBox
+    object DBAdvOfficeCheckBox3: TDBAdvOfficeCheckBox
       Left = 304
-      Top = 42
+      Top = 116
       Width = 174
       Height = 20
       TabOrder = 13
-      Alignment = taLeftJustify
-      Caption = 'Enable HABLINK Uploads'
-      ReturnIsTab = False
-      State = cbGrayed
-      Version = '1.1.1.4'
-      DataField = 'UplinkHABLINK'
-      DataSource = DataModule1.srcSettings
-      ValueChecked = 'True'
-      ValueUnchecked = 'False'
-    end
-    object DBAdvOfficeCheckBox3: TDBAdvOfficeCheckBox
-      Left = 304
-      Top = 144
-      Width = 174
-      Height = 20
-      TabOrder = 14
       Alignment = taLeftJustify
       Caption = 'Enable SSDV Uploads'
       ReturnIsTab = False
@@ -397,10 +381,10 @@ object frmSystemSettings: TfrmSystemSettings
     end
     object DBAdvOfficeCheckBox4: TDBAdvOfficeCheckBox
       Left = 304
-      Top = 75
+      Top = 90
       Width = 174
       Height = 20
-      TabOrder = 15
+      TabOrder = 14
       Alignment = taLeftJustify
       Caption = 'Enable MQTT Uploads'
       ReturnIsTab = False
@@ -413,16 +397,32 @@ object frmSystemSettings: TfrmSystemSettings
     end
     object DBAdvOfficeCheckBox5: TDBAdvOfficeCheckBox
       Left = 304
-      Top = 112
+      Top = 35
       Width = 174
       Height = 20
-      TabOrder = 16
+      TabOrder = 15
       Alignment = taLeftJustify
       Caption = 'Enable Sondehub Uploads'
       ReturnIsTab = False
       State = cbGrayed
       Version = '1.1.1.4'
       DataField = 'UplinkSondehub'
+      DataSource = DataModule1.srcSettings
+      ValueChecked = 'True'
+      ValueUnchecked = 'False'
+    end
+    object DBAdvOfficeCheckBox2: TDBAdvOfficeCheckBox
+      Left = 304
+      Top = 64
+      Width = 174
+      Height = 20
+      TabOrder = 16
+      Alignment = taLeftJustify
+      Caption = 'Enable HABLINK Uploads'
+      ReturnIsTab = False
+      State = cbGrayed
+      Version = '1.1.1.4'
+      DataField = 'UplinkHABLINK'
       DataSource = DataModule1.srcSettings
       ValueChecked = 'True'
       ValueUnchecked = 'False'

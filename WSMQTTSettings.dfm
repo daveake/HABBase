@@ -1,5 +1,5 @@
-inherited frmMQTTSettings: TfrmMQTTSettings
-  Caption = 'MQTT Settings'
+inherited frmWSMQTTSettings: TfrmWSMQTTSettings
+  Caption = 'WS MQTT Settings'
   ClientHeight = 219
   ClientWidth = 511
   ExplicitWidth = 527
@@ -94,7 +94,7 @@ inherited frmMQTTSettings: TfrmMQTTSettings
       Height = 21
       TabOrder = 8
     end
-    object AdvSmoothButton2: TAdvSmoothButton
+    object AdvSmoothButton1: TAdvSmoothButton
       AlignWithMargins = True
       Left = 60
       Top = 162
@@ -126,11 +126,11 @@ inherited frmMQTTSettings: TfrmMQTTSettings
       Status.Appearance.Font.Height = -11
       Status.Appearance.Font.Name = 'Tahoma'
       Status.Appearance.Font.Style = []
-      Caption = 'Set for HABLINK'
+      Caption = 'Set for SONDEHUB'
       ParentFont = False
       TabOrder = 9
       Version = '2.2.3.1'
-      OnClick = AdvSmoothButton2Click
+      OnClick = AdvSmoothButton1Click
       TMSStyle = 8
     end
     object edtPort: TEdit

@@ -95,6 +95,14 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             Alignment = taRightJustify
             Caption = 'MHz'
           end
+          object Label5: TLabel
+            Left = 239
+            Top = 39
+            Width = 24
+            Height = 13
+            Alignment = taRightJustify
+            Caption = 'SNR:'
+          end
           object btnSave: TAdvSmoothButton
             AlignWithMargins = True
             Left = 447
@@ -250,8 +258,8 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             OnExit = edtFrequencyExit
           end
           object chkAFC: TAdvOfficeCheckBox
-            Left = 236
-            Top = 36
+            Left = 313
+            Top = 10
             Width = 49
             Height = 20
             TabOrder = 10
@@ -312,6 +320,15 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
             TextPosition = tpNone
             TopPosition = 100.000000000000000000
             Version = '1.2.1.0'
+          end
+          object edtSNR: TEdit
+            Left = 269
+            Top = 36
+            Width = 69
+            Height = 21
+            Alignment = taCenter
+            ReadOnly = True
+            TabOrder = 14
           end
         end
       end
@@ -434,6 +451,6 @@ inherited frmLoRaSerialSource: TfrmLoRaSerialSource
     Interval = 5000
     OnTimer = tmrSearchTimer
     Left = 328
-    Top = 79
+    Top = 231
   end
 end

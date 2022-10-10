@@ -232,7 +232,6 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\HABRx\SSDV.pas"/>
-        <DCCReference Include="..\HABRx\HABLink.pas"/>
         <DCCReference Include="..\HABRx\APRSSource.pas"/>
         <DCCReference Include="..\HABRx\Tawhiri.pas"/>
         <DCCReference Include="APRSSettings.pas">
@@ -242,8 +241,8 @@
         <DCCReference Include="..\HABRx\MQTTUplink.pas"/>
         <DCCReference Include="..\HABRx\MQTTSource.pas"/>
         <DCCReference Include="..\HABRx\HabitatSource.pas"/>
-        <DCCReference Include="MQTTSettings.pas">
-            <Form>frmMQTTSettings</Form>
+        <DCCReference Include="WSMQTTSettings.pas">
+            <Form>frmWSMQTTSettings</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="HabitatSettings.pas">
@@ -256,6 +255,11 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\HABRx\SondehubSource.pas"/>
+        <DCCReference Include="..\HABRx\WSMQTTSource.pas"/>
+        <DCCReference Include="MQTTSettings.pas">
+            <Form>frmMQTTSettings</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

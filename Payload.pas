@@ -91,7 +91,7 @@ type
     procedure SetPayloadID(PayloadID: String);
     procedure AddPosition(Position: THABPosition; Sources: String);
     procedure UpdateSources(Position: THABPosition; Sources: String);
-    procedure ShowSNR(SNR: Double);
+    procedure ShowSNR(SNR: Integer);
     procedure ShowPacketRSSI(PacketRSSI: Integer);
     procedure ShowCurrentRSSI(CurrentRSSI: Integer);
     procedure ShowFrequencyError(FrequencyError: Double);
@@ -427,7 +427,7 @@ begin
     btnDown.Visible := True;
 end;
 
-procedure TfrmPayload.ShowSNR(SNR: Double);
+procedure TfrmPayload.ShowSNR(SNR: Integer);
 begin
     TabSheet2.TabVisible := True;
     edtSNR.Text := SNR.ToString;

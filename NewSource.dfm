@@ -29,18 +29,20 @@ object frmNewSource: TfrmNewSource
     Height = 27
     Style = csDropDownList
     Anchors = [akLeft, akTop, akRight]
+    DropDownCount = 12
     TabOrder = 0
     OnClick = ComboBox1Click
     Items.Strings = (
       'Logtail (habhub)'
       'LoRa Gateway'
       'Lora Serial'
-      'TCP (DL-FLDigi)'
+      'TCP (DL-FLDigi, FLDigi)'
       'UDP ( rdzTTGOSonde, HABDEC)'
       'Habitat'
       'APRS / OGN'
-      'MQTT'
-      'Sondehub')
+      'MQTT (e.g. hablink)'
+      'WS MQTT (e.g. Sondehub)'
+      'Sondehub Area Polling')
   end
   object btnOK: TAdvSmoothButton
     AlignWithMargins = True

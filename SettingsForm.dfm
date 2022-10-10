@@ -10,8 +10,6 @@ object frmSettings: TfrmSettings
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = True
-  PixelsPerInch = 96
   TextHeight = 13
   object pnlCommon: TAdvPanel
     Left = 0
@@ -23,7 +21,6 @@ object frmSettings: TfrmSettings
     Margins.Right = 2
     Margins.Bottom = 2
     Align = alClient
-    BevelOuter = bvNone
     BorderStyle = bsSingle
     Color = clSilver
     Font.Charset = DEFAULT_CHARSET
@@ -34,7 +31,7 @@ object frmSettings: TfrmSettings
     ParentFont = False
     TabOrder = 0
     UseDockManager = True
-    Version = '2.5.10.2'
+    Version = '2.6.3.1'
     BorderColor = clGray
     Caption.Color = 15722471
     Caption.ColorTo = 11176072
@@ -113,7 +110,7 @@ object frmSettings: TfrmSettings
       Alignment = taLeftJustify
       Caption = 'Enabled'
       ReturnIsTab = False
-      Version = '1.7.0.2'
+      Version = '1.8.1.0'
     end
     object btnSave: TAdvSmoothButton
       AlignWithMargins = True
@@ -131,6 +128,7 @@ object frmSettings: TfrmSettings
       Appearance.Font.Height = -11
       Appearance.Font.Name = 'Tahoma'
       Appearance.Font.Style = []
+      Appearance.SimpleLayout = False
       Status.Caption = '0'
       Status.Appearance.Fill.Color = clRed
       Status.Appearance.Fill.ColorMirror = clNone
@@ -150,7 +148,7 @@ object frmSettings: TfrmSettings
       ParentFont = False
       TabOrder = 3
       Enabled = False
-      Version = '2.2.1.2'
+      Version = '2.2.3.1'
       OnClick = btnSaveClick
       TMSStyle = 8
     end
@@ -170,6 +168,7 @@ object frmSettings: TfrmSettings
       Appearance.Font.Height = -11
       Appearance.Font.Name = 'Tahoma'
       Appearance.Font.Style = []
+      Appearance.SimpleLayout = False
       Status.Caption = '0'
       Status.Appearance.Fill.Color = clRed
       Status.Appearance.Fill.ColorMirror = clNone
@@ -188,7 +187,7 @@ object frmSettings: TfrmSettings
       Caption = 'Cancel'
       ParentFont = False
       TabOrder = 4
-      Version = '2.2.1.2'
+      Version = '2.2.3.1'
       ModalResult = 2
       TMSStyle = 8
     end
