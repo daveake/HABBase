@@ -4,7 +4,6 @@ inherited frmGatewaySettings: TfrmGatewaySettings
   ClientWidth = 664
   ExplicitWidth = 680
   ExplicitHeight = 216
-  PixelsPerInch = 96
   TextHeight = 13
   inherited pnlCommon: TAdvPanel
     Width = 664
@@ -142,7 +141,7 @@ inherited frmGatewaySettings: TfrmGatewaySettings
       Alignment = taRightJustify
       Caption = 'AFC:'
       ReturnIsTab = False
-      Version = '1.7.0.2'
+      Version = '1.8.1.0'
     end
     object chkAFC2: TAdvOfficeCheckBox
       Left = 384
@@ -153,7 +152,7 @@ inherited frmGatewaySettings: TfrmGatewaySettings
       Alignment = taRightJustify
       Caption = 'AFC:'
       ReturnIsTab = False
-      Version = '1.7.0.2'
+      Version = '1.8.1.0'
     end
   end
 end

@@ -75,16 +75,27 @@ begin
 
     with DataModule1.tblSources do begin
         edtHost.Text := FieldByName('Host').AsString;
-        edtPort.Text := FieldByName('Port').AsString;
+        edtPort.Text := IntToStr(StrToIntDef(FieldByName('Port').AsString, 6004));
 
         Settings := ';' + FieldByName('Settings').AsString;
 
-        edtFrequency1.Text := MyFormatFloat('0.0000', MyStrToFloat(GetSetting('Frequency_0', Settings)));
-        edtMode1.Text      := GetSetting('Mode_0', Settings);
+        if GetSetting('Frequency_0', Settings) = '' then begin
+            edtFrequency1.Text := '434.225';
+            edtMode1.Text      := '1';
+        end else begin
+            edtFrequency1.Text := MyFormatFloat('0.0000', MyStrToFloat(GetSetting('Frequency_0', Settings)));
+            edtMode1.Text      := GetSetting('Mode_0', Settings);
+        end;
         chkAFC1.Checked    := GetBooleanSetting('AFC_0', Settings);
 
-        edtFrequency2.Text := MyFormatFloat('0.0000', MyStrToFloat(GetSetting('Frequency_1', Settings)));
-        edtMode2.Text      := GetSetting('Mode_1', Settings);
+        if GetSetting('Frequency_0', Settings) = '' then begin
+            edtFrequency2.Text := '434.450';
+            edtMode2.Text      := '1';
+        end else begin
+            edtFrequency2.Text := MyFormatFloat('0.0000', MyStrToFloat(GetSetting('Frequency_1', Settings)));
+            edtMode2.Text      := GetSetting('Mode_1', Settings);
+        end;
+
         chkAFC2.Checked    := GetBooleanSetting('AFC_1', Settings);
     end;
 end;

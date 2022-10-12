@@ -1,6 +1,6 @@
 [Setup]
 AppName=HAB Base
-AppVersion=1.6.8
+AppVersion=1.6.9
 WizardStyle=modern
 DefaultDirName=c:\HAB\Base
 DefaultGroupName=HAB
@@ -27,4 +27,4 @@ Name: "{commondesktop}\HAB Base"; Filename: "{app}\HABBase.exe"
 
 
 [Run]
-Filename: {app}\MicrosoftEdgeWebview2Setup.exe; WorkingDir: {app}; Flags: postinstall skipifsilent;
+Filename: {app}\MicrosoftEdgeWebview2Setup.exe; Parameters: "/silent /install"; WorkingDir: {app}; Flags: skipifsilent;

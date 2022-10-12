@@ -1,5 +1,5 @@
 inherited frmHabitatSettings: TfrmHabitatSettings
-  Caption = 'HABHUB/Sondehub Payload List Settings'
+  Caption = 'Habitat Payload List Settings'
   ClientHeight = 141
   ExplicitHeight = 180
   TextHeight = 13
