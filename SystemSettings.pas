@@ -35,7 +35,6 @@ type
     DBEdit9: TDBEdit;
     Label12: TLabel;
     DBEdit10: TDBEdit;
-    DBAdvOfficeCheckBox1: TDBAdvOfficeCheckBox;
     DBAdvOfficeCheckBox3: TDBAdvOfficeCheckBox;
     DBAdvOfficeCheckBox4: TDBAdvOfficeCheckBox;
     DBAdvOfficeCheckBox5: TDBAdvOfficeCheckBox;

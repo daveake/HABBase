@@ -75,41 +75,11 @@ inherited frmSources: TfrmSources
       BevelOuter = bvNone
       TabOrder = 2
       OnResize = pnlUploadsResize
-      object indHABHUB: TAdvSmoothStatusIndicator
-        AlignWithMargins = True
-        Left = 0
-        Top = 27
-        Width = 68
-        Height = 30
-        Margins.Left = 0
-        Margins.Right = 1
-        Caption = 'HABHUB'
-        Version = '1.0.1.0'
-        Appearance.Fill.Color = clGray
-        Appearance.Fill.ColorMirror = clNone
-        Appearance.Fill.ColorMirrorTo = clNone
-        Appearance.Fill.GradientType = gtSolid
-        Appearance.Fill.GradientMirrorType = gtSolid
-        Appearance.Fill.BorderColor = clGray
-        Appearance.Fill.Rounding = 14
-        Appearance.Fill.ShadowOffset = 0
-        Appearance.Fill.Glow = gmNone
-        Appearance.Font.Charset = DEFAULT_CHARSET
-        Appearance.Font.Color = clWhite
-        Appearance.Font.Height = -16
-        Appearance.Font.Name = 'Arial Narrow'
-        Appearance.Font.Style = []
-        Align = alClient
-        ParentShowHint = False
-        ShowHint = True
-        OnClick = UploaderClick
-        ExplicitTop = 26
-      end
       object indSondehub: TAdvSmoothStatusIndicator
         AlignWithMargins = True
-        Left = 69
+        Left = 1
         Top = 27
-        Width = 68
+        Width = 85
         Height = 30
         Margins.Left = 0
         Margins.Right = 1
@@ -133,13 +103,13 @@ inherited frmSources: TfrmSources
         ParentShowHint = False
         ShowHint = True
         OnClick = UploaderClick
-        ExplicitLeft = 65
+        ExplicitLeft = 69
       end
       object indMQTT: TAdvSmoothStatusIndicator
         AlignWithMargins = True
-        Left = 207
+        Left = 173
         Top = 27
-        Width = 68
+        Width = 85
         Height = 30
         Margins.Left = 0
         Margins.Right = 1
@@ -163,13 +133,13 @@ inherited frmSources: TfrmSources
         ParentShowHint = False
         ShowHint = True
         OnClick = UploaderClick
-        ExplicitLeft = 205
+        ExplicitLeft = 207
       end
       object indSSDV: TAdvSmoothStatusIndicator
         AlignWithMargins = True
-        Left = 276
+        Left = 259
         Top = 27
-        Width = 68
+        Width = 85
         Height = 30
         Margins.Left = 0
         Margins.Right = 1
@@ -193,13 +163,13 @@ inherited frmSources: TfrmSources
         ParentShowHint = False
         ShowHint = True
         OnClick = UploaderClick
-        ExplicitLeft = 275
+        ExplicitLeft = 276
       end
       object indHABLINK: TAdvSmoothStatusIndicator
         AlignWithMargins = True
-        Left = 138
+        Left = 87
         Top = 27
-        Width = 68
+        Width = 85
         Height = 30
         Margins.Left = 0
         Margins.Right = 1
@@ -221,7 +191,7 @@ inherited frmSources: TfrmSources
         Appearance.Font.Style = []
         Align = alRight
         OnClick = UploaderClick
-        ExplicitLeft = 135
+        ExplicitLeft = 138
       end
       object Panel3: TPanel
         Left = 0

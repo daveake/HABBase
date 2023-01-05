@@ -33,12 +33,10 @@ object frmNewSource: TfrmNewSource
     TabOrder = 0
     OnClick = ComboBox1Click
     Items.Strings = (
-      'Logtail (habhub)'
       'LoRa Gateway'
       'Lora Serial'
       'TCP (DL-FLDigi, FLDigi)'
       'UDP ( rdzTTGOSonde, HABDEC)'
-      'Habitat'
       'APRS / OGN'
       'MQTT (e.g. hablink)'
       'WS MQTT (e.g. Sondehub)'

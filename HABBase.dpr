@@ -10,7 +10,6 @@ uses
   SocketSource in '..\HABRx\SocketSource.pas',
   Source in '..\HABRx\Source.pas',
   BaseTypes in 'BaseTypes.pas',
-  Logtail in 'Logtail.pas' {frmLogtail},
   Modal in 'Modal.pas' {frmModal},
   Normal in 'Normal.pas' {frmNormal},
   Tool in 'Tool.pas' {frmTool},
@@ -28,7 +27,6 @@ uses
   Misc in 'Misc.pas',
   Sondehub in '..\HABRx\Sondehub.pas',
   SystemSettings in 'SystemSettings.pas' {frmSystemSettings},
-  LogtailSettings in 'LogtailSettings.pas' {frmLogtailSettings},
   Payload in 'Payload.pas' {frmPayload},
   LoRaGatewaySource in 'LoRaGatewaySource.pas' {frmLoRaGatewaySource},
   UDPSource in '..\HABRx\UDPSource.pas',
@@ -42,14 +40,13 @@ uses
   APRSSettings in 'APRSSettings.pas' {frmAPRSSettings},
   MQTTUplink in '..\HABRx\MQTTUplink.pas',
   MQTTSource in '..\HABRx\MQTTSource.pas',
-  HabitatSource in '..\HABRx\HabitatSource.pas',
   WSMQTTSettings in 'WSMQTTSettings.pas' {frmWSMQTTSettings},
   HabitatSettings in 'HabitatSettings.pas' {frmHabitatSettings},
-  Habitat in '..\HABRx\Habitat.pas',
   UploadStatus in 'UploadStatus.pas' {frmUploadStatus},
   SondehubSource in '..\HABRx\SondehubSource.pas',
   WSMQTTSource in '..\HABRx\WSMQTTSource.pas',
-  MQTTSettings in 'MQTTSettings.pas' {frmMQTTSettings};
+  MQTTSettings in 'MQTTSettings.pas' {frmMQTTSettings},
+  LogtailSettings in 'LogtailSettings.pas' {frmLogtailSettings};
 
 {$R *.res}
 
@@ -58,5 +55,6 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TfrmMQTTSettings, frmMQTTSettings);
+  Application.CreateForm(TfrmLogtailSettings, frmLogtailSettings);
   Application.Run;
 end.

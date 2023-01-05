@@ -22,6 +22,4 @@ implementation
 
 {$R *.dfm}
 
-uses LogTail;
-
 end.

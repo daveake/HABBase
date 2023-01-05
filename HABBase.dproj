@@ -139,10 +139,6 @@
         <DCCReference Include="..\HABRx\SocketSource.pas"/>
         <DCCReference Include="..\HABRx\Source.pas"/>
         <DCCReference Include="BaseTypes.pas"/>
-        <DCCReference Include="Logtail.pas">
-            <Form>frmLogtail</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="Modal.pas">
             <Form>frmModal</Form>
             <FormType>dfm</FormType>
@@ -202,10 +198,6 @@
             <Form>frmSystemSettings</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="LogtailSettings.pas">
-            <Form>frmLogtailSettings</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="Payload.pas">
             <Form>frmPayload</Form>
             <FormType>dfm</FormType>
@@ -240,7 +232,6 @@
         </DCCReference>
         <DCCReference Include="..\HABRx\MQTTUplink.pas"/>
         <DCCReference Include="..\HABRx\MQTTSource.pas"/>
-        <DCCReference Include="..\HABRx\HabitatSource.pas"/>
         <DCCReference Include="WSMQTTSettings.pas">
             <Form>frmWSMQTTSettings</Form>
             <FormType>dfm</FormType>
@@ -249,7 +240,6 @@
             <Form>frmHabitatSettings</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\HABRx\Habitat.pas"/>
         <DCCReference Include="UploadStatus.pas">
             <Form>frmUploadStatus</Form>
             <FormType>dfm</FormType>
@@ -258,6 +248,10 @@
         <DCCReference Include="..\HABRx\WSMQTTSource.pas"/>
         <DCCReference Include="MQTTSettings.pas">
             <Form>frmMQTTSettings</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="LogtailSettings.pas">
+            <Form>frmLogtailSettings</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Base">

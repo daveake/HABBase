@@ -11,9 +11,9 @@ uses
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, AdvSmoothButton, AdvPanel, Miscellaneous, Vcl.Menus,
   Source, SourceForm, SocketSource, UDPSource, APRSSource,
-  GatewaySource, SerialSource, HabitatSource, MQTTSource, WSMQTTSource,
+  GatewaySource, SerialSource, MQTTSource, WSMQTTSource,
   TCPSettings, UDPSettings, APRSSettings, MQTTSettings, WSMQTTSettings, UploadStatus,
-  Habitat, Sondehub, MQTTUplink, SSDV, SondehubSource;
+  Sondehub, MQTTUplink, SSDV, SondehubSource;
 
 
 type
@@ -57,7 +57,6 @@ type
     pnlUploads: TPanel;
     Panel3: TPanel;
     Label1: TLabel;
-    indHABHUB: TAdvSmoothStatusIndicator;
     indSondehub: TAdvSmoothStatusIndicator;
     indMQTT: TAdvSmoothStatusIndicator;
     indSSDV: TAdvSmoothStatusIndicator;
@@ -71,8 +70,7 @@ type
   private
     { Private declarations }
     HABSources: Array[1..32] of THABSource;
-    Uploaders: Array[1..5] of TUploader;
-    HabitatUploader: THabitatThread;
+    Uploaders: Array[1..4] of TUploader;
     SondehubUploader: TSondehubThread;
     SSDVUploader: TSSDVThread;
     MQTTUploader, HabLinkUploader: TMQTTThread;
@@ -84,7 +82,6 @@ type
     procedure DataSourceClick(Sender: TObject);
     function ShowSettingsForm(SourceIndex: Integer): Boolean;
     function FindFreeSource: Integer;
-    procedure HabitatStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
     procedure SondehubStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
     procedure MQTTStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
     procedure HabLinkStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
@@ -116,7 +113,6 @@ const
     MQTT_UPLOADER     = 2;
     SSDV_UPLOADER     = 3;
     HABLINK_UPLOADER  = 4;
-    HABHUB_UPLOADER   = 5;
 
 var
     frmSources: TfrmSources;
@@ -125,8 +121,8 @@ implementation
 
 {$R *.dfm}
 
-uses Data, Logtail, Main, Map, SettingsForm, NewSource, Payloads, Misc,
-     LogtailSettings, GatewaySettings, LoRaSerialSettings, HabitatSettings,
+uses Data, Main, Map, SettingsForm, NewSource, Payloads, Misc,
+     GatewaySettings, LoRaSerialSettings, HabitatSettings, LogtailSettings,
      LoRaSerialSource, LoRaGatewaySource;
 
 procedure TfrmSources.LoadSources;
@@ -135,9 +131,6 @@ var
     Dummy: String;
 begin
     InitialiseSettings;
-
-    // Habitat uploader
-    HabitatUploader := THabitatThread.Create(HabitatStatusCallback);
 
     // Sondehub uploader
     SondehubUploader := TSondehubThread.Create(SondehubStatusCallback);
@@ -194,10 +187,7 @@ begin
 
         SourceType := TSourceType(FieldByName('Type').AsInteger);
 
-        if SourceType = stLogtail then begin
-            SourceForm := TfrmLogtail.Create(nil);
-            // SourceForm.pnlMain.Parent := frmMain.pnlHidden;
-        end else if SourceType = stGateway then begin
+        if SourceType = stGateway then begin
             SourceForm := TfrmLoRaGatewaySource.Create(nil);
             Source := TGatewaySource.Create(SourceIndex, Group, HABCallback);
             MultipleChannels := True;
@@ -214,9 +204,6 @@ begin
             SourceForm := TfrmSource.Create(nil);
             Source := TAPRSSource.Create(SourceIndex, Group, HABCallback);
             Source.SetFilter(APRSFilter);
-        end else if SourceType = stHabitat then begin
-            SourceForm := TfrmSource.Create(nil);
-            Source := THabitatSource.Create(SourceIndex, Group, HABCallback);
         end else if SourceType = stMQTT then begin
             SourceForm := TfrmSource.Create(nil);
             Source := TMQTTSource.Create(SourceIndex, Group, HABCallback);
@@ -236,9 +223,9 @@ begin
         if SourceForm <> nil then begin
             SourceForm.SourceIndex := SourceIndex;
             SourceForm.Group := Group;
-        end;
 
-        LoadSourceSettings(SourceIndex);
+            LoadSourceSettings(SourceIndex);
+        end;
     end;
 end;
 
@@ -349,13 +336,6 @@ begin
     // Upload telemtry, if enabled for this source
     if HABSources[SourceIndex].Upload then begin
         // Now check/upload to each target in turn
-
-        if DataModule1.tblSettings.FieldByName('UplinkHABHUB').AsBoolean then begin
-            Callsign := DataModule1.tblSettings.FieldByName('Callsign').AsString;
-            if Callsign <> '' then begin
-                HabitatUploader.SaveTelemetryToHabitat(SourceIndex, Position.Line, Callsign);
-            end;
-        end;
 
         if DataModule1.tblSettings.FieldByName('UplinkSondehub').AsBoolean then begin
             SondehubUploader.SaveTelemetryToSondehub(SourceIndex, Position);
@@ -470,7 +450,6 @@ begin
     Uploaders[MQTT_UPLOADER].Indicator := indMQTT;
     Uploaders[SSDV_UPLOADER].Indicator := indSSDV;
     Uploaders[HABLINK_UPLOADER].Indicator := indHablink;
-    Uploaders[HABHUB_UPLOADER].Indicator := indHABHUB;
 
     for i := Low(Uploaders) to High(Uploaders) do begin
         Uploaders[i].Indicator.Tag := i;
@@ -489,12 +468,10 @@ begin
         CloseThread(HABSources[Index].Source);
     end;
 
-    CloseThread(HabitatUploader);
     CloseThread(SSDVUploader);
     CloseThread(MQTTUploader);
 
 
-    WaitForThread(HabitatUploader);
     WaitForThread(SSDVUploader);
     WaitForThread(MQTTUploader);
 
@@ -503,9 +480,18 @@ begin
     end;
 end;
 
+function FixSourceIndex(Index: Integer): Integer;
+begin
+    if Index >= 4 then begin
+        Result := Index + 2;
+    end else begin
+        Result := Index + 1;
+    end;
+end;
+
 procedure TfrmSources.AddNewSource;
 var
-    SourceIndex: Integer;
+    SourceIndex, SourceTypeIndex: Integer;
     frmNewSource: TfrmNewSource;
 begin
     SourceIndex := FindFreeSource;
@@ -516,13 +502,15 @@ begin
 
         if frmNewSource.ShowModal = mrOK then begin
             // Type of source
-            HABSources[SourceIndex].SourceType := TSourceType(frmNewSource.ComboBox1.ItemIndex);
+            SourceTypeIndex := FixSourceIndex(frmNewSource.ComboBox1.ItemIndex);
+
+            HABSources[SourceIndex].SourceType := TSourceType(SourceTypeIndex);
 
             // Add to table
             with DataModule1.tblSources do begin
                 Append;
                 FieldByName('Enabled').AsBoolean := True;
-                FieldByName('Type').AsInteger := frmNewSource.ComboBox1.ItemIndex;
+                FieldByName('Type').AsInteger := SourceTypeIndex;
                 Post;
                 // Last;
 
@@ -742,7 +730,7 @@ begin
     Result := False;
 
     case HABSources[SourceIndex].SourceType of
-        stLogtail:      SettingsForm := TfrmLogtailSettings.Create(nil);
+        // stLogtail:      SettingsForm := TfrmLogtailSettings.Create(nil);
         stGateway:      SettingsForm := TfrmGatewaySettings.Create(nil);
         stSerial:       SettingsForm := TfrmLoRaSerialSettings.Create(nil);
         stTCP:          SettingsForm := TfrmTCPSettings.Create(nil);
@@ -764,18 +752,6 @@ begin
 
         SettingsForm.Free;
     end;
-end;
-
-procedure TfrmSources.HabitatStatusCallback(SourceID: Integer; Active, OK: Boolean; Status: String);
-begin
-    Uploaders[HABHUB_UPLOADER].Attempted := Active;
-    Uploaders[HABHUB_UPLOADER].Success := OK;
-    Uploaders[HABHUB_UPLOADER].StatusForm.AddStatusToLog(Status);
-    Uploaders[HABHUB_UPLOADER].Indicator.Hint := Status;
-
-    if OK then Uploaders[HABHUB_UPLOADER].LastSuccess := Now;
-
-    ShowUplinkStatus(HABHUB_UPLOADER);
 end;
 
 procedure TfrmSources.UploaderClick(Sender: TObject);
@@ -981,7 +957,6 @@ procedure TfrmSources.ApplySettings;
 var
     Topic: String;
 begin
-    Uploaders[HABHUB_UPLOADER].Enabled := DataModule1.tblSettings.FieldByName('UplinkHABHUB').AsBoolean;
     Uploaders[SONDEHUB_UPLOADER].Enabled := DataModule1.tblSettings.FieldByName('UplinkSondehub').AsBoolean;
     Uploaders[MQTT_UPLOADER].Enabled := DataModule1.tblSettings.FieldByName('UplinkMQTT').AsBoolean;
     Uploaders[HABLINK_UPLOADER].Enabled := DataModule1.tblSettings.FieldByName('UplinkHABLINK').AsBoolean;

@@ -33,16 +33,14 @@ begin
 
     case ComboBox1.ItemIndex of
         -1: lblAbout.Caption := 'Please chooose type of source from the list';
-        0:  lblAbout.Caption := 'This source listens to the HABHUB logtail, so it can find payloads even if they don''t have payload documents';
-        1:  lblAbout.Caption := 'This connects via TCP/IP to the control port on a LoRa Gateway, to set the frequency etc and to receive telemetry';
-        2:  lblAbout.Caption := 'This can be used with USB or Bluetooth LoRa receivers, via the associated COM port';
-        3:  lblAbout.Caption := 'This connects via TCP/IP to any source that emits balloon telemetry';
-        4:  lblAbout.Caption := 'This listens for telemetry broadcast on a UDP port.  It can listen to several ports at once';
-        5:  lblAbout.Caption := 'This polls HABHUB for new or recent payload telemetry';
-        6:  lblAbout.Caption := 'This connects to an APRS server (OGN - glidernet - uses its own APRS servers)';
-        7:  lblAbout.Caption := 'This can be used with an MQTT broker e.g. HABLINK that publishes payload telemetry as UKHAS or JSON';
-        8:  lblAbout.Caption := 'This can be used with an MQTT WEBSOCKETS broker e.g. SONDEHUB that publishes payload telemetry as UKHAS or JSON';
-        9:  lblAbout.Caption := 'This source polls SONDEHUB AMATEUR for payloads within a set radius of your station position';
+        0:  lblAbout.Caption := 'This connects via TCP/IP to the control port on a LoRa Gateway, to set the frequency etc and to receive telemetry';
+        1:  lblAbout.Caption := 'This can be used with USB or Bluetooth LoRa receivers, via the associated COM port';
+        2:  lblAbout.Caption := 'This connects via TCP/IP to any source that emits balloon telemetry';
+        3:  lblAbout.Caption := 'This listens for telemetry broadcast on a UDP port.  It can listen to several ports at once';
+        4:  lblAbout.Caption := 'This connects to an APRS server (OGN - glidernet - uses its own APRS servers)';
+        5:  lblAbout.Caption := 'This can be used with an MQTT broker e.g. HABLINK that publishes payload telemetry as UKHAS or JSON';
+        6:  lblAbout.Caption := 'This can be used with an MQTT WEBSOCKETS broker e.g. SONDEHUB that publishes payload telemetry as UKHAS or JSON';
+        7:  lblAbout.Caption := 'This source polls SONDEHUB AMATEUR for payloads within a set radius of your station position';
         else lblAbout.Caption := 'UNKNOWN SOURCE';
     end;
 end;

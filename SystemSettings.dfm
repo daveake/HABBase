@@ -347,28 +347,12 @@ object frmSystemSettings: TfrmSystemSettings
       TabOrder = 11
       OnChange = DBEdit1Change
     end
-    object DBAdvOfficeCheckBox1: TDBAdvOfficeCheckBox
-      Left = 304
-      Top = 9
-      Width = 174
-      Height = 20
-      TabOrder = 12
-      Alignment = taLeftJustify
-      Caption = 'Enable HABHUB Uploads'
-      ReturnIsTab = False
-      State = cbGrayed
-      Version = '1.1.1.4'
-      DataField = 'UplinkHABHUB'
-      DataSource = DataModule1.srcSettings
-      ValueChecked = 'True'
-      ValueUnchecked = 'False'
-    end
     object DBAdvOfficeCheckBox3: TDBAdvOfficeCheckBox
       Left = 304
       Top = 116
       Width = 174
       Height = 20
-      TabOrder = 13
+      TabOrder = 12
       Alignment = taLeftJustify
       Caption = 'Enable SSDV Uploads'
       ReturnIsTab = False
@@ -384,7 +368,7 @@ object frmSystemSettings: TfrmSystemSettings
       Top = 90
       Width = 174
       Height = 20
-      TabOrder = 14
+      TabOrder = 13
       Alignment = taLeftJustify
       Caption = 'Enable MQTT Uploads'
       ReturnIsTab = False
@@ -400,7 +384,7 @@ object frmSystemSettings: TfrmSystemSettings
       Top = 35
       Width = 174
       Height = 20
-      TabOrder = 15
+      TabOrder = 14
       Alignment = taLeftJustify
       Caption = 'Enable Sondehub Uploads'
       ReturnIsTab = False
@@ -416,7 +400,7 @@ object frmSystemSettings: TfrmSystemSettings
       Top = 64
       Width = 174
       Height = 20
-      TabOrder = 16
+      TabOrder = 15
       Alignment = taLeftJustify
       Caption = 'Enable HABLINK Uploads'
       ReturnIsTab = False
