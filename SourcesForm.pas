@@ -178,8 +178,6 @@ end;
 
 procedure TfrmSources.LoadSource(SourceIndex: Integer);
 begin
-    btnAddSource.Visible := False;
-
     with HABSources[SourceIndex], DataModule1.tblSources do begin
         InUse := True;
         SourceID := FieldByName('ID').AsInteger;
@@ -221,6 +219,8 @@ begin
         end;
 
         if SourceForm <> nil then begin
+            btnAddSource.Visible := False;
+
             SourceForm.SourceIndex := SourceIndex;
             SourceForm.Group := Group;
 
