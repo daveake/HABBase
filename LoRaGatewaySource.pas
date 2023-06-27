@@ -14,7 +14,7 @@ uses
 type
   TfrmLoRaGatewaySource = class(TfrmSource)
     tabSignal: TTabSheet;
-    pnlCommon: TAdvPanel;
+    pnlCommon0: TAdvPanel;
     Label9: TLabel;
     Label1: TLabel;
     btnSave: TAdvSmoothButton;
@@ -32,7 +32,7 @@ type
     Label3: TLabel;
     chkAFC0: TAdvOfficeCheckBox;
     TabSheet1: TTabSheet;
-    AdvPanel1: TAdvPanel;
+    pnlCommon1: TAdvPanel;
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
@@ -41,7 +41,6 @@ type
     AdvSmoothButton2: TAdvSmoothButton;
     edtCurrentRSSI1: TEdit;
     edtPacketRSSI1: TEdit;
-    AdvGauge1: TAdvGauge;
     edtFrequencyError1: TEdit;
     VrMediaButton5: TVrMediaButton;
     VrMediaButton6: TVrMediaButton;
@@ -51,11 +50,12 @@ type
     chkAFC1: TAdvOfficeCheckBox;
     lblUploadChannel: TLabel;
     cmbUploadChannel: TComboBox;
-    ProgressBar1: TProgressBar;
     btnSearch2: TButton;
     ProgressBar0: TProgressBar;
     btnSearch1: TButton;
     tmrSearch: TTimer;
+    ProgressBar1: TProgressBar;
+    AdvGauge1: TAdvGauge;
     procedure FormCreate(Sender: TObject);
     procedure VrMediaButton1Click(Sender: TObject);
     procedure VrMediaButton4Click(Sender: TObject);

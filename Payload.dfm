@@ -933,10 +933,6 @@ inherited frmPayload: TfrmPayload
           View3D = False
           Align = alClient
           TabOrder = 0
-          ExplicitLeft = 72
-          ExplicitTop = 76
-          ExplicitWidth = 400
-          ExplicitHeight = 250
           DefaultCanvas = 'TGDIPlusCanvas'
           ColorPaletteIndex = 13
           object Series1: TFastLineSeries

@@ -242,6 +242,18 @@ begin
             AddItem(POSN_HEADING, 'Heading', MyFormatFloat('0.0', Heading) + ' °');
         end;
 
+        if HaveMaxAltitude then begin
+            AddItem(POSN_SPEED, 'Max Alt', MyFormatFloat('0', MaxAltitude) + 'm');
+        end;
+
+        if HaveAltitude2 then begin
+            AddItem(POSN_SPEED, 'Max Alt', MyFormatFloat('0', Altitude2) + 'm');
+        end;
+
+        if HaveSpeed then begin
+            AddItem(POSN_SPEED, 'Speed', MyFormatFloat('0.0', Speed) + 'kph');
+        end;
+
         if HaveCutdownStatus then begin
             if (CutdownStatus >= Low(CutdownStatii)) and (CutdownStatus <= High(CutdownStatii)) then begin
                 AddItem(POSN_CUTDOWN, 'Cutdown', CutdownStatii[CutdownStatus]);
@@ -251,7 +263,13 @@ begin
         end;
 
         AddItem(POSN_DISTANCE, 'Distance', MyFormatFloat('0.0', Distance) + ' km');
-        AddItem(POSN_DIRECTION, 'Direction', MyFormatFloat('0.0', Direction * 180 / Pi) + ' °');
+
+        if Direction < 0 then begin
+            AddItem(POSN_DIRECTION, 'Direction', MyFormatFloat('0.0', (Direction * 180 / Pi) + 360) + ' °');
+        end else begin
+            AddItem(POSN_DIRECTION, 'Direction', MyFormatFloat('0.0', Direction * 180 / Pi) + ' °');
+        end;
+
         AddItem(POSN_ELEVATION, 'Elevation', MyFormatFloat('0.0', Elevation) + ' °');
 
         if PredictionType <> TPredictionType.ptNone then begin
