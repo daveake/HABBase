@@ -70,7 +70,6 @@ object frmMain: TfrmMain
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitTop = -6
     end
   end
   object pnlMain: TPanel

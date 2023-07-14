@@ -10,9 +10,9 @@ uses
   Data.DB, FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, AdvObj,
   BaseGrid, AdvGrid, DBAdvGrid, Miscellaneous, Source, Vcl.StdCtrls, Vcl.ComCtrls,
   AdvSmoothButton, AdvPanel, AdvProgr, AdvGauge, Map, Vcl.Menus,
-  VCL.TMSFNCTypes, VCL.TMSFNCUtils, VCL.TMSFNCGraphics,
+  VCL.TMSFNCTypes, VCL.TMSFNCUtils, VCL.TMSFNCGraphics, StrUtils,
   VCL.TMSFNCGraphicsTypes, VCL.TMSFNCChart, HTMLabel, VclTee.TeeGDIPlus,
-  VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart, VCLTee.Series;
+  VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart, VCLTee.Series, Misc;
 
 type
   TfrmPayload = class(TfrmBase)
@@ -62,13 +62,15 @@ type
     AdvSmoothButton2: TAdvSmoothButton;
     edtBurstAltitude: TEdit;
     btnSetBurst: TButton;
-    lblHABHUB: THTMLabel;
     lblSondeHub: THTMLabel;
     pnlUpdated: TPanel;
     tmrUpdated: TTimer;
-    lstTemp: TListBox;
+    lstFieldNames: TListBox;
     Chart1: TChart;
     Series1: TFastLineSeries;
+    lstValues: TListBox;
+    lstSuffix: TListBox;
+    lstHeader: TListBox;
     procedure btnDownClick(Sender: TObject);
     procedure btnUpClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -81,10 +83,13 @@ type
     procedure tmrUpdatedTimer(Sender: TObject);
   private
     { Private declarations }
+    FirstTime: Boolean;
     procedure Down;
     procedure Up;
-    procedure AddItem(Position: Integer; Title, Value: String);
+    procedure AddItem(Position: Integer; FieldName, Value: String; Suffix: String='');
     procedure UpdateTelemetryList;
+    function BuildTelemetryHeader: String;
+    function BuildTelemetryLog: String;
   public
     { Public declarations }
     PayloadIndex: Integer;
@@ -146,13 +151,21 @@ const
     POSN_DEVICE                 = 30;
     POSN_LISTENERS              = 31;
 
-procedure TfrmPayload.AddItem(Position: Integer; Title, Value: String);
+procedure TfrmPayload.AddItem(Position: Integer; FieldName, Value: String; Suffix: String='');
 begin
-    while lstTemp.Items.Count < (Position+1) do begin
-        lstTemp.Items.Add('');
+    while lstFieldNames.Items.Count < (Position+1) do begin
+        lstFieldNames.Items.Add('');
+    end;
+    while lstValues.Items.Count < (Position+1) do begin
+        lstValues.Items.Add('');
+    end;
+    while lstSuffix.Items.Count < (Position+1) do begin
+        lstSuffix.Items.Add('');
     end;
 
-    lstTemp.Items[Position] := Title.PadLeft(18) + ': ' + Value;
+    lstFieldNames.Items[Position] := FieldName;
+    lstValues.Items[Position] := Value;
+    lstSuffix.Items[Position] := Suffix;
 end;
 
 procedure TfrmPayload.AddPosition(Position: THABPosition; Sources: String);
@@ -160,7 +173,7 @@ const
     CutdownStatii: Array[0..4] of String = ('Idle', 'Armed', 'Triggered (Alt)', 'Triggered (Man)', 'Triggered');
 var
     MyBookmark: TBookmark;
-    Prefix: String;
+    Prefix, LogMessage, Header: String;
 begin
     with Position do begin
         // Table
@@ -200,10 +213,10 @@ begin
         AddItem(POSN_TIMESTAMP, 'Timestamp', FormatDateTime('hh:nn:ss', TimeStamp));
         AddItem(POSN_LATITUDE, 'Latitude', MyFormatFloat('0.0000', Latitude));
         AddItem(POSN_LONGITUDE, 'Longitude', MyFormatFloat('0.0000', Longitude));
-        AddItem(POSN_ALTITUDE, 'Altitude', FormatFloat('0', Altitude) + ' m');
+        AddItem(POSN_ALTITUDE, 'Altitude', FormatFloat('0', Altitude), 'm');
 
         if HaveAscentRate then begin
-            AddItem(POSN_ASCENTRATE, 'Ascent Rate', MyFormatFloat('0.0', AscentRate) + ' m/s');
+            AddItem(POSN_ASCENTRATE, 'Ascent Rate', MyFormatFloat('0.0', AscentRate), 'm/s');
         end;
 
         if (Satellites > 0) or HasSatelliteCount then begin
@@ -211,43 +224,43 @@ begin
         end;
 
         if HaveInternalTemperature then begin
-            AddItem(POSN_INTERNAL_TEMPERATURE, 'Int. Temp.', MyFormatFloat('0.0', InternalTemperature) + ' °C');
+            AddItem(POSN_INTERNAL_TEMPERATURE, 'Int. Temp.', MyFormatFloat('0.0', InternalTemperature), '°C');
         end;
 
         if HaveExternalTemperature then begin
-            AddItem(POSN_EXTERNAL_TEMPERATURE, 'Ext. Temp.', MyFormatFloat('0.0', ExternalTemperature) + ' °C');
+            AddItem(POSN_EXTERNAL_TEMPERATURE, 'Ext. Temp.', MyFormatFloat('0.0', ExternalTemperature), '°C');
         end;
 
         if HavePressure then begin
-            AddItem(POSN_HUMIDITY, 'Pressure', MyFormatFloat('0', Pressure) + '%');
+            AddItem(POSN_HUMIDITY, 'Pressure', MyFormatFloat('0', Pressure), '%');
         end;
 
         if HaveHumidity then begin
-            AddItem(POSN_HUMIDITY, 'Humidity', MyFormatFloat('0', Humidity) + '%');
+            AddItem(POSN_HUMIDITY, 'Humidity', MyFormatFloat('0', Humidity), '%');
         end;
 
         if HasBatteryVoltage then begin
-            AddItem(POSN_BATTERY_VOLTAGE, 'Batt Voltage', MyFormatFloat('0.0#', BatteryVoltage) + ' V');
+            AddItem(POSN_BATTERY_VOLTAGE, 'Batt Voltage', MyFormatFloat('0.0#', BatteryVoltage), 'V');
         end;
 
         if HasBatteryCurrent then begin
-            AddItem(POSN_BATTERY_CURRENT, 'Batt Current', MyFormatFloat('0', BatteryCurrent) + ' mA');
+            AddItem(POSN_BATTERY_CURRENT, 'Batt Current', MyFormatFloat('0', BatteryCurrent), 'mA');
         end;
 
         if HaveSpeed then begin
-            AddItem(POSN_SPEED, 'Speed', MyFormatFloat('0.0', Speed) + 'kph');
+            AddItem(POSN_SPEED, 'Speed', MyFormatFloat('0.0', Speed), 'kph');
         end;
 
         if HaveHeading then begin
-            AddItem(POSN_HEADING, 'Heading', MyFormatFloat('0.0', Heading) + ' °');
+            AddItem(POSN_HEADING, 'Heading', MyFormatFloat('0.0', Heading), '°');
         end;
 
         if HaveMaxAltitude then begin
-            AddItem(POSN_SPEED, 'Max Alt', MyFormatFloat('0', MaxAltitude) + 'm');
+            AddItem(POSN_SPEED, 'Max Alt', MyFormatFloat('0', MaxAltitude), 'm');
         end;
 
         if HaveAltitude2 then begin
-            AddItem(POSN_SPEED, 'Max Alt', MyFormatFloat('0', Altitude2) + 'm');
+            AddItem(POSN_SPEED, 'Max Alt', MyFormatFloat('0', Altitude2), 'm');
         end;
 
         if HaveSpeed then begin
@@ -262,15 +275,15 @@ begin
             end;
         end;
 
-        AddItem(POSN_DISTANCE, 'Distance', MyFormatFloat('0.0', Distance) + ' km');
+        AddItem(POSN_DISTANCE, 'Distance', MyFormatFloat('0.0', Distance), 'km');
 
         if Direction < 0 then begin
-            AddItem(POSN_DIRECTION, 'Direction', MyFormatFloat('0.0', (Direction * 180 / Pi) + 360) + ' °');
+            AddItem(POSN_DIRECTION, 'Direction', MyFormatFloat('0.0', (Direction * 180 / Pi) + 360), '°');
         end else begin
-            AddItem(POSN_DIRECTION, 'Direction', MyFormatFloat('0.0', Direction * 180 / Pi) + ' °');
+            AddItem(POSN_DIRECTION, 'Direction', MyFormatFloat('0.0', Direction * 180 / Pi), '°');
         end;
 
-        AddItem(POSN_ELEVATION, 'Elevation', MyFormatFloat('0.0', Elevation) + ' °');
+        AddItem(POSN_ELEVATION, 'Elevation', MyFormatFloat('0.0', Elevation), '°');
 
         if PredictionType <> TPredictionType.ptNone then begin
             if PredictionType = TPredictionType.ptTawhiri then Prefix := 'Tawhiri' else Prefix := 'On-board';
@@ -283,11 +296,11 @@ begin
             end;
 
             if HaveLandingSpeed then begin
-                AddItem(POSN_PRED_LANDING, 'Landing Speed', MyFormatFloat('0.0', LandingSpeed) + ' m/s');
+                AddItem(POSN_PRED_LANDING, 'Landing Speed', MyFormatFloat('0.0', LandingSpeed), 'm/s');
             end;
 
             if HaveTTL then begin
-                AddItem(POSN_PRED_TTL, 'Time Till Landing', IntToStr(TTL) + ' s');
+                AddItem(POSN_PRED_TTL, 'Time Till Landing', IntToStr(TTL), 's');
             end;
 
             if LastCommand <> '' then begin
@@ -296,11 +309,11 @@ begin
         end;
 
         if HaveUplinkSNR then begin
-            AddItem(POSN_UPLINK_SNR, 'Uplink SNR', IntToStr(UplinkSNR) + 'dB');
+            AddItem(POSN_UPLINK_SNR, 'Uplink SNR', IntToStr(UplinkSNR), 'dB');
         end;
 
         if HaveUplinkRSSI then begin
-            AddItem(POSN_UPLINK_RSSI, 'Uplink RSSI', IntToStr(UplinkSNR) + 'dBm');
+            AddItem(POSN_UPLINK_RSSI, 'Uplink RSSI', IntToStr(UplinkSNR), 'dBm');
         end;
 
         if HaveUplinkSNR then begin
@@ -312,7 +325,7 @@ begin
         end;
 
         if CurrentFrequency > 0 then begin
-            AddItem(POSN_FREQUENCY, 'Frequency', MyFormatFloat('0.000', CurrentFrequency + FrequencyError / 1000.0) + ' MHz');
+            AddItem(POSN_FREQUENCY, 'Frequency', MyFormatFloat('0.000', CurrentFrequency + FrequencyError / 1000.0), 'MHz');
         end;
 
 
@@ -327,6 +340,14 @@ begin
 
     UpdateTelemetryList;
 
+    if FirstTime then begin
+        Header := BuildTelemetryHeader;
+        WriteToLogFile('PAYLOADS', Position.PayloadID, Header, ',');
+    end;
+    LogMessage := BuildTelemetryLog;
+    WriteToLogFile('PAYLOADS', Position.PayloadID, LogMessage, ',');
+
+    FirstTime := False;
     pnlUpdated.Color := clLime;
     tmrUpdated.Enabled := True;
 end;
@@ -334,21 +355,45 @@ end;
 procedure TfrmPayload.UpdateTelemetryList;
 var
     i, j: Integer;
+    Temp, Values: String;
 begin
     j := 0;
-    for i := 0 to lstTemp.Items.Count-1 do begin
-        if lstTemp.Items[i] <> '' then begin
+    for i := 0 to lstFieldNames.Items.Count-1 do begin
+        if lstFieldNames.Items[i] <> '' then begin
+            Temp := lstFieldNames.Items[i].PadLeft(18) + ': ' + lstValues.Items[i] + lstSuffix.Items[i];
+
             if j >= lstTelemetry.Items.Count then begin
-                lstTelemetry.Items.Add(lstTemp.Items[i]);
+                lstTelemetry.Items.Add(Temp);
             end else begin
-                if lstTelemetry.Items[j] <> lstTemp.Items[i] then begin
-                    lstTelemetry.Items[j] := lstTemp.Items[i];
+                if lstTelemetry.Items[j] <>Temp then begin
+                    lstTelemetry.Items[j] := Temp;
                 end;
             end;
 
             Inc(j);
         end;
+    end;
+end;
 
+function TfrmPayload.BuildTelemetryHeader: String;
+var
+    i: Integer;
+begin
+    Result := '';
+
+    for i := 0 to lstHeader.Items.Count-1 do begin
+        Result := Result + ifthen(i=0, '', ',') + lstHeader.Items[i];
+    end;
+end;
+
+function TfrmPayload.BuildTelemetryLog: String;
+var
+    i: Integer;
+begin
+    Result := '';
+
+    for i := 0 to lstValues.Items.Count-1 do begin
+        Result := Result + ifthen(i=0, '', ',') + lstValues.Items[i];
     end;
 end;
 
@@ -393,6 +438,7 @@ end;
 
 procedure TfrmPayload.FormCreate(Sender: TObject);
 begin
+    FirstTime := True;
     PageControl1.ActivePageIndex := 0;
     TabSheet2.TabVisible := False;
     Up;
@@ -501,8 +547,6 @@ end;
 procedure TfrmPayload.SetPayloadID(PayloadID: String);
 begin
     pnlTitle.Caption := PayloadID;
-
-    lblHABHUB.HtmlText.Text := '<a href="https://tracker.habhub.org/#!qm=All&q=' + PayloadID + '">Open in HABHUB Map</a>';
 
     lblSondeHub.HtmlText.Text := '<a href="https://amateur.sondehub.org/#!mt=Mapnik&mz=11&qm=12h&f=' + PayloadID + '&q=' + PayloadID + '">Open in Sondehub Map</a>';
 end;

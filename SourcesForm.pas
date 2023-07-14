@@ -186,30 +186,30 @@ begin
         SourceType := TSourceType(FieldByName('Type').AsInteger);
 
         if SourceType = stGateway then begin
-            SourceForm := TfrmLoRaGatewaySource.Create(nil);
+            SourceForm := TfrmLoRaGatewaySource.Create(Self);
             Source := TGatewaySource.Create(SourceIndex, Group, HABCallback);
             MultipleChannels := True;
         end else if SourceType = stSerial then begin
-            SourceForm := TfrmLoRaSerialSource.Create(nil);
+            SourceForm := TfrmLoRaSerialSource.Create(Self);
             Source := TSerialSource.Create(SourceIndex, Group, HABCallback);
         end else if SourceType = stTCP then begin
-            SourceForm := TfrmSource.Create(nil);
+            SourceForm := TfrmSource.Create(Self);
             Source := TSocketSource.Create(SourceIndex, Group, HABCallback);
         end else if SourceType = stUDP then begin
-            SourceForm := TfrmSource.Create(nil);
+            SourceForm := TfrmSource.Create(Self);
             Source := TUDPSource.Create(SourceIndex, Group, HABCallback);
         end else if SourceType = stAPRS then begin
-            SourceForm := TfrmSource.Create(nil);
+            SourceForm := TfrmSource.Create(Self);
             Source := TAPRSSource.Create(SourceIndex, Group, HABCallback);
             Source.SetFilter(APRSFilter);
         end else if SourceType = stMQTT then begin
-            SourceForm := TfrmSource.Create(nil);
+            SourceForm := TfrmSource.Create(Self);
             Source := TMQTTSource.Create(SourceIndex, Group, HABCallback);
         end else if SourceType = stWSMQTT then begin
-            SourceForm := TfrmSource.Create(nil);
+            SourceForm := TfrmSource.Create(Self);
             Source := TWSMQTTSource.Create(SourceIndex, Group, HABCallback);
         end else if SourceType = stSondehub then begin
-            SourceForm := TfrmSource.Create(nil);
+            SourceForm := TfrmSource.Create(Self);
             Source := TSondehubSource.Create(SourceIndex, Group, HABCallback);
             TSondehubSource(Source).Latitude := DataModule1.tblSettings.FieldByName('Latitude').AsFloat;
             TSondehubSource(Source).Longitude := DataModule1.tblSettings.FieldByName('Longitude').AsFloat;
@@ -223,6 +223,7 @@ begin
 
             SourceForm.SourceIndex := SourceIndex;
             SourceForm.Group := Group;
+            SourceForm.Code := FieldByName('Code').AsString;
 
             LoadSourceSettings(SourceIndex);
         end;
@@ -453,7 +454,8 @@ begin
 
     for i := Low(Uploaders) to High(Uploaders) do begin
         Uploaders[i].Indicator.Tag := i;
-        Uploaders[i].StatusForm := TfrmUploadStatus.Create(nil);
+        Uploaders[i].StatusForm := TfrmUploadStatus.Create(Self);
+        Uploaders[i].StatusForm.Section := Uploaders[i].Indicator.Caption;
         Uploaders[i].StatusForm.Caption := Uploaders[i].StatusForm.Caption + ' - ' + Uploaders[i].Indicator.Caption;
     end;
 end;
@@ -468,16 +470,32 @@ begin
         CloseThread(HABSources[Index].Source);
     end;
 
+    CloseThread(SondehubUploader);
     CloseThread(SSDVUploader);
+    CloseThread(HabLinkUploader);
     CloseThread(MQTTUploader);
 
-
+    WaitForThread(SondehubUploader);
     WaitForThread(SSDVUploader);
+    WaitForThread(HabLinkUploader);
     WaitForThread(MQTTUploader);
 
     for Index := Low(HABSources) to High(HABSources) do begin
         WaitForThread(HABSources[Index].Source);
     end;
+
+    for Index := Low(HABSources) to High(HABSources) do begin
+        if HABSources[Index].Source <> nil then begin
+            HABSources[Index].Source.Free;
+        end;
+    end;
+
+    SondehubUploader.Free;
+    MQTTUploader.Free;
+    HabLinkUploader.Free;
+    SSDVUploader.Free;
+
+    CloseSettings;
 end;
 
 function FixSourceIndex(Index: Integer): Integer;
@@ -498,7 +516,7 @@ begin
 
     if SourceIndex > 0 then begin
         // We can add a new source
-        frmNewSource := TfrmNewSource.Create(nil);
+        frmNewSource := TfrmNewSource.Create(Self);
 
         if frmNewSource.ShowModal = mrOK then begin
             // Type of source
@@ -730,16 +748,16 @@ begin
     Result := False;
 
     case HABSources[SourceIndex].SourceType of
-        // stLogtail:      SettingsForm := TfrmLogtailSettings.Create(nil);
-        stGateway:      SettingsForm := TfrmGatewaySettings.Create(nil);
-        stSerial:       SettingsForm := TfrmLoRaSerialSettings.Create(nil);
-        stTCP:          SettingsForm := TfrmTCPSettings.Create(nil);
-        stUDP:          SettingsForm := TfrmUDPSettings.Create(nil);
-        stHabitat:      SettingsForm := TfrmHabitatSettings.Create(nil);
-        stAPRS:         SettingsForm := TfrmAPRSSettings.Create(nil);
-        stMQTT:         SettingsForm := TfrmMQTTSettings.Create(nil);
-        stWSMQTT:       SettingsForm := TfrmWSMQTTSettings.Create(nil);
-        stSondehub:     SettingsForm := TfrmLogtailSettings.Create(nil);
+        // stLogtail:      SettingsForm := TfrmLogtailSettings.Create(Self);
+        stGateway:      SettingsForm := TfrmGatewaySettings.Create(Self);
+        stSerial:       SettingsForm := TfrmLoRaSerialSettings.Create(Self);
+        stTCP:          SettingsForm := TfrmTCPSettings.Create(Self);
+        stUDP:          SettingsForm := TfrmUDPSettings.Create(Self);
+        stHabitat:      SettingsForm := TfrmHabitatSettings.Create(Self);
+        stAPRS:         SettingsForm := TfrmAPRSSettings.Create(Self);
+        stMQTT:         SettingsForm := TfrmMQTTSettings.Create(Self);
+        stWSMQTT:       SettingsForm := TfrmWSMQTTSettings.Create(Self);
+        stSondehub:     SettingsForm := TfrmLogtailSettings.Create(Self);
         else        SettingsForm := nil;
     end;
 

@@ -97,7 +97,7 @@ type
     { Public declarations }
     SourceIndex: Integer;
 //    SettingsID: Integer;
-    Group: String;
+    Code, Group: String;
     Enabled: Boolean;
     procedure AddPosition(Position: THABPosition); virtual;
     procedure AddStatusToLog(Status: String);
@@ -117,7 +117,7 @@ implementation
 
 {$R *.dfm}
 
-uses SourcesForm;
+uses SourcesForm, Misc;
 
 procedure TfrmSource.btnDownClick(Sender: TObject);
 begin
@@ -237,6 +237,9 @@ begin
         edtUploadPayload.Text := Position.PayloadID;
         btnSendUpload.Enabled := OKToEnableSendButton;
     end;
+
+    WriteToLogFile('SOURCES', Code, Position.Line, ',');
+
 
     pnlUpdated.Color := clLime;
     tmrUpdated.Enabled := True;

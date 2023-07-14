@@ -8,6 +8,8 @@ inherited frmUploadStatus: TfrmUploadStatus
   inherited pnlMain: TPanel
     Width = 642
     Height = 390
+    ExplicitWidth = 642
+    ExplicitHeight = 390
     object lstLog: TListBox
       Left = 0
       Top = 0
@@ -16,8 +18,6 @@ inherited frmUploadStatus: TfrmUploadStatus
       Align = alClient
       ItemHeight = 13
       TabOrder = 0
-      ExplicitWidth = 374
-      ExplicitHeight = 276
     end
   end
 end

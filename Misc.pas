@@ -2,12 +2,13 @@ unit Misc;
 
 interface
 
-uses SysUtils;
+uses SysUtils, VCL.Forms;
 
 function GetSetting(FieldName, Settings: String): String;
 function GetBooleanSetting(FieldName, Settings: String): Boolean;
 function MyStrToFloat(Value: String): Double;
 function GetCommandLineParameter(ParameterName: String; var Value: String): Boolean;
+procedure WriteToLogFile(Section, Item, Msg: String; Suffix: String = ': ');
 
 const
     MAX_PAYLOADS = 100;
@@ -79,6 +80,27 @@ begin
     end;
 
     Result := False;
+end;
+
+procedure WriteToLogFile(Section, Item, Msg: String; Suffix: String = ': ');
+var
+    F: TextFile;
+    Folder, FileName: String;
+begin
+    Folder := ExtractFilePath(Application.ExeName) + '\' + Section;
+    FileName := Folder + '\' + Item + '.log';
+    try
+        AssignFile(F, FileName);
+        if FileExists(FileName) then begin
+            Append(F);
+        end else begin
+            ForceDirectories(Folder);
+            ReWrite(F);
+        end;
+        WriteLn(F, FormatDateTime('yyyy-nn-dd hh:nn:ss', Now), Suffix, Msg);
+        CloseFile(F);
+    except
+    end;
 end;
 
 end.

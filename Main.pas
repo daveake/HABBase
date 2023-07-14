@@ -113,7 +113,7 @@ end;
 
 procedure TfrmMain.LoadData;
 begin
-    DataModule1 := TDataModule1.Create(nil);
+    DataModule1 := TDataModule1.Create(Self);
 end;
 
 procedure TfrmMain.LoadForms;
@@ -122,24 +122,18 @@ var
 begin
     // Map
     pnlMap.Visible := True;
-    frmMap := TfrmMap.Create(nil);
+    frmMap := TfrmMap.Create(Self);
     frmMap.FNCMap.Parent := pnlMap;
 
     // Live Payloads
-    frmPayloads := TfrmPayloads.Create(nil);
+    frmPayloads := TfrmPayloads.Create(Self);
     frmPayloads.pnlMain.Parent := pnlRight;
 
-    // White List
-//    frmToolWhiteList := TfrmToolWhiteList.Create(nil);
-//    frmToolWhiteList.pnlMain.Parent := pnlWhiteList;
-    frmToolSettings := TfrmToolSettings.Create(nil);
-    frmToolSettings.pnlMain.Parent := pnlSettings;
-
-    frmToolSettings := TfrmToolSettings.Create(nil);
+    frmToolSettings := TfrmToolSettings.Create(Self);
     frmToolSettings.pnlMain.Parent := pnlSettings;
 
     // Sources
-    frmSources := TfrmSources.Create(nil);
+    frmSources := TfrmSources.Create(Self);
     frmSources.pnlMain.Parent := pnlSources;
     frmSources.LoadSources;
 end;

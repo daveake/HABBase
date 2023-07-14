@@ -34,6 +34,7 @@ type
     procedure scrollMainClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure tmrPredictionsTimer(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }
     HABPayloads: Array[1..MAX_PAYLOADS] of TPayload;
@@ -72,6 +73,12 @@ begin
 
     // Predictor
     Predictor := TTawhiri.Create;
+end;
+
+procedure TfrmPayloads.FormDestroy(Sender: TObject);
+begin
+    inherited;
+    Predictor.Free;
 end;
 
 function TfrmPayloads.NewPosition(Position: THABPosition; SourceCode, SourceDescription: String): Boolean;

@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Base, Vcl.ExtCtrls, Vcl.StdCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Base, Vcl.ExtCtrls, Vcl.StdCtrls, Misc;
 
 type
   TfrmUploadStatus = class(TfrmBase)
@@ -13,6 +13,7 @@ type
     { Private declarations }
   public
     { Public declarations }
+    Section: String;
     procedure AddStatusToLog(Status: String);
   end;
 
@@ -31,6 +32,8 @@ begin
 
             Items.Insert(0, Status);
             ItemIndex := 0;
+
+            WriteToLogFile('UPLOADS', Section, Status);
         end;
     end;
 end;

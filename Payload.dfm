@@ -146,7 +146,7 @@ inherited frmPayload: TfrmPayload
       Top = 44
       Width = 353
       Height = 306
-      ActivePage = tabCharts
+      ActivePage = TabSheet3
       Align = alClient
       MultiLine = True
       TabOrder = 1
@@ -156,7 +156,7 @@ inherited frmPayload: TfrmPayload
         object lstTelemetry: TListBox
           Left = 0
           Top = 0
-          Width = 220
+          Width = 23
           Height = 278
           Align = alClient
           DoubleBuffered = False
@@ -169,11 +169,12 @@ inherited frmPayload: TfrmPayload
           ParentDoubleBuffered = False
           ParentFont = False
           TabOrder = 0
+          ExplicitWidth = 220
         end
-        object lstTemp: TListBox
-          Left = 220
+        object lstFieldNames: TListBox
+          Left = 93
           Top = 0
-          Width = 125
+          Width = 70
           Height = 278
           Align = alRight
           Font.Charset = DEFAULT_CHARSET
@@ -184,6 +185,90 @@ inherited frmPayload: TfrmPayload
           ItemHeight = 17
           ParentFont = False
           TabOrder = 1
+          Visible = False
+          ExplicitLeft = 95
+        end
+        object lstValues: TListBox
+          Left = 163
+          Top = 0
+          Width = 91
+          Height = 278
+          Align = alRight
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Courier New'
+          Font.Style = []
+          ItemHeight = 17
+          ParentFont = False
+          TabOrder = 2
+          Visible = False
+          ExplicitLeft = 220
+        end
+        object lstSuffix: TListBox
+          Left = 254
+          Top = 0
+          Width = 91
+          Height = 278
+          Align = alRight
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Courier New'
+          Font.Style = []
+          ItemHeight = 17
+          ParentFont = False
+          TabOrder = 3
+          Visible = False
+          ExplicitLeft = 267
+        end
+        object lstHeader: TListBox
+          Left = 23
+          Top = 0
+          Width = 70
+          Height = 278
+          Align = alRight
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Courier New'
+          Font.Style = []
+          ItemHeight = 17
+          Items.Strings = (
+            'PAYLOADID'
+            'COUNTER'
+            'TIMESTAMP'
+            'LATITUDE'
+            'LONGITUDE'
+            'ALTITUDE'
+            'SATELLITES'
+            'INTERNAL_TEMPERATURE'
+            'EXTERNAL_TEMPERATURE'
+            'PRESSURE'
+            'HUMIDITY'
+            'BATTERY_VOLTAGE'
+            'BATTERY_CURRENT'
+            'SPEED'
+            'HEADING'
+            'CUTDOWN'
+            'PRED_LAT'
+            'PRED_LON'
+            'PRED_CDA'
+            'PRED_LANDING'
+            'PRED_TTL'
+            'UPLINK_SNR'
+            'UPLINK_RSSI'
+            'UPLINK_COUNT'
+            'LAST_COMMAND'
+            'ASCENTRATE'
+            'DISTANCE'
+            'DIRECTION'
+            'ELEVATION'
+            'FREQUENCY'
+            'DEVICE'
+            'LISTENERS')
+          ParentFont = False
+          TabOrder = 4
           Visible = False
         end
       end
@@ -925,7 +1010,7 @@ inherited frmPayload: TfrmPayload
           Height = 278
           Legend.Visible = False
           Title.Text.Strings = (
-            'TChart')
+            'Altitude')
           LeftAxis.Automatic = False
           LeftAxis.AutomaticMaximum = False
           LeftAxis.AutomaticMinimum = False
@@ -1014,17 +1099,6 @@ inherited frmPayload: TfrmPayload
             Alignment = taRightJustify
             Caption = 'Burst Altitude for prediction:'
           end
-          object lblHABHUB: THTMLabel
-            Left = 17
-            Top = 76
-            Width = 300
-            Height = 17
-            Anchors = [akLeft, akTop, akRight]
-            HTMLText.Strings = (
-              'HABHUB')
-            Transparent = True
-            Version = '2.3.0.1'
-          end
           object lblSondeHub: THTMLabel
             Left = 17
             Top = 108
@@ -1032,7 +1106,7 @@ inherited frmPayload: TfrmPayload
             Height = 17
             Anchors = [akLeft, akTop, akRight]
             HTMLText.Strings = (
-              'HABHUB')
+              'Sondehub ...')
             Transparent = True
             Version = '2.3.0.1'
           end
@@ -1181,8 +1255,8 @@ inherited frmPayload: TfrmPayload
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 312
-    Top = 168
+    Left = 308
+    Top = 144
     object tblLivePayloadsCounter: TIntegerField
       FieldName = 'Counter'
     end

@@ -2,6 +2,7 @@ inherited frmPayloads: TfrmPayloads
   Caption = 'Payloads'
   ClientWidth = 296
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   ExplicitWidth = 312
   TextHeight = 13
   inherited pnlMain: TPanel
