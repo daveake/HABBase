@@ -146,7 +146,7 @@ inherited frmPayload: TfrmPayload
       Top = 44
       Width = 353
       Height = 306
-      ActivePage = TabSheet3
+      ActivePage = tabCharts
       Align = alClient
       MultiLine = True
       TabOrder = 1
@@ -169,7 +169,6 @@ inherited frmPayload: TfrmPayload
           ParentDoubleBuffered = False
           ParentFont = False
           TabOrder = 0
-          ExplicitWidth = 220
         end
         object lstFieldNames: TListBox
           Left = 93
@@ -186,7 +185,6 @@ inherited frmPayload: TfrmPayload
           ParentFont = False
           TabOrder = 1
           Visible = False
-          ExplicitLeft = 95
         end
         object lstValues: TListBox
           Left = 163
@@ -203,7 +201,6 @@ inherited frmPayload: TfrmPayload
           ParentFont = False
           TabOrder = 2
           Visible = False
-          ExplicitLeft = 220
         end
         object lstSuffix: TListBox
           Left = 254
@@ -220,7 +217,6 @@ inherited frmPayload: TfrmPayload
           ParentFont = False
           TabOrder = 3
           Visible = False
-          ExplicitLeft = 267
         end
         object lstHeader: TListBox
           Left = 23

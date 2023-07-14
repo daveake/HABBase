@@ -204,7 +204,6 @@ begin
         end;
 
         // Position tab
-        // AddItem(POSN_PAYLOADID, 'PayloadID', PayloadID);
 
         if Counter > 0 then begin
             AddItem(POSN_COUNTER, 'Counter', IntToStr(Counter));
@@ -334,7 +333,6 @@ begin
         end;
 
         // Charts
-        // AltitudeChart.Series[0].AddXYPoint(Now, Altitude);
         Chart1.Series[0].AddXY(Now, Altitude);
     end;
 
@@ -533,8 +531,6 @@ begin
 end;
 
 procedure TfrmPayload.UpdatePrediction(Position: THABPosition);
-var
-    MyBookmark: TBookmark;
 begin
     with Position do begin
         if PredictionType <> TPredictionType.ptNone then begin

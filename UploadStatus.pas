@@ -13,7 +13,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    Section: String;
+    Section, LastMessage: String;
     procedure AddStatusToLog(Status: String);
   end;
 
@@ -24,7 +24,9 @@ implementation
 
 procedure TfrmUploadStatus.AddStatusToLog(Status: String);
 begin
-    if Status <> '' then begin
+    if (Status <> '') and (Status <> LastMessage) then begin
+        LastMessage := Status;
+
         with lstLog do begin
             if Items.Count > 30 then begin
                 Items.Delete(30);

@@ -139,7 +139,7 @@ begin
             HABPayloads[PayloadIndex].ColourText := ColourTexts[ColourIndex];
 
             // Add form
-            HABPayloads[PayloadIndex].Form := TfrmPayload.Create(nil);
+            HABPayloads[PayloadIndex].Form := TfrmPayload.Create(Self);
             HABPayloads[PayloadIndex].Form.PayloadIndex := PayloadIndex;
             HABPayloads[PayloadIndex].BurstAltitude := 30000;
             HABPayloads[PayloadIndex].Form.edtBurstAltitude.Text := FormatFloat('0', HABPayloads[PayloadIndex].BurstAltitude);
