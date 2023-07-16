@@ -288,7 +288,7 @@ begin
             Items.Delete(30);
         end;
 
-        Items.Insert(0, Status);
+        Items.Insert(0, FormatDateTime('hh:mm:ss', Now) + ': ' + Status);
         ItemIndex := 0;
     end;
 end;
