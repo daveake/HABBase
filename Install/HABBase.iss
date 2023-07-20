@@ -1,6 +1,6 @@
 [Setup]
 AppName=HAB Base
-AppVersion=1.7.5
+AppVersion=1.7.6
 WizardStyle=modern
 DefaultDirName=c:\HAB\Base
 DefaultGroupName=HAB

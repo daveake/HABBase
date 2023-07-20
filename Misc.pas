@@ -13,7 +13,7 @@ procedure WriteToLogFile(Section, Item, Msg: String; Suffix: String = ': ');
 const
     MAX_PAYLOADS = 100;
     HAB_BASE = 'HAB Base';
-    HAB_BASE_VERSION = 'V1.7.5';
+    HAB_BASE_VERSION = 'V1.7.6';
 
 implementation
 
@@ -97,7 +97,7 @@ begin
             ForceDirectories(Folder);
             ReWrite(F);
         end;
-        WriteLn(F, FormatDateTime('yyyy-nn-dd hh:nn:ss', Now), Suffix, Msg);
+        WriteLn(F, FormatDateTime('yyyy-mm-dd hh:nn:ss', Now), Suffix, Msg);
         CloseFile(F);
     except
     end;
