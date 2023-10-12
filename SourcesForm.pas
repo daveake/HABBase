@@ -343,11 +343,11 @@ begin
         end;
 
         if DataModule1.tblSettings.FieldByName('UplinkMQTT').AsBoolean then begin
-            MQTTUploader.SendTelemetry(Position.PayloadID, Position.Line);
+            MQTTUploader.SendTelemetry(Position.PayloadID, DataModule1.tblSettings.FieldByName('Callsign').AsString, Position.Line);
         end;
 
         if DataModule1.tblSettings.FieldByName('UplinkHABLINK').AsBoolean then begin
-            HablinkUploader.SendTelemetry(Position.PayloadID, Position.Line);
+            HablinkUploader.SendTelemetry(Position.PayloadID, DataModule1.tblSettings.FieldByName('Callsign').AsString, Position.Line);
         end;
     end;
 
@@ -988,7 +988,7 @@ begin
                                     DataModule1.tblSettings.FieldByName('MQTTPassword').AsString,
                                     Topic, '');
 
-        HablinkUploader.SetMQTTDetails('hab.link', 'daffyduck', 'HAB2022', 'incoming/payloads/$PAYLOAD$', '');
+        HablinkUploader.SetMQTTDetails('hab.link', 'daffyduck', 'HAB2022', 'incoming/payloads/$PAYLOAD$/$LISTENER$/sentence', '');
     finally
         ShowAllUplinkStatus;
     end;

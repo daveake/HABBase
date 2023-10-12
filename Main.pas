@@ -11,7 +11,9 @@ uses
   FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
   FireDAC.Comp.Client, DateUtils, AdvSmoothStatusIndicator, AdvGDIP, AdvPanel, BaseTypes,
   Miscellaneous, Source, AdvUtil, Vcl.Grids, AdvObj, BaseGrid, AdvGrid, DBAdvGrid, Misc,
-  AdvSmoothButton;
+  AdvSmoothButton, VCL.TMSFNCTypes, VCL.TMSFNCUtils, VCL.TMSFNCGraphics,
+  VCL.TMSFNCGraphicsTypes, VCL.TMSFNCCustomControl, VCL.TMSFNCWebBrowser,
+  VCL.TMSFNCMaps;
 
 type
     TPayloadMasks = record
@@ -36,10 +38,13 @@ type
     lblTomTom: TLabel;
     lblGoogle: TLabel;
     lblOpen: TLabel;
+    FNCMap: TTMSFNCMaps;
+    lblLeaflet: TLabel;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure lblBingClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FNCMapMapInitialized(Sender: TObject);
   private
     { Private declarations }
     PayloadMasks: TPayloadMasks;
@@ -75,6 +80,11 @@ uses Data,
 
 {$R *.dfm}
 
+procedure TfrmMain.FNCMapMapInitialized(Sender: TObject);
+begin
+    frmMap.FNCMapMapInitialized(nil);
+end;
+
 procedure TfrmMain.FormActivate(Sender: TObject);
 const
     FirstTime: Boolean = True;
@@ -105,6 +115,7 @@ begin
     lblGoogle.Font.Style := [];
     lblOpen.Font.Style := [];
     lblTomTom.Font.Style := [];
+    lblLeaflet.Font.Style := [];
 
     TLabel(Sender).Font.Style := [fsBold];
 
@@ -123,7 +134,7 @@ begin
     // Map
     pnlMap.Visible := True;
     frmMap := TfrmMap.Create(Self);
-    frmMap.FNCMap.Parent := pnlMap;
+//    frmMap.FNCMap.Parent := pnlMap;
 
     // Live Payloads
     frmPayloads := TfrmPayloads.Create(Self);

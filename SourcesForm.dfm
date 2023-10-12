@@ -84,7 +84,7 @@ inherited frmSources: TfrmSources
         Margins.Left = 0
         Margins.Right = 1
         Caption = 'Sondehub'
-        Version = '1.0.1.0'
+        Version = '1.0.1.1'
         Appearance.Fill.Color = clGray
         Appearance.Fill.ColorMirror = clNone
         Appearance.Fill.ColorMirrorTo = clNone
@@ -114,7 +114,7 @@ inherited frmSources: TfrmSources
         Margins.Left = 0
         Margins.Right = 1
         Caption = 'MQTT'
-        Version = '1.0.1.0'
+        Version = '1.0.1.1'
         Appearance.Fill.Color = clGray
         Appearance.Fill.ColorMirror = clNone
         Appearance.Fill.ColorMirrorTo = clNone
@@ -144,7 +144,7 @@ inherited frmSources: TfrmSources
         Margins.Left = 0
         Margins.Right = 1
         Caption = 'SSDV'
-        Version = '1.0.1.0'
+        Version = '1.0.1.1'
         Appearance.Fill.Color = clGray
         Appearance.Fill.ColorMirror = clNone
         Appearance.Fill.ColorMirrorTo = clNone
@@ -174,7 +174,7 @@ inherited frmSources: TfrmSources
         Margins.Left = 0
         Margins.Right = 1
         Caption = 'HABLink'
-        Version = '1.0.1.0'
+        Version = '1.0.1.1'
         Appearance.Fill.Color = clGray
         Appearance.Fill.ColorMirror = clNone
         Appearance.Fill.ColorMirrorTo = clNone

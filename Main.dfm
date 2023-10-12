@@ -117,7 +117,7 @@ object frmMain: TfrmMain
             AlignWithMargins = True
             Left = 13
             Top = 4
-            Width = 411
+            Width = 341
             Height = 16
             Margins.Left = 12
             Align = alClient
@@ -132,7 +132,7 @@ object frmMain: TfrmMain
           end
           object lblBing: TLabel
             AlignWithMargins = True
-            Left = 430
+            Left = 360
             Top = 4
             Width = 64
             Height = 16
@@ -150,7 +150,6 @@ object frmMain: TfrmMain
             ParentFont = False
             Transparent = False
             OnClick = lblBingClick
-            ExplicitLeft = 360
           end
           object lblTomTom: TLabel
             AlignWithMargins = True
@@ -175,7 +174,7 @@ object frmMain: TfrmMain
           end
           object lblGoogle: TLabel
             AlignWithMargins = True
-            Left = 500
+            Left = 430
             Top = 4
             Width = 64
             Height = 16
@@ -188,7 +187,7 @@ object frmMain: TfrmMain
             Font.Color = clBlack
             Font.Height = -13
             Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
+            Font.Style = []
             ParentColor = False
             ParentFont = False
             Transparent = False
@@ -217,6 +216,53 @@ object frmMain: TfrmMain
             OnClick = lblBingClick
             ExplicitLeft = 640
           end
+          object lblLeaflet: TLabel
+            AlignWithMargins = True
+            Left = 500
+            Top = 4
+            Width = 64
+            Height = 16
+            Align = alRight
+            Alignment = taCenter
+            AutoSize = False
+            Caption = 'Leaflet'
+            Color = clSilver
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlack
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+            Transparent = False
+            OnClick = lblBingClick
+            ExplicitLeft = 528
+            ExplicitTop = 2
+          end
+        end
+        object FNCMap: TTMSFNCMaps
+          Left = 0
+          Top = 24
+          Width = 708
+          Height = 823
+          Align = alClient
+          ParentDoubleBuffered = False
+          DoubleBuffered = True
+          TabOrder = 1
+          OnMapInitialized = FNCMapMapInitialized
+          Polylines = <>
+          Polygons = <>
+          Circles = <>
+          Rectangles = <>
+          Markers = <>
+          ElementContainers = <>
+          Labels = <>
+          HeadLinks = <>
+          Options.DefaultLatitude = 52.000000000000000000
+          Options.DefaultLongitude = 0.000000000000000000
+          Options.DefaultZoomLevel = 12.000000000000000000
+          Service = msLeaflet
+          LocalFileAccess = True
         end
       end
     end

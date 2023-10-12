@@ -35,7 +35,6 @@ type
 
 type
   TfrmMap = class(TfrmNormal)
-    FNCMap: TTMSFNCMaps;
     tmrCentreAtHome: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure GMapMarkerClick(Sender: TObject; MarkerTitle: string;
@@ -50,6 +49,7 @@ type
     // PolylineItems: array[0..64] of TPolylineItem;
     FollowMode: TFollowMode;
     // function FindMapMarker(PayloadID: String): Integer;
+    FNCMap: TTMSFNCMaps;
     procedure DrawBalloonRadials;
   protected
     ImageFolder: String;
@@ -83,7 +83,7 @@ implementation
 
 {$R *.dfm}
 
-uses Data, BaseTypes, Payloads;
+uses Main, Data, BaseTypes, Payloads;
 
 // IF THE FOLLOWING LINE GIVES AN ERROR
 
@@ -110,6 +110,8 @@ var
 begin
     FollowMode := fmInit;
 
+    FNCMap := frmMain.FNCMap;
+
     if GetCommandLineParameter('PATH', Path) then begin
         ImageFolder := Path + '\Images\';
     end else begin
@@ -118,7 +120,7 @@ begin
 
     SetHomePosition;
 
-    SetMapSource('GOOGLE');
+    SetMapSource('LEAFLET');
 end;
 
 procedure TfrmMap.FormShow(Sender: TObject);
@@ -472,6 +474,8 @@ begin
         FNCMap.Service := msGoogleMaps;
     end else if Source = 'HERE' then begin
         FNCMap.Service := msHere;
+    end else if Source = 'LEAFLET' then begin
+        FNCMap.Service := msLeaflet;
     end else if Source = 'MAPBOX' then begin
         FNCMap.Service := msMapBox;
     end else if Source = 'MAPKIT' then begin
