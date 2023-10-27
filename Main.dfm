@@ -209,7 +209,7 @@ object frmMain: TfrmMain
             Font.Color = clBlack
             Font.Height = -13
             Font.Name = 'Tahoma'
-            Font.Style = []
+            Font.Style = [fsBold]
             ParentColor = False
             ParentFont = False
             Transparent = False
@@ -235,6 +235,7 @@ object frmMain: TfrmMain
             ParentColor = False
             ParentFont = False
             Transparent = False
+            Visible = False
             OnClick = lblBingClick
             ExplicitLeft = 528
             ExplicitTop = 2
@@ -261,7 +262,7 @@ object frmMain: TfrmMain
           Options.DefaultLatitude = 52.000000000000000000
           Options.DefaultLongitude = 0.000000000000000000
           Options.DefaultZoomLevel = 12.000000000000000000
-          Service = msLeaflet
+          Service = msOpenLayers
           LocalFileAccess = True
         end
       end
