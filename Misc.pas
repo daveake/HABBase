@@ -6,7 +6,7 @@ uses SysUtils, VCL.Forms;
 
 function GetSetting(FieldName, Settings: String): String;
 function GetBooleanSetting(FieldName, Settings: String): Boolean;
-function MyStrToFloat(Value: String): Double;
+function MyStrToFloat(Value: String; Default: Double = 0.0): Double;
 function GetCommandLineParameter(ParameterName: String; var Value: String): Boolean;
 procedure WriteToLogFile(Section, Item, Msg: String; Suffix: String = ': ');
 
@@ -46,7 +46,7 @@ begin
     Result := Pos('T', Temp) > 0;
 end;
 
-function MyStrToFloat(Value: String): Double;
+function MyStrToFloat(Value: String; Default: Double = 0.0): Double;
 begin
     if FormatSettings.DecimalSeparator <> '.' then begin
         Value := StringReplace(Value, '.', FormatSettings.DecimalSeparator, []);
@@ -55,7 +55,7 @@ begin
     try
         Result := StrToFloat(Value);   // , LFormat);
     except
-        Result := 0;
+        Result := Default;
     end;
 end;
 

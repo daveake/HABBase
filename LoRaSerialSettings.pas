@@ -14,12 +14,17 @@ type
     edtFrequency1: TEdit;
     Label4: TLabel;
     edtMode1: TEdit;
-    chkUpload: TAdvOfficeCheckBox;
     cmbPort: TComboBox;
+    Label1: TLabel;
+    edtPPM1: TEdit;
+    chkUpload: TAdvOfficeCheckBox;
+    edtOffset: TEdit;
+    Label5: TLabel;
     procedure edtPortChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
+    procedure UpdateOffset;
   protected
     procedure ApplyChanges; override;
     procedure LoadFields; override;
@@ -43,6 +48,7 @@ begin
 
     SetSettingString(Group, 'Frequency', edtFrequency1.Text);
     SetSettingInteger(Group, 'Mode', StrToIntDef(edtMode1.Text, 0));
+    SetSettingFloat(Group, 'PPM', MyStrToFloat(edtPPM1.Text, 0.0));
 
     // Tell source things have changed
     inherited;
@@ -51,6 +57,8 @@ end;
 procedure TfrmLoRaSerialSettings.edtPortChange(Sender: TObject);
 begin
     btnSave.Enabled := True;
+
+    UpdateOffset;
 end;
 
 procedure TfrmLoRaSerialSettings.FormCreate(Sender: TObject);
@@ -97,6 +105,7 @@ begin
 
         edtFrequency1.Text := GetSetting('Frequency', Settings);
         edtMode1.Text      := GetSetting('Mode', Settings);
+        edtPPM1.Text       := GetSetting('PPM', Settings);
         chkUpload.Checked  := GetBooleanSetting('Upload', Settings);
     end;
 end;
@@ -109,8 +118,14 @@ begin
         FieldByName('Port').AsString := cmbPort.Text;
         FieldByName('Settings').AsString := 'Frequency=' + edtFrequency1.Text + ';' +
                                             'Mode=' + edtMode1.Text + ';' +
+                                            'PPM=' + edtPPM1.Text + ';' +
                                             'Upload=' + BoolToStr(chkUpload.Checked, True);
     end;
+end;
+
+procedure TfrmLoRaSerialSettings.UpdateOffset;
+begin
+    edtOffset.Text := FormatFloat('0.0', MyStrToFloat(edtFrequency1.Text) * MyStrToFloat(edtPPM1.Text) / 1000) + 'kHz';
 end;
 
 end.

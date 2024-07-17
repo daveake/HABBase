@@ -3,7 +3,6 @@ inherited frmLoRaSerialSettings: TfrmLoRaSerialSettings
   ClientHeight = 155
   OnCreate = FormCreate
   ExplicitHeight = 194
-  PixelsPerInch = 96
   TextHeight = 13
   inherited pnlCommon: TAdvPanel
     Height = 155
@@ -33,6 +32,22 @@ inherited frmLoRaSerialSettings: TfrmLoRaSerialSettings
       Alignment = taRightJustify
       Caption = 'Mode:'
     end
+    object Label1: TLabel [5]
+      Left = 258
+      Top = 62
+      Width = 24
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'PPM:'
+    end
+    object Label5: TLabel [6]
+      Left = 386
+      Top = 62
+      Width = 35
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Offset:'
+    end
     inherited btnSave: TAdvSmoothButton
       Top = 102
       ExplicitTop = 102
@@ -61,18 +76,6 @@ inherited frmLoRaSerialSettings: TfrmLoRaSerialSettings
       TabOrder = 6
       OnChange = edtPortChange
     end
-    object chkUpload: TAdvOfficeCheckBox
-      Left = 372
-      Top = 60
-      Width = 120
-      Height = 20
-      TabOrder = 7
-      OnClick = chKEnabledClick
-      Alignment = taLeftJustify
-      Caption = 'Upload To Server(s)'
-      ReturnIsTab = False
-      Version = '1.8.1.0'
-    end
     object cmbPort: TComboBox
       Left = 60
       Top = 59
@@ -80,7 +83,39 @@ inherited frmLoRaSerialSettings: TfrmLoRaSerialSettings
       Height = 22
       Style = csOwnerDrawFixed
       Sorted = True
+      TabOrder = 7
+    end
+    object edtPPM1: TEdit
+      Left = 288
+      Top = 59
+      Width = 60
+      Height = 21
+      MaxLength = 4
       TabOrder = 8
+      OnChange = edtPortChange
+    end
+    object chkUpload: TAdvOfficeCheckBox
+      Left = 472
+      Top = 12
+      Width = 120
+      Height = 20
+      TabOrder = 9
+      OnClick = chKEnabledClick
+      Alignment = taLeftJustify
+      Caption = 'Upload To Server(s)'
+      ReturnIsTab = False
+      Version = '1.8.4.0'
+    end
+    object edtOffset: TEdit
+      Left = 427
+      Top = 59
+      Width = 60
+      Height = 21
+      Enabled = False
+      MaxLength = 1
+      ReadOnly = True
+      TabOrder = 10
+      OnChange = edtPortChange
     end
   end
 end
