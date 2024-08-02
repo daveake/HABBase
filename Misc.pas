@@ -13,7 +13,7 @@ procedure WriteToLogFile(Section, Item, Msg: String; Suffix: String = ': ');
 const
     MAX_PAYLOADS = 100;
     HAB_BASE = 'HAB Base';
-    HAB_BASE_VERSION = 'V1.7.9';
+    HAB_BASE_VERSION = 'V1.7.10';
 
 implementation
 
